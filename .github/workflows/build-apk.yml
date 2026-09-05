@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Release APK
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK 36
+      - name: Install SDK
         run: |
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager "platforms;android-36" "build-tools;36.0.0"
@@ -32,30 +32,44 @@ jobs:
         with:
           gradle-version: '9.6.0'
 
-      - name: Extract Android project
-        run: |
-          unzip -o VideoEnhancerAndroid_GitHubBuild.zip
+      - name: Extract project
+        run: unzip -o VideoEnhancerAndroid_GitHubBuild.zip
 
-      - name: Change project to Android 36
+      - name: Prepare release
         run: |
           sed -i 's/compileSdk = 37/compileSdk = 36/' VideoEnhancerAndroid/app/build.gradle.kts
           sed -i 's/targetSdk = 37/targetSdk = 36/' VideoEnhancerAndroid/app/build.gradle.kts
+          sed -i 's/applicationId = "com.oai.videoenhancer"/applicationId = "com.oai.videoenhancer.v2"/' VideoEnhancerAndroid/app/build.gradle.kts
+          sed -i 's/versionCode = 1/versionCode = 2/' VideoEnhancerAndroid/app/build.gradle.kts
 
-      - name: Build APK
+      - name: Build release
+        run: gradle -p VideoEnhancerAndroid :app:assembleRelease --stacktrace
+
+      - name: Create signing key
         run: |
-          gradle -p VideoEnhancerAndroid :app:assembleDebug --stacktrace
+          keytool -genkeypair \
+            -keystore /tmp/videoenhancer.jks \
+            -storepass android \
+            -keypass android \
+            -alias videoenhancer \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Video Enhancer Pro,O=Local,C=BE"
+
+      - name: Sign APK
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" sign \
+            --ks /tmp/videoenhancer.jks \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out VideoEnhancerPro-release.apk \
+            VideoEnhancerAndroid/app/build/outputs/apk/release/app-release-unsigned.apk
+
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose VideoEnhancerPro-release.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: VideoEnhancerPro-debug-apk
-          path: VideoEnhancerAndroid/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
-      - name: Build APK
-        run: gradle -p VideoEnhancerAndroid :app:assembleDebug --stacktrace
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: VideoEnhancerPro-debug-apk
-          path: VideoEnhancerAndroid/app/build/outputs/apk/debug/app-debug.apk
+          name: VideoEnhancerPro-release-apk
+          path: VideoEnhancerPro-release.apk
