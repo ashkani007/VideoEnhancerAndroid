@@ -63,7 +63,7 @@ class SmokeTest {
         val before = app.scripts.scripts.value.size
         // Creating a script opens the editor with autosave.
         compose.onNodeWithText("New script").performClick()
-        compose.waitUntil(5_000) { compose.onAllNodesWithText("Type or paste your script…").fetchSemanticsNodes().isNotEmpty() }
+        compose.waitUntil(5_000) { compose.onAllNodesWithText("Prompt").fetchSemanticsNodes().isNotEmpty() }
         assertEquals(before + 1, app.scripts.scripts.value.size)
         compose.onNodeWithContentDescription("Back").performClick()
         compose.waitUntil(5_000) {
