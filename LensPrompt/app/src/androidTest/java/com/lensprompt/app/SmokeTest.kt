@@ -1,9 +1,9 @@
 package com.lensprompt.app
 
 import android.Manifest
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -57,10 +57,18 @@ class SmokeTest {
     }
 
     @Test
-    fun libraryShowsScripts() {
+    fun libraryListsScriptsAndCreatesNew() {
         compose.onNodeWithText(ScriptRepository.WELCOME_TITLE, useUnmergedTree = true).assertExists()
-        compose.onNodeWithText("New script").assertIsDisplayed()
         compose.onNodeWithText("Search scripts").assertExists()
+        val before = app.scripts.scripts.value.size
+        // Creating a script opens the editor with autosave.
+        compose.onNodeWithText("New script").performClick()
+        compose.waitUntil(5_000) { compose.onAllNodesWithText("Type or paste your script…").fetchSemanticsNodes().isNotEmpty() }
+        assertEquals(before + 1, app.scripts.scripts.value.size)
+        compose.onNodeWithContentDescription("Back").performClick()
+        compose.waitUntil(5_000) {
+            compose.onAllNodesWithContentDescription("Start prompting").fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test
