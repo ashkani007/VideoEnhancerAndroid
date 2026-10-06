@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -116,6 +117,14 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
     private var micConflictWarned = false
     private var frameMsAvg = 16.0
 
+    /**
+     * Frame demand: the frame loop runs only while the text is (or should be)
+     * moving, or a redraw is pending. When paused and settled it suspends, so an
+     * idle prompter costs no CPU/battery.
+     */
+    private val frameDemand = MutableStateFlow(0L)
+    private var redrawPending = true
+
     /** Normalized tokens of the current script, shared with the layout code. */
     fun tokens(text: String): List<Token> = TextNormalizer(languageTag()).tokenize(text)
 
@@ -169,6 +178,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         stop()
         scroll.snapTo(mapper?.yAt(0.0) ?: 0.0)
         _ui.update { it.copy(atEnd = false) }
+        requestFrames()
     }
 
     fun togglePlay() {
@@ -226,6 +236,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         val next = (scroll.position - deltaPx).coerceIn(m.yAt(0.0), m.yAt(m.size.toDouble()))
         scroll.snapTo(next)
         _ui.update { it.copy(atEnd = false) }
+        requestFrames()
     }
 
     /** After the user moved the text by hand, Smart Follow restarts from there. */
@@ -248,6 +259,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         val m = ProgressMapper(tokenY, endY)
         mapper = m
         scroll.snapTo(m.yAt(progress))
+        requestFrames()
     }
 
     // ------------------------------------------------------------------ frame
@@ -284,10 +296,28 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
                 _ui.update { it.copy(atEnd = true) }
             }
         }
+        redrawPending = false
         return scroll.position.toFloat()
     }
 
     fun scrollVelocityPx(): Double = scroll.velocity
+
+    fun scrollPositionPx(): Double = scroll.position
+
+    /** True while another frame is needed (running, still moving, or redraw pending). */
+    fun needsFrames(): Boolean =
+        _ui.value.runState == RunState.RUNNING || scroll.velocity != 0.0 || redrawPending
+
+    /** Suspends the frame loop until something needs frames again. Main thread. */
+    suspend fun awaitFrameDemand() {
+        lastFrameNanos = 0L
+        frameDemand.first { needsFrames() }
+    }
+
+    private fun requestFrames() {
+        redrawPending = true
+        frameDemand.value = frameDemand.value + 1
+    }
 
     // ------------------------------------------------------------- internals
 
@@ -306,6 +336,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         val cfg = s.smartFollowConfig()
         scroll.updateConfig(cfg)
         _ui.update { it.copy(runState = RunState.RUNNING, countdown = 0, atEnd = false) }
+        requestFrames()
         if (!s.smartFollow) {
             smartActive = false
             return
@@ -339,6 +370,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
 
     private fun haltFollowing() {
         smartActive = false
+        requestFrames()
         speech.stop()
         viewModelScope.launch(worker) {
             simulationJob?.cancel()

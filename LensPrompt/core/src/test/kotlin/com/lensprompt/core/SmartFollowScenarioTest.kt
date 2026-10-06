@@ -124,6 +124,23 @@ class SmartFollowScenarioTest {
     }
 
     @Test
+    fun `sudden speed change adapts within a few seconds without jitter`() {
+        val s = scenario().read(0, 40, 2.0)
+        val switchAt = s.durationMs
+        s.read(40, 110, 4.0)
+        val frames = simulate(s)
+        assertNoVisualJumps(frames)
+        val before = frameAt(frames, switchAt).readingVelocity
+        val after = frameAt(frames, switchAt + 4_000).readingVelocity
+        assertTrue(before in 1.6..2.4, "before=$before")
+        assertTrue(after > 3.3, "velocity 4 s after the switch: $after\n${summary(frames)}")
+        // Display keeps up with the faster reader.
+        val f = frameAt(frames, switchAt + 8_000)
+        val spoken = 40 + 8 * 4
+        assertTrue(abs(f.displayedProgress - spoken) < 4.5, "display ${f.displayedProgress} vs spoken $spoken")
+    }
+
+    @Test
     fun `pause stops the text and keeps it stopped`() {
         val s = scenario().read(0, 40, 2.5)
         val pauseStart = s.durationMs

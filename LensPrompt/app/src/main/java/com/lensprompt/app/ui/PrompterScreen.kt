@@ -314,9 +314,11 @@ private fun PromptText(
     val density = LocalDensity.current
     var scrollPx by remember { mutableFloatStateOf(0f) }
 
+    // Runs every display frame while the text moves; sleeps when the prompter is settled.
     LaunchedEffect(vm) {
         while (true) {
             withFrameNanos { t -> scrollPx = vm.onFrame(t, density.density) }
+            if (!vm.needsFrames()) vm.awaitFrameDemand()
         }
     }
 
