@@ -184,8 +184,7 @@ class OverlayService : Service() {
             addView(resize, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(24f)))
         }
 
-        val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        else @Suppress("DEPRECATION") WindowManager.LayoutParams.TYPE_PHONE
+        val type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY // minSdk 26
         val lp = WindowManager.LayoutParams(
             (dm.widthPixels * 0.86f).toInt(),
             (dm.heightPixels * 0.32f).toInt(),

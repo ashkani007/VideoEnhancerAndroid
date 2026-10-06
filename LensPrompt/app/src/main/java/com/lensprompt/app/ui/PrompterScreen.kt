@@ -3,7 +3,6 @@ package com.lensprompt.app.ui
 import android.Manifest
 import android.app.Application
 import android.content.pm.PackageManager
-import android.view.Surface
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.PreviewView
@@ -165,7 +164,7 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
 
     // Bind / unbind the camera; keep the capture rotation in sync with the display.
     val orientation = LocalConfiguration.current.orientation
-    val rotation = view.display?.rotation ?: Surface.ROTATION_0
+    val rotation = view.display?.rotation ?: android.view.Surface.ROTATION_0
     LaunchedEffect(settings.showCamera, cameraGranted, previewView) {
         val pv = previewView
         if (settings.showCamera && cameraGranted && pv != null) camera.bind(lifecycleOwner, pv, rotation = rotation)
@@ -507,7 +506,9 @@ private fun DebugOverlay(vm: PrompterViewModel, modifier: Modifier) {
     val f = d.follow
     Surface(color = Color.Black.copy(alpha = 0.7f), modifier = modifier.padding(start = 8.dp, bottom = 120.dp).width(260.dp)) {
         Column(Modifier.padding(8.dp)) {
-            val line = { s: String -> Text(s, color = Color(0xFF9EF0B0), fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 13.sp) }
+            val line: @Composable (String) -> Unit = { s ->
+                Text(s, color = Color(0xFF9EF0B0), fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 13.sp)
+            }
             if (f == null) {
                 line("Smart Follow idle")
             } else {
