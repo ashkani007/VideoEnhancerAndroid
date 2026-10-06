@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- lens ring -->
+    <path android:fillColor="#00000000" android:strokeColor="#FFFFFF" android:strokeWidth="5"
+        android:pathData="M54,30 A24,24 0 1,1 53.99,30 Z" />
+    <!-- prompt lines -->
+    <path android:fillColor="#FFC83D" android:pathData="M42,46h24v4h-24z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M40,53h28v4h-28z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M44,60h20v4h-20z" />
+</vector>
