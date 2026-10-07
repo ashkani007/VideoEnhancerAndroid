@@ -37,6 +37,8 @@ data class AppSettings(
     // camera
     val showCamera: Boolean = true,
     val recordAudio: Boolean = true,
+    /** Use front-camera lip movement as a talking signal for Smart Follow. */
+    val lipTracking: Boolean = true,
     // misc
     val overlayOpacity: Float = 0.75f,
     val debugMode: Boolean = false,
@@ -84,6 +86,7 @@ class SettingsRepository(context: Context) {
             preferOffline = prefs.getBoolean("preferOffline", d.preferOffline),
             showCamera = prefs.getBoolean("showCamera", d.showCamera),
             recordAudio = prefs.getBoolean("recordAudio", d.recordAudio),
+            lipTracking = prefs.getBoolean("lipTracking", d.lipTracking),
             overlayOpacity = prefs.getFloat("overlayOpacity", d.overlayOpacity),
             debugMode = prefs.getBoolean("debugMode", d.debugMode),
             firstRunDone = prefs.getBoolean("firstRunDone", d.firstRunDone),
@@ -110,6 +113,7 @@ class SettingsRepository(context: Context) {
             .putBoolean("preferOffline", s.preferOffline)
             .putBoolean("showCamera", s.showCamera)
             .putBoolean("recordAudio", s.recordAudio)
+            .putBoolean("lipTracking", s.lipTracking)
             .putFloat("overlayOpacity", s.overlayOpacity)
             .putBoolean("debugMode", s.debugMode)
             .putBoolean("firstRunDone", s.firstRunDone)

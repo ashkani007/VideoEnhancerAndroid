@@ -76,6 +76,9 @@ dependencies {
     implementation("androidx.camera:camera-video:$camerax")
     implementation("androidx.camera:camera-view:$camerax")
 
+    // On-device face contours for lip-movement detection (bundled model, no network).
+    implementation("com.google.mlkit:face-detection:16.1.7")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation(kotlin("test"))
 

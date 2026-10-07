@@ -106,14 +106,39 @@ In the app, **Settings → Debug mode** shows a live HUD: recognized text, match
   - Drag the text to reposition it; Smart Follow restarts from the new position.
   - Auto-hiding controls, and a status chip with a green mic icon while listening.
   - RTL and Persian text are laid out by content direction.
-- **Camera.** CameraX preview behind dimmed text, front/rear switching, and video recording to `Movies/LensPrompt` with a timer. Audio is optional.
+- **Camera.** CameraX preview behind dimmed text, front/rear switching, and video recording to `Movies/LensPrompt` with a timer. With sound on, LensPrompt records the audio itself so Smart Follow keeps working (see below).
 - **Floating overlay.** A foreground service draws a draggable, resizable, semi-transparent teleprompter over other apps. It scrolls at the manual speed.
 - **Languages.** Device default, English, Persian, Dutch and more. Tokenization and number spelling support EN/NL/FA.
+
+## Smart Follow while recording video with sound
+
+**Why it used to stop.** CameraX records sound from `AudioSource.CAMCORDER`. Since Android 10 that source is *privacy-sensitive*: while one app captures from it, every other app capturing audio receives silence. The speech recognizer runs in another app (the system recognition service), so as soon as recording started it heard only silence.
+
+**How it works now.** While recording with sound, LensPrompt is the single owner of the microphone:
+
+```
+AudioCaptureEngine (one AudioRecord, 48 kHz mono)
+  ├─ PCM file ──► AvMuxer: AAC, aligned to the first video frame, muxed into the CameraX video-only MP4
+  ├─ levels ────► SmartFollowController voice-activity detector
+  └─ 16 kHz pipe ► SpeechRecognizer EXTRA_AUDIO_SOURCE (Android 13+, segmented session;
+                   on-device recognizer preferred, falls back to the default service)
+Front camera ──► LipTracker (ML Kit face contours, on-device) ──► MouthActivityDetector
+```
+
+**Hybrid follow.** `SmartFollowController` enters `PACING` when recognized words can't arrive. That's either because the app says recognition is unavailable (Android 12 and older), or because recognition stalls: voice is heard for 4 s with no words.
+
+- While pacing, the text advances at the reading speed learned before recording, scaled by `SpeakingFusion`:
+  - voice and moving lips: full speed;
+  - voice with a still mouth: slow, probably someone else talking;
+  - silence: stop.
+- As soon as recognized words line up again, normal tracking takes over without a jump.
+- Covered by `HybridFollowTest` (simulator) and `AvMuxerTest` (emulator).
 
 ## Known limitations (honest list)
 
 - **Recognizer behaviour varies by device.** Android's `SpeechRecognizer` is session-based. LensPrompt restarts sessions in a controlled way, but some devices play a short sound on every restart and some cap session length. This needs testing on real devices.
-- **Sharing the microphone while recording video with sound.** On some phones, Android gives the microphone to only one of the recognizer service and the camera recorder. The app explains this when it happens, and offers "Record audio with video" (turn off to record sound separately) and manual mode as fallbacks. It doesn't hide the problem.
+- **Recording on Android 12 and older.** There, the recognizer can't take LensPrompt's audio stream, so while recording Smart Follow paces the text by voice and lip activity at your learned reading speed. It stops when you stop, but it can't detect skipped or repeated sentences until recording ends.
+- **A/V sync of the muxed sound** comes from CameraX status callbacks and the audio HAL timestamp. It's verified on the emulator and should be within a few tens of milliseconds, but it needs checking on real phones.
 - **Overlay is manual only.** The overlay doesn't support Smart Follow, because background microphone use is restricted and would compete with the other camera app's audio.
 - **Recognition location.** Where recognition runs (on-device or online) is decided by the device's recognition service. "Prefer on-device" is a request, not a guarantee.
 - **Tuning is simulator-based.** The Smart Follow defaults come from the simulator. Real speech and recognizer latency on a device may call for adjusting `SmartFollowConfig`.

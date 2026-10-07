@@ -2,6 +2,8 @@ package com.lensprompt.app.speech
 
 import android.content.Context
 import android.content.Intent
+import android.media.AudioFormat
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +12,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import com.lensprompt.app.audio.RecognizerAudioFeed
 import com.lensprompt.core.SmartFollowConfig
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -67,6 +70,11 @@ class SpeechRecognitionManager(private val context: Context) {
     private var offlineFallbackUsed = false
     private var lastLevelEmitMs = 0L
 
+    /** When set, recognition reads LensPrompt's own microphone stream instead of the mic. */
+    private var externalFeed: RecognizerAudioFeed? = null
+    private var preferOnDevice = true
+    private var recognizerIsOnDevice = false
+
     private val _events = MutableSharedFlow<SpeechEvent>(extraBufferCapacity = 256, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val events: SharedFlow<SpeechEvent> = _events.asSharedFlow()
 
@@ -81,11 +89,21 @@ class SpeechRecognitionManager(private val context: Context) {
 
     fun isAvailable(): Boolean = SpeechRecognizer.isRecognitionAvailable(context)
 
-    fun start(languageTag: String, preferOffline: Boolean, config: SmartFollowConfig) {
+    /** Android 13+ lets an app hand the recognizer its own audio stream. */
+    fun supportsExternalAudio(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+    /**
+     * @param externalAudio when non-null (Android 13+ only), the recognizer reads 16 kHz
+     *   PCM from LensPrompt's own capture instead of opening the microphone. Used during
+     *   video recording, when the microphone must have exactly one owner.
+     */
+    fun start(languageTag: String, preferOffline: Boolean, config: SmartFollowConfig, externalAudio: RecognizerAudioFeed? = null) {
         stop()
         this.languageTag = languageTag
         this.preferOffline = preferOffline
         this.config = config
+        externalFeed = if (supportsExternalAudio()) externalAudio else null
+        preferOnDevice = true
         active = true
         consecutiveErrors = 0
         consecutiveEmptySessions = 0
@@ -104,6 +122,7 @@ class SpeechRecognitionManager(private val context: Context) {
         sessionId++
         sessionEnded = true
         try { recognizer?.cancel() } catch (e: Exception) { Log.w(TAG, "cancel failed", e) }
+        externalFeed?.closeSession()
         _status.value = RecognizerStatus.OFF
     }
 
@@ -118,8 +137,12 @@ class SpeechRecognitionManager(private val context: Context) {
     private fun startSession() {
         if (!active) return
         handler.removeCallbacks(restartRunnable)
+        val wantOnDevice = externalFeed != null && preferOnDevice && onDeviceAvailable()
+        if (recognizer != null && recognizerIsOnDevice != wantOnDevice) destroyRecognizer()
         val rec = recognizer ?: try {
-            SpeechRecognizer.createSpeechRecognizer(context).also { recognizer = it }
+            recognizerIsOnDevice = wantOnDevice
+            (if (wantOnDevice) SpeechRecognizer.createOnDeviceSpeechRecognizer(context) else SpeechRecognizer.createSpeechRecognizer(context))
+                .also { recognizer = it }
         } catch (e: Exception) {
             Log.e(TAG, "createSpeechRecognizer failed", e)
             onSessionError(SpeechRecognizer.ERROR_CLIENT)
@@ -154,7 +177,24 @@ class SpeechRecognitionManager(private val context: Context) {
         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 5_000L)
         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 5_000L)
         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 30_000L)
+        val feed = externalFeed
+        if (feed != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Read from LensPrompt's own capture (fresh pipe per session); a segmented
+            // session keeps recognizing continuously instead of ending at silences.
+            putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE, feed.openSession())
+            putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_CHANNEL_COUNT, 1)
+            putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_ENCODING, AudioFormat.ENCODING_PCM_16BIT)
+            putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE_SAMPLING_RATE, 16_000)
+            putExtra(RecognizerIntent.EXTRA_SEGMENTED_SESSION, RecognizerIntent.EXTRA_AUDIO_SOURCE)
+        }
     }
+
+    private fun onDeviceAvailable(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && try {
+            SpeechRecognizer.isOnDeviceRecognitionAvailable(context)
+        } catch (_: Exception) {
+            false
+        }
 
     private fun scheduleRestart(delayMs: Long, status: RecognizerStatus) {
         if (!active) return
@@ -176,6 +216,17 @@ class SpeechRecognitionManager(private val context: Context) {
 
     private fun onSessionError(code: Int) {
         if (!active) return
+        if (externalFeed != null && recognizerIsOnDevice && code != SpeechRecognizer.ERROR_NO_MATCH &&
+            code != SpeechRecognizer.ERROR_SPEECH_TIMEOUT
+        ) {
+            // The on-device recognizer could not handle this (language, model, audio
+            // source). Fall back to the default service, still fed with our audio.
+            Log.i(TAG, "on-device recognizer failed ($code); falling back to default service")
+            preferOnDevice = false
+            destroyRecognizer()
+            scheduleRestart(config.recognizerRestartDelayMs, RecognizerStatus.RESTARTING)
+            return
+        }
         when (code) {
             SpeechRecognizer.ERROR_NO_MATCH, SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> {
                 onSessionCompleted()
@@ -280,6 +331,23 @@ class SpeechRecognitionManager(private val context: Context) {
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) = Unit
+
+        // Segmented sessions (external audio, Android 13+): results per segment,
+        // the session itself keeps running.
+        override fun onSegmentResults(segmentResults: Bundle) {
+            if (!current()) return
+            bestText(segmentResults)?.let {
+                heardSpeechInSession = true
+                consecutiveErrors = 0
+                _events.tryEmit(SpeechEvent.Final(SystemClock.elapsedRealtime(), it))
+            }
+        }
+
+        override fun onEndOfSegmentedSession() {
+            if (!current() || sessionEnded) return
+            sessionEnded = true
+            onSessionCompleted()
+        }
     }
 
     private fun bestText(bundle: Bundle?): String? {

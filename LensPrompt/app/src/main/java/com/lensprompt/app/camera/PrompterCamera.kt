@@ -1,17 +1,18 @@
 package com.lensprompt.app.camera
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Size
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.FallbackStrategy
 import androidx.camera.video.FileOutputOptions
@@ -25,6 +26,7 @@ import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.lensprompt.core.AudioDsp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,6 +35,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.Executors
 
 data class CameraUiState(
     val bound: Boolean = false,
@@ -42,28 +45,55 @@ data class CameraUiState(
     val isRecording: Boolean = false,
     val recordedMs: Long = 0,
     val withAudio: Boolean = false,
+    /** Muxing the recorded video with LensPrompt's audio. */
+    val processing: Boolean = false,
+    /** Lip tracking is bound and running. */
+    val lipTracking: Boolean = false,
     val lastSaved: String? = null,
     val error: String? = null,
 )
 
+/** A finished video-only recording waiting to be muxed with app-captured audio. */
+data class VideoForMux(val file: File, val videoStartNanos: Long, val error: String?)
+
 /**
- * CameraX preview + video recording for the prompter screen.
+ * CameraX preview, video recording and (optionally) lip tracking for the
+ * prompter screen. Main-thread only.
  *
- * Recordings go to Movies/LensPrompt via MediaStore (API 29+) or to the app's
- * own Movies folder on older devices (no storage permission needed).
- * Main-thread only.
+ * Video is always recorded WITHOUT CameraX audio: CameraX would capture the
+ * CAMCORDER source, which silences every other microphone user on the device —
+ * including the speech recognizer Smart Follow depends on. When sound is
+ * wanted, LensPrompt captures the microphone itself and muxes it in afterwards
+ * (see [com.lensprompt.app.audio.AvMuxer]).
  */
 class PrompterCamera(private val context: Context) {
 
     private var provider: ProcessCameraProvider? = null
     private var preview: Preview? = null
     private var videoCapture: VideoCapture<Recorder>? = null
+    private var analysis: ImageAnalysis? = null
     private var recording: Recording? = null
+    private val analysisExecutor = Executors.newSingleThreadExecutor { r -> Thread(r, "lensprompt-lips") }
+    private var lipTracker: LipTracker? = null
+
+    private var pendingMux: ((VideoForMux) -> Unit)? = null
+    private var muxFile: File? = null
+    private var startEstimator = AudioDsp.VideoStartEstimator()
 
     private val _state = MutableStateFlow(CameraUiState())
     val state: StateFlow<CameraUiState> = _state.asStateFlow()
 
-    fun bind(owner: LifecycleOwner, previewView: PreviewView, lensFacing: Int = _state.value.lensFacing, rotation: Int) {
+    /**
+     * @param onMouth receives lip openness per analysed frame (null = no face), or
+     *   null to disable lip tracking.
+     */
+    fun bind(
+        owner: LifecycleOwner,
+        previewView: PreviewView,
+        lensFacing: Int = _state.value.lensFacing,
+        rotation: Int,
+        onMouth: ((Double?, Long) -> Unit)? = null,
+    ) {
         val future = ProcessCameraProvider.getInstance(context)
         future.addListener({
             try {
@@ -89,11 +119,41 @@ class PrompterCamera(private val context: Context) {
                     .build()
                 val vc = VideoCapture.withOutput(recorder)
                 vc.targetRotation = rotation
+
+                // Lip tracking needs a third use case; not every camera supports
+                // preview + video + analysis together, so fall back without it.
+                var ana: ImageAnalysis? = null
                 p.unbindAll()
-                p.bindToLifecycle(owner, selector, prev, vc)
+                if (onMouth != null) {
+                    val tracker = lipTracker ?: LipTracker().also { lipTracker = it }
+                    val a = ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .setResolutionSelector(
+                            ResolutionSelector.Builder()
+                                .setResolutionStrategy(ResolutionStrategy(Size(640, 480), ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER))
+                                .build(),
+                        )
+                        .setTargetRotation(rotation)
+                        .build()
+                        .also { it.setAnalyzer(analysisExecutor, tracker.analyzer(onMouth)) }
+                    ana = a
+                    try {
+                        p.bindToLifecycle(owner, selector, prev, vc, a)
+                    } catch (e: Exception) {
+                        Log.w(TAG, "preview+video+analysis not supported here; lip tracking off", e)
+                        p.unbindAll()
+                        ana = null
+                        p.bindToLifecycle(owner, selector, prev, vc)
+                    }
+                } else {
+                    p.bindToLifecycle(owner, selector, prev, vc)
+                }
                 preview = prev
                 videoCapture = vc
-                _state.update { it.copy(bound = true, lensFacing = facing, hasFront = hasFront, hasBack = hasBack, error = null) }
+                analysis = ana
+                _state.update {
+                    it.copy(bound = true, lensFacing = facing, hasFront = hasFront, hasBack = hasBack, lipTracking = ana != null, error = null)
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Camera bind failed", e)
                 _state.update { it.copy(bound = false, error = "Camera unavailable: ${e.message ?: e.javaClass.simpleName}") }
@@ -101,14 +161,15 @@ class PrompterCamera(private val context: Context) {
         }, ContextCompat.getMainExecutor(context))
     }
 
-    fun switchCamera(owner: LifecycleOwner, previewView: PreviewView, rotation: Int) {
+    fun switchCamera(owner: LifecycleOwner, previewView: PreviewView, rotation: Int, onMouth: ((Double?, Long) -> Unit)?) {
         if (_state.value.isRecording) return
         val next = if (_state.value.lensFacing == CameraSelector.LENS_FACING_FRONT) CameraSelector.LENS_FACING_BACK else CameraSelector.LENS_FACING_FRONT
-        bind(owner, previewView, next, rotation)
+        bind(owner, previewView, next, rotation, onMouth)
     }
 
     fun setRotation(rotation: Int) {
         preview?.targetRotation = rotation
+        analysis?.targetRotation = rotation
         // Changing rotation mid-recording would change the file orientation; keep it fixed then.
         if (!_state.value.isRecording) videoCapture?.targetRotation = rotation
     }
@@ -118,44 +179,53 @@ class PrompterCamera(private val context: Context) {
         try { provider?.unbindAll() } catch (e: Exception) { Log.w(TAG, "unbind failed", e) }
         preview = null
         videoCapture = null
-        _state.update { it.copy(bound = false) }
+        analysis = null
+        _state.update { it.copy(bound = false, lipTracking = false) }
     }
 
-    /** @return false if recording could not start (state.error explains why). */
-    @SuppressLint("MissingPermission") // checked explicitly below
-    fun startRecording(withAudio: Boolean): Boolean {
-        val vc = videoCapture ?: run {
-            _state.update { it.copy(error = "Camera is not ready") }
-            return false
-        }
+    fun release() {
+        unbind()
+        lipTracker?.close()
+        lipTracker = null
+        analysisExecutor.shutdown()
+    }
+
+    /** Silent recording straight to Movies/LensPrompt (sound disabled in settings). */
+    fun startSilentRecording(): Boolean {
+        val vc = videoCapture ?: return notReady()
         if (recording != null) return true
-        val name = "LensPrompt_" + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        return try {
-            val pending = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val name = fileName()
+        return startInternal(withAudioLabel = false) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val values = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, name)
                     put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
                     put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/LensPrompt")
                 }
-                val options = MediaStoreOutputOptions.Builder(context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                    .setContentValues(values)
-                    .build()
-                vc.output.prepareRecording(context, options)
+                vc.output.prepareRecording(
+                    context,
+                    MediaStoreOutputOptions.Builder(context.contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                        .setContentValues(values).build(),
+                )
             } else {
                 val dir = context.getExternalFilesDir(Environment.DIRECTORY_MOVIES) ?: context.filesDir
                 vc.output.prepareRecording(context, FileOutputOptions.Builder(File(dir, "$name.mp4")).build())
             }
-            val micGranted = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
-            val audio = withAudio && micGranted
-            val prepared = if (audio) pending.withAudioEnabled() else pending
-            recording = prepared.start(ContextCompat.getMainExecutor(context)) { event -> onRecordEvent(event) }
-            _state.update { it.copy(isRecording = true, recordedMs = 0, withAudio = audio, error = null) }
-            true
-        } catch (e: Exception) {
-            Log.e(TAG, "startRecording failed", e)
-            recording = null
-            _state.update { it.copy(isRecording = false, error = "Could not start recording: ${e.message ?: e.javaClass.simpleName}") }
-            false
+        }
+    }
+
+    /**
+     * Video-only recording into [tempFile]; when it finishes, [onFinished] gets the
+     * file and the estimated time of its first frame so app-captured audio can be
+     * muxed in.
+     */
+    fun startRecordingForMux(tempFile: File, onFinished: (VideoForMux) -> Unit): Boolean {
+        val vc = videoCapture ?: return notReady()
+        if (recording != null) return true
+        pendingMux = onFinished
+        muxFile = tempFile
+        return startInternal(withAudioLabel = true) {
+            vc.output.prepareRecording(context, FileOutputOptions.Builder(tempFile).build())
         }
     }
 
@@ -164,23 +234,65 @@ class PrompterCamera(private val context: Context) {
         recording = null
     }
 
+    fun setProcessing(processing: Boolean) = _state.update { it.copy(processing = processing) }
+    fun reportSaved(message: String) = _state.update { it.copy(processing = false, lastSaved = message) }
+    fun reportError(message: String) = _state.update { it.copy(processing = false, error = message) }
     fun clearMessages() = _state.update { it.copy(error = null, lastSaved = null) }
 
+    fun newVideoName(): String = fileName()
+
+    private fun startInternal(withAudioLabel: Boolean, prepare: () -> androidx.camera.video.PendingRecording): Boolean = try {
+        startEstimator = AudioDsp.VideoStartEstimator()
+        recording = prepare().start(ContextCompat.getMainExecutor(context)) { event -> onRecordEvent(event) }
+        _state.update { it.copy(isRecording = true, recordedMs = 0, withAudio = withAudioLabel, error = null, lastSaved = null) }
+        true
+    } catch (e: Exception) {
+        Log.e(TAG, "startRecording failed", e)
+        recording = null
+        pendingMux = null
+        _state.update { it.copy(isRecording = false, error = "Could not start recording: ${e.message ?: e.javaClass.simpleName}") }
+        false
+    }
+
+    private fun notReady(): Boolean {
+        _state.update { it.copy(error = "Camera is not ready") }
+        return false
+    }
+
+    private fun fileName() = "LensPrompt_" + SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+
     private fun onRecordEvent(event: VideoRecordEvent) {
+        val now = System.nanoTime()
         when (event) {
-            is VideoRecordEvent.Status ->
-                _state.update { it.copy(recordedMs = event.recordingStats.recordedDurationNanos / 1_000_000) }
+            is VideoRecordEvent.Start -> startEstimator.onStarted(now)
+            is VideoRecordEvent.Status -> {
+                val d = event.recordingStats.recordedDurationNanos
+                startEstimator.onStatus(now, d)
+                _state.update { it.copy(recordedMs = d / 1_000_000) }
+            }
             is VideoRecordEvent.Finalize -> {
                 recording = null
-                val uri = event.outputResults.outputUri
-                val saved = uri != Uri.EMPTY
-                val err = if (event.hasError() && !saved) "Recording failed (code ${event.error})" else null
-                _state.update {
-                    it.copy(
-                        isRecording = false,
-                        lastSaved = if (saved) "Saved to Movies/LensPrompt" else null,
-                        error = err,
+                val mux = pendingMux
+                pendingMux = null
+                if (mux != null) {
+                    val file = muxFile
+                    muxFile = null
+                    val ok = file != null && file.exists() && file.length() > 0
+                    _state.update { it.copy(isRecording = false, processing = ok) }
+                    mux(
+                        VideoForMux(
+                            file = file ?: File(""),
+                            videoStartNanos = if (startEstimator.hasEstimate) startEstimator.estimateNanos else now,
+                            error = if (!ok) "Recording failed (code ${event.error})" else null,
+                        ),
                     )
+                } else {
+                    val uri = event.outputResults.outputUri
+                    val saved = uri != Uri.EMPTY
+                    val err = if (event.hasError() && !saved) "Recording failed (code ${event.error})" else null
+                    _state.update {
+                        it.copy(isRecording = false, lastSaved = if (saved) "Saved to Movies/LensPrompt (no sound)" else null, error = err)
+                    }
                 }
             }
             else -> Unit

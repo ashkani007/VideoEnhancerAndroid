@@ -82,6 +82,11 @@ fun SettingsScreen(onBack: () -> Unit) {
                 }
             }
             LabeledSwitch(
+                "Lip tracking", s.lipTracking,
+                hint = "Uses the front camera to see when you are talking (on-device, nothing is stored). " +
+                    "Helps Smart Follow while recording and in noisy rooms.",
+            ) { v -> update { it.copy(lipTracking = v) } }
+            LabeledSwitch(
                 "Prefer on-device recognition", s.preferOffline,
                 hint = "Keeps speech on the phone where the device supports it. Falls back to the online service if the language isn't installed.",
             ) { v -> update { it.copy(preferOffline = v) } }
@@ -118,8 +123,7 @@ fun SettingsScreen(onBack: () -> Unit) {
             LabeledSlider("Background dim", s.backgroundDim, 0f..1f, "%.2f") { v -> update { it.copy(backgroundDim = v) } }
             LabeledSwitch(
                 "Record audio with video", s.recordAudio,
-                hint = "On some phones the microphone can't be shared between video recording and Smart Follow. " +
-                    "If Smart Follow stops responding while recording, turn this off (record sound separately) or use manual mode.",
+                hint = "LensPrompt records the sound itself, so Smart Follow keeps listening while you film.",
             ) { v -> update { it.copy(recordAudio = v) } }
 
             Section("Floating overlay")

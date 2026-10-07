@@ -88,7 +88,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.lensprompt.app.camera.PrompterCamera
 import com.lensprompt.app.data.AppSettings
 import com.lensprompt.app.data.PromptAlign
 import com.lensprompt.app.prompter.BannerAction
@@ -111,7 +110,7 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
     val lifecycleOwner = LocalLifecycleOwner.current
     val view = LocalView.current
 
-    val camera = remember { PrompterCamera(context.applicationContext) }
+    val camera = vm.camera
     val cameraState by camera.state.collectAsState()
     var previewView by remember { mutableStateOf<PreviewView?>(null) }
     var controlsVisible by remember { mutableStateOf(true) }
@@ -122,6 +121,10 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
 
     val micLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
         if (ok) vm.play() else vm.onMicPermissionDenied()
+    }
+    // Recording with sound needs the microphone (LensPrompt records the audio itself).
+    val recordMicLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
+        if (ok) vm.toggleRecording() else camera.startSilentRecording()
     }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok ->
         cameraGranted = ok
@@ -165,9 +168,11 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
     // Bind / unbind the camera; keep the capture rotation in sync with the display.
     val orientation = LocalConfiguration.current.orientation
     val rotation = view.display?.rotation ?: android.view.Surface.ROTATION_0
-    LaunchedEffect(settings.showCamera, cameraGranted, previewView) {
+    val onMouth: ((Double?, Long) -> Unit)? = if (settings.lipTracking) vm::onMouthOpenness else null
+    LaunchedEffect(settings.showCamera, cameraGranted, previewView, settings.lipTracking) {
         val pv = previewView
-        if (settings.showCamera && cameraGranted && pv != null) camera.bind(lifecycleOwner, pv, rotation = rotation)
+        if (cameraState.isRecording) return@LaunchedEffect // never rebind mid-recording
+        if (settings.showCamera && cameraGranted && pv != null) camera.bind(lifecycleOwner, pv, rotation = rotation, onMouth = onMouth)
         else camera.unbind()
     }
     LaunchedEffect(orientation, rotation) { camera.setRotation(rotation) }
@@ -181,9 +186,6 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
         if (ui.runState != RunState.RUNNING) controlsVisible = true
     }
 
-    LaunchedEffect(cameraState.isRecording) {
-        if (cameraState.isRecording) vm.onRecordingStarted(cameraState.withAudio)
-    }
 
     Box(Modifier.fillMaxSize().background(Color.Black)) {
         if (settings.showCamera && cameraGranted) {
@@ -237,7 +239,12 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
             StatusChip(settings, ui.runState, followState, ui.simulating)
             if (cameraState.isRecording) {
                 Spacer(Modifier.height(6.dp))
-                RecordingChip(cameraState.recordedMs)
+                RecordingChip(cameraState.recordedMs, cameraState.withAudio)
+            } else if (cameraState.processing) {
+                Spacer(Modifier.height(6.dp))
+                Surface(color = Color.Black.copy(alpha = 0.6f), shape = RoundedCornerShape(50)) {
+                    Text("Saving video…", color = Color.White, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp))
+                }
             }
         }
 
@@ -254,10 +261,13 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
                 onReset = vm::resetToStart,
                 onToggleMode = { vm.setSmartFollow(!settings.smartFollow) },
                 onRecord = {
-                    if (cameraState.isRecording) camera.stopRecording()
-                    else camera.startRecording(settings.recordAudio)
+                    if (!cameraState.isRecording && settings.recordAudio && !granted(Manifest.permission.RECORD_AUDIO)) {
+                        recordMicLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                    } else {
+                        vm.toggleRecording()
+                    }
                 },
-                onSwitchCamera = { previewView?.let { camera.switchCamera(lifecycleOwner, it, rotation) } },
+                onSwitchCamera = { previewView?.let { camera.switchCamera(lifecycleOwner, it, rotation, onMouth) } },
                 onTune = { showSheet = true },
             )
         }
@@ -413,6 +423,7 @@ private fun StatusChip(settings: AppSettings, runState: RunState, follow: Follow
             FollowState.PAUSED -> "Waiting for you" to LensColors.Accent
             FollowState.LOW_CONFIDENCE -> "Finding your place…" to LensColors.Accent
             FollowState.RECOVERING -> "Finding your place…" to LensColors.Accent
+            FollowState.PACING -> "Following your voice" to LensColors.Listening
             FollowState.ERROR -> "Mic unavailable" to LensColors.Recording
             FollowState.IDLE -> "Smart Follow" to LensColors.Muted
         }
@@ -433,13 +444,17 @@ private fun StatusChip(settings: AppSettings, runState: RunState, follow: Follow
 }
 
 @Composable
-private fun RecordingChip(ms: Long) {
+private fun RecordingChip(ms: Long, withSound: Boolean) {
     val s = ms / 1000
     Surface(color = Color.Black.copy(alpha = 0.6f), shape = RoundedCornerShape(50)) {
         Row(Modifier.padding(horizontal = 10.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(10.dp).background(LensColors.Recording, CircleShape))
             Spacer(Modifier.width(6.dp))
-            Text("REC %02d:%02d".format(s / 60, s % 60), color = Color.White, style = MaterialTheme.typography.labelLarge)
+            Text(
+                "REC %02d:%02d".format(s / 60, s % 60) + if (withSound) "" else " · no sound",
+                color = Color.White,
+                style = MaterialTheme.typography.labelLarge,
+            )
         }
     }
 }
@@ -520,10 +535,12 @@ private fun DebugOverlay(vm: PrompterViewModel, modifier: Modifier) {
                 line("Reading velocity: ${"%.2f".format(f.readingVelocity)} tok/s")
                 line("Target: ${"%.2f".format(f.targetProgress)} @ ${"%.2f".format(f.targetVelocity)} tok/s")
                 line("Scroll velocity: ${"%.0f".format(d.scrollVelocityPx)} px/s")
-                line("State: ${f.state}")
+                line("State: ${f.state}${if (f.pacing) " (${f.pacingReason})" else ""}")
+                line("Voice: ${f.voice}  Lips: ${f.visual}")
                 line("Since progress: ${f.msSinceProgress} ms")
             }
             line("Recognizer: ${d.recognizer}  restarts: ${d.restarts}")
+            line("Mic: ${d.micRoute}")
             line("Frame: ${"%.1f".format(d.frameMs)} ms")
         }
     }
@@ -549,6 +566,7 @@ private fun QuickSettings(settings: AppSettings, vm: PrompterViewModel) {
             update { it.copy(align = if (v) PromptAlign.CENTER else PromptAlign.START) }
         }
         LabeledSwitch("Camera preview", settings.showCamera) { v -> update { it.copy(showCamera = v) } }
+        LabeledSwitch("Lip tracking for Smart Follow", settings.lipTracking) { v -> update { it.copy(lipTracking = v) } }
         if (settings.debugMode) {
             val ui by vm.ui.collectAsState()
             LabeledSwitch("Debug: simulated speech (no mic)", ui.simulating) { v -> vm.setSimulation(v) }

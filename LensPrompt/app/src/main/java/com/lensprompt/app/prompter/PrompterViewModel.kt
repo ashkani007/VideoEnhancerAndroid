@@ -1,6 +1,10 @@
 package com.lensprompt.app.prompter
 
 import android.app.Application
+import android.content.ContentValues
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -8,6 +12,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.lensprompt.app.LensPromptApplication
+import com.lensprompt.app.audio.AudioCaptureEngine
+import com.lensprompt.app.audio.AvMuxer
+import com.lensprompt.app.audio.CapturedAudio
+import com.lensprompt.app.camera.PrompterCamera
+import com.lensprompt.app.camera.VideoForMux
 import com.lensprompt.app.data.AppSettings
 import com.lensprompt.app.data.Script
 import com.lensprompt.app.speech.RecognizerStatus
@@ -37,6 +46,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileInputStream
+import java.io.RandomAccessFile
 import java.util.Locale
 import java.util.concurrent.Executors
 
@@ -61,6 +73,8 @@ data class DebugSnapshot(
     val recognizer: RecognizerStatus = RecognizerStatus.OFF,
     val restarts: Int = 0,
     val frameMs: Double = 0.0,
+    /** Who owns the microphone and where recognition gets its audio. */
+    val micRoute: String = "",
 )
 
 /**
@@ -84,6 +98,18 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         .stateIn(viewModelScope, SharingStarted.Eagerly, container.scripts.get(scriptId))
 
     private val speech = SpeechRecognitionManager(app)
+
+    /** Camera lives here so recording survives recomposition; views are passed in per bind. */
+    val camera = PrompterCamera(app)
+
+    /**
+     * LensPrompt's own microphone capture, active while recording video with sound.
+     * Android silences other microphone users while a video recorder captures sound
+     * (CAMCORDER is privacy-sensitive), so during recording this is the single mic
+     * owner and feeds both the soundtrack and the recognizer.
+     */
+    private val mic = AudioCaptureEngine(app)
+    @Volatile private var appOwnsMic = false
     private val workerExecutor = Executors.newSingleThreadExecutor { r -> Thread(r, "smart-follow") }
     private val worker = workerExecutor.asCoroutineDispatcher()
 
@@ -114,7 +140,6 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
     private var lastFrameNanos = 0L
     private var countdownJob: Job? = null
     private var smartActive = false
-    private var micConflictWarned = false
     private var frameMsAvg = 16.0
 
     /**
@@ -216,16 +241,143 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         }
     }
 
-    /** Called when recording starts so we can explain microphone sharing once. */
-    fun onRecordingStarted(withAudio: Boolean) {
-        if (withAudio && settings.value.smartFollow && !micConflictWarned) {
-            micConflictWarned = true
-            _ui.update {
-                it.copy(banner = Banner(
-                    "Recording sound while Smart Follow listens: some phones give the microphone to only one of them. " +
-                        "If the text stops following, turn off \"Record audio\" in Settings or use manual mode.",
-                ))
+    // -------------------------------------------------------------- recording
+
+    /**
+     * Start/stop video recording. With sound enabled, LensPrompt takes the
+     * microphone itself (instead of CameraX) so Smart Follow keeps hearing the
+     * speaker; the audio is muxed into the video when recording stops.
+     * Requires RECORD_AUDIO when sound is enabled (the screen asks first).
+     */
+    fun toggleRecording() {
+        if (camera.state.value.isRecording) {
+            camera.stopRecording()
+            return
+        }
+        if (camera.state.value.processing) return
+        if (!settings.value.recordAudio) {
+            camera.startSilentRecording()
+            return
+        }
+        val stamp = System.currentTimeMillis()
+        val cache = getApplication<Application>().cacheDir
+        val pcm = File(cache, "lp_rec_$stamp.pcm")
+        val video = File(cache, "lp_rec_$stamp.mp4")
+
+        // Hand the microphone over: stop the recognizer's own capture first.
+        val wasListening = smartActive && !_ui.value.simulating
+        if (wasListening) speech.stop()
+        val micOk = mic.start(pcm) { db, t ->
+            viewModelScope.launch(worker) { controller?.onAudioLevel(db, t) }
+        }
+        if (!micOk) {
+            if (wasListening) startRecognitionForRoute()
+            _ui.update { it.copy(banner = Banner("The microphone is unavailable (in use by another app?). Recording without sound.")) }
+            camera.startSilentRecording()
+            return
+        }
+        appOwnsMic = true
+        if (smartActive && !_ui.value.simulating) startRecognitionForRoute()
+        val started = camera.startRecordingForMux(video) { result -> onVideoFinished(result, pcm) }
+        if (!started) {
+            releaseMicAndRestoreRecognition()
+            pcm.delete()
+        }
+    }
+
+    /** Lip openness from the camera analyzer thread (null = no face). */
+    fun onMouthOpenness(openness: Double?, timeMs: Long) {
+        viewModelScope.launch(worker) { controller?.onMouthOpenness(openness, timeMs) }
+    }
+
+    private fun onVideoFinished(result: VideoForMux, pcm: File) {
+        val audio = releaseMicAndRestoreRecognition()
+        if (result.error != null) {
+            camera.reportError(result.error)
+            result.file.delete(); pcm.delete()
+            return
+        }
+        val name = camera.newVideoName()
+        viewModelScope.launch(Dispatchers.IO) {
+            val message = try {
+                saveRecording(result, audio, name)
+            } catch (e: Exception) {
+                Log.e(TAG, "saving recording failed", e)
+                null
+            } finally {
+                result.file.delete()
+                pcm.delete()
             }
+            withContext(Dispatchers.Main) {
+                if (message != null) camera.reportSaved(message) else camera.reportError("Could not save the recording.")
+            }
+        }
+    }
+
+    /** Stops LensPrompt's microphone and puts recognition back on the system microphone. */
+    private fun releaseMicAndRestoreRecognition(): CapturedAudio? {
+        val audio = mic.stop()
+        if (appOwnsMic) {
+            appOwnsMic = false
+            if (smartActive && !_ui.value.simulating) startRecognitionForRoute()
+        }
+        return audio
+    }
+
+    /**
+     * IO thread. Muxes video + captured audio into Movies/LensPrompt. If muxing
+     * fails the video is still saved (without sound) rather than lost.
+     */
+    private fun saveRecording(video: VideoForMux, audio: CapturedAudio?, name: String): String {
+        val app = getApplication<Application>()
+        val uri: android.net.Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val values = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "$name.mp4")
+                put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_MOVIES + "/LensPrompt")
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+            app.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
+                ?: throw IllegalStateException("MediaStore insert failed")
+        } else {
+            null
+        }
+        val outFile: File? = if (uri == null) {
+            File(app.getExternalFilesDir(Environment.DIRECTORY_MOVIES) ?: app.filesDir, "$name.mp4")
+        } else {
+            null
+        }
+        // Runs [block] with a fresh read-write descriptor of the destination; the
+        // descriptor is owned (and closed) here, never by the block.
+        fun withOutput(block: (java.io.FileDescriptor) -> Unit) {
+            if (uri != null) {
+                app.contentResolver.openFileDescriptor(uri, "rw")!!.use { block(it.fileDescriptor) }
+            } else {
+                RandomAccessFile(outFile!!, "rw").use { raf -> raf.setLength(0); block(raf.fd) }
+            }
+        }
+        try {
+            var message = "Saved to Movies/LensPrompt"
+            try {
+                if (audio == null) throw IllegalStateException("no audio captured")
+                withOutput { fd -> AvMuxer.mux(video.file, audio, video.videoStartNanos, fd, app.cacheDir) }
+            } catch (e: Exception) {
+                Log.e(TAG, "audio mux failed; saving video without sound", e)
+                withOutput { fd ->
+                    val out = java.io.FileOutputStream(fd) // not closed: fd belongs to withOutput
+                    out.channel.truncate(0)
+                    FileInputStream(video.file).use { input -> input.copyTo(out, 256 * 1024) }
+                    out.flush()
+                }
+                message = "Saved to Movies/LensPrompt — without sound (audio processing failed)"
+            }
+            if (uri != null) {
+                app.contentResolver.update(uri, ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null)
+            }
+            return message
+        } catch (e: Exception) {
+            if (uri != null) try { app.contentResolver.delete(uri, null, null) } catch (_: Exception) {}
+            throw e
         }
     }
 
@@ -365,7 +517,38 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             startTicker()
             if (simulate) startSimulation(text, lang, startToken)
         }
-        if (!simulate) speech.start(lang, s.preferOffline, cfg)
+        if (!simulate) startRecognitionForRoute()
+    }
+
+    /**
+     * Starts speech recognition on the right audio source:
+     *  - normally the recognizer opens the microphone itself;
+     *  - while recording with sound LensPrompt owns the microphone, so on Android 13+
+     *    the recognizer is fed LensPrompt's stream, and on older versions there is no
+     *    recognizer and Smart Follow paces the text by voice and lip activity.
+     */
+    private fun startRecognitionForRoute() {
+        val s = settings.value
+        val cfg = s.smartFollowConfig()
+        val lang = languageTag()
+        val owned = appOwnsMic
+        val external = owned && speech.supportsExternalAudio()
+        viewModelScope.launch(worker) {
+            controller?.onAudioSourceChanged()
+            controller?.setRecognitionAvailable(!owned || external)
+        }
+        when {
+            !owned -> speech.start(lang, s.preferOffline, cfg)
+            external -> speech.start(lang, s.preferOffline, cfg, mic.recognizerFeed)
+            else -> speech.stop()
+        }
+    }
+
+    private fun micRouteLabel(): String = when {
+        !smartActive -> "Smart Follow off"
+        !appOwnsMic -> "system recognizer ← microphone"
+        speech.supportsExternalAudio() -> "LensPrompt mic → video + recognizer"
+        else -> "LensPrompt mic → video; pacing by voice/lips"
     }
 
     private fun haltFollowing() {
@@ -410,6 +593,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             recognizer = speech.status.value,
             restarts = speech.restarts.value,
             frameMs = frameMsAvg,
+            micRoute = micRouteLabel(),
         )
     }
 
@@ -420,11 +604,16 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             is SpeechEvent.SessionStarted -> c.onSessionStart()
             is SpeechEvent.Partial -> c.onPartialResult(e.text, e.timeMs)
             is SpeechEvent.Final -> c.onFinalResult(e.text, e.timeMs)
-            is SpeechEvent.Level -> c.onAudioLevel(e.rmsDb, e.timeMs)
+            // While LensPrompt owns the mic, levels come from its own capture instead.
+            is SpeechEvent.Level -> if (!appOwnsMic) c.onAudioLevel(e.rmsDb, e.timeMs)
             is SpeechEvent.EndOfSpeech -> c.onEndOfSpeech(e.timeMs)
             is SpeechEvent.Failure -> {
                 Log.w(TAG, "speech failure ${e.code}: ${e.message} fatal=${e.fatal}")
-                if (e.fatal) {
+                if (e.fatal && appOwnsMic) {
+                    // Recognition cannot run on LensPrompt's stream on this device:
+                    // keep following by voice/lip activity instead of stopping.
+                    c.setRecognitionAvailable(false)
+                } else if (e.fatal) {
                     c.fail(e.message)
                     withContext(Dispatchers.Main) {
                         smartActive = false
@@ -473,12 +662,18 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
                     is RecognitionEvent.Final -> c.onFinalResult(ev.text, t)
                     is RecognitionEvent.EndOfSpeech -> c.onEndOfSpeech(t)
                     is RecognitionEvent.AudioLevel -> c.onAudioLevel(ev.rmsDb, t)
+                    is RecognitionEvent.MouthFrame -> c.onMouthOpenness(ev.openness, t)
+                    is RecognitionEvent.RecognitionAvailability -> c.setRecognitionAvailable(ev.available)
+                    is RecognitionEvent.AudioSourceChanged -> c.onAudioSourceChanged()
                 }
             }
         }
     }
 
     override fun onCleared() {
+        camera.stopRecording()
+        mic.stop()
+        camera.release()
         speech.release()
         workerExecutor.shutdown()
         super.onCleared()
