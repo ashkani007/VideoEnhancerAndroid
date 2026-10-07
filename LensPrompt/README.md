@@ -22,7 +22,7 @@ cd LensPrompt
 # APK: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-CI (`.github/workflows/lensprompt.yml`) runs `test` and `assembleDebug` on every push that touches `LensPrompt/`. The debug APK is uploaded as the `LensPrompt-debug-apk` artifact.
+CI (`.github/workflows/lensprompt.yml`) runs `test` and `assembleDebug` on every push that touches `LensPrompt/`. The debug APK is uploaded as the `LensPrompt-debug-apk` artifact. A second job boots an API 34 emulator and runs `connectedDebugAndroidTest` (`app/src/androidTest/.../SmokeTest.kt`): app launch, script creation, manual scrolling, and Smart Follow end to end with the debug speech simulator.
 
 ## Smart Follow architecture
 
