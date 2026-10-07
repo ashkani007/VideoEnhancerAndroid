@@ -69,7 +69,9 @@ class SmokeTest {
         compose.onNodeWithContentDescription("New script").performClick()
         compose.waitUntil(5_000) { compose.onAllNodesWithText("Prompt").fetchSemanticsNodes().isNotEmpty() }
         assertEquals(before + 1, app.scripts.scripts.value.size)
+        val created = app.scripts.scripts.value.first { it.title.isEmpty() && it.body.isEmpty() }
         compose.onNodeWithContentDescription("Back").performClick()
+        compose.runOnUiThread { app.scripts.delete(created.id) } // leave no empty script behind
         compose.waitUntil(5_000) {
             compose.onAllNodesWithContentDescription("Start prompting").fetchSemanticsNodes().isNotEmpty()
         }
@@ -77,7 +79,10 @@ class SmokeTest {
 
     @Test
     fun manualScrollAndSmartFollowRunWithoutCrashing() {
-        val scriptId = app.scripts.scripts.value.first().id
+        // Use the (non-empty) welcome script and make it the most recent, i.e. the first row.
+        val scriptId = app.scripts.scripts.value.first { it.title == ScriptRepository.WELCOME_TITLE }.id
+        compose.runOnUiThread { app.scripts.markOpened(scriptId) }
+        compose.waitForIdle()
         compose.onAllNodesWithContentDescription("Start prompting").onFirst().performClick()
         compose.waitForIdle() // prompter is settled → no frames requested → idle
         val vm = ViewModelProvider(compose.activity.viewModelStore, PrompterViewModel.Factory(app, scriptId))[
