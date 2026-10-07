@@ -63,10 +63,10 @@ class SmokeTest {
         compose.onNodeWithText(ScriptRepository.WELCOME_TITLE, useUnmergedTree = true).assertExists()
         compose.onNodeWithText("Search scripts").assertExists()
         val before = app.scripts.scripts.value.size
-        // Diagnostic: dump the library's semantics tree to logcat (printed by CI).
+        // Diagnostic: dump the library's semantics tree to logcat (printed by CI on failure).
         compose.onRoot(useUnmergedTree = false).printToLog("LIBTREE")
         // Creating a script opens the editor with autosave.
-        compose.onNodeWithText("New script").performClick()
+        compose.onNodeWithContentDescription("New script").performClick()
         compose.waitUntil(5_000) { compose.onAllNodesWithText("Prompt").fetchSemanticsNodes().isNotEmpty() }
         assertEquals(before + 1, app.scripts.scripts.value.size)
         compose.onNodeWithContentDescription("Back").performClick()
