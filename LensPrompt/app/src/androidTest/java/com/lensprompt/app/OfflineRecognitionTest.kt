@@ -12,7 +12,10 @@ import com.lensprompt.app.speech.SpeechModelManager
 import com.lensprompt.app.speech.VoskSpeechEngine
 import com.lensprompt.core.SmartFollowController
 import com.lensprompt.core.TextNormalizer
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertTrue
@@ -76,10 +79,9 @@ class OfflineRecognitionTest {
 
         val engine = VoskSpeechEngine(model, key)
         val events = Collections.synchronizedList(ArrayList<SpeechEvent>())
-        val collector = Thread {
-            runBlocking { engine.events.collect { events.add(it) } }
-        }.apply { isDaemon = true; start() }
-        Thread.sleep(200)
+        val collector = launch(Dispatchers.Default, start = CoroutineStart.UNDISPATCHED) {
+            engine.events.collect { events.add(it) }
+        }
         assertTrue(engine.start())
 
         val samples = readPcm(pcm!!)
@@ -95,7 +97,7 @@ class OfflineRecognitionTest {
         repeat(50) { engine.accept(ShortArray(chunk)); Thread.sleep(20) }
         Thread.sleep(1_500)
         engine.stop()
-        collector.interrupt()
+        collector.cancel()
 
         val partials = events.filterIsInstance<SpeechEvent.Partial>()
         val finals = events.filterIsInstance<SpeechEvent.Final>()
