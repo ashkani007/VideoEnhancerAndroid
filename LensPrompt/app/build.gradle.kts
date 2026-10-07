@@ -17,6 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Offline speech (Vosk) ships a native library per ABI (~10 MB each).
+        // Phones are arm64/armv7; x86_64 is kept for the emulator tests.
+        ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") }
     }
 
     buildTypes {
@@ -75,6 +78,11 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$camerax")
     implementation("androidx.camera:camera-video:$camerax")
     implementation("androidx.camera:camera-view:$camerax")
+
+    // Offline streaming speech recognition on LensPrompt's own PCM (Vosk / Kaldi).
+    // Models are not bundled; they are downloaded or imported per language.
+    implementation("com.alphacephei:vosk-android:0.3.75@aar")
+    implementation("net.java.dev.jna:jna:5.18.1@aar")
 
     // On-device face contours for lip-movement detection (bundled model, no network).
     implementation("com.google.mlkit:face-detection:16.1.7")

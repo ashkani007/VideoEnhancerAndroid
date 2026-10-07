@@ -293,6 +293,9 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
                 Column(Modifier.padding(16.dp)) {
                     Text(bannerText, color = Color.White)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        if (ui.banner?.action == BannerAction.OPEN_SETTINGS && !cameraState.isRecording) {
+                            TextButton(onClick = { vm.dismissBanner(); onSettings() }) { Text("Settings") }
+                        }
                         if (ui.banner?.action == BannerAction.SWITCH_TO_MANUAL) {
                             TextButton(onClick = { vm.onBannerAction(BannerAction.SWITCH_TO_MANUAL) }) { Text("Use manual") }
                         }
@@ -521,7 +524,7 @@ private fun BottomControls(
 private fun DebugOverlay(vm: PrompterViewModel, modifier: Modifier) {
     val d by vm.debug.collectAsState()
     val f = d.follow
-    Surface(color = Color.Black.copy(alpha = 0.7f), modifier = modifier.padding(start = 8.dp, bottom = 120.dp).width(260.dp)) {
+    Surface(color = Color.Black.copy(alpha = 0.7f), modifier = modifier.padding(start = 8.dp, bottom = 120.dp).width(300.dp)) {
         Column(Modifier.padding(8.dp)) {
             val line: @Composable (String) -> Unit = { s ->
                 Text(s, color = Color(0xFF9EF0B0), fontSize = 11.sp, fontFamily = FontFamily.Monospace, lineHeight = 13.sp)
@@ -539,9 +542,13 @@ private fun DebugOverlay(vm: PrompterViewModel, modifier: Modifier) {
                 line("Voice: ${f.voice}  Lips: ${f.visual}")
                 line("Since progress: ${f.msSinceProgress} ms")
             }
-            line("Recognizer: ${d.recognizer}  restarts: ${d.restarts}")
-            line("Mic: ${d.micRoute}")
+            line("Route: ${d.route}")
+            d.diag.forEach { line(it) }
             line("Frame: ${"%.1f".format(d.frameMs)} ms")
+            val clipboard = androidx.compose.ui.platform.LocalClipboardManager.current
+            TextButton(onClick = {
+                clipboard.setText(androidx.compose.ui.text.AnnotatedString(com.lensprompt.app.diag.Diagnostics.text()))
+            }) { Text("Copy diagnostics", fontSize = 11.sp) }
         }
     }
 }

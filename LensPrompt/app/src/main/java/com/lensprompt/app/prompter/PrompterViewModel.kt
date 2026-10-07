@@ -19,18 +19,25 @@ import com.lensprompt.app.camera.PrompterCamera
 import com.lensprompt.app.camera.VideoForMux
 import com.lensprompt.app.data.AppSettings
 import com.lensprompt.app.data.Script
+import com.lensprompt.app.data.SpeechEngineChoice
+import com.lensprompt.app.diag.Diagnostics
+import com.lensprompt.app.speech.OfflineModelCache
+import com.lensprompt.app.speech.PcmSpeechEngine
+import com.lensprompt.app.speech.VoskSpeechEngine
 import com.lensprompt.app.speech.RecognizerStatus
 import com.lensprompt.app.speech.SpeechEvent
 import com.lensprompt.app.speech.SpeechRecognitionManager
 import com.lensprompt.core.FollowOutput
 import com.lensprompt.core.FollowState
 import com.lensprompt.core.ProgressMapper
+import com.lensprompt.core.RecognizerHealthMonitor
 import com.lensprompt.core.RecognitionEvent
 import com.lensprompt.core.SmartFollowController
 import com.lensprompt.core.SpeechScenario
 import com.lensprompt.core.TeleprompterScrollController
 import com.lensprompt.core.TextNormalizer
 import com.lensprompt.core.Token
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -73,9 +80,27 @@ data class DebugSnapshot(
     val recognizer: RecognizerStatus = RecognizerStatus.OFF,
     val restarts: Int = 0,
     val frameMs: Double = 0.0,
-    /** Who owns the microphone and where recognition gets its audio. */
-    val micRoute: String = "",
+    /** Where recognition gets its audio (route) and the key diagnostics lines. */
+    val route: String = "",
+    val diag: List<String> = emptyList(),
 )
+
+/**
+ * Where Smart Follow gets recognized words from.
+ *  SYSTEM_MIC: the system recognizer opens the microphone itself (normal prompting).
+ *  OFFLINE: LensPrompt's one AudioRecord → in-process offline recognizer.
+ *  SYSTEM_EXTERNAL: LensPrompt's AudioRecord → pipe → system recognizer (Android 13+),
+ *    only while a health check confirms the service actually reads the pipe.
+ *  PACING: no recognizer can hear the speaker; voice/lip activity paces the text.
+ */
+enum class Route(val label: String) {
+    NONE("Smart Follow off"),
+    SYSTEM_MIC("system recognizer ← its own mic"),
+    OFFLINE("LensPrompt mic → offline recognizer"),
+    OFFLINE_LOADING("LensPrompt mic; loading offline pack (pacing meanwhile)"),
+    SYSTEM_EXTERNAL("LensPrompt mic → pipe → system recognizer"),
+    PACING("LensPrompt mic → pacing by voice/lips (no recognizer)"),
+}
 
 /**
  * Owns a prompting session: run state, the Smart Follow controller (on its own
@@ -109,7 +134,17 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
      * owner and feeds both the soundtrack and the recognizer.
      */
     private val mic = AudioCaptureEngine(app)
-    @Volatile private var appOwnsMic = false
+    /** True while recording video with sound (LensPrompt's mic writes the soundtrack). */
+    @Volatile private var recordingWithSound = false
+    @Volatile private var route = Route.NONE
+    private var offlineEngine: PcmSpeechEngine? = null
+    private var offlineEventsJob: Job? = null
+    private var offlineFailed = false
+    private var modelLoadJob: Job? = null
+    private var healthJob: Job? = null
+    private var diagLogJob: Job? = null
+    private val health = RecognizerHealthMonitor()
+    private val levelSink: (Float, Long) -> Unit = { db, t -> viewModelScope.launch(worker) { controller?.onAudioLevel(db, t) } }
     private val workerExecutor = Executors.newSingleThreadExecutor { r -> Thread(r, "smart-follow") }
     private val worker = workerExecutor.asCoroutineDispatcher()
 
@@ -264,20 +299,22 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         val pcm = File(cache, "lp_rec_$stamp.pcm")
         val video = File(cache, "lp_rec_$stamp.mp4")
 
-        // Hand the microphone over: stop the recognizer's own capture first.
-        val wasListening = smartActive && !_ui.value.simulating
-        if (wasListening) speech.stop()
-        val micOk = mic.start(pcm) { db, t ->
-            viewModelScope.launch(worker) { controller?.onAudioLevel(db, t) }
-        }
+        // One microphone owner: stop every other capture (system recognizer, our
+        // own prompting capture), then open the mic once for the soundtrack.
+        teardownRoute()
+        val micOk = mic.start(pcm, levelSink)
         if (!micOk) {
-            if (wasListening) startRecognitionForRoute()
+            applyRoute("mic unavailable for recording")
             _ui.update { it.copy(banner = Banner("The microphone is unavailable (in use by another app?). Recording without sound.")) }
+            Diagnostics.recordingState = "recording without sound (mic unavailable)"
             camera.startSilentRecording()
             return
         }
-        appOwnsMic = true
-        if (smartActive && !_ui.value.simulating) startRecognitionForRoute()
+        recordingWithSound = true
+        Diagnostics.recordingState = "recording with sound (LensPrompt mic)"
+        Diagnostics.muxState = "-"
+        applyRoute("recording started")
+        maybeSuggestOfflinePack()
         val started = camera.startRecordingForMux(video) { result -> onVideoFinished(result, pcm) }
         if (!started) {
             releaseMicAndRestoreRecognition()
@@ -292,7 +329,9 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
 
     private fun onVideoFinished(result: VideoForMux, pcm: File) {
         val audio = releaseMicAndRestoreRecognition()
+        Diagnostics.muxState = if (audio == null) "no audio captured" else "muxing ${audio.frames} frames"
         if (result.error != null) {
+            Diagnostics.muxState = "recording error: ${result.error}"
             camera.reportError(result.error)
             result.file.delete(); pcm.delete()
             return
@@ -308,6 +347,8 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
                 result.file.delete()
                 pcm.delete()
             }
+            Diagnostics.muxState = message ?: "save failed"
+            Diagnostics.log("recording saved")
             withContext(Dispatchers.Main) {
                 if (message != null) camera.reportSaved(message) else camera.reportError("Could not save the recording.")
             }
@@ -316,11 +357,12 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
 
     /** Stops LensPrompt's microphone and puts recognition back on the system microphone. */
     private fun releaseMicAndRestoreRecognition(): CapturedAudio? {
+        if (!recordingWithSound) return null
+        teardownRoute()
         val audio = mic.stop()
-        if (appOwnsMic) {
-            appOwnsMic = false
-            if (smartActive && !_ui.value.simulating) startRecognitionForRoute()
-        }
+        recordingWithSound = false
+        Diagnostics.recordingState = "idle"
+        applyRoute("recording stopped")
         return audio
     }
 
@@ -494,8 +536,9 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             return
         }
         smartActive = true
+        offlineFailed = false
         val simulate = s.debugMode && _ui.value.simulating
-        if (!simulate && !speech.isAvailable()) {
+        if (!simulate && !speech.isAvailable() && languageModelDir() == null) {
             smartActive = false
             _ui.update {
                 it.copy(
@@ -517,44 +560,224 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             startTicker()
             if (simulate) startSimulation(text, lang, startToken)
         }
-        if (!simulate) startRecognitionForRoute()
+        if (!simulate) {
+            preloadOfflineModel()
+            applyRoute("start")
+        }
+        startDiagLog()
+    }
+
+    // ------------------------------------------------------------ audio route
+
+    private fun languageModelDir(): File? = container.models.modelDirFor(languageTag())
+
+    /** Load the offline pack in the background so recording can switch to it instantly. */
+    private fun preloadOfflineModel() {
+        val s = settings.value
+        val dir = languageModelDir() ?: return
+        if (s.speechEngine == SpeechEngineChoice.SYSTEM) return
+        if (!(s.recordAudio || s.speechEngine == SpeechEngineChoice.OFFLINE || !speech.isAvailable())) return
+        if (OfflineModelCache.loadedFor(dir) != null || modelLoadJob?.isActive == true) return
+        modelLoadJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                OfflineModelCache.load(dir)
+            } catch (e: Throwable) {
+                Log.e(TAG, "offline model failed to load", e)
+                Diagnostics.lastRecognizerError = "offline model load failed: ${e.message}"
+                offlineFailed = true
+            }
+            withContext(Dispatchers.Main) { if (route == Route.OFFLINE_LOADING) applyRoute("offline model loaded") }
+        }
     }
 
     /**
-     * Starts speech recognition on the right audio source:
-     *  - normally the recognizer opens the microphone itself;
-     *  - while recording with sound LensPrompt owns the microphone, so on Android 13+
-     *    the recognizer is fed LensPrompt's stream, and on older versions there is no
-     *    recognizer and Smart Follow paces the text by voice and lip activity.
+     * Picks where recognized words come from and starts exactly one consumer of
+     * the microphone. Main thread. Order of preference:
+     *  1. offline pack on LensPrompt's own capture (recording with sound, or chosen);
+     *  2. not recording: the system recognizer on its own microphone;
+     *  3. recording, Android 13+: the system recognizer fed through a pipe, unless
+     *     this service was already found to ignore it; a health check stops it if
+     *     it never hears anything (no endless restarts);
+     *  4. pacing by voice / lip activity.
      */
-    private fun startRecognitionForRoute() {
+    private fun applyRoute(reason: String) {
+        teardownRoute()
         val s = settings.value
-        val cfg = s.smartFollowConfig()
+        if (!smartActive || _ui.value.simulating) {
+            setRoute(Route.NONE, reason)
+            return
+        }
+        val dir = languageModelDir()
+        val offlineWanted = dir != null && !offlineFailed && s.speechEngine != SpeechEngineChoice.SYSTEM &&
+            (recordingWithSound || s.speechEngine == SpeechEngineChoice.OFFLINE || !speech.isAvailable())
+        val target = when {
+            offlineWanted -> if (OfflineModelCache.loadedFor(dir!!) != null) Route.OFFLINE else Route.OFFLINE_LOADING
+            !recordingWithSound -> Route.SYSTEM_MIC
+            speech.supportsExternalAudio() &&
+                container.recognizerVerdicts.externalAudioBroken(speech.serviceComponent()) == null -> Route.SYSTEM_EXTERNAL
+            else -> Route.PACING
+        }
         val lang = languageTag()
-        val owned = appOwnsMic
-        val external = owned && speech.supportsExternalAudio()
+        val cfg = s.smartFollowConfig()
+
+        // LensPrompt's own capture is needed for every route except SYSTEM_MIC.
+        if (target != Route.SYSTEM_MIC && !mic.isRunning) {
+            if (!mic.start(null, levelSink)) {
+                Diagnostics.lastRecognizerError = "LensPrompt could not open the microphone"
+                setRoute(Route.SYSTEM_MIC, "$reason; own mic unavailable")
+                speech.start(lang, s.preferOffline, cfg)
+                setRecognitionAvailable(true)
+                return
+            }
+        }
+        when (target) {
+            Route.SYSTEM_MIC -> {
+                if (mic.isRunning && !recordingWithSound) mic.stop()
+                speech.start(lang, s.preferOffline, cfg)
+                setRecognitionAvailable(true)
+            }
+            Route.OFFLINE -> {
+                val model = OfflineModelCache.loadedFor(dir!!)!!
+                val spec = container.models.specFor(lang)
+                Diagnostics.resetRecognizer("offline (Vosk)", "${spec?.label ?: lang}: ${dir.parentFile?.let { File(it, "name") }?.takeIf { it.exists() }?.readText()?.trim() ?: dir.name}")
+                val engine = VoskSpeechEngine(model, spec?.key ?: lang)
+                offlineEventsJob = viewModelScope.launch(worker, start = CoroutineStart.UNDISPATCHED) {
+                    engine.events.collect { handleSpeechEvent(it) }
+                }
+                if (engine.start()) {
+                    offlineEngine = engine
+                    mic.pcm16kSink = engine::accept
+                    setRecognitionAvailable(true)
+                } else {
+                    offlineEventsJob?.cancel()
+                    offlineFailed = true
+                    applyRoute("offline recognizer failed to start")
+                    return
+                }
+            }
+            Route.OFFLINE_LOADING -> {
+                preloadOfflineModel()
+                setRecognitionAvailable(false)
+            }
+            Route.SYSTEM_EXTERNAL -> {
+                speech.start(lang, s.preferOffline, cfg, mic.recognizerFeed)
+                setRecognitionAvailable(true)
+                startHealthCheck()
+            }
+            Route.PACING -> {
+                Diagnostics.resetRecognizer("none", speech.serviceComponent())
+                Diagnostics.recognizerVerdict = container.recognizerVerdicts.externalAudioBroken(speech.serviceComponent())
+                    ?: if (speech.supportsExternalAudio()) "-" else "Android < 13: system recognizer cannot take app audio"
+                setRecognitionAvailable(false)
+            }
+            Route.NONE -> Unit
+        }
+        setRoute(target, reason)
+    }
+
+    /** Stops every recognizer consumer; leaves the microphone to the caller. Main thread. */
+    private fun teardownRoute() {
+        healthJob?.cancel()
+        healthJob = null
+        speech.stop()
+        mic.pcm16kSink = null
+        offlineEngine?.stop()
+        offlineEngine = null
+        offlineEventsJob?.cancel()
+        offlineEventsJob = null
+        if (!recordingWithSound && mic.isRunning) mic.stop()
+    }
+
+    private fun setRoute(r: Route, reason: String) {
+        route = r
+        Diagnostics.smartFollowSource = when (r) {
+            Route.NONE -> if (smartActive) "simulation" else "manual"
+            Route.SYSTEM_MIC -> "words (system recognizer)"
+            Route.OFFLINE -> "words (offline recognizer)"
+            Route.OFFLINE_LOADING, Route.PACING -> "pacing (voice/lips)"
+            Route.SYSTEM_EXTERNAL -> "words (system recognizer via pipe)"
+        }
+        Diagnostics.log("route ${r.name} ($reason)")
+    }
+
+    private fun setRecognitionAvailable(available: Boolean) {
         viewModelScope.launch(worker) {
             controller?.onAudioSourceChanged()
-            controller?.setRecognitionAvailable(!owned || external)
-        }
-        when {
-            !owned -> speech.start(lang, s.preferOffline, cfg)
-            external -> speech.start(lang, s.preferOffline, cfg, mic.recognizerFeed)
-            else -> speech.stop()
+            controller?.setRecognitionAvailable(available)
         }
     }
 
-    private fun micRouteLabel(): String = when {
-        !smartActive -> "Smart Follow off"
-        !appOwnsMic -> "system recognizer ← microphone"
-        speech.supportsExternalAudio() -> "LensPrompt mic → video + recognizer"
-        else -> "LensPrompt mic → video; pacing by voice/lips"
+    /**
+     * Watches the system recognizer fed with LensPrompt's audio. If the service
+     * never drains the pipe, or never produces a word while the speaker talks,
+     * it is stopped (not restarted forever), remembered as unusable for this
+     * service, and Smart Follow continues by pacing.
+     */
+    private fun startHealthCheck() {
+        health.reset()
+        Diagnostics.recognizerVerdict = RecognizerHealthMonitor.describe(health.verdict)
+        healthJob = viewModelScope.launch {
+            while (isActive) {
+                delay(500)
+                val results = (Diagnostics.partialCount.get() + Diagnostics.finalCount.get()).toInt()
+                val v = health.update(
+                    resultsSoFar = results,
+                    voicedWithoutWordsMs = latest?.voicedWithoutWordsMs ?: 0,
+                    audioDroppedMs = Diagnostics.pipeFullDrops.get() * 20,
+                    audioWrittenMs = Diagnostics.pipeBytesWritten.get() / 32,
+                )
+                Diagnostics.recognizerVerdict = RecognizerHealthMonitor.describe(v)
+                when (v) {
+                    RecognizerHealthMonitor.Verdict.WORKING -> { Diagnostics.log("system recognizer reads LensPrompt audio"); return@launch }
+                    RecognizerHealthMonitor.Verdict.NOT_READING_AUDIO, RecognizerHealthMonitor.Verdict.NO_WORDS -> {
+                        val why = RecognizerHealthMonitor.describe(v)
+                        container.recognizerVerdicts.markExternalAudioBroken(speech.serviceComponent(), why)
+                        Diagnostics.log("system recognizer unusable while recording: $why")
+                        healthJob = null
+                        applyRoute("health check: $why")
+                        maybeSuggestOfflinePack(force = true)
+                        return@launch
+                    }
+                    RecognizerHealthMonitor.Verdict.PENDING -> Unit
+                }
+            }
+        }
+    }
+
+    private var offlineHintShown = false
+
+    /** While recording without an offline pack, tell the user once how to get word-accurate following. */
+    private fun maybeSuggestOfflinePack(force: Boolean = false) {
+        if (!smartActive || route == Route.OFFLINE || route == Route.OFFLINE_LOADING) return
+        if (offlineHintShown && !force) return
+        val spec = container.models.specFor(languageTag())
+        val msg = if (spec != null) {
+            "While recording with sound, Smart Follow is pacing by your voice. For word-accurate following, " +
+                "download the offline speech pack (${spec.label}, ~${spec.approxMb} MB) in Settings → Offline speech."
+        } else {
+            "While recording with sound, Smart Follow is pacing by your voice (no offline speech pack for this language)."
+        }
+        offlineHintShown = true
+        if (route == Route.PACING) _ui.update { it.copy(banner = Banner(msg, BannerAction.OPEN_SETTINGS)) }
+    }
+
+    /** Logs one diagnostics line every 2 s while Smart Follow runs (adb logcat -s LensPromptDiag). */
+    private fun startDiagLog() {
+        diagLogJob?.cancel()
+        diagLogJob = viewModelScope.launch {
+            while (isActive && _ui.value.runState == RunState.RUNNING) {
+                Diagnostics.log("tick")
+                delay(2_000)
+            }
+        }
     }
 
     private fun haltFollowing() {
         smartActive = false
         requestFrames()
-        speech.stop()
+        teardownRoute()
+        setRoute(Route.NONE, "halted")
+        diagLogJob?.cancel()
         viewModelScope.launch(worker) {
             simulationJob?.cancel()
             controller?.stop()
@@ -575,6 +798,8 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
                     latest = out
                     latestAtMs = now
                     if (_followState.value != out.state) _followState.value = out.state
+                    Diagnostics.voicedWithoutWordsMs = out.voicedWithoutWordsMs
+                    Diagnostics.vadState = out.voice.name
                     if (now - lastDebugPublishMs >= 150) {
                         lastDebugPublishMs = now
                         publishDebug(out)
@@ -593,7 +818,8 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             recognizer = speech.status.value,
             restarts = speech.restarts.value,
             frameMs = frameMsAvg,
-            micRoute = micRouteLabel(),
+            route = route.label,
+            diag = Diagnostics.hud(),
         )
     }
 
@@ -605,14 +831,20 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             is SpeechEvent.Partial -> c.onPartialResult(e.text, e.timeMs)
             is SpeechEvent.Final -> c.onFinalResult(e.text, e.timeMs)
             // While LensPrompt owns the mic, levels come from its own capture instead.
-            is SpeechEvent.Level -> if (!appOwnsMic) c.onAudioLevel(e.rmsDb, e.timeMs)
+            is SpeechEvent.Level -> if (route == Route.SYSTEM_MIC) c.onAudioLevel(e.rmsDb, e.timeMs)
             is SpeechEvent.EndOfSpeech -> c.onEndOfSpeech(e.timeMs)
             is SpeechEvent.Failure -> {
                 Log.w(TAG, "speech failure ${e.code}: ${e.message} fatal=${e.fatal}")
-                if (e.fatal && appOwnsMic) {
-                    // Recognition cannot run on LensPrompt's stream on this device:
-                    // keep following by voice/lip activity instead of stopping.
-                    c.setRecognitionAvailable(false)
+                if (e.fatal && route != Route.SYSTEM_MIC) {
+                    // The recognizer on LensPrompt's stream cannot run: pick the next
+                    // route (offline → system pipe → pacing) instead of stopping.
+                    withContext(Dispatchers.Main) {
+                        if (route == Route.OFFLINE) offlineFailed = true
+                        if (route == Route.SYSTEM_EXTERNAL) {
+                            container.recognizerVerdicts.markExternalAudioBroken(speech.serviceComponent(), "fatal error: ${e.message}")
+                        }
+                        if (smartActive) applyRoute("recognizer failed: ${e.message}")
+                    }
                 } else if (e.fatal) {
                     c.fail(e.message)
                     withContext(Dispatchers.Main) {
@@ -672,7 +904,9 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
 
     override fun onCleared() {
         camera.stopRecording()
+        teardownRoute()
         mic.stop()
+        modelLoadJob?.cancel()
         camera.release()
         speech.release()
         workerExecutor.shutdown()

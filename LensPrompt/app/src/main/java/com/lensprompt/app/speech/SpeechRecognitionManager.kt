@@ -12,7 +12,10 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import android.content.ComponentName
+import android.provider.Settings
 import com.lensprompt.app.audio.RecognizerAudioFeed
+import com.lensprompt.app.diag.Diagnostics
 import com.lensprompt.core.SmartFollowConfig
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -81,6 +84,11 @@ class SpeechRecognitionManager(private val context: Context) {
     private val _status = MutableStateFlow(RecognizerStatus.OFF)
     val status: StateFlow<RecognizerStatus> = _status.asStateFlow()
 
+    private fun setStatus(v: RecognizerStatus) {
+        _status.value = v
+        Diagnostics.recognizerState = v.name + if (recognizerIsOnDevice && v != RecognizerStatus.OFF) " (on-device)" else ""
+    }
+
     /** Number of session restarts since [start] (debug display). */
     private val _restarts = MutableStateFlow(0)
     val restarts: StateFlow<Int> = _restarts.asStateFlow()
@@ -88,6 +96,20 @@ class SpeechRecognitionManager(private val context: Context) {
     private val restartRunnable = Runnable { startSession() }
 
     fun isAvailable(): Boolean = SpeechRecognizer.isRecognitionAvailable(context)
+
+    /**
+     * The recognition service that will actually run (the user's default voice
+     * input), e.g. "com.google.android.googlequicksearchbox/…" or a Samsung service.
+     * Used to label diagnostics and remember per-service verdicts.
+     */
+    fun serviceComponent(): String {
+        val raw = try {
+            Settings.Secure.getString(context.contentResolver, "voice_recognition_service")
+        } catch (_: Exception) {
+            null
+        }
+        return raw?.let { ComponentName.unflattenFromString(it)?.flattenToShortString() ?: it } ?: "unknown"
+    }
 
     /** Android 13+ lets an app hand the recognizer its own audio stream. */
     fun supportsExternalAudio(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
@@ -109,6 +131,11 @@ class SpeechRecognitionManager(private val context: Context) {
         consecutiveEmptySessions = 0
         offlineFallbackUsed = false
         _restarts.value = 0
+        Diagnostics.resetRecognizer(
+            engine = if (externalFeed != null) "system ← LensPrompt audio (EXTRA_AUDIO_SOURCE)" else "system ← its own mic",
+            component = serviceComponent(),
+        )
+        if (externalFeed == null) Diagnostics.micOwner = "system recognizer"
         if (!isAvailable()) {
             fail(ERROR_UNAVAILABLE, "Speech recognition is not available on this device.")
             return
@@ -123,7 +150,9 @@ class SpeechRecognitionManager(private val context: Context) {
         sessionEnded = true
         try { recognizer?.cancel() } catch (e: Exception) { Log.w(TAG, "cancel failed", e) }
         externalFeed?.closeSession()
-        _status.value = RecognizerStatus.OFF
+        externalFeed = null
+        if (Diagnostics.micOwner == "system recognizer") Diagnostics.micOwner = "none"
+        setStatus(RecognizerStatus.OFF)
     }
 
     /** Stop and free the recognizer service connection. */
@@ -152,7 +181,9 @@ class SpeechRecognitionManager(private val context: Context) {
         sessionEnded = false
         heardSpeechInSession = false
         sessionStartMs = SystemClock.elapsedRealtime()
-        _status.value = RecognizerStatus.STARTING
+        setStatus(RecognizerStatus.STARTING)
+        Diagnostics.recognizerStartCount.incrementAndGet()
+        if (wantOnDevice) Diagnostics.recognizerComponent = "on-device recognizer"
         try {
             rec.setRecognitionListener(Listener(id))
             rec.startListening(buildIntent())
@@ -199,8 +230,9 @@ class SpeechRecognitionManager(private val context: Context) {
     private fun scheduleRestart(delayMs: Long, status: RecognizerStatus) {
         if (!active) return
         handler.removeCallbacks(restartRunnable)
-        _status.value = status
+        setStatus(status)
         _restarts.value = _restarts.value + 1
+        Diagnostics.recognizerRestartCount.incrementAndGet()
         handler.postDelayed(restartRunnable, delayMs)
     }
 
@@ -216,6 +248,7 @@ class SpeechRecognitionManager(private val context: Context) {
 
     private fun onSessionError(code: Int) {
         if (!active) return
+        Diagnostics.lastRecognizerError = "$code ${describe(code)}" + if (recognizerIsOnDevice) " (on-device)" else ""
         if (externalFeed != null && recognizerIsOnDevice && code != SpeechRecognizer.ERROR_NO_MATCH &&
             code != SpeechRecognizer.ERROR_SPEECH_TIMEOUT
         ) {
@@ -266,8 +299,10 @@ class SpeechRecognitionManager(private val context: Context) {
 
     private fun fail(code: Int, message: String) {
         active = false
+        Diagnostics.lastRecognizerError = "$code $message (fatal)"
+        Diagnostics.log("recognizer failed")
         handler.removeCallbacks(restartRunnable)
-        _status.value = RecognizerStatus.FAILED
+        setStatus(RecognizerStatus.FAILED)
         _events.tryEmit(SpeechEvent.Failure(SystemClock.elapsedRealtime(), code, message, fatal = true))
         destroyRecognizer()
     }
@@ -282,7 +317,7 @@ class SpeechRecognitionManager(private val context: Context) {
 
         override fun onReadyForSpeech(params: Bundle?) {
             if (!current()) return
-            _status.value = RecognizerStatus.LISTENING
+            setStatus(RecognizerStatus.LISTENING)
             _events.tryEmit(SpeechEvent.SessionStarted(SystemClock.elapsedRealtime()))
         }
 
@@ -310,6 +345,7 @@ class SpeechRecognitionManager(private val context: Context) {
             val text = bestText(partialResults) ?: return
             heardSpeechInSession = true
             consecutiveErrors = 0
+            Diagnostics.onResult(final = false, text)
             _events.tryEmit(SpeechEvent.Partial(SystemClock.elapsedRealtime(), text))
         }
 
@@ -318,6 +354,7 @@ class SpeechRecognitionManager(private val context: Context) {
             sessionEnded = true
             bestText(results)?.let {
                 heardSpeechInSession = true
+                Diagnostics.onResult(final = true, it)
                 _events.tryEmit(SpeechEvent.Final(SystemClock.elapsedRealtime(), it))
             }
             onSessionCompleted()
@@ -339,6 +376,7 @@ class SpeechRecognitionManager(private val context: Context) {
             bestText(segmentResults)?.let {
                 heardSpeechInSession = true
                 consecutiveErrors = 0
+                Diagnostics.onResult(final = true, it)
                 _events.tryEmit(SpeechEvent.Final(SystemClock.elapsedRealtime(), it))
             }
         }

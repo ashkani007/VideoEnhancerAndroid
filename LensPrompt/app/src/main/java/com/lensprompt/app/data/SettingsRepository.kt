@@ -9,6 +9,15 @@ import kotlinx.coroutines.flow.asStateFlow
 
 enum class PromptAlign { START, CENTER }
 
+/**
+ * Which speech recognizer Smart Follow uses.
+ *  AUTO: the system recognizer normally; the offline pack (LensPrompt's own mic)
+ *        while recording video with sound, when the pack is installed.
+ *  OFFLINE: always the offline pack when installed (fully on-device, no restarts).
+ *  SYSTEM: always the system recognizer.
+ */
+enum class SpeechEngineChoice { AUTO, OFFLINE, SYSTEM }
+
 data class AppSettings(
     // display
     val fontSizeSp: Float = 34f,
@@ -34,6 +43,7 @@ data class AppSettings(
     /** BCP-47 tag for recognition; empty = device language. */
     val languageTag: String = "",
     val preferOffline: Boolean = false,
+    val speechEngine: SpeechEngineChoice = SpeechEngineChoice.AUTO,
     // camera
     val showCamera: Boolean = true,
     val recordAudio: Boolean = true,
@@ -41,6 +51,13 @@ data class AppSettings(
     val lipTracking: Boolean = true,
     // misc
     val overlayOpacity: Float = 0.75f,
+    val overlayFontSp: Float = 26f,
+    /** Floating window position and size in px (−1 = default). */
+    val overlayX: Int = -1,
+    val overlayY: Int = -1,
+    val overlayW: Int = -1,
+    val overlayH: Int = -1,
+    val overlaySmartFollow: Boolean = true,
     val debugMode: Boolean = false,
     val firstRunDone: Boolean = false,
 ) {
@@ -84,10 +101,18 @@ class SettingsRepository(context: Context) {
             alignmentStrictness = prefs.getFloat("alignmentStrictness", d.alignmentStrictness),
             languageTag = prefs.getString("languageTag", d.languageTag) ?: "",
             preferOffline = prefs.getBoolean("preferOffline", d.preferOffline),
+            speechEngine = runCatching { SpeechEngineChoice.valueOf(prefs.getString("speechEngine", d.speechEngine.name)!!) }
+                .getOrDefault(d.speechEngine),
             showCamera = prefs.getBoolean("showCamera", d.showCamera),
             recordAudio = prefs.getBoolean("recordAudio", d.recordAudio),
             lipTracking = prefs.getBoolean("lipTracking", d.lipTracking),
             overlayOpacity = prefs.getFloat("overlayOpacity", d.overlayOpacity),
+            overlayFontSp = prefs.getFloat("overlayFontSp", d.overlayFontSp),
+            overlayX = prefs.getInt("overlayX", d.overlayX),
+            overlayY = prefs.getInt("overlayY", d.overlayY),
+            overlayW = prefs.getInt("overlayW", d.overlayW),
+            overlayH = prefs.getInt("overlayH", d.overlayH),
+            overlaySmartFollow = prefs.getBoolean("overlaySmartFollow", d.overlaySmartFollow),
             debugMode = prefs.getBoolean("debugMode", d.debugMode),
             firstRunDone = prefs.getBoolean("firstRunDone", d.firstRunDone),
         )
@@ -111,10 +136,17 @@ class SettingsRepository(context: Context) {
             .putFloat("alignmentStrictness", s.alignmentStrictness)
             .putString("languageTag", s.languageTag)
             .putBoolean("preferOffline", s.preferOffline)
+            .putString("speechEngine", s.speechEngine.name)
             .putBoolean("showCamera", s.showCamera)
             .putBoolean("recordAudio", s.recordAudio)
             .putBoolean("lipTracking", s.lipTracking)
             .putFloat("overlayOpacity", s.overlayOpacity)
+            .putFloat("overlayFontSp", s.overlayFontSp)
+            .putInt("overlayX", s.overlayX)
+            .putInt("overlayY", s.overlayY)
+            .putInt("overlayW", s.overlayW)
+            .putInt("overlayH", s.overlayH)
+            .putBoolean("overlaySmartFollow", s.overlaySmartFollow)
             .putBoolean("debugMode", s.debugMode)
             .putBoolean("firstRunDone", s.firstRunDone)
             .apply()

@@ -46,6 +46,8 @@ data class FollowOutput(
     val pacing: Boolean = false,
     /** Why pacing is active (debug): "unavailable", "stalled" or "". */
     val pacingReason: String = "",
+    /** Voiced audio heard since the last recognized words, ms (recognizer health). */
+    val voicedWithoutWordsMs: Long = 0,
 )
 
 /**
@@ -484,6 +486,7 @@ class SmartFollowController(
                 !recognitionAvailable -> "unavailable"
                 else -> "stalled"
             },
+            voicedWithoutWordsMs = voicedWithoutWordsMs.toLong(),
         )
 
     private companion object {
