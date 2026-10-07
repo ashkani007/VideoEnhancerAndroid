@@ -75,6 +75,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -89,6 +90,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.lensprompt.app.R
 import com.lensprompt.app.data.AppSettings
 import com.lensprompt.app.data.PromptAlign
 import com.lensprompt.app.prompter.BannerAction
@@ -117,6 +119,8 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
     var controlsVisible by remember { mutableStateOf(true) }
     var showSheet by remember { mutableStateOf(false) }
     var showFloating by remember { mutableStateOf(false) }
+    val untitled = stringResource(R.string.common_untitled)
+    val endOfScript = stringResource(R.string.prompter_end_of_script)
 
     fun granted(p: String) = ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED
     var cameraGranted by remember { mutableStateOf(granted(Manifest.permission.CAMERA)) }
@@ -220,19 +224,19 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
                 Modifier.fillMaxWidth().background(Color.Black.copy(alpha = 0.55f)).statusBarsPadding().padding(horizontal = 4.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White) }
+                IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back), tint = Color.White) }
                 Text(
-                    script?.title?.ifBlank { "Untitled" } ?: "",
+                    script?.title?.ifBlank { untitled } ?: "",
                     color = Color.White,
                     maxLines = 1,
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.titleMedium,
                 )
                 IconButton(onClick = { if (!cameraState.isRecording) { vm.stop(); showFloating = true } }) {
-                    Icon(Icons.Filled.PictureInPictureAlt, contentDescription = "Use with phone camera (floating teleprompter)", tint = Color.White)
+                    Icon(Icons.Filled.PictureInPictureAlt, contentDescription = stringResource(R.string.prompter_use_with_camera_desc), tint = Color.White)
                 }
-                IconButton(onClick = onEdit) { Icon(Icons.Filled.Edit, contentDescription = "Edit script", tint = Color.White) }
-                IconButton(onClick = onSettings) { Icon(Icons.Filled.Settings, contentDescription = "Settings", tint = Color.White) }
+                IconButton(onClick = onEdit) { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.prompter_edit_script), tint = Color.White) }
+                IconButton(onClick = onSettings) { Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.common_settings), tint = Color.White) }
             }
         }
 
@@ -248,7 +252,7 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
             } else if (cameraState.processing) {
                 Spacer(Modifier.height(6.dp))
                 Surface(color = Color.Black.copy(alpha = 0.6f), shape = RoundedCornerShape(50)) {
-                    Text("Saving video…", color = Color.White, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp))
+                    Text(stringResource(R.string.prompter_saving_video), color = Color.White, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp))
                 }
             }
         }
@@ -288,7 +292,7 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
         }
 
         val bannerText = ui.banner?.message ?: cameraState.error ?: cameraState.lastSaved
-            ?: if (ui.atEnd) "End of script" else null
+            ?: if (ui.atEnd) endOfScript else null
         if (bannerText != null) {
             Surface(
                 color = LensColors.SurfaceHigh.copy(alpha = 0.95f),
@@ -299,12 +303,12 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
                     Text(bannerText, color = Color.White)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         if (ui.banner?.action == BannerAction.OPEN_SETTINGS && !cameraState.isRecording) {
-                            TextButton(onClick = { vm.dismissBanner(); onSettings() }) { Text("Settings") }
+                            TextButton(onClick = { vm.dismissBanner(); onSettings() }) { Text(stringResource(R.string.common_settings)) }
                         }
                         if (ui.banner?.action == BannerAction.SWITCH_TO_MANUAL) {
-                            TextButton(onClick = { vm.onBannerAction(BannerAction.SWITCH_TO_MANUAL) }) { Text("Use manual") }
+                            TextButton(onClick = { vm.onBannerAction(BannerAction.SWITCH_TO_MANUAL) }) { Text(stringResource(R.string.prompter_use_manual)) }
                         }
-                        TextButton(onClick = { vm.dismissBanner(); camera.clearMessages() }) { Text("OK") }
+                        TextButton(onClick = { vm.dismissBanner(); camera.clearMessages() }) { Text(stringResource(R.string.common_ok)) }
                     }
                 }
             }
@@ -426,24 +430,24 @@ private fun ReadingAnchor(settings: AppSettings) {
 private fun StatusChip(settings: AppSettings, runState: RunState, follow: FollowState, simulating: Boolean) {
     val listening = settings.smartFollow && runState == RunState.RUNNING && !simulating
     val (label, color) = when {
-        !settings.smartFollow -> "Manual · ${"%.0f".format(settings.manualSpeed)}" to LensColors.Muted
+        !settings.smartFollow -> stringResource(R.string.prompter_status_manual, "%.0f".format(settings.manualSpeed)) to LensColors.Muted
         runState != RunState.RUNNING -> "Smart Follow" to LensColors.Muted
         else -> when (follow) {
-            FollowState.LISTENING -> "Listening…" to LensColors.Listening
-            FollowState.TRACKING -> "Following" to LensColors.Listening
-            FollowState.SHORT_GAP -> "Following" to LensColors.Listening
-            FollowState.PAUSED -> "Waiting for you" to LensColors.Accent
-            FollowState.LOW_CONFIDENCE -> "Finding your place…" to LensColors.Accent
-            FollowState.RECOVERING -> "Finding your place…" to LensColors.Accent
-            FollowState.PACING -> "Following your voice" to LensColors.Listening
-            FollowState.ERROR -> "Mic unavailable" to LensColors.Recording
+            FollowState.LISTENING -> stringResource(R.string.prompter_status_listening) to LensColors.Listening
+            FollowState.TRACKING -> stringResource(R.string.prompter_status_following) to LensColors.Listening
+            FollowState.SHORT_GAP -> stringResource(R.string.prompter_status_following) to LensColors.Listening
+            FollowState.PAUSED -> stringResource(R.string.prompter_status_waiting) to LensColors.Accent
+            FollowState.LOW_CONFIDENCE -> stringResource(R.string.prompter_status_finding_place) to LensColors.Accent
+            FollowState.RECOVERING -> stringResource(R.string.prompter_status_finding_place) to LensColors.Accent
+            FollowState.PACING -> stringResource(R.string.prompter_status_following_voice) to LensColors.Listening
+            FollowState.ERROR -> stringResource(R.string.prompter_status_mic_unavailable) to LensColors.Recording
             FollowState.IDLE -> "Smart Follow" to LensColors.Muted
         }
     }
     Surface(color = Color.Black.copy(alpha = 0.6f), shape = RoundedCornerShape(50)) {
         Row(Modifier.padding(horizontal = 10.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
             if (listening) {
-                Icon(Icons.Filled.Mic, contentDescription = "Microphone on", tint = LensColors.Listening, modifier = Modifier.size(16.dp))
+                Icon(Icons.Filled.Mic, contentDescription = stringResource(R.string.prompter_mic_on), tint = LensColors.Listening, modifier = Modifier.size(16.dp))
             } else if (!settings.smartFollow) {
                 Icon(Icons.Filled.Speed, contentDescription = null, tint = color, modifier = Modifier.size(16.dp))
             } else {
@@ -463,7 +467,7 @@ private fun RecordingChip(ms: Long, withSound: Boolean) {
             Box(Modifier.size(10.dp).background(LensColors.Recording, CircleShape))
             Spacer(Modifier.width(6.dp))
             Text(
-                "REC %02d:%02d".format(s / 60, s % 60) + if (withSound) "" else " · no sound",
+                "REC %02d:%02d".format(s / 60, s % 60) + if (withSound) "" else " · " + stringResource(R.string.prompter_rec_no_sound),
                 color = Color.White,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -496,36 +500,36 @@ private fun BottomControls(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(onClick = onReset, colors = white) { Icon(Icons.Filled.RestartAlt, contentDescription = "Back to start") }
+        IconButton(onClick = onReset, colors = white) { Icon(Icons.Filled.RestartAlt, contentDescription = stringResource(R.string.prompter_back_to_start)) }
         IconButton(onClick = onStop, colors = white, enabled = runState != RunState.STOPPED) {
-            Icon(Icons.Filled.Stop, contentDescription = "Stop")
+            Icon(Icons.Filled.Stop, contentDescription = stringResource(R.string.common_stop))
         }
         val running = runState == RunState.RUNNING || runState == RunState.COUNTDOWN
         FilledIconButton(onClick = onPlayPause, modifier = Modifier.size(64.dp)) {
             Icon(
                 if (running) Icons.Filled.Pause else Icons.Filled.PlayArrow,
-                contentDescription = if (running) "Pause" else if (runState == RunState.PAUSED) "Resume" else "Start",
+                contentDescription = if (running) stringResource(R.string.common_pause) else if (runState == RunState.PAUSED) stringResource(R.string.prompter_resume) else stringResource(R.string.common_start),
                 modifier = Modifier.size(34.dp),
             )
         }
         TextButton(onClick = onToggleMode) {
             Icon(if (smartFollow) Icons.Filled.Mic else Icons.Filled.Speed, contentDescription = null, tint = if (smartFollow) LensColors.Listening else Color.White)
             Spacer(Modifier.width(4.dp))
-            Text(if (smartFollow) "Smart" else "Manual", color = Color.White)
+            Text(if (smartFollow) stringResource(R.string.prompter_mode_smart) else stringResource(R.string.prompter_mode_manual), color = Color.White)
         }
         IconButton(onClick = onRecord, enabled = cameraReady, colors = white) {
             Icon(
                 if (isRecording) Icons.Filled.Stop else Icons.Filled.FiberManualRecord,
-                contentDescription = if (isRecording) "Stop recording" else "Record video",
+                contentDescription = if (isRecording) stringResource(R.string.prompter_stop_recording) else stringResource(R.string.prompter_record_video),
                 tint = if (cameraReady) LensColors.Recording else Color.Gray,
             )
         }
         if (canSwitchCamera) {
             IconButton(onClick = onSwitchCamera, enabled = !isRecording, colors = white) {
-                Icon(Icons.Filled.Cameraswitch, contentDescription = "Switch camera")
+                Icon(Icons.Filled.Cameraswitch, contentDescription = stringResource(R.string.prompter_switch_camera))
             }
         }
-        IconButton(onClick = onTune, colors = white) { Icon(Icons.Filled.Tune, contentDescription = "Display settings") }
+        IconButton(onClick = onTune, colors = white) { Icon(Icons.Filled.Tune, contentDescription = stringResource(R.string.prompter_display_settings)) }
     }
 }
 
@@ -567,22 +571,22 @@ private fun QuickSettings(settings: AppSettings, vm: PrompterViewModel) {
     val app = LocalContext.current.applicationContext as com.lensprompt.app.LensPromptApplication
     val update = app.settings::update
     Column(Modifier.padding(horizontal = 20.dp).padding(bottom = 28.dp)) {
-        Text("Display", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.settings_section_display), style = MaterialTheme.typography.titleMedium)
         if (!settings.smartFollow) {
-            LabeledSlider("Manual speed", settings.manualSpeed, 1f..10f, "%.1f") { v -> update { it.copy(manualSpeed = v) } }
+            LabeledSlider(stringResource(R.string.prompter_manual_speed), settings.manualSpeed, 1f..10f, "%.1f") { v -> update { it.copy(manualSpeed = v) } }
         }
-        LabeledSlider("Font size", settings.fontSizeSp, 18f..72f, "%.0f sp") { v -> update { it.copy(fontSizeSp = v) } }
-        LabeledSlider("Line spacing", settings.lineSpacing, 1.0f..2.2f, "%.2f×") { v -> update { it.copy(lineSpacing = v) } }
-        LabeledSlider("Margins", settings.marginFraction, 0f..0.25f, "%.2f") { v -> update { it.copy(marginFraction = v) } }
-        LabeledSlider("Reading anchor", settings.anchorFraction, 0.2f..0.7f, "%.2f") { v -> update { it.copy(anchorFraction = v) } }
-        LabeledSlider("Background dim", settings.backgroundDim, 0f..1f, "%.2f") { v -> update { it.copy(backgroundDim = v) } }
-        LabeledSwitch("Mirror horizontally", settings.mirrorHorizontal) { v -> update { it.copy(mirrorHorizontal = v) } }
-        LabeledSwitch("Mirror vertically", settings.mirrorVertical) { v -> update { it.copy(mirrorVertical = v) } }
-        LabeledSwitch("Center text", settings.align == PromptAlign.CENTER) { v ->
+        LabeledSlider(stringResource(R.string.settings_font_size), settings.fontSizeSp, 18f..72f, "%.0f sp") { v -> update { it.copy(fontSizeSp = v) } }
+        LabeledSlider(stringResource(R.string.settings_line_spacing), settings.lineSpacing, 1.0f..2.2f, "%.2f×") { v -> update { it.copy(lineSpacing = v) } }
+        LabeledSlider(stringResource(R.string.settings_margins), settings.marginFraction, 0f..0.25f, "%.2f") { v -> update { it.copy(marginFraction = v) } }
+        LabeledSlider(stringResource(R.string.settings_reading_anchor), settings.anchorFraction, 0.2f..0.7f, "%.2f") { v -> update { it.copy(anchorFraction = v) } }
+        LabeledSlider(stringResource(R.string.settings_background_dim), settings.backgroundDim, 0f..1f, "%.2f") { v -> update { it.copy(backgroundDim = v) } }
+        LabeledSwitch(stringResource(R.string.settings_mirror_horizontal), settings.mirrorHorizontal) { v -> update { it.copy(mirrorHorizontal = v) } }
+        LabeledSwitch(stringResource(R.string.settings_mirror_vertical), settings.mirrorVertical) { v -> update { it.copy(mirrorVertical = v) } }
+        LabeledSwitch(stringResource(R.string.settings_center_text), settings.align == PromptAlign.CENTER) { v ->
             update { it.copy(align = if (v) PromptAlign.CENTER else PromptAlign.START) }
         }
-        LabeledSwitch("Camera preview", settings.showCamera) { v -> update { it.copy(showCamera = v) } }
-        LabeledSwitch("Lip tracking for Smart Follow", settings.lipTracking) { v -> update { it.copy(lipTracking = v) } }
+        LabeledSwitch(stringResource(R.string.prompter_camera_preview), settings.showCamera) { v -> update { it.copy(showCamera = v) } }
+        LabeledSwitch(stringResource(R.string.prompter_lip_tracking), settings.lipTracking) { v -> update { it.copy(lipTracking = v) } }
         // Simulated speech is a development tool: debug builds only.
         if (settings.debugMode && com.lensprompt.app.BuildConfig.DEBUG) {
             val ui by vm.ui.collectAsState()

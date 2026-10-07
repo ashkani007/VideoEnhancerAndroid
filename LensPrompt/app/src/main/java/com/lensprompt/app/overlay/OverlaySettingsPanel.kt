@@ -12,6 +12,7 @@ import android.widget.ScrollView
 import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
+import com.lensprompt.app.R
 import kotlin.math.roundToInt
 
 /**
@@ -82,16 +83,16 @@ class OverlaySettingsPanel(private val context: Context, private val cb: Callbac
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             addView(TextView(context).apply {
-                text = "Teleprompter settings"
+                text = context.getString(R.string.overlay_settings)
                 setTextColor(Color.WHITE)
                 textSize = 15f
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             })
-            addView(Button(context).apply { text = "Done"; setOnClickListener { cb.onDone() } })
+            addView(Button(context).apply { text = context.getString(R.string.overlay_panel_done); setOnClickListener { cb.onDone() } })
         })
 
         // Text size: A− ───●─── A+
-        col.addView(label("Text size"))
+        col.addView(label(context.getString(R.string.overlay_panel_text_size)))
         val fontValue = valueText("${v.fontSp.roundToInt()} sp")
         col.addView(LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -100,41 +101,41 @@ class OverlaySettingsPanel(private val context: Context, private val cb: Callbac
             addView(seek(FONT_MIN.roundToInt(), FONT_MAX.roundToInt(), v.fontSp.roundToInt()) { p, _ ->
                 fontValue.text = "$p sp"
                 cb.onFontSize(p.toFloat())
-            }.apply { contentDescription = "Text size" })
+            }.apply { contentDescription = context.getString(R.string.overlay_panel_text_size) })
             addView(TextView(context).apply { text = "A+"; setTextColor(Color.WHITE); textSize = 20f })
             addView(fontValue)
         })
 
-        sliderRow(col, "Line spacing", 100, 220, (v.lineSpacing * 100).roundToInt(), { "%.2f×".format(it / 100f) }) { p, _ -> cb.onLineSpacing(p / 100f) }
-        sliderRow(col, "Background opacity", 0, 100, (v.backgroundOpacity * 100).roundToInt(), { "$it %" }) { p, _ -> cb.onBackgroundOpacity(p / 100f) }
-        sliderRow(col, "Text opacity", 30, 100, (v.textOpacity * 100).roundToInt(), { "$it %" }) { p, _ -> cb.onTextOpacity(p / 100f) }
+        sliderRow(col, context.getString(R.string.settings_line_spacing), 100, 220, (v.lineSpacing * 100).roundToInt(), { "%.2f×".format(it / 100f) }) { p, _ -> cb.onLineSpacing(p / 100f) }
+        sliderRow(col, context.getString(R.string.overlay_panel_background_opacity), 0, 100, (v.backgroundOpacity * 100).roundToInt(), { "$it %" }) { p, _ -> cb.onBackgroundOpacity(p / 100f) }
+        sliderRow(col, context.getString(R.string.overlay_panel_text_opacity), 30, 100, (v.textOpacity * 100).roundToInt(), { "$it %" }) { p, _ -> cb.onTextOpacity(p / 100f) }
 
         widthRange = v.minWidth..maxOf(v.minWidth + 1, v.maxWidth)
         heightRange = v.minHeight..maxOf(v.minHeight + 1, v.maxHeight)
-        widthBar = sliderRow(col, "Window width", widthRange.first, widthRange.last, v.width, { "${it * 100 / widthRange.last} %" }, onStop = cb::onSizeChangeFinished) { p, user ->
+        widthBar = sliderRow(col, context.getString(R.string.overlay_panel_window_width), widthRange.first, widthRange.last, v.width, { "${it * 100 / widthRange.last} %" }, onStop = cb::onSizeChangeFinished) { p, user ->
             if (user) cb.onWidth(p)
         }
-        heightBar = sliderRow(col, "Window height", heightRange.first, heightRange.last, v.height, { "${it * 100 / heightRange.last} %" }, onStop = cb::onSizeChangeFinished) { p, user ->
+        heightBar = sliderRow(col, context.getString(R.string.overlay_panel_window_height), heightRange.first, heightRange.last, v.height, { "${it * 100 / heightRange.last} %" }, onStop = cb::onSizeChangeFinished) { p, user ->
             if (user) cb.onHeight(p)
         }
-        sliderRow(col, "Scroll speed (manual)", 10, 100, (v.manualSpeed * 10).roundToInt(), { "%.1f".format(it / 10f) }) { p, _ -> cb.onManualSpeed(p / 10f) }
+        sliderRow(col, context.getString(R.string.overlay_panel_scroll_speed), 10, 100, (v.manualSpeed * 10).roundToInt(), { "%.1f".format(it / 10f) }) { p, _ -> cb.onManualSpeed(p / 10f) }
 
-        col.addView(switchRow("Smart Follow (follow my voice)", v.smartFollow, cb::onSmartFollow))
-        col.addView(switchRow("Center text", v.alignCenter, cb::onAlignCenter))
-        col.addView(switchRow("Mirror text", v.mirror, cb::onMirror))
-        col.addView(switchRow("Lock overlay", v.locked, cb::onLock))
-        col.addView(switchRow("Auto-hide controls", v.autoHide, cb::onAutoHide))
+        col.addView(switchRow(context.getString(R.string.overlay_panel_smart_follow), v.smartFollow, cb::onSmartFollow))
+        col.addView(switchRow(context.getString(R.string.settings_center_text), v.alignCenter, cb::onAlignCenter))
+        col.addView(switchRow(context.getString(R.string.overlay_panel_mirror_text), v.mirror, cb::onMirror))
+        col.addView(switchRow(context.getString(R.string.overlay_panel_lock), v.locked, cb::onLock))
+        col.addView(switchRow(context.getString(R.string.overlay_panel_auto_hide), v.autoHide, cb::onAutoHide))
 
-        col.addView(label("Layout"))
+        col.addView(label(context.getString(R.string.overlay_panel_layout)))
         col.addView(buttonRow(
-            "Near camera" to { cb.onPreset(Preset.NEAR_CAMERA) },
-            "Top band" to { cb.onPreset(Preset.TOP_BAND) },
-            "Large" to { cb.onPreset(Preset.LARGE) },
+            context.getString(R.string.overlay_panel_near_camera) to { cb.onPreset(Preset.NEAR_CAMERA) },
+            context.getString(R.string.overlay_panel_top_band) to { cb.onPreset(Preset.TOP_BAND) },
+            context.getString(R.string.overlay_panel_large) to { cb.onPreset(Preset.LARGE) },
         ))
         col.addView(buttonRow(
-            "⟲ Start" to cb::onBackToStart,
-            "📷 Camera" to cb::onOpenCamera,
-            "✕ Close" to cb::onCloseTeleprompter,
+            context.getString(R.string.overlay_panel_btn_start) to cb::onBackToStart,
+            context.getString(R.string.overlay_panel_btn_camera) to cb::onOpenCamera,
+            context.getString(R.string.overlay_panel_btn_close) to cb::onCloseTeleprompter,
         ))
 
         return ScrollView(context).apply {

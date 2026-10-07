@@ -31,10 +31,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lensprompt.app.BuildConfig
 import com.lensprompt.app.LensPromptApplication
+import com.lensprompt.app.R
 import com.lensprompt.app.billing.BillingAvailability
 import com.lensprompt.app.billing.EntitlementSource
 import com.lensprompt.app.billing.ProPlan
@@ -57,8 +59,8 @@ fun ProScreen(onBack: () -> Unit) {
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
-                title = { Text("LensPrompt Pro") },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back)) } },
+                title = { Text(stringResource(R.string.pro_title)) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
         },
@@ -66,18 +68,18 @@ fun ProScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp)) {
             when {
                 entitlement.isPro && entitlement.source == EntitlementSource.GOOGLE_PLAY ->
-                    Text("You have LensPrompt Pro. Thank you!", color = LensColors.Accent, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.pro_owned), color = LensColors.Accent, fontWeight = FontWeight.SemiBold)
                 entitlement.isPro && entitlement.source == EntitlementSource.DEBUG_OVERRIDE ->
                     Text("Debug build: Pro is simulated for testing only.", color = LensColors.Muted)
             }
             when (availability) {
                 BillingAvailability.NOT_LAUNCHED -> Text(
-                    "LensPrompt Pro is coming soon. Everything in LensPrompt is available to you now, free.",
+                    stringResource(R.string.pro_coming_soon),
                     color = LensColors.Muted,
                 )
-                BillingAvailability.CONNECTING -> Text("Connecting to Google Play…", color = LensColors.Muted)
+                BillingAvailability.CONNECTING -> Text(stringResource(R.string.pro_connecting), color = LensColors.Muted)
                 BillingAvailability.UNAVAILABLE -> Text(
-                    "Google Play purchases are not available on this device right now.",
+                    stringResource(R.string.pro_unavailable),
                     color = LensColors.Muted,
                 )
                 BillingAvailability.READY -> Unit
@@ -93,26 +95,26 @@ fun ProScreen(onBack: () -> Unit) {
                     Column(Modifier.padding(16.dp)) {
                         Text(
                             when (plan) {
-                                ProPlan.MONTHLY -> "Monthly"
-                                ProPlan.YEARLY -> "Yearly"
-                                ProPlan.LIFETIME -> "Lifetime (one-time purchase)"
+                                ProPlan.MONTHLY -> stringResource(R.string.pro_plan_monthly)
+                                ProPlan.YEARLY -> stringResource(R.string.pro_plan_yearly)
+                                ProPlan.LIFETIME -> stringResource(R.string.pro_plan_lifetime)
                             },
                             style = MaterialTheme.typography.titleMedium,
                         )
                         // Price text comes from Google Play only.
-                        Text(offer?.formattedPrice ?: "Price shown by Google Play", color = LensColors.Muted)
+                        Text(offer?.formattedPrice ?: stringResource(R.string.pro_price_placeholder), color = LensColors.Muted)
                         Spacer(Modifier.height(8.dp))
                         Button(
                             enabled = availability == BillingAvailability.READY && offer != null && !entitlement.isPro,
                             onClick = { context.findActivity()?.let { pro.purchase(it, plan) } },
-                        ) { Text(if (plan == ProPlan.LIFETIME) "Buy" else "Subscribe") }
+                        ) { Text(if (plan == ProPlan.LIFETIME) stringResource(R.string.pro_buy) else stringResource(R.string.pro_subscribe)) }
                     }
                 }
             }
             if (availability == BillingAvailability.READY) {
-                OutlinedButton(onClick = { pro.refresh() }) { Text("Restore purchases") }
+                OutlinedButton(onClick = { pro.refresh() }) { Text(stringResource(R.string.pro_restore)) }
                 Text(
-                    "Subscriptions renew automatically until cancelled in Google Play → Payments & subscriptions.",
+                    stringResource(R.string.pro_renew_note),
                     color = LensColors.Muted, style = MaterialTheme.typography.bodySmall,
                 )
             }

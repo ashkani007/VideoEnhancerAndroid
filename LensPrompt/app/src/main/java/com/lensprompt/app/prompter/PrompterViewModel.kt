@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.lensprompt.app.BuildConfig
 import com.lensprompt.app.LensPromptApplication
+import com.lensprompt.app.R
 import com.lensprompt.app.audio.AudioCaptureEngine
 import com.lensprompt.app.audio.AvMuxer
 import com.lensprompt.app.audio.CapturedAudio
@@ -117,6 +118,9 @@ enum class Route(val label: String) {
 class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewModel(app) {
 
     private val container = app as LensPromptApplication
+
+    /** A user-visible string in the app's current language. */
+    private fun str(id: Int, vararg args: Any?): String = getApplication<Application>().getString(id, *args)
     val settings: StateFlow<AppSettings> = container.settings.settings
 
     val script: StateFlow<Script?> = container.scripts.scripts
@@ -273,7 +277,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
 
     fun onMicPermissionDenied() {
         _ui.update {
-            it.copy(banner = Banner("Smart Follow needs microphone access. You can use manual scrolling instead.", BannerAction.SWITCH_TO_MANUAL))
+            it.copy(banner = Banner(str(R.string.banner_mic_permission), BannerAction.SWITCH_TO_MANUAL))
         }
     }
 
@@ -306,7 +310,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         val micOk = mic.start(pcm, levelSink)
         if (!micOk) {
             applyRoute("mic unavailable for recording")
-            _ui.update { it.copy(banner = Banner("The microphone is unavailable (in use by another app?). Recording without sound.")) }
+            _ui.update { it.copy(banner = Banner(str(R.string.banner_mic_unavailable_recording))) }
             Diagnostics.recordingState = "recording without sound (mic unavailable)"
             camera.startSilentRecording()
             return
@@ -524,7 +528,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
     private fun begin() {
         val text = script.value?.body.orEmpty()
         if (text.isBlank()) {
-            _ui.update { it.copy(runState = RunState.STOPPED, banner = Banner("This script is empty. Add some text first.")) }
+            _ui.update { it.copy(runState = RunState.STOPPED, banner = Banner(str(R.string.banner_script_empty))) }
             return
         }
         val s = settings.value
@@ -544,7 +548,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
             _ui.update {
                 it.copy(
                     runState = RunState.PAUSED,
-                    banner = Banner("Speech recognition is not available on this device. Use manual scrolling instead.", BannerAction.SWITCH_TO_MANUAL),
+                    banner = Banner(str(R.string.banner_speech_unavailable), BannerAction.SWITCH_TO_MANUAL),
                 )
             }
             return
@@ -753,10 +757,9 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         if (offlineHintShown && !force) return
         val spec = container.models.specFor(languageTag())
         val msg = if (spec != null) {
-            "While recording with sound, Smart Follow is pacing by your voice. For word-accurate following, " +
-                "download the offline speech pack (${spec.label}, ~${spec.approxMb} MB) in Settings → Offline speech."
+            str(R.string.banner_offline_pack_suggest, spec.label, spec.approxMb)
         } else {
-            "While recording with sound, Smart Follow is pacing by your voice (no offline speech pack for this language)."
+            str(R.string.banner_pacing_no_pack)
         }
         offlineHintShown = true
         if (route == Route.PACING) _ui.update { it.copy(banner = Banner(msg, BannerAction.OPEN_SETTINGS)) }
@@ -855,7 +858,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
                         _ui.update {
                             it.copy(
                                 runState = RunState.PAUSED,
-                                banner = Banner("Smart Follow stopped: ${e.message}", BannerAction.SWITCH_TO_MANUAL),
+                                banner = Banner(str(R.string.banner_smart_follow_stopped, e.message), BannerAction.SWITCH_TO_MANUAL),
                             )
                         }
                     }

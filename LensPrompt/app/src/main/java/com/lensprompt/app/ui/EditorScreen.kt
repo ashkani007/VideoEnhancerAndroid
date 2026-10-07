@@ -29,11 +29,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lensprompt.app.LensPromptApplication
+import com.lensprompt.app.R
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,15 +67,15 @@ fun EditorScreen(scriptId: String, onBack: () -> Unit, onPrompt: () -> Unit) {
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") }
+                    IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back)) }
                 },
                 title = {
-                    Text(if (saved) "Saved" else "Saving…", color = LensColors.Muted, style = MaterialTheme.typography.labelLarge)
+                    Text(if (saved) stringResource(R.string.editor_saved) else stringResource(R.string.editor_saving), color = LensColors.Muted, style = MaterialTheme.typography.labelLarge)
                 },
                 actions = {
                     TextButton(onClick = { app.scripts.save(scriptId, title, body); onPrompt() }, enabled = body.isNotBlank()) {
                         Icon(Icons.Filled.PlayArrow, contentDescription = null)
-                        Text("Prompt")
+                        Text(stringResource(R.string.editor_prompt))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
@@ -88,14 +90,14 @@ fun EditorScreen(scriptId: String, onBack: () -> Unit, onPrompt: () -> Unit) {
                 onValueChange = { title = it },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                placeholder = { Text("Title") },
+                placeholder = { Text(stringResource(R.string.editor_title_hint)) },
                 textStyle = TextStyle(fontSize = 20.sp, textDirection = TextDirection.Content),
             )
             OutlinedTextField(
                 value = body,
                 onValueChange = { body = it },
                 modifier = Modifier.fillMaxWidth().weight(1f).padding(top = 12.dp, bottom = 12.dp),
-                placeholder = { Text("Type or paste your script…") },
+                placeholder = { Text(stringResource(R.string.editor_body_hint)) },
                 textStyle = TextStyle(fontSize = 18.sp, lineHeight = 26.sp, textDirection = TextDirection.Content),
             )
         }

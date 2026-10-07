@@ -32,7 +32,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
+import com.lensprompt.app.R
 import com.lensprompt.app.overlay.OverlayService
 
 /**
@@ -79,23 +81,19 @@ fun FloatingPrompterDialog(scriptId: String?, onDismiss: () -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Use with phone camera") },
+        title = { Text(stringResource(R.string.floating_title)) },
         text = {
             Column {
                 Text(
-                    "A floating teleprompter stays on top of Samsung Camera, Google Camera, Instagram or any other " +
-                        "camera app. Move it by the ⠿ handle, resize it from the bottom edge and corner, and use ⚙ for " +
-                        "text size, speed and transparency.",
+                    stringResource(R.string.floating_intro),
                 )
                 Text(
-                    "\nSmart Follow listens with LensPrompt's microphone. If the camera app records video WITH sound, " +
-                        "Android gives it the microphone and other apps hear silence; the teleprompter then scrolls at " +
-                        "your manual speed and resumes following when the microphone is free.",
+                    "\n" + stringResource(R.string.floating_mic_note),
                     color = LensColors.Muted, style = MaterialTheme.typography.bodySmall,
                 )
                 if (!canDraw) {
                     Text(
-                        "\nFirst, allow LensPrompt to \"Display over other apps\" on the next screen, then come back.",
+                        "\n" + stringResource(R.string.floating_permission_note),
                         color = LensColors.Accent, style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -105,13 +103,13 @@ fun FloatingPrompterDialog(scriptId: String?, onDismiss: () -> Unit) {
             TextButton(onClick = {
                 openCameraAfter = true
                 if (canDraw) proceed() else overlayLauncher.launch(OverlayService.permissionIntent(context))
-            }) { Text(if (canDraw) "Start & open camera" else "Allow display over apps") }
+            }) { Text(if (canDraw) stringResource(R.string.floating_start_open_camera) else stringResource(R.string.floating_allow_overlay)) }
         },
         dismissButton = {
             if (canDraw) {
-                TextButton(onClick = { openCameraAfter = false; proceed() }) { Text("Start only") }
+                TextButton(onClick = { openCameraAfter = false; proceed() }) { Text(stringResource(R.string.floating_start_only)) }
             } else {
-                TextButton(onClick = onDismiss) { Text("Cancel") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_cancel)) }
             }
         },
     )
@@ -145,7 +143,7 @@ fun FloatingModeBanner(modifier: Modifier = Modifier) {
     ) {
         Row(Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(
-                "Floating Teleprompter is running",
+                stringResource(R.string.floating_banner_running),
                 color = Color.White,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f),
@@ -153,7 +151,7 @@ fun FloatingModeBanner(modifier: Modifier = Modifier) {
             Button(
                 onClick = { OverlayService.stop(context) },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC62828), contentColor = Color.White),
-            ) { Text("STOP FLOATING MODE") }
+            ) { Text(stringResource(R.string.floating_banner_stop)) }
         }
     }
 }

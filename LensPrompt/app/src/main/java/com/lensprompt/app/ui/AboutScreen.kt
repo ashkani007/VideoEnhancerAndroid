@@ -23,9 +23,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.lensprompt.app.BuildConfig
+import com.lensprompt.app.R
 
 /** Open-source components shipped in the app (attribution). */
 private data class License(val name: String, val license: String, val url: String)
@@ -51,36 +53,31 @@ fun AboutScreen(onBack: () -> Unit) {
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") } },
-                title = { Text("About LensPrompt") },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back)) } },
+                title = { Text(stringResource(R.string.about_title)) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
         },
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp)) {
             Text("LensPrompt ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})", style = MaterialTheme.typography.titleMedium)
-            Text("A teleprompter that works over the camera you already use.", color = LensColors.Muted)
+            Text(stringResource(R.string.about_tagline), color = LensColors.Muted)
 
             Spacer(Modifier.height(20.dp))
-            Text("Your data", fontWeight = FontWeight.SemiBold, color = LensColors.Accent)
+            Text(stringResource(R.string.about_your_data), fontWeight = FontWeight.SemiBold, color = LensColors.Accent)
             Text(
-                "• Scripts and settings are stored on this phone. If Android backup is on, they are included in your device backup.\n" +
-                    "• LensPrompt has no account, no ads and no analytics, and it does not upload your scripts, audio or video.\n" +
-                    "• Smart Follow with an offline speech pack recognizes speech inside LensPrompt. Without a pack, your phone's " +
-                    "speech recognition service (for example Google or Samsung) does it and may process audio online under that provider's terms.\n" +
-                    "• Videos you record are saved to Movies/LensPrompt on this phone.\n" +
-                    "• Offline speech packs are downloaded from alphacephei.com only when you ask.",
+                stringResource(R.string.about_data_text),
                 color = LensColors.Muted, style = MaterialTheme.typography.bodySmall,
             )
             if (BuildConfig.PRIVACY_POLICY_URL.isNotBlank()) {
-                TextButton(onClick = { open(BuildConfig.PRIVACY_POLICY_URL) }) { Text("Privacy policy") }
+                TextButton(onClick = { open(BuildConfig.PRIVACY_POLICY_URL) }) { Text(stringResource(R.string.about_privacy_policy)) }
             }
             if (BuildConfig.SUPPORT_EMAIL.isNotBlank()) {
-                TextButton(onClick = { open("mailto:${BuildConfig.SUPPORT_EMAIL}") }) { Text("Contact support") }
+                TextButton(onClick = { open("mailto:${BuildConfig.SUPPORT_EMAIL}") }) { Text(stringResource(R.string.about_contact_support)) }
             }
 
             Spacer(Modifier.height(20.dp))
-            Text("Open-source licenses", fontWeight = FontWeight.SemiBold, color = LensColors.Accent)
+            Text(stringResource(R.string.about_licenses_title), fontWeight = FontWeight.SemiBold, color = LensColors.Accent)
             LICENSES.forEach { l ->
                 Column(Modifier.padding(vertical = 6.dp)) {
                     Text(l.name)
@@ -91,7 +88,7 @@ fun AboutScreen(onBack: () -> Unit) {
                 }
             }
             Text(
-                "Offline speech packs are Vosk models by Alpha Cephei, downloaded at your request; each model's license is listed at alphacephei.com/vosk/models.",
+                stringResource(R.string.about_vosk_note),
                 color = LensColors.Muted, style = MaterialTheme.typography.bodySmall,
             )
             Spacer(Modifier.height(32.dp))

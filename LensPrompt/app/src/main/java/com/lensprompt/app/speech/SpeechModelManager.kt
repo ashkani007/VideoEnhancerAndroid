@@ -3,6 +3,7 @@ package com.lensprompt.app.speech
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.lensprompt.app.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -93,7 +94,7 @@ class SpeechModelManager(private val context: Context) {
                 }
             }
             File(root, "$key.zip.part").delete()
-            set(key, ModelState.Failed("Download failed ($lastError). You can import the model .zip instead."))
+            set(key, ModelState.Failed(context.getString(R.string.models_download_failed, lastError)))
         }
     }
 
@@ -114,7 +115,7 @@ class SpeechModelManager(private val context: Context) {
                 set(key, scan(key))
             } catch (e: Exception) {
                 Log.e(TAG, "import failed", e)
-                set(key, ModelState.Failed("Import failed: ${e.message}"))
+                set(key, ModelState.Failed(context.getString(R.string.models_import_failed, e.message)))
             }
         }
     }

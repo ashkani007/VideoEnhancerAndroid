@@ -202,10 +202,10 @@ class OverlayService : Service() {
         val stop = PendingIntent.getService(this, 1, Intent(this, OverlayService::class.java).setAction(ACTION_STOP), PendingIntent.FLAG_IMMUTABLE)
         val n: Notification = NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Floating teleprompter is on")
-            .setContentText("Shown over your camera app. Use “Stop teleprompter” to close it.")
+            .setContentTitle(getString(R.string.overlay_notification_title))
+            .setContentText(getString(R.string.overlay_notification_text))
             .setContentIntent(open)
-            .addAction(0, "Stop teleprompter", stop)
+            .addAction(0, getString(R.string.overlay_notification_stop), stop)
             .setOngoing(true)
             .build()
         try {
@@ -289,7 +289,7 @@ class OverlayService : Service() {
             textOpacity = s.overlayTextOpacity
             anchorFraction = ANCHOR_FRACTION
             onReflow = { onTextLayout() }
-            text = "Loading…"
+            text = getString(R.string.overlay_loading)
         }
 
         // ---- compact toolbar: [⠿] [MODE] [hint…] [▶] [⚙] [🔒]
@@ -310,7 +310,7 @@ class OverlayService : Service() {
             gravity = Gravity.CENTER
             minWidth = dp(40f)
             minHeight = dp(TOOLBAR_DP)
-            contentDescription = "Drag to move the teleprompter"
+            contentDescription = getString(R.string.overlay_drag_to_move)
         }
         modeChip = TextView(ui).apply {
             textSize = 11f
@@ -318,7 +318,7 @@ class OverlayService : Service() {
             gravity = Gravity.CENTER
             setPadding(dp(8f), dp(3f), dp(8f), dp(3f))
             background = GradientDrawable().apply { cornerRadius = dp(10f).toFloat(); setColor(Color.argb(90, 255, 255, 255)) }
-            contentDescription = "Smart Follow or manual scrolling"
+            contentDescription = getString(R.string.overlay_mode_chip)
             setOnClickListener { touched(); setSmart(!smart) }
         }
         hintView = TextView(ui).apply {
@@ -328,10 +328,10 @@ class OverlayService : Service() {
             setPadding(dp(6f), 0, dp(4f), 0)
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
-        playButton = iconButton("▶", "Play") { setPlaying(!playing) }
-        settingsButton = iconButton("⚙", "Teleprompter settings") { togglePanel() }
-        lockButton = iconButton("🔒", "Lock the teleprompter") { setLocked(true) }
-        closeButton = makeCloseButton("Close floating teleprompter")
+        playButton = iconButton("▶", getString(R.string.common_play)) { setPlaying(!playing) }
+        settingsButton = iconButton("⚙", getString(R.string.overlay_settings)) { togglePanel() }
+        lockButton = iconButton("🔒", getString(R.string.overlay_lock)) { setLocked(true) }
+        closeButton = makeCloseButton(getString(R.string.overlay_close))
         toolbar = LinearLayout(ui).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -351,14 +351,14 @@ class OverlayService : Service() {
         }
 
         // ---- floating bits over the script: resize corner, mini handle, lock badge
-        resizeHandle = ResizeGrip(ui).apply { contentDescription = "Drag to resize width and height" }
+        resizeHandle = ResizeGrip(ui).apply { contentDescription = getString(R.string.overlay_resize) }
         miniHandle = TextView(ui).apply {
             text = "⋯"
             setTextColor(Color.WHITE)
             textSize = 16f
             gravity = Gravity.CENTER
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.argb(110, 0, 0, 0)) }
-            contentDescription = "Show teleprompter controls; drag to move"
+            contentDescription = getString(R.string.overlay_show_controls)
             alpha = 0.75f
         }
         lockBadge = TextView(ui).apply {
@@ -366,7 +366,7 @@ class OverlayService : Service() {
             textSize = 13f
             gravity = Gravity.CENTER
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.argb(110, 0, 0, 0)) }
-            contentDescription = "Locked. Tap for Unlock and Close"
+            contentDescription = getString(R.string.overlay_locked_badge)
             alpha = 0.6f
             setOnClickListener { showLockStrip() }
         }
@@ -377,19 +377,19 @@ class OverlayService : Service() {
             setPadding(dp(4f), 0, dp(2f), 0)
             visibility = View.GONE
             addView(TextView(ui).apply {
-                text = "UNLOCK"
+                text = getString(R.string.overlay_unlock)
                 setTextColor(Color.WHITE)
                 textSize = 12f
                 setTypeface(typeface, Typeface.BOLD)
                 gravity = Gravity.CENTER
                 setPadding(dp(10f), 0, dp(10f), 0)
                 minHeight = dp(36f)
-                contentDescription = "Unlock the teleprompter"
+                contentDescription = getString(R.string.overlay_unlock_desc)
                 setOnClickListener { setLocked(false) }
             })
             addView(View(ui).apply { setBackgroundColor(Color.argb(90, 255, 255, 255)) },
                 LinearLayout.LayoutParams(dp(1f), dp(20f)).apply { setMargins(dp(2f), 0, dp(2f), 0) })
-            addView(makeCloseButton("Close floating teleprompter"))
+            addView(makeCloseButton(getString(R.string.overlay_close)))
         }
         val scriptArea = FrameLayout(ui).apply {
             addView(scriptView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
@@ -637,7 +637,7 @@ class OverlayService : Service() {
         controlsShown = !on
         applyControlsVisibility()
         touched()
-        if (on) flashHint("Locked — tap 🔒 for Unlock / ×")
+        if (on) flashHint(getString(R.string.overlay_hint_locked))
     }
 
     // ---- settings panel (its own small overlay window)
@@ -762,7 +762,7 @@ class OverlayService : Service() {
             closePanel()
             applyRect(r)
             saveWindow()
-            if (preset == OverlaySettingsPanel.Preset.NEAR_CAMERA) flashHint("Drag ⠿ to place it next to your selfie camera")
+            if (preset == OverlaySettingsPanel.Preset.NEAR_CAMERA) flashHint(getString(R.string.overlay_hint_near_camera))
         }
         override fun onBackToStart() = restart()
         override fun onOpenCamera() { closePanel(); openCamera() }
@@ -794,7 +794,7 @@ class OverlayService : Service() {
                 Log.w(TAG, "cannot open camera", e)
             }
         }
-        Toast.makeText(this, "No camera app found", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.overlay_no_camera_app), Toast.LENGTH_SHORT).show()
     }
 
     private var hintUntilMs = 0L
@@ -815,7 +815,7 @@ class OverlayService : Service() {
         scriptJob = scope.launch {
             app.scripts.scripts.collectLatest { list ->
                 val s = list.firstOrNull { it.id == (requested ?: scriptId) } ?: list.firstOrNull()
-                val body = s?.body?.ifBlank { null } ?: "No script yet. Create one in LensPrompt."
+                val body = s?.body?.ifBlank { null } ?: getString(R.string.overlay_no_script)
                 if (s?.id != scriptId || body != scriptText) {
                     if (playing) setPlaying(false)
                     scriptId = s?.id
@@ -909,7 +909,7 @@ class OverlayService : Service() {
         if (p == playing) return
         playing = p
         playButton.text = if (p) "❚❚" else "▶"
-        playButton.contentDescription = if (p) "Pause" else "Play"
+        playButton.contentDescription = if (p) getString(R.string.common_pause) else getString(R.string.common_play)
         if (p && smart) startSmartFollow() else stopSmartFollow()
         lastFrameNanos = 0L
         updateChip()
@@ -954,7 +954,7 @@ class OverlayService : Service() {
         if (smartRunning) return
         val s = app.settings.settings.value
         if (!micGranted() || micUnavailableInService) {
-            flashHint("Microphone not available to the overlay — manual speed. Open LensPrompt and allow the microphone.")
+            flashHint(getString(R.string.overlay_hint_mic_unavailable))
             return
         }
         smartRunning = true
@@ -993,7 +993,7 @@ class OverlayService : Service() {
             routeLabel = "offline"
             engineJob = scope.launch {
                 val model = OfflineModelCache.loadedFor(dir) ?: try {
-                    flashHint("Loading offline speech pack…")
+                    flashHint(getString(R.string.overlay_loading_offline_pack))
                     withContext(Dispatchers.IO) { OfflineModelCache.load(dir) }
                 } catch (e: Throwable) {
                     Log.e(TAG, "offline model failed", e)

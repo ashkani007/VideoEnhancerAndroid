@@ -56,12 +56,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.lensprompt.app.LensPromptApplication
+import com.lensprompt.app.R
 import com.lensprompt.app.data.Script
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,6 +79,9 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
     var deleting by remember { mutableStateOf<Script?>(null) }
     var floating by remember { mutableStateOf<Script?>(null) }
     val snackbar = remember { SnackbarHostState() }
+    val pastedScript = stringResource(R.string.library_pasted_script)
+    val newScript = stringResource(R.string.library_new_script)
+    val untitled = stringResource(R.string.common_untitled)
 
     LaunchedEffect(storageError) {
         storageError?.let { snackbar.showSnackbar(it); app.scripts.clearError() }
@@ -98,11 +103,11 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
                         val text = (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                             .primaryClip?.takeIf { it.itemCount > 0 }?.getItemAt(0)?.coerceToText(context)?.toString()
                         if (!text.isNullOrBlank()) {
-                            val title = text.lineSequence().firstOrNull { it.isNotBlank() }?.trim()?.take(40) ?: "Pasted script"
+                            val title = text.lineSequence().firstOrNull { it.isNotBlank() }?.trim()?.take(40) ?: pastedScript
                             onEdit(app.scripts.create(title, text.trim()).id)
                         }
-                    }) { Icon(Icons.Filled.ContentPaste, contentDescription = "New script from clipboard") }
-                    IconButton(onClick = onSettings) { Icon(Icons.Filled.Settings, contentDescription = "Settings") }
+                    }) { Icon(Icons.Filled.ContentPaste, contentDescription = stringResource(R.string.library_new_from_clipboard)) }
+                    IconButton(onClick = onSettings) { Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.common_settings)) }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
@@ -111,9 +116,9 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
             ExtendedFloatingActionButton(
                 onClick = { onEdit(app.scripts.create().id) },
                 // M3 clears the text slot's semantics; label the button explicitly for TalkBack.
-                modifier = Modifier.semantics { contentDescription = "New script" },
+                modifier = Modifier.semantics { contentDescription = newScript },
                 icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                text = { Text("New script") },
+                text = { Text(newScript) },
             )
         },
     ) { padding ->
@@ -133,13 +138,13 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-                    placeholder = { Text("Search scripts") },
+                    placeholder = { Text(stringResource(R.string.library_search_hint)) },
                 )
             }
             if (filtered.isEmpty()) {
                 item {
                     Text(
-                        if (query.isBlank()) "No scripts yet. Tap “New script” or paste one." else "No scripts match “$query”.",
+                        if (query.isBlank()) stringResource(R.string.library_empty) else stringResource(R.string.library_no_match, query),
                         color = LensColors.Muted,
                         modifier = Modifier.padding(24.dp),
                     )
@@ -164,19 +169,19 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
         var title by remember(s.id) { mutableStateOf(s.title) }
         AlertDialog(
             onDismissRequest = { renaming = null },
-            title = { Text("Rename script") },
+            title = { Text(stringResource(R.string.library_rename_title)) },
             text = { OutlinedTextField(value = title, onValueChange = { title = it }, singleLine = true) },
-            confirmButton = { TextButton(onClick = { app.scripts.rename(s.id, title.trim()); renaming = null }) { Text("Rename") } },
-            dismissButton = { TextButton(onClick = { renaming = null }) { Text("Cancel") } },
+            confirmButton = { TextButton(onClick = { app.scripts.rename(s.id, title.trim()); renaming = null }) { Text(stringResource(R.string.common_rename)) } },
+            dismissButton = { TextButton(onClick = { renaming = null }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
     deleting?.let { s ->
         AlertDialog(
             onDismissRequest = { deleting = null },
-            title = { Text("Delete script?") },
-            text = { Text("“${s.title.ifBlank { "Untitled" }}” will be permanently deleted.") },
-            confirmButton = { TextButton(onClick = { app.scripts.delete(s.id); deleting = null }) { Text("Delete", color = LensColors.Recording) } },
-            dismissButton = { TextButton(onClick = { deleting = null }) { Text("Cancel") } },
+            title = { Text(stringResource(R.string.library_delete_title)) },
+            text = { Text(stringResource(R.string.library_delete_message, s.title.ifBlank { untitled })) },
+            confirmButton = { TextButton(onClick = { app.scripts.delete(s.id); deleting = null }) { Text(stringResource(R.string.common_delete), color = LensColors.Recording) } },
+            dismissButton = { TextButton(onClick = { deleting = null }) { Text(stringResource(R.string.common_cancel)) } },
         )
     }
 }
@@ -185,13 +190,13 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
 private fun FirstRunCard(onDismiss: () -> Unit) {
     Card(colors = CardDefaults.cardColors(containerColor = LensColors.SurfaceHigh)) {
         Column(Modifier.padding(16.dp)) {
-            Text("Quick start", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.library_quick_start), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
             listOf(
-                "Add or paste a script.",
-                "Choose Smart Follow (follows your voice) or Manual (fixed speed).",
-                "Allow the microphone when asked — Smart Follow needs it.",
-                "Press play and start reading at your own pace.",
+                stringResource(R.string.library_quick_start_step1),
+                stringResource(R.string.library_quick_start_step2),
+                stringResource(R.string.library_quick_start_step3),
+                stringResource(R.string.library_quick_start_step4),
             ).forEachIndexed { i, line ->
                 Row(Modifier.padding(vertical = 3.dp)) {
                     Text("${i + 1}.", color = LensColors.Accent, modifier = Modifier.width(22.dp), fontWeight = FontWeight.Bold)
@@ -199,7 +204,7 @@ private fun FirstRunCard(onDismiss: () -> Unit) {
                 }
             }
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                TextButton(onClick = onDismiss) { Text("Got it") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.library_got_it)) }
             }
         }
     }
@@ -216,6 +221,8 @@ private fun ScriptRow(
     onFloating: () -> Unit,
 ) {
     var menu by remember { mutableStateOf(false) }
+    val untitled = stringResource(R.string.common_untitled)
+    val emptyScript = stringResource(R.string.library_empty_script)
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onEdit),
         shape = RoundedCornerShape(14.dp),
@@ -224,13 +231,13 @@ private fun ScriptRow(
         Row(Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(
-                    script.title.ifBlank { "Untitled" },
+                    script.title.ifBlank { untitled },
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    script.body.replace('\n', ' ').take(120).ifBlank { "Empty script" },
+                    script.body.replace('\n', ' ').take(120).ifBlank { emptyScript },
                     color = LensColors.Muted,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -239,25 +246,27 @@ private fun ScriptRow(
                 val words = script.wordCount
                 val minutes = (words / 150.0)
                 Text(
-                    "$words words · ~${if (minutes < 1) "<1" else "%.0f".format(minutes)} min · " +
+                    stringResource(
+                        R.string.library_script_meta, words, if (minutes < 1) "<1" else "%.0f".format(minutes),
                         DateUtils.getRelativeTimeSpanString(script.updatedAt),
+                    ),
                     color = LensColors.Muted,
                     style = MaterialTheme.typography.labelSmall,
                 )
             }
             FilledIconButton(onClick = onOpen, modifier = Modifier.size(48.dp)) {
-                Icon(Icons.Filled.PlayArrow, contentDescription = "Start prompting")
+                Icon(Icons.Filled.PlayArrow, contentDescription = stringResource(R.string.library_start_prompting))
             }
             Box {
                 IconButton(onClick = { menu = true }, modifier = Modifier.size(48.dp)) {
-                    Icon(Icons.Filled.MoreVert, contentDescription = "More actions")
+                    Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.library_more_actions))
                 }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                    DropdownMenuItem(text = { Text("Use with phone camera") }, onClick = { menu = false; onFloating() })
-                    DropdownMenuItem(text = { Text("Edit") }, onClick = { menu = false; onEdit() })
-                    DropdownMenuItem(text = { Text("Rename") }, onClick = { menu = false; onRename() })
-                    DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })
-                    DropdownMenuItem(text = { Text("Delete") }, onClick = { menu = false; onDelete() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.floating_title)) }, onClick = { menu = false; onFloating() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.common_edit)) }, onClick = { menu = false; onEdit() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.common_rename)) }, onClick = { menu = false; onRename() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.library_duplicate)) }, onClick = { menu = false; onDuplicate() })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.common_delete)) }, onClick = { menu = false; onDelete() })
                 }
             }
         }
