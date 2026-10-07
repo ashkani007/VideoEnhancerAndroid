@@ -51,13 +51,23 @@ data class AppSettings(
     val lipTracking: Boolean = true,
     // misc
     val overlayOpacity: Float = 0.75f,
-    val overlayFontSp: Float = 26f,
+    val overlayFontSp: Float = 28f,
     /** Floating window position and size in px (−1 = default). */
     val overlayX: Int = -1,
     val overlayY: Int = -1,
     val overlayW: Int = -1,
     val overlayH: Int = -1,
     val overlaySmartFollow: Boolean = true,
+    val overlayLineSpacing: Float = 1.25f,
+    /** Text opacity in the floating window (background opacity is [overlayOpacity]). */
+    val overlayTextOpacity: Float = 1f,
+    val overlayAlignCenter: Boolean = false,
+    val overlayMirror: Boolean = false,
+    val overlayLocked: Boolean = false,
+    val overlayAutoHide: Boolean = true,
+    /** Screen size the overlay position was saved for (to adapt after rotation). */
+    val overlayScreenW: Int = -1,
+    val overlayScreenH: Int = -1,
     val debugMode: Boolean = false,
     val firstRunDone: Boolean = false,
 ) {
@@ -113,6 +123,14 @@ class SettingsRepository(context: Context) {
             overlayW = prefs.getInt("overlayW", d.overlayW),
             overlayH = prefs.getInt("overlayH", d.overlayH),
             overlaySmartFollow = prefs.getBoolean("overlaySmartFollow", d.overlaySmartFollow),
+            overlayLineSpacing = prefs.getFloat("overlayLineSpacing", d.overlayLineSpacing),
+            overlayTextOpacity = prefs.getFloat("overlayTextOpacity", d.overlayTextOpacity),
+            overlayAlignCenter = prefs.getBoolean("overlayAlignCenter", d.overlayAlignCenter),
+            overlayMirror = prefs.getBoolean("overlayMirror", d.overlayMirror),
+            overlayLocked = prefs.getBoolean("overlayLocked", d.overlayLocked),
+            overlayAutoHide = prefs.getBoolean("overlayAutoHide", d.overlayAutoHide),
+            overlayScreenW = prefs.getInt("overlayScreenW", d.overlayScreenW),
+            overlayScreenH = prefs.getInt("overlayScreenH", d.overlayScreenH),
             debugMode = prefs.getBoolean("debugMode", d.debugMode),
             firstRunDone = prefs.getBoolean("firstRunDone", d.firstRunDone),
         )
@@ -147,6 +165,14 @@ class SettingsRepository(context: Context) {
             .putInt("overlayW", s.overlayW)
             .putInt("overlayH", s.overlayH)
             .putBoolean("overlaySmartFollow", s.overlaySmartFollow)
+            .putFloat("overlayLineSpacing", s.overlayLineSpacing)
+            .putFloat("overlayTextOpacity", s.overlayTextOpacity)
+            .putBoolean("overlayAlignCenter", s.overlayAlignCenter)
+            .putBoolean("overlayMirror", s.overlayMirror)
+            .putBoolean("overlayLocked", s.overlayLocked)
+            .putBoolean("overlayAutoHide", s.overlayAutoHide)
+            .putInt("overlayScreenW", s.overlayScreenW)
+            .putInt("overlayScreenH", s.overlayScreenH)
             .putBoolean("debugMode", s.debugMode)
             .putBoolean("firstRunDone", s.firstRunDone)
             .apply()
