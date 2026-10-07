@@ -135,6 +135,11 @@ class FloatingOverlayTest {
         assumeTrue("overlay permission not granted on this image", OverlayService.canDrawOverlays(context))
 
         val app = context.applicationContext as LensPromptApplication
+        // Let the repository finish its first (async) load, which seeds the welcome
+        // script; creating a script earlier would suppress that seeding and leave
+        // the library empty for the other tests.
+        val loadDeadline = SystemClock.uptimeMillis() + 5_000
+        while (app.scripts.scripts.value.isEmpty() && SystemClock.uptimeMillis() < loadDeadline) SystemClock.sleep(50)
         val script = app.scripts.create("Overlay test", longScript)
         try {
             try {

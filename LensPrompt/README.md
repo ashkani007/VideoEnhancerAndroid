@@ -169,11 +169,30 @@ The native library adds ~10 MB per ABI. The APK ships arm64-v8a, armeabi-v7a and
 
 The window:
 
-- Starts as a band across the upper part of the screen, so the preview and shutter stay free.
-- Move it with ⠿. Resize the height with the bottom bar, and width plus height with the ◢ corner.
-- ⚙ adjusts text size, manual speed and transparency, goes back to the start, and opens the camera.
-- AUTO/MAN switches between Smart Follow and manual scrolling.
-- A green marker shows the reading line. Position, size, font and opacity are remembered.
+- **Script viewport** (`overlay/ScriptViewport.kt`). The whole script is laid out for the current width, font, line spacing and alignment, and only the part inside the window is drawn. Text can't render outside the window.
+  - Smart Follow and manual scrolling move the text inside it.
+  - Resizing, font or spacing changes reflow immediately and keep the reading position.
+  - The script is scrollable from the first line to the last.
+- **Compact toolbar**: `[⠿ drag] [MODE] [▶] [⚙] [🔒]`.
+  - The mode chip shows MAN (manual, or forced because the camera app has the mic), OFF (press ▶), WAIT (listening or finding the place), SMART (following words) or VOICE (following voice activity).
+  - Tap the chip to switch between Smart Follow and manual.
+  - After 3 s without interaction the toolbar and resize grip fade out, leaving a small ⋯ handle. Tap the script or the handle to bring them back.
+- **Gestures are separate**:
+  - ⠿ (or ⋯) moves the window.
+  - The bottom-right grip resizes width and height continuously, with a minimum size, and always stays on screen.
+  - Dragging the script area scrolls the text, and Smart Follow continues from there.
+- **⚙ opens a floating settings panel**, a second small overlay window, so the camera app stays open. Every change applies live:
+  - text size slider (A− … A+, 18–72 sp), line spacing, background opacity (0–100 %), text opacity;
+  - window width and height, manual scroll speed;
+  - Smart Follow, center text, mirror text, lock, auto-hide;
+  - layout presets: **Near camera** (a narrow ~3-line strip at the top; drag it next to your selfie camera, wherever it is), Top band and Large;
+  - back to start, open camera, close.
+- **Lock** (🔒):
+  - the window can't be moved, resized or scrolled by accident;
+  - the controls disappear and a small 🔒 badge unlocks it;
+  - scrolling and Smart Follow keep running.
+- **Rotation.** The window keeps its relative place and size, is clamped inside the new screen, and keeps font, settings and script position. `core/OverlayGeometry.kt` holds this logic and is unit-tested.
+- **Persistence.** Position, size, font, line spacing, background and text opacity, alignment, mirror, Smart Follow, lock and auto-hide are remembered. A saved layout from another screen size is adapted.
 
 Smart Follow in the overlay uses LensPrompt's own AudioRecord and the offline pack (or the system recognizer without one).
 
