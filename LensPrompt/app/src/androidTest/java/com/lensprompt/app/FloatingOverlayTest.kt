@@ -192,17 +192,26 @@ class FloatingOverlayTest {
         SystemClock.sleep(600) // window added and laid out
     }
 
-    /** Clicks the overlay view with this content description, via accessibility (like a user tap). */
-    private fun clickOverlay(description: String): Boolean {
+    /**
+     * Clicks the overlay view with this content description, via accessibility
+     * (like a user tap). Waits up to [timeoutMs] for it to appear: on a loaded
+     * device the overlay's accessibility tree is published a little after the
+     * window is added.
+     */
+    private fun clickOverlay(description: String, timeoutMs: Long = 2_500): Boolean {
         val ua = instr.uiAutomation
         val info = ua.serviceInfo
         info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         ua.serviceInfo = info
-        for (w in ua.windows) {
-            val node = w.root?.findAccessibilityNodeInfosByText(description)
-                ?.firstOrNull { it.contentDescription?.toString() == description && it.isVisibleToUser } ?: continue
-            return node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-        }
+        val end = SystemClock.uptimeMillis() + timeoutMs
+        do {
+            for (w in ua.windows) {
+                val node = w.root?.findAccessibilityNodeInfosByText(description)
+                    ?.firstOrNull { it.contentDescription?.toString() == description && it.isVisibleToUser } ?: continue
+                return node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+            }
+            SystemClock.sleep(100)
+        } while (SystemClock.uptimeMillis() < end)
         return false
     }
 
