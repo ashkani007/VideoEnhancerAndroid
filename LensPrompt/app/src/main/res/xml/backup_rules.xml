@@ -4,5 +4,7 @@
      the 25 MB Auto Backup limit, and per-device recognizer verdicts are excluded. -->
 <full-backup-content>
     <exclude domain="file" path="vosk/" />
+    <!-- Android 8–9 recordings live in app-specific external storage; videos are too large for Auto Backup. -->
+    <exclude domain="external" path="Movies/" />
     <exclude domain="sharedpref" path="lensprompt_recognizer_verdicts.xml" />
 </full-backup-content>

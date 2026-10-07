@@ -4,6 +4,7 @@
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="file" path="vosk/" />
+        <exclude domain="external" path="Movies/" />
         <exclude domain="sharedpref" path="lensprompt_recognizer_verdicts.xml" />
     </cloud-backup>
     <device-transfer>
