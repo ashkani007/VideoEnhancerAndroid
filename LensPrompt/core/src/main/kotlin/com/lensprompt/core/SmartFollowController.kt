@@ -15,9 +15,12 @@ import kotlin.math.min
  * PAUSED          speaker stopped; target velocity is zero
  * LOW_CONFIDENCE  speech heard but not matching the script; position held
  * RECOVERING      a new location was found and is waiting for confirmation
+ * PACING          words cannot be recognized (e.g. the microphone is shared with
+ *                 video recording); the text advances at the learned reading
+ *                 speed while voice/lip activity says the speaker is talking
  * ERROR           recognition failed permanently (permission, unavailable, …)
  */
-enum class FollowState { IDLE, LISTENING, TRACKING, SHORT_GAP, PAUSED, LOW_CONFIDENCE, RECOVERING, ERROR }
+enum class FollowState { IDLE, LISTENING, TRACKING, SHORT_GAP, PAUSED, LOW_CONFIDENCE, RECOVERING, PACING, ERROR }
 
 /** Snapshot consumed by the scroll controller and the debug overlay. */
 data class FollowOutput(
@@ -35,6 +38,14 @@ data class FollowOutput(
     val lastRecognized: String,
     val pendingJumpIndex: Int,
     val errorMessage: String? = null,
+    /** Audio voice activity at this tick. */
+    val voice: VoiceState = VoiceState.UNKNOWN,
+    /** Lip activity at this tick. */
+    val visual: VisualState = VisualState.UNKNOWN,
+    /** True while the text is paced by activity instead of recognized words. */
+    val pacing: Boolean = false,
+    /** Why pacing is active (debug): "unavailable", "stalled" or "". */
+    val pacingReason: String = "",
 )
 
 /**
@@ -61,6 +72,13 @@ class SmartFollowController(
     private val velocity = ReadingVelocityEstimator(config)
     private val pause = PauseDetector(config)
     private val vad = VoiceActivityDetector()
+    private val mouth = MouthActivityDetector()
+
+    /** False when the app knows words cannot be recognized right now. */
+    private var recognitionAvailable = true
+    /** Voiced time accumulated since the last recognized hypothesis. */
+    private var voicedWithoutWordsMs = 0.0
+    private var pacing = false
 
     var state: FollowState = FollowState.IDLE
         private set
@@ -113,9 +131,41 @@ class SmartFollowController(
         velocity.resetAll()
         pause.reset(nowMs)
         vad.reset()
+        mouth.reset()
+        voicedWithoutWordsMs = 0.0
+        pacing = false
         lastTickMs = nowMs
         state = FollowState.LISTENING
     }
+
+    /**
+     * Restart following from a new position while keeping what was learned about
+     * the speaker (reading speed). Used when the audio route changes, e.g. when
+     * video recording starts and the microphone is re-routed.
+     */
+    fun continueFrom(nowMs: Long, startTokenIndex: Int) {
+        val v = velocity.velocity
+        start(nowMs, startTokenIndex)
+        velocity.seed(v)
+    }
+
+    /**
+     * Tell the controller whether word recognition is possible at all. When it is
+     * not, the text is paced by voice/lip activity at the learned reading speed.
+     */
+    fun setRecognitionAvailable(available: Boolean) {
+        recognitionAvailable = available
+        voicedWithoutWordsMs = 0.0
+    }
+
+    /** The audio level source changed (different scale); re-learn the noise floor. */
+    fun onAudioSourceChanged() = vad.reset()
+
+    /**
+     * Lip activity from the front camera: inner-lip gap divided by face height,
+     * or null when no face is visible in this frame.
+     */
+    fun onMouthOpenness(openness: Double?, nowMs: Long) = mouth.onFrame(openness, nowMs)
 
     fun stop() {
         state = FollowState.IDLE
@@ -167,6 +217,7 @@ class SmartFollowController(
         if (tokens.isEmpty()) return
         lastRecognized = text
         partial = tokens
+        voicedWithoutWordsMs = 0.0
 
         val query = buildQuery()
         val key = query.joinToString(" ")
@@ -200,15 +251,23 @@ class SmartFollowController(
         lastQueryKey = ""
     }
 
+    /**
+     * The position decisions are made relative to: the last reliable fix, or while
+     * pacing (no fresh fixes) the paced target, which is our best estimate.
+     */
+    private fun referenceIndex(): Int =
+        if (pacing) max(reliableIndex, target.toInt() - 1) else reliableIndex
+
     /** Where we expect the newest recognized word to be: last fix plus predicted advance. */
     private fun expectedIndex(nowMs: Long): Int {
+        if (pacing) return max(0, referenceIndex())
         val elapsed = (nowMs - reliableTimeMs).coerceAtLeast(0) / 1000.0
         val advance = min(velocity.velocity * elapsed, 8.0)
         return max(0, reliableIndex + advance.toInt())
     }
 
     private fun searchWindow(nowMs: Long): Pair<Int, Int> {
-        val base = max(0, reliableIndex)
+        val base = max(0, referenceIndex())
         val lost = state == FollowState.LOW_CONFIDENCE || state == FollowState.RECOVERING ||
             state == FollowState.LISTENING
         return if (!lost) {
@@ -224,6 +283,15 @@ class SmartFollowController(
 
     private fun evaluate(r: AlignmentResult, nowMs: Long) {
         if (r.confidence < config.minConfidence) { reject(nowMs); return }
+        if (pacing) {
+            // Words are back after a stretch of pacing. The paced target is only an
+            // estimate, so accept any confident fix reasonably close to it.
+            val d = r.endIndex - referenceIndex()
+            if (d in -config.pacingToleranceTokens..config.pacingToleranceTokens) {
+                accept(r, nowMs, jumped = true)
+                return
+            }
+        }
         val delta = r.endIndex - reliableIndex
         val firstFix = reliableIndex < 0 || state == FollowState.LISTENING
 
@@ -278,6 +346,8 @@ class SmartFollowController(
         pendingConfirmations = 0
 
         if (jumped) velocity.resetHistory()
+        val wasPacing = pacing
+        if (recognitionAvailable) pacing = false
         if (advanced || movedBack) {
             reliableIndex = r.endIndex
             reliableTimeMs = nowMs
@@ -287,8 +357,8 @@ class SmartFollowController(
             velocity.addSample(nowMs, (reliableIndex + 1).toDouble())
         }
         if (movedBack) target = (reliableIndex + 1).toDouble() // confirmed backward reacquisition
-        if (advanced || state == FollowState.LOW_CONFIDENCE || state == FollowState.RECOVERING) {
-            state = FollowState.TRACKING
+        if (advanced || wasPacing || state == FollowState.LOW_CONFIDENCE || state == FollowState.RECOVERING) {
+            state = if (pacing) FollowState.PACING else FollowState.TRACKING
         }
     }
 
@@ -321,6 +391,8 @@ class SmartFollowController(
         lastTickMs = nowMs
 
         val voice = vad.state(nowMs)
+        val visual = mouth.state(nowMs)
+        updatePacing(nowMs, dt, voice)
         if (state == FollowState.TRACKING || state == FollowState.SHORT_GAP || state == FollowState.PAUSED) {
             when (pause.phase(nowMs, voice)) {
                 SpeechPhase.ACTIVE -> if (state != FollowState.PAUSED) state = FollowState.TRACKING
@@ -334,6 +406,14 @@ class SmartFollowController(
 
         val reliableProgress = (reliableIndex + 1).toDouble()
         val v = velocity.velocity
+        if (state == FollowState.PACING) {
+            // No words: advance at the learned reading speed, scaled by how sure we
+            // are that the speaker is talking. Silence stops the text immediately.
+            val rate = v * SpeakingFusion.rate(voice, visual)
+            target = min(target + rate * dt, index.size.toDouble())
+            targetVel = rate
+            return output(nowMs, v, voice, visual)
+        }
         val coastCap = max(config.maxCoastTokens, v * COAST_SECONDS)
         val desiredVel: Double
         when (state) {
@@ -359,8 +439,33 @@ class SmartFollowController(
         val ahead = target - desired
         if (desired > target) target = desired
         targetVel = if (ahead <= 0.0) desiredVel else desiredVel * (1.0 - ahead / AHEAD_TAPER_TOKENS).coerceIn(0.0, 1.0)
+        return output(nowMs, v, voice, visual)
+    }
 
-        return FollowOutput(
+    /**
+     * Enter pacing when recognition is known to be unavailable, or when it has
+     * stalled: the speaker has been audibly talking for a while but no words
+     * arrived. Leave it as soon as recognized words line up again (see evaluate)
+     * or the app reports recognition available and words flow.
+     */
+    private fun updatePacing(nowMs: Long, dt: Double, voice: VoiceState) {
+        if (state == FollowState.IDLE || state == FollowState.ERROR) return
+        if (voice == VoiceState.VOICE) voicedWithoutWordsMs += dt * 1000.0
+        val stalled = voicedWithoutWordsMs >= config.recognitionStallVoicedMs
+        val shouldPace = !recognitionAvailable || stalled
+        if (shouldPace && !pacing) {
+            pacing = true
+            pendingJump = -1
+            pendingConfirmations = 0
+            // Continue from where the text is, never jump back.
+            target = max(target, (reliableIndex + 1).toDouble())
+        }
+        // Pacing ends only when recognized words line up again (see accept).
+        if (pacing) state = FollowState.PACING
+    }
+
+    private fun output(nowMs: Long, v: Double, voice: VoiceState, visual: VisualState): FollowOutput =
+        FollowOutput(
             state = state,
             targetProgress = target,
             targetVelocity = targetVel,
@@ -371,8 +476,15 @@ class SmartFollowController(
             lastRecognized = lastRecognized,
             pendingJumpIndex = pendingJump,
             errorMessage = errorMessage,
+            voice = voice,
+            visual = visual,
+            pacing = pacing,
+            pacingReason = when {
+                !pacing -> ""
+                !recognitionAvailable -> "unavailable"
+                else -> "stalled"
+            },
         )
-    }
 
     private companion object {
         const val HISTORY_TOKENS = 32

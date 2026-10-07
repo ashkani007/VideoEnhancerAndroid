@@ -77,6 +77,16 @@ data class SmartFollowConfig(
     /** Consecutive rejected measurements before entering LOW_CONFIDENCE. */
     val lowConfidenceAfterRejects: Int = 3,
 
+    // ------------------------------------------------------------------ pacing
+    /**
+     * Voiced time without a single recognized word after which recognition is
+     * considered stalled (e.g. the microphone was taken by another recorder) and
+     * the text switches to activity pacing.
+     */
+    val recognitionStallVoicedMs: Long = 4_000,
+    /** Fixes this close to the paced position end pacing without extra evidence. */
+    val pacingToleranceTokens: Int = 14,
+
     // ----------------------------------------------------------------- scroll
     /** Proportional gain: how strongly position error becomes velocity (1/s). */
     val scrollGain: Double = 2.2,

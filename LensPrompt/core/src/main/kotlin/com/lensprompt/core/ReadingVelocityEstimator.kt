@@ -55,6 +55,13 @@ class ReadingVelocityEstimator(private val config: SmartFollowConfig) {
         head = 0
     }
 
+    /** Start from a known reading speed (e.g. learned before the audio route changed). */
+    fun seed(tokensPerSec: Double) {
+        resetHistory()
+        velocity = tokensPerSec.coerceIn(0.0, config.maxReadingTokensPerSec)
+        hasEstimate = true
+    }
+
     fun resetAll() {
         resetHistory()
         velocity = config.defaultTokensPerSec
@@ -123,12 +130,13 @@ class VoiceActivityDetector(
         private set
 
     fun onLevel(db: Double, nowMs: Long) {
-        if (floor.isNaN()) floor = db
-        if (db < floor) {
-            floor += (db - floor) * 0.3 // follow quieter levels quickly
-        } else if (db < floor + marginDb) {
-            floor += (db - floor) * 0.05 // drift up slowly with background noise
-        }
+        // Minimum-statistics noise floor. Start below the first sample: after a
+        // reset we may be in the middle of speech, and the floor must not learn
+        // the speech level as "noise". It falls quickly on quieter input (natural
+        // gaps between words) and rises slowly otherwise, so it converges on the
+        // room noise whether the reset happened during speech or silence.
+        if (floor.isNaN()) floor = db - INITIAL_HEADROOM_DB
+        floor += if (db < floor) (db - floor) * FALL_RATE else (db - floor) * RISE_RATE
         if (db >= floor + marginDb) lastVoiceMs = nowMs
         lastLevelMs = nowMs
     }
@@ -139,10 +147,19 @@ class VoiceActivityDetector(
         lastVoiceMs = Long.MIN_VALUE
     }
 
+    /** Current noise-floor estimate (debug). */
+    val noiseFloor: Double get() = floor
+
     fun state(nowMs: Long): VoiceState = when {
         lastLevelMs == Long.MIN_VALUE || nowMs - lastLevelMs > staleMs -> VoiceState.UNKNOWN
         lastVoiceMs != Long.MIN_VALUE && nowMs - lastVoiceMs <= hangMs -> VoiceState.VOICE
         else -> VoiceState.SILENCE
+    }
+
+    private companion object {
+        const val INITIAL_HEADROOM_DB = 6.0
+        const val FALL_RATE = 0.3
+        const val RISE_RATE = 0.03
     }
 }
 

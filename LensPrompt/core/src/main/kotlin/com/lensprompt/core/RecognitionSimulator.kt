@@ -8,6 +8,38 @@ sealed class RecognitionEvent {
     data class Final(override val timeMs: Long, val text: String) : RecognitionEvent()
     data class EndOfSpeech(override val timeMs: Long) : RecognitionEvent()
     data class AudioLevel(override val timeMs: Long, val rmsDb: Float) : RecognitionEvent()
+    /** Front-camera lip measurement (null = no face in frame). */
+    data class MouthFrame(override val timeMs: Long, val openness: Double?) : RecognitionEvent()
+    /** The app learned whether word recognition is possible (e.g. recording started). */
+    data class RecognitionAvailability(override val timeMs: Long, val available: Boolean) : RecognitionEvent()
+    /** The audio-level source changed (e.g. app-owned capture during recording). */
+    data class AudioSourceChanged(override val timeMs: Long) : RecognitionEvent()
+}
+
+/**
+ * Models what video recording with sound does to recognition on affected
+ * devices: recognized words stop arriving between [fromMs] and [toMs], while the
+ * app's own audio capture keeps delivering levels (and optionally announces
+ * the outage). Audio levels and mouth frames are untouched.
+ */
+fun List<RecognitionEvent>.withRecognitionOutage(
+    fromMs: Long,
+    toMs: Long = Long.MAX_VALUE,
+    announce: Boolean = true,
+): List<RecognitionEvent> {
+    val kept = filterNot {
+        (it is RecognitionEvent.Partial || it is RecognitionEvent.Final || it is RecognitionEvent.SessionStart ||
+            it is RecognitionEvent.EndOfSpeech) && it.timeMs in fromMs until toMs
+    }.toMutableList()
+    if (announce) {
+        kept += RecognitionEvent.RecognitionAvailability(fromMs, false)
+        kept += RecognitionEvent.AudioSourceChanged(fromMs)
+        if (toMs != Long.MAX_VALUE) {
+            kept += RecognitionEvent.RecognitionAvailability(toMs, true)
+            kept += RecognitionEvent.SessionStart(toMs)
+        }
+    }
+    return kept.sortedBy { it.timeMs }
 }
 
 /**
@@ -80,6 +112,31 @@ class SpeechScenario(
 
     fun silence(ms: Long): SpeechScenario { clock += ms; return this }
 
+    /**
+     * Front-camera lip measurements at [fps]: openness oscillates while a word is
+     * being voiced and stays near closed otherwise. [faceVisible] false yields
+     * "no face" frames.
+     */
+    fun mouthFrames(fps: Int = 15, faceVisible: Boolean = true, untilMs: Long = clock + 2_000): List<RecognitionEvent> {
+        val out = ArrayList<RecognitionEvent>()
+        val step = 1000L / fps
+        var w = 0
+        var t = 0L
+        var phase = 0
+        while (t <= untilMs) {
+            while (w < spoken.size && spoken[w].timeMs < t - 50) w++
+            val voiced = w < spoken.size && spoken[w].timeMs <= t + 350
+            val openness = when {
+                !faceVisible -> null
+                voiced -> if (phase++ % 2 == 0) 0.09 else 0.02
+                else -> 0.01
+            }
+            out += RecognitionEvent.MouthFrame(t, openness)
+            t += step
+        }
+        return out
+    }
+
     fun events(): List<RecognitionEvent> {
         val out = ArrayList<RecognitionEvent>()
         if (spoken.isEmpty()) return out
@@ -130,7 +187,13 @@ class SpeechScenario(
                 while (w < spoken.size && spoken[w].timeMs < lt - 50) w++
                 // a word is being voiced if one ends within the next ~350 ms
                 val voiced = w < spoken.size && spoken[w].timeMs <= lt + 350
-                out += RecognitionEvent.AudioLevel(lt, if (voiced) 7f else 0f)
+                // Real speech energy dips briefly between words/syllables.
+                val level = when {
+                    !voiced -> 0f
+                    (lt / 100) % 4 == 3L -> 1.5f
+                    else -> 7f
+                }
+                out += RecognitionEvent.AudioLevel(lt, level)
                 lt += 100
             }
         }
@@ -147,6 +210,7 @@ data class SimFrame(
     val matchedIndex: Int,
     val confidence: Double,
     val readingVelocity: Double,
+    val pacing: Boolean,
     val scrollPx: Double,
     val scrollVelocityPx: Double,
     /** Script progress currently under the reading anchor. */
@@ -183,6 +247,9 @@ class SmartFollowSimulator(
                     is RecognitionEvent.Final -> controller.onFinalResult(ev.text, ev.timeMs)
                     is RecognitionEvent.EndOfSpeech -> controller.onEndOfSpeech(ev.timeMs)
                     is RecognitionEvent.AudioLevel -> controller.onAudioLevel(ev.rmsDb, ev.timeMs)
+                    is RecognitionEvent.MouthFrame -> controller.onMouthOpenness(ev.openness, ev.timeMs)
+                    is RecognitionEvent.RecognitionAvailability -> controller.setRecognitionAvailable(ev.available)
+                    is RecognitionEvent.AudioSourceChanged -> controller.onAudioSourceChanged()
                 }
                 e++
             }
@@ -197,6 +264,7 @@ class SmartFollowSimulator(
                 matchedIndex = out.matchedIndex,
                 confidence = out.confidence,
                 readingVelocity = out.readingVelocity,
+                pacing = out.pacing,
                 scrollPx = pos,
                 scrollVelocityPx = scroll.velocity,
                 displayedProgress = mapper.progressAt(pos),
