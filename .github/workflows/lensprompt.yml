@@ -71,7 +71,7 @@ jobs:
   emulator-smoke-test:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -101,6 +101,40 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # Offline recognition test material: small Vosk models (same download
+      # candidates as the app) and synthesized speech (espeak-ng, 16 kHz PCM16).
+      - name: Cache offline speech models
+        uses: actions/cache@v4
+        with:
+          path: speech-test
+          key: vosk-small-models-v1
+
+      - name: Prepare offline speech test material
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq espeak-ng ffmpeg > /dev/null
+          mkdir -p speech-test && cd speech-test
+          fetch() { # key, candidates...
+            key=$1; shift
+            [ -s "$key.zip" ] && { echo "$key: cached"; return; }
+            for name in "$@"; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -I "https://alphacephei.com/vosk/models/$name.zip")
+              echo "$key: $name -> HTTP $code"
+              if [ "$code" = "200" ]; then curl -sSfL -o "$key.zip" "https://alphacephei.com/vosk/models/$name.zip" && return; fi
+            done
+            echo "$key: no model available"
+          }
+          fetch en vosk-model-small-en-us-0.15
+          fetch nl vosk-model-small-nl-0.22
+          fetch fa vosk-model-small-fa-0.42 vosk-model-small-fa-0.5 vosk-model-small-fa-0.4
+          for name in vosk-model-small-de-0.15 vosk-model-small-fr-0.22 vosk-model-small-es-0.42; do
+            echo "check $name -> HTTP $(curl -s -o /dev/null -w '%{http_code}' -I https://alphacephei.com/vosk/models/$name.zip)"
+          done
+          say() { espeak-ng -v "$1" -s 140 -w "$2.wav" "$3" && ffmpeg -loglevel error -y -i "$2.wav" -ar 16000 -ac 1 -f s16le "$2.raw"; }
+          say en-us en "The quick brown fox jumps over the lazy dog. Today we talk about a simple way to record better videos with a teleprompter."
+          say nl nl "Vandaag praten we over een eenvoudige manier om betere video's op te nemen met een teleprompter."
+          say fa fa "امروز درباره یک روش ساده برای ضبط ویدیوهای بهتر صحبت می کنیم."
+          ls -la
+
       - name: Run instrumented smoke test on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -115,8 +149,12 @@ jobs:
             adb shell svc power stayon true
             adb shell settings put system screen_off_timeout 1800000
             adb shell input keyevent 82
+            adb shell mkdir -p /data/local/tmp/lp
+            for f in ../speech-test/*.zip ../speech-test/*.raw; do [ -s "$f" ] && adb push "$f" /data/local/tmp/lp/ > /dev/null; done
+            adb shell ls -la /data/local/tmp/lp
             adb logcat -c
-            ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest || (adb logcat -d -s LIBTREE:* | head -150; exit 1)
+            ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest || (adb logcat -d -s LIBTREE:* LPVoskTest:* OfflineASR:* OfflineModel:* SpeechModels:* AndroidRuntime:E | head -250; exit 1)
+            adb logcat -d -s LPVoskTest:* OfflineModel:*
 
       - name: Upload instrumented test reports
         if: always()

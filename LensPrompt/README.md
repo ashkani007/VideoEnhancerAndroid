@@ -107,38 +107,112 @@ In the app, **Settings → Debug mode** shows a live HUD: recognized text, match
   - Auto-hiding controls, and a status chip with a green mic icon while listening.
   - RTL and Persian text are laid out by content direction.
 - **Camera.** CameraX preview behind dimmed text, front/rear switching, and video recording to `Movies/LensPrompt` with a timer. With sound on, LensPrompt records the audio itself so Smart Follow keeps working (see below).
-- **Floating overlay.** A foreground service draws a draggable, resizable, semi-transparent teleprompter over other apps. It scrolls at the manual speed.
+- **Floating teleprompter.** A movable, resizable, transparent teleprompter over Samsung Camera and other camera apps, with Smart Follow when the microphone is free (see below).
 - **Languages.** Device default, English, Persian, Dutch and more. Tokenization and number spelling support EN/NL/FA.
 
 ## Smart Follow while recording video with sound
 
-**Why it used to stop.** CameraX records sound from `AudioSource.CAMCORDER`. Since Android 10 that source is *privacy-sensitive*: while one app captures from it, every other app capturing audio receives silence. The speech recognizer runs in another app (the system recognition service), so as soon as recording started it heard only silence.
+**What failed on a real phone (V3, commit 41f4dac) and why.**
 
-**How it works now.** While recording with sound, LensPrompt is the single owner of the microphone:
+- V3 captured the microphone with `AudioSource.CAMCORDER`. Since Android 10 that source is privacy-sensitive: while LensPrompt held it, every other app capturing audio got silence.
+- V3 then handed its audio to the system recognizer with `EXTRA_AUDIO_SOURCE` (Android 13+). That extra is *optional* for recognition services. A service that ignores it opens the microphone itself and, because of the first point, hears only silence.
+- `ERROR_NO_MATCH` / `ERROR_SPEECH_TIMEOUT` were treated as normal session ends, so such a recognizer was restarted forever, and nothing measured whether it ever read the stream.
+
+**V4: one microphone capture, a recognizer that reads it.**
 
 ```
-AudioCaptureEngine (one AudioRecord, 48 kHz mono)
-  ├─ PCM file ──► AvMuxer: AAC, aligned to the first video frame, muxed into the CameraX video-only MP4
-  ├─ levels ────► SmartFollowController voice-activity detector
-  └─ 16 kHz pipe ► SpeechRecognizer EXTRA_AUDIO_SOURCE (Android 13+, segmented session;
-                   on-device recognizer preferred, falls back to the default service)
-Front camera ──► LipTracker (ML Kit face contours, on-device) ──► MouthActivityDetector
+AudioCaptureEngine (one AudioRecord, MIC source, 48 kHz mono)
+  ├─ PCM file ──────► AvMuxer → soundtrack of the CameraX video-only MP4
+  ├─ levels ────────► voice-activity detector
+  └─ 16 kHz PCM ────► offline recognizer (Vosk, in-process)  → words → alignment → Smart Follow
+                  └─► (fallback) pipe → system recognizer, under a health check
 ```
 
-**Hybrid follow.** `SmartFollowController` enters `PACING` when recognized words can't arrive. That's either because the app says recognition is unavailable (Android 12 and older), or because recognition stalls: voice is heard for 4 s with no words.
+Route selection (`PrompterViewModel.applyRoute`, shown as "Route" in the debug HUD):
 
-- While pacing, the text advances at the reading speed learned before recording, scaled by `SpeakingFusion`:
-  - voice and moving lips: full speed;
-  - voice with a still mouth: slow, probably someone else talking;
-  - silence: stop.
-- As soon as recognized words line up again, normal tracking takes over without a jump.
-- Covered by `HybridFollowTest` (simulator) and `AvMuxerTest` (emulator).
+1. **Offline pack installed** for the recognition language → the offline recognizer reads LensPrompt's PCM. No second microphone client, no session restarts.
+2. Not recording → the system recognizer opens the microphone itself, as before.
+3. Recording, Android 13+, no pack → the system recognizer is fed through a non-blocking pipe. A health check (`core/RecognizerHealth.kt`) stops it if the service never drains the pipe (writes fail with EAGAIN) or produces no word in 8 s of voiced speech. The verdict is remembered per recognition service, so it is never retried in a loop.
+4. Otherwise → pacing by voice and lip activity at the learned reading speed.
+
+The MIC source is not privacy-sensitive, so LensPrompt's own capture never silences anyone else.
+
+**Offline speech packs** (Settings → Offline speech): small Vosk models, downloaded on demand from alphacephei.com or imported from a `.zip`. They are not bundled.
+
+| Language | Model | Download |
+|---|---|---|
+| English | vosk-model-small-en-us-0.15 | ~40 MB |
+| Dutch | vosk-model-small-nl-0.22 | ~39 MB |
+| Persian | vosk-model-small-fa-0.42 (falls back to 0.5, 0.4) | ~53 MB |
+| German / French / Spanish | vosk-model-small-de-0.15 / fr-0.22 / es-0.42 | ~40 MB |
+
+Why Vosk:
+
+- It was the only engine found that streams partial results offline for English, Dutch *and* Persian with small models.
+- sherpa-onnx has no streaming Dutch or Persian models.
+- whisper.cpp is not streaming and is heavy.
+- The Android `SpeechRecognizer` cannot be relied on to read app audio (see above).
+
+The engine sits behind `PcmSpeechEngine`, so another engine can be plugged in per language. Small-model accuracy is below Google's online recognizer, but Smart Follow aligns fuzzily against the known script. Persian Smart Follow with the system recognizer is unchanged when not recording.
+
+The native library adds ~10 MB per ABI. The APK ships arm64-v8a, armeabi-v7a and x86_64.
+
+## Floating teleprompter over the phone's camera app
+
+"Use with phone camera" (prompter top bar, or the script menu in the library) does the following:
+
+1. Explains the mode.
+2. Opens Android's "Display over other apps" screen if needed (`SYSTEM_ALERT_WINDOW`).
+3. Asks for the microphone, and for notifications on Android 13+.
+4. Starts `OverlayService`, a foreground service of type `specialUse|microphone` that draws a `TYPE_APPLICATION_OVERLAY` window.
+5. Optionally opens the default camera app in video mode.
+
+The window:
+
+- Starts as a band across the upper part of the screen, so the preview and shutter stay free.
+- Move it with ⠿. Resize the height with the bottom bar, and width plus height with the ◢ corner.
+- ⚙ adjusts text size, manual speed and transparency, goes back to the start, and opens the camera.
+- AUTO/MAN switches between Smart Follow and manual scrolling.
+- A green marker shows the reading line. Position, size, font and opacity are remembered.
+
+Smart Follow in the overlay uses LensPrompt's own AudioRecord and the offline pack (or the system recognizer without one).
+
+**Platform limit.** When the camera app records video *with sound*, it captures the microphone with a privacy-sensitive source, and Android gives every other app silence. No app can listen at that moment. LensPrompt detects this (`AudioRecordingConfiguration.isClientSilenced`, plus a run of exact-zero samples), shows "Camera app is using the mic — manual speed", scrolls at the manual speed, and resumes following when the microphone is free. Smart Follow over a camera app therefore follows the voice before and between recordings, or while the camera app records without sound. For hands-free following *while* recording with sound, use LensPrompt's own camera, where one capture feeds both.
+
+## Diagnostics
+
+With Settings → Debug mode on, the prompter HUD shows:
+
+- route and mic owner;
+- AudioRecord source and state;
+- PCM read rate, and whether Android silences the capture;
+- recognizer engine, state, start and restart counts, partial and final counts, and result age;
+- last error and health verdict;
+- pipe bytes, full drops and failures;
+- voiced-without-words time;
+- recording and mux state.
+
+"Copy diagnostics" copies every value. While Smart Follow runs, a full line is logged every 2 s (and on every route or mic event):
+
+```bash
+adb logcat -s LensPromptDiag
+```
+
+The emulator CI also runs `OfflineRecognitionTest`:
+
+1. Downloads the small EN/NL/FA models.
+2. Synthesizes speech with espeak-ng.
+3. Streams it in 20 ms chunks through the real `VoskSpeechEngine`.
+4. Feeds the recognized words to `SmartFollowController`.
+
+English must recognize at least half the script and Smart Follow must reach its second half. Dutch and Persian are run and logged; espeak's synthetic voices are too unlike real speech to assert accuracy.
 
 ## Known limitations (honest list)
 
 - **Recognizer behaviour varies by device.** Android's `SpeechRecognizer` is session-based. LensPrompt restarts sessions in a controlled way, but some devices play a short sound on every restart and some cap session length. This needs testing on real devices.
-- **Recording on Android 12 and older.** There, the recognizer can't take LensPrompt's audio stream, so while recording Smart Follow paces the text by voice and lip activity at your learned reading speed. It stops when you stop, but it can't detect skipped or repeated sentences until recording ends.
+- **Recording without an offline pack.** Without a pack, the system recognizer is only usable while recording if it reads LensPrompt's stream. That needs Android 13+ and depends on the service, and it is checked at runtime. Otherwise Smart Follow paces by voice and lip activity. It stops when you stop, but it can't detect skipped or repeated sentences.
+- **Offline pack accuracy.** Small Vosk models are less accurate than large online recognizers, especially for Persian. Accuracy on real speech has not yet been measured on a device.
 - **A/V sync of the muxed sound** comes from CameraX status callbacks and the audio HAL timestamp. It's verified on the emulator and should be within a few tens of milliseconds, but it needs checking on real phones.
-- **Overlay is manual only.** The overlay doesn't support Smart Follow, because background microphone use is restricted and would compete with the other camera app's audio.
+- **Overlay while the camera app records sound.** Android silences other apps' microphones, so the overlay falls back to manual speed then (see above). It is not yet verified on a Samsung device.
 - **Recognition location.** Where recognition runs (on-device or online) is decided by the device's recognition service. "Prefer on-device" is a request, not a guarantee.
 - **Tuning is simulator-based.** The Smart Follow defaults come from the simulator. Real speech and recognizer latency on a device may call for adjusting `SmartFollowConfig`.

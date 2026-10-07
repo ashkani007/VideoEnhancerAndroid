@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PictureInPictureAlt
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Settings
@@ -115,6 +116,7 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
     var previewView by remember { mutableStateOf<PreviewView?>(null) }
     var controlsVisible by remember { mutableStateOf(true) }
     var showSheet by remember { mutableStateOf(false) }
+    var showFloating by remember { mutableStateOf(false) }
 
     fun granted(p: String) = ContextCompat.checkSelfPermission(context, p) == PackageManager.PERMISSION_GRANTED
     var cameraGranted by remember { mutableStateOf(granted(Manifest.permission.CAMERA)) }
@@ -226,6 +228,9 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.titleMedium,
                 )
+                IconButton(onClick = { if (!cameraState.isRecording) { vm.stop(); showFloating = true } }) {
+                    Icon(Icons.Filled.PictureInPictureAlt, contentDescription = "Use with phone camera (floating teleprompter)", tint = Color.White)
+                }
                 IconButton(onClick = onEdit) { Icon(Icons.Filled.Edit, contentDescription = "Edit script", tint = Color.White) }
                 IconButton(onClick = onSettings) { Icon(Icons.Filled.Settings, contentDescription = "Settings", tint = Color.White) }
             }
@@ -307,6 +312,8 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
 
         if (settings.debugMode) DebugOverlay(vm, Modifier.align(Alignment.BottomStart))
     }
+
+    if (showFloating) FloatingPrompterDialog(scriptId) { showFloating = false }
 
     if (showSheet) {
         ModalBottomSheet(onDismissRequest = { showSheet = false }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {

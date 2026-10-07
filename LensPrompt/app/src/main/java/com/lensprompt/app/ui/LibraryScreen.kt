@@ -75,6 +75,7 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
     var query by rememberSaveable { mutableStateOf("") }
     var renaming by remember { mutableStateOf<Script?>(null) }
     var deleting by remember { mutableStateOf<Script?>(null) }
+    var floating by remember { mutableStateOf<Script?>(null) }
     val snackbar = remember { SnackbarHostState() }
 
     LaunchedEffect(storageError) {
@@ -151,11 +152,13 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
                     onRename = { renaming = s },
                     onDuplicate = { app.scripts.duplicate(s.id) },
                     onDelete = { deleting = s },
+                    onFloating = { floating = s },
                 )
             }
         }
     }
 
+    floating?.let { s -> FloatingPrompterDialog(s.id) { floating = null } }
     renaming?.let { s ->
         var title by remember(s.id) { mutableStateOf(s.title) }
         AlertDialog(
@@ -209,6 +212,7 @@ private fun ScriptRow(
     onRename: () -> Unit,
     onDuplicate: () -> Unit,
     onDelete: () -> Unit,
+    onFloating: () -> Unit,
 ) {
     var menu by remember { mutableStateOf(false) }
     Card(
@@ -248,6 +252,7 @@ private fun ScriptRow(
                     Icon(Icons.Filled.MoreVert, contentDescription = "More actions")
                 }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                    DropdownMenuItem(text = { Text("Use with phone camera") }, onClick = { menu = false; onFloating() })
                     DropdownMenuItem(text = { Text("Edit") }, onClick = { menu = false; onEdit() })
                     DropdownMenuItem(text = { Text("Rename") }, onClick = { menu = false; onRename() })
                     DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })

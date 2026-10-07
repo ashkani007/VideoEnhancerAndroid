@@ -137,26 +137,21 @@ fun SettingsScreen(onBack: () -> Unit) {
                 hint = "LensPrompt records the sound itself, so Smart Follow keeps listening while you film.",
             ) { v -> update { it.copy(recordAudio = v) } }
 
-            Section("Floating overlay")
+            Section("Floating teleprompter")
             Text(
-                "Shows a movable, transparent teleprompter above other apps (for example your favourite camera app). " +
-                    "The overlay scrolls at the manual speed.",
+                "Shows a movable, resizable, transparent teleprompter above other apps such as Samsung Camera. " +
+                    "Start it for a script with \"Use with phone camera\" (script menu or prompter top bar). " +
+                    "It follows your voice while the microphone is free and scrolls at the manual speed while " +
+                    "the camera app records sound.",
                 color = LensColors.Muted, style = MaterialTheme.typography.bodySmall,
             )
             LabeledSlider("Overlay opacity", s.overlayOpacity, 0.2f..1f, "%.2f") { v -> update { it.copy(overlayOpacity = v) } }
             Row {
-                Button(onClick = {
-                    if (Settings.canDrawOverlays(context)) {
-                        OverlayService.start(context)
-                    } else {
-                        context.startActivity(
-                            Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}"))
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        )
-                    }
-                }) { Text(if (Settings.canDrawOverlays(context)) "Start overlay" else "Allow overlay…") }
+                var showFloating by remember { mutableStateOf(false) }
+                Button(onClick = { showFloating = true }) { Text("Start floating teleprompter") }
+                if (showFloating) FloatingPrompterDialog(null) { showFloating = false }
                 Spacer(Modifier.padding(4.dp))
-                OutlinedButton(onClick = { OverlayService.stop(context) }) { Text("Stop overlay") }
+                OutlinedButton(onClick = { OverlayService.stop(context) }) { Text("Stop") }
             }
 
             Section("Developer")
