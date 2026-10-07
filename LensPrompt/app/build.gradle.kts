@@ -24,12 +24,12 @@ plugins {
 
 android {
     namespace = "com.lensprompt.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.lensprompt.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         // com.lensprompt.app is the permanent production application ID.
         versionCode = ciVersionCode
         versionName = "1.0.0"
