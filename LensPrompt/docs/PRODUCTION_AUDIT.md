@@ -1,5 +1,10 @@
 # LensPrompt 1.0 production audit
 
+> **Status update (RC1):**
+> - **Resolved:** B1 (signing architecture; key pending), B2, B3 (API 36), B4, B5, §2 (16 KB: all 64-bit libraries pass in CI, ML Kit included), P6, Q1 (fa/nl translations need native review), Q2 (About / licenses; privacy URL pending), Q4.
+> - **Prepared:** monetization (billing off).
+> - **Open:** see the RC report and `docs/PLAY_CONSOLE.md`.
+
 Audited at commit `c7cce39` on `claude/lensprompt-android-dev-s2ojat`. No app code was changed for this audit.
 
 **Severity**

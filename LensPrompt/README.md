@@ -230,6 +230,24 @@ The emulator CI also runs `OfflineRecognitionTest`:
 
 English must recognize at least half the script and Smart Follow must reach its second half. Dutch and Persian are run and logged; espeak's synthetic voices are too unlike real speech to assert accuracy.
 
+## Release (LensPrompt 1.0)
+
+- **Application ID:** `com.lensprompt.app` (permanent).
+- **Build:**
+  - CI builds the debug APK, plus a **release AAB and APK** with R8.
+  - The release is signed with the upload key only when the GitHub secrets exist; otherwise it is unsigned (`docs/RELEASE_SIGNING.md`).
+  - versionCode is the CI run number.
+- **Checks in CI:**
+  - unit tests and emulator tests;
+  - Google Play's 16 KB native-library check (`tools/check_16k_alignment.py`);
+  - a launch smoke test of the minified build (`qa` build type).
+- **LensPrompt Pro:** Play Billing architecture behind `BILLING_ENABLED` (off). Prices only from Play, nothing locked (`docs/MONETIZATION.md`).
+- **Privacy:**
+  - `docs/DATA_MAP.md`: what the code does with data;
+  - `docs/PRIVACY_POLICY.md`: draft;
+  - `docs/PLAY_CONSOLE.md`: declarations, listing, checklist.
+- **Languages:** UI in English, Persian and Dutch (`res/values*`).
+
 ## Known limitations (honest list)
 
 - **Recognizer behaviour varies by device.** Android's `SpeechRecognizer` is session-based. LensPrompt restarts sessions in a controlled way, but some devices play a short sound on every restart and some cap session length. This needs testing on real devices.
