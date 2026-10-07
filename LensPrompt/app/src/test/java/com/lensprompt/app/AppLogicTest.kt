@@ -10,7 +10,7 @@ class AppLogicTest {
 
     @Test
     fun screensRoundTripThroughSavedState() {
-        val screens = listOf(Screen.Library, Screen.Settings, Screen.Editor("a-1"), Screen.Prompter("b-2"))
+        val screens = listOf(Screen.Library, Screen.Settings, Screen.Pro, Screen.About, Screen.Editor("a-1"), Screen.Prompter("b-2"))
         for (s in screens) assertEquals(s, Screen.decode(s.encode()))
     }
 

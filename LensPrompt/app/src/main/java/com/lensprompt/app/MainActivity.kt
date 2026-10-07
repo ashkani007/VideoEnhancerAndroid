@@ -21,17 +21,23 @@ import com.lensprompt.app.ui.LensPromptTheme
 import com.lensprompt.app.ui.LibraryScreen
 import com.lensprompt.app.ui.PrompterScreen
 import com.lensprompt.app.ui.SettingsScreen
+import com.lensprompt.app.ui.ProScreen
+import com.lensprompt.app.ui.AboutScreen
 
 /** App destinations. Kept deliberately simple: four screens, explicit back stack. */
 sealed class Screen {
     data object Library : Screen()
     data object Settings : Screen()
+    data object Pro : Screen()
+    data object About : Screen()
     data class Editor(val scriptId: String) : Screen()
     data class Prompter(val scriptId: String) : Screen()
 
     fun encode(): String = when (this) {
         Library -> "library"
         Settings -> "settings"
+        Pro -> "pro"
+        About -> "about"
         is Editor -> "editor:$scriptId"
         is Prompter -> "prompter:$scriptId"
     }
@@ -41,6 +47,8 @@ sealed class Screen {
             s.startsWith("editor:") -> Editor(s.removePrefix("editor:"))
             s.startsWith("prompter:") -> Prompter(s.removePrefix("prompter:"))
             s == "settings" -> Settings
+            s == "pro" -> Pro
+            s == "about" -> About
             else -> Library
         }
     }
@@ -78,7 +86,9 @@ private fun AppRoot() {
                 onEdit = { push(Screen.Editor(it)) },
                 onSettings = { push(Screen.Settings) },
             )
-            Screen.Settings -> SettingsScreen(onBack = ::pop)
+            Screen.Settings -> SettingsScreen(onBack = ::pop, onPro = { push(Screen.Pro) }, onAbout = { push(Screen.About) })
+            Screen.Pro -> ProScreen(onBack = ::pop)
+            Screen.About -> AboutScreen(onBack = ::pop)
             is Screen.Editor -> EditorScreen(
                 scriptId = current.scriptId,
                 onBack = ::pop,

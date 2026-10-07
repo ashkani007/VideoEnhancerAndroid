@@ -52,7 +52,7 @@ import com.lensprompt.app.overlay.OverlayService
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBack: () -> Unit) {
+fun SettingsScreen(onBack: () -> Unit, onPro: () -> Unit = {}, onAbout: () -> Unit = {}) {
     val context = LocalContext.current
     val app = context.applicationContext as LensPromptApplication
     val s by app.settings.settings.collectAsState()
@@ -71,6 +71,7 @@ fun SettingsScreen(onBack: () -> Unit) {
         Column(
             Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
         ) {
+            OutlinedButton(onClick = onPro, modifier = Modifier.fillMaxWidth()) { Text("LensPrompt Pro") }
             Section("Smart Follow")
             LabeledSlider(
                 "Responsiveness", s.responsiveness, 0f..1f, "%.2f",
@@ -171,6 +172,8 @@ fun SettingsScreen(onBack: () -> Unit) {
                 OutlinedButton(onClick = { app.recognizerVerdicts.clear(); verdicts.value = emptyMap() }) { Text("Forget and test again") }
             }
 
+            Section("About")
+            OutlinedButton(onClick = onAbout) { Text("About, privacy & licenses") }
             Section("Privacy")
             Text(
                 "LensPrompt listens only while Smart Follow is running (a green microphone is shown). " +

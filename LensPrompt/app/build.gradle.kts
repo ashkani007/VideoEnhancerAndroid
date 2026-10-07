@@ -37,6 +37,14 @@ android {
         // Offline speech (Vosk) ships a native library per ABI (~10 MB each).
         // Phones are arm64/armv7; x86_64 is kept for the emulator tests.
         ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") }
+
+        // LensPrompt Pro purchases. OFF for 1.0: no Play Billing connection, no
+        // purchases, Pro never granted. Turn on only for a Play testing track with
+        // -Plensprompt.billingEnabled=true once the products exist in Play Console.
+        buildConfigField("boolean", "BILLING_ENABLED", (findProperty("lensprompt.billingEnabled") ?: "false").toString())
+        // Public URLs filled in when they exist (-Plensprompt.privacyPolicyUrl=…).
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"${findProperty("lensprompt.privacyPolicyUrl") ?: ""}\"")
+        buildConfigField("String", "SUPPORT_EMAIL", "\"${findProperty("lensprompt.supportEmail") ?: ""}\"")
     }
 
     signingConfigs {
@@ -116,6 +124,9 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:$camerax")
     implementation("androidx.camera:camera-video:$camerax")
     implementation("androidx.camera:camera-view:$camerax")
+
+    // Google Play Billing for LensPrompt Pro (inactive unless BILLING_ENABLED).
+    implementation("com.android.billingclient:billing:8.0.0")
 
     // Offline streaming speech recognition on LensPrompt's own PCM (Vosk / Kaldi).
     // Models are not bundled; they are downloaded or imported per language.
