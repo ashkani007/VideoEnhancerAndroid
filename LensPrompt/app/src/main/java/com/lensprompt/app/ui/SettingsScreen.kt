@@ -155,10 +155,10 @@ fun SettingsScreen(onBack: () -> Unit) {
                 OutlinedButton(onClick = { OverlayService.stop(context) }) { Text("Stop") }
             }
 
-            Section("Developer")
+            Section("Troubleshooting")
             LabeledSwitch(
-                "Debug mode", s.debugMode,
-                hint = "Shows Smart Follow internals on the prompter and enables simulated speech.",
+                "Diagnostics overlay", s.debugMode,
+                hint = "Shows Smart Follow and microphone details on the prompter, with a button to copy them for support.",
             ) { v -> update { it.copy(debugMode = v) } }
             OutlinedButton(onClick = { update { it.copy(firstRunDone = false) } }) { Text("Show quick start again") }
             val verdicts = remember { mutableStateOf(app.recognizerVerdicts.all()) }

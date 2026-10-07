@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.lensprompt.app.BuildConfig
 import com.lensprompt.app.LensPromptApplication
 import com.lensprompt.app.audio.AudioCaptureEngine
 import com.lensprompt.app.audio.AvMuxer
@@ -537,7 +538,7 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
         }
         smartActive = true
         offlineFailed = false
-        val simulate = s.debugMode && _ui.value.simulating
+        val simulate = BuildConfig.DEBUG && s.debugMode && _ui.value.simulating
         if (!simulate && !speech.isAvailable() && languageModelDir() == null) {
             smartActive = false
             _ui.update {
@@ -764,6 +765,8 @@ class PrompterViewModel(app: Application, val scriptId: String) : AndroidViewMod
     /** Logs one diagnostics line every 2 s while Smart Follow runs (adb logcat -s LensPromptDiag). */
     private fun startDiagLog() {
         diagLogJob?.cancel()
+        // Release builds log only when the user turned on diagnostics (support cases).
+        if (!BuildConfig.DEBUG && !settings.value.debugMode) return
         diagLogJob = viewModelScope.launch {
             while (isActive && _ui.value.runState == RunState.RUNNING) {
                 Diagnostics.log("tick")

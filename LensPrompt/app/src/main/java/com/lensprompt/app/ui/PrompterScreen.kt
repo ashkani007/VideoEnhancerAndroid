@@ -583,7 +583,8 @@ private fun QuickSettings(settings: AppSettings, vm: PrompterViewModel) {
         }
         LabeledSwitch("Camera preview", settings.showCamera) { v -> update { it.copy(showCamera = v) } }
         LabeledSwitch("Lip tracking for Smart Follow", settings.lipTracking) { v -> update { it.copy(lipTracking = v) } }
-        if (settings.debugMode) {
+        // Simulated speech is a development tool: debug builds only.
+        if (settings.debugMode && com.lensprompt.app.BuildConfig.DEBUG) {
             val ui by vm.ui.collectAsState()
             LabeledSwitch("Debug: simulated speech (no mic)", ui.simulating) { v -> vm.setSimulation(v) }
         }
