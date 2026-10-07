@@ -311,6 +311,8 @@ fun PrompterScreen(scriptId: String, onBack: () -> Unit, onEdit: () -> Unit, onS
         }
 
         if (settings.debugMode) DebugOverlay(vm, Modifier.align(Alignment.BottomStart))
+
+        FloatingModeBanner(Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(horizontal = 12.dp, vertical = 96.dp))
     }
 
     if (showFloating) FloatingPrompterDialog(scriptId) { showFloating = false }

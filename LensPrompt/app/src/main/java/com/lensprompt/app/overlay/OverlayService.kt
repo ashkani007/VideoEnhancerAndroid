@@ -69,6 +69,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -103,6 +106,10 @@ class OverlayService : Service() {
     private var lp: WindowManager.LayoutParams? = null
     private lateinit var scriptView: ScriptViewport
     private lateinit var toolbar: LinearLayout
+    private lateinit var settingsButton: TextView
+    private lateinit var lockButton: TextView
+    private lateinit var closeButton: TextView
+    private lateinit var lockStrip: LinearLayout
     private lateinit var playButton: TextView
     private lateinit var modeChip: TextView
     private lateinit var hintView: TextView
@@ -156,14 +163,20 @@ class OverlayService : Service() {
         super.onCreate()
         wm = getSystemService(WINDOW_SERVICE) as WindowManager
         app = application as LensPromptApplication
-        running = true
+        setRunning(true)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Always satisfy the foreground-service contract first, even when about to stop.
+        // "Stop teleprompter" from the notification arrives as a plain startService
+        // (no foreground contract): close at once, even if the window UI is stuck.
+        if (intent?.action == ACTION_STOP) {
+            closeOverlay("notification")
+            return START_NOT_STICKY
+        }
+        // A start via startForegroundService must call startForeground, even when about to stop.
         startInForeground()
-        if (intent?.action == ACTION_STOP || !Settings.canDrawOverlays(this)) {
-            stopSelf()
+        if (!Settings.canDrawOverlays(this)) {
+            closeOverlay("no overlay permission")
             return START_NOT_STICKY
         }
         val requested = intent?.getStringExtra(EXTRA_SCRIPT_ID)
@@ -190,9 +203,9 @@ class OverlayService : Service() {
         val n: Notification = NotificationCompat.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Floating teleprompter is on")
-            .setContentText("Shown over your camera app. Tap to open LensPrompt.")
+            .setContentText("Shown over your camera app. Use “Stop teleprompter” to close it.")
             .setContentIntent(open)
-            .addAction(0, "Close", stop)
+            .addAction(0, "Stop teleprompter", stop)
             .setOngoing(true)
             .build()
         try {
@@ -316,6 +329,9 @@ class OverlayService : Service() {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
         }
         playButton = iconButton("▶", "Play") { setPlaying(!playing) }
+        settingsButton = iconButton("⚙", "Teleprompter settings") { togglePanel() }
+        lockButton = iconButton("🔒", "Lock the teleprompter") { setLocked(true) }
+        closeButton = makeCloseButton("Close floating teleprompter")
         toolbar = LinearLayout(ui).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -324,8 +340,14 @@ class OverlayService : Service() {
             addView(modeChip)
             addView(hintView)
             addView(playButton)
-            addView(iconButton("⚙", "Teleprompter settings") { togglePanel() })
-            addView(iconButton("🔒", "Lock the teleprompter") { setLocked(true) })
+            addView(settingsButton)
+            addView(lockButton)
+            // A clear gap and divider keep × apart from play / settings.
+            addView(View(ui).apply { setBackgroundColor(Color.argb(90, 255, 255, 255)) },
+                LinearLayout.LayoutParams(dp(1f), dp(22f)).apply { setMargins(dp(6f), 0, dp(4f), 0) })
+            addView(closeButton)
+            // × must never be pushed out of a narrow window: drop less important items first.
+            addOnLayoutChangeListener { _, l, _, rr, _, ol, _, orr, _ -> if (rr - l != orr - ol) fitToolbar(rr - l) }
         }
 
         // ---- floating bits over the script: resize corner, mini handle, lock badge
@@ -344,15 +366,37 @@ class OverlayService : Service() {
             textSize = 13f
             gravity = Gravity.CENTER
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.argb(110, 0, 0, 0)) }
-            contentDescription = "Unlock the teleprompter"
+            contentDescription = "Locked. Tap for Unlock and Close"
             alpha = 0.6f
-            setOnClickListener { setLocked(false) }
+            setOnClickListener { showLockStrip() }
+        }
+        lockStrip = LinearLayout(ui).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            background = GradientDrawable().apply { cornerRadius = dp(18f).toFloat(); setColor(Color.argb(215, 20, 20, 24)) }
+            setPadding(dp(4f), 0, dp(2f), 0)
+            visibility = View.GONE
+            addView(TextView(ui).apply {
+                text = "UNLOCK"
+                setTextColor(Color.WHITE)
+                textSize = 12f
+                setTypeface(typeface, Typeface.BOLD)
+                gravity = Gravity.CENTER
+                setPadding(dp(10f), 0, dp(10f), 0)
+                minHeight = dp(36f)
+                contentDescription = "Unlock the teleprompter"
+                setOnClickListener { setLocked(false) }
+            })
+            addView(View(ui).apply { setBackgroundColor(Color.argb(90, 255, 255, 255)) },
+                LinearLayout.LayoutParams(dp(1f), dp(20f)).apply { setMargins(dp(2f), 0, dp(2f), 0) })
+            addView(makeCloseButton("Close floating teleprompter"))
         }
         val scriptArea = FrameLayout(ui).apply {
             addView(scriptView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             addView(resizeHandle, FrameLayout.LayoutParams(dp(GRIP_DP), dp(GRIP_DP), Gravity.BOTTOM or Gravity.END))
             addView(miniHandle, FrameLayout.LayoutParams(dp(28f), dp(28f), Gravity.TOP or Gravity.START).apply { setMargins(dp(4f), dp(4f), 0, 0) })
             addView(lockBadge, FrameLayout.LayoutParams(dp(28f), dp(28f), Gravity.TOP or Gravity.END).apply { setMargins(0, dp(4f), dp(4f), 0) })
+            addView(lockStrip, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, dp(36f), Gravity.TOP or Gravity.END).apply { setMargins(0, dp(2f), dp(2f), 0) })
         }
         val container = LinearLayout(ui).apply {
             orientation = LinearLayout.VERTICAL
@@ -394,7 +438,7 @@ class OverlayService : Service() {
             wm.addView(container, params)
         } catch (e: Exception) {
             Log.e(TAG, "cannot add overlay window", e)
-            stopSelf()
+            closeOverlay("window could not be added")
             return
         }
         root = container
@@ -526,7 +570,48 @@ class OverlayService : Service() {
         fade(toolbar, full)
         fade(resizeHandle, full)
         fade(miniHandle, !full && !locked)
-        fade(lockBadge, locked)
+        fade(lockBadge, locked && lockStrip.visibility != View.VISIBLE)
+        if (!locked) lockStrip.visibility = View.GONE
+    }
+
+    private val hideLockStrip = Runnable {
+        if (::lockStrip.isInitialized) { lockStrip.visibility = View.GONE; applyControlsVisibility() }
+    }
+
+    /** Locked: the 🔒 badge opens a tiny strip [UNLOCK | ×] for a few seconds. */
+    private fun showLockStrip() {
+        handler.removeCallbacks(hideLockStrip)
+        lockBadge.animate().cancel()
+        lockBadge.visibility = View.GONE
+        lockStrip.alpha = 1f
+        lockStrip.visibility = View.VISIBLE
+        handler.postDelayed(hideLockStrip, LOCK_STRIP_MS)
+    }
+
+    /** Small, clearly recognizable × with its own touch target. */
+    private fun makeCloseButton(desc: String) = TextView(ui).apply {
+        text = "✕"
+        contentDescription = desc
+        setTextColor(Color.WHITE)
+        textSize = 15f
+        setTypeface(typeface, Typeface.BOLD)
+        gravity = Gravity.CENTER
+        minWidth = dp(36f)
+        minHeight = dp(36f)
+        background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.argb(150, 200, 40, 40)) }
+        setOnClickListener { closeOverlay("× button") }
+    }
+
+    /**
+     * Keeps × visible in narrow windows: hides the mode chip, then the lock
+     * button (also in settings), then the hint; drag, play, settings and ×
+     * always fit the minimum width.
+     */
+    private fun fitToolbar(widthPx: Int) {
+        val wDp = widthPx / resources.displayMetrics.density
+        modeChip.visibility = if (wDp >= 270f) View.VISIBLE else View.GONE
+        lockButton.visibility = if (wDp >= 225f) View.VISIBLE else View.GONE
+        hintView.visibility = if (wDp >= 300f) View.VISIBLE else View.GONE
     }
 
     private fun fade(v: View, show: Boolean) {
@@ -552,7 +637,7 @@ class OverlayService : Service() {
         controlsShown = !on
         applyControlsVisibility()
         touched()
-        if (on) flashHint("Locked — tap 🔒 to unlock")
+        if (on) flashHint("Locked — tap 🔒 for Unlock / ×")
     }
 
     // ---- settings panel (its own small overlay window)
@@ -681,7 +766,7 @@ class OverlayService : Service() {
         }
         override fun onBackToStart() = restart()
         override fun onOpenCamera() { closePanel(); openCamera() }
-        override fun onCloseTeleprompter() = stopSelf()
+        override fun onCloseTeleprompter() = closeOverlay("settings panel")
         override fun onDone() = closePanel()
     }
 
@@ -1040,18 +1125,41 @@ class OverlayService : Service() {
         return "$what · $routeLabel"
     }
 
-    override fun onDestroy() {
-        running = false
-        if (::playButton.isInitialized) setPlaying(false)
+    private var closed = false
+
+    /**
+     * Close floating mode, from any entry point (× on the overlay, × in the lock
+     * strip, the settings panel, the notification, or LensPrompt's own Stop
+     * button via [stop]). Idempotent. Stops scrolling and Smart Follow, releases
+     * the microphone and recognizer, saves the layout, removes both overlay
+     * windows at once, removes the notification and stops the service. The camera
+     * app and the LensPrompt process are left alone.
+     */
+    private fun closeOverlay(reason: String) {
+        if (closed) return
+        closed = true
+        Log.i(TAG, "closing floating teleprompter ($reason)")
+        if (::playButton.isInitialized) setPlaying(false) // stops scrolling + Smart Follow
         stopSmartFollow()
-        handler.removeCallbacksAndMessages(null)
-        closePanel()
         speech?.release()
+        speech = null
+        if (root != null) saveWindow()
+        handler.removeCallbacksAndMessages(null)
         Choreographer.getInstance().removeFrameCallback(frameCallback)
+        panelView?.let { try { wm.removeViewImmediate(it) } catch (_: Exception) {} }
+        panelView = null
+        panelController = null
+        root?.let { try { wm.removeViewImmediate(it) } catch (_: Exception) {} }
+        root = null
+        setRunning(false)
+        stopForeground(STOP_FOREGROUND_REMOVE) // also removes the notification
+        stopSelf()
+    }
+
+    override fun onDestroy() {
+        closeOverlay("service destroyed")
         scope.cancel()
         workerExecutor.shutdown()
-        root?.let { try { wm.removeView(it) } catch (_: Exception) {} }
-        root = null
         super.onDestroy()
     }
 
@@ -1059,7 +1167,7 @@ class OverlayService : Service() {
         private const val TAG = "OverlayService"
         private const val CHANNEL = "overlay"
         private const val NOTIFICATION_ID = 42
-        private const val ACTION_STOP = "com.lensprompt.app.overlay.STOP"
+        internal const val ACTION_STOP = "com.lensprompt.app.overlay.STOP"
         private const val EXTRA_SCRIPT_ID = "scriptId"
         private const val ANCHOR_FRACTION = 0.3f
         private const val TOOLBAR_DP = 40f
@@ -1067,6 +1175,7 @@ class OverlayService : Service() {
         private const val MIN_WIDTH_DP = 180f
         private const val MIN_HEIGHT_DP = 110f
         private const val AUTO_HIDE_MS = 3_000L
+        private const val LOCK_STRIP_MS = 4_000L
         private val GREEN = Color.rgb(76, 217, 100)
         private val AMBER = Color.rgb(255, 196, 0)
         private val CYAN = Color.rgb(90, 200, 250)
@@ -1074,6 +1183,15 @@ class OverlayService : Service() {
 
         @Volatile var running = false
             private set
+
+        private val _runningState = MutableStateFlow(false)
+        /** True while floating mode is on; LensPrompt shows "Stop floating mode" then. */
+        val runningState: StateFlow<Boolean> = _runningState.asStateFlow()
+
+        private fun setRunning(on: Boolean) {
+            running = on
+            _runningState.value = on
+        }
 
         fun canDrawOverlays(context: Context) = Settings.canDrawOverlays(context)
 
@@ -1088,8 +1206,10 @@ class OverlayService : Service() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) context.startForegroundService(i) else context.startService(i)
         }
 
+        /** Stop floating mode from inside LensPrompt; onDestroy does the cleanup. */
         fun stop(context: Context) {
             context.stopService(Intent(context, OverlayService::class.java))
+            setRunning(false)
         }
     }
 }

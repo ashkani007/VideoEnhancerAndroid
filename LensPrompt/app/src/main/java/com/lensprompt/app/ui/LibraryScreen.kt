@@ -122,6 +122,7 @@ fun LibraryScreen(onOpen: (String) -> Unit, onEdit: (String) -> Unit, onSettings
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            item { FloatingModeBanner(Modifier.padding(top = 4.dp)) }
             if (!settings.firstRunDone) {
                 item { FirstRunCard(onDismiss = { app.settings.update { it.copy(firstRunDone = true) } }) }
             }

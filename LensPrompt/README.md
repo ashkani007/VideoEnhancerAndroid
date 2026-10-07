@@ -191,6 +191,10 @@ The window:
   - the window can't be moved, resized or scrolled by accident;
   - the controls disappear and a small 🔒 badge unlocks it;
   - scrolling and Smart Follow keep running.
+- **Closing (three ways, all doing the same cleanup).** Every exit stops scrolling and Smart Follow, releases the microphone and recognizer, saves the layout, removes the overlay windows at once, removes the notification and stops the service. The camera app and the LensPrompt process keep running.
+  1. **✕** on the overlay. It sits at the right end of the toolbar, behind a divider, away from ▶ and ⚙. In narrow windows the mode chip and 🔒 are dropped first, so ✕ always fits. When the controls are auto-hidden, tap ⋯ (or the script) and then ✕. When locked, tap 🔒 to reveal `UNLOCK | ✕` for 4 s.
+  2. **"Stop teleprompter"** in the notification. It works even if the overlay UI is stuck.
+  3. **"STOP FLOATING MODE"** inside LensPrompt (library, prompter and settings) while floating mode is on.
 - **Rotation.** The window keeps its relative place and size, is clamped inside the new screen, and keeps font, settings and script position. `core/OverlayGeometry.kt` holds this logic and is unit-tested.
 - **Persistence.** Position, size, font, line spacing, background and text opacity, alignment, mirror, Smart Follow, lock and auto-hide are remembered. A saved layout from another screen size is adapted.
 

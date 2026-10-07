@@ -138,6 +138,7 @@ fun SettingsScreen(onBack: () -> Unit) {
             ) { v -> update { it.copy(recordAudio = v) } }
 
             Section("Floating teleprompter")
+            FloatingModeBanner(Modifier.padding(vertical = 4.dp))
             Text(
                 "Shows a movable, resizable, transparent teleprompter above other apps such as Samsung Camera. " +
                     "Start it for a script with \"Use with phone camera\" (script menu or prompter top bar). " +

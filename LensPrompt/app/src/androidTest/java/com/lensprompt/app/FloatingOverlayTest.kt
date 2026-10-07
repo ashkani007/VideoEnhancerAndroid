@@ -1,6 +1,8 @@
 package com.lensprompt.app
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.graphics.Bitmap
+import android.view.accessibility.AccessibilityNodeInfo
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Build
@@ -159,6 +161,101 @@ class FloatingOverlayTest {
             OverlayService.stop(context)
             SystemClock.sleep(500)
             app.scripts.delete(script.id)
+        }
+    }
+
+    // ------------------------------------------------------------ exit paths
+
+    private fun grantOverlayPermissions() {
+        val pkg = context.packageName
+        fun shell(cmd: String) = instr.uiAutomation.executeShellCommand(cmd).close()
+        shell("appops set $pkg SYSTEM_ALERT_WINDOW allow")
+        shell("pm grant $pkg android.permission.RECORD_AUDIO")
+        if (Build.VERSION.SDK_INT >= 33) shell("pm grant $pkg android.permission.POST_NOTIFICATIONS")
+        SystemClock.sleep(300)
+        assumeTrue("overlay permission not granted on this image", OverlayService.canDrawOverlays(context))
+    }
+
+    private fun waitFor(timeoutMs: Long, cond: () -> Boolean): Boolean {
+        val end = SystemClock.uptimeMillis() + timeoutMs
+        while (!cond() && SystemClock.uptimeMillis() < end) SystemClock.sleep(50)
+        return cond()
+    }
+
+    private fun startOverlay() {
+        try {
+            OverlayService.start(context)
+        } catch (e: Exception) {
+            assumeTrue("foreground service start not allowed here: ${e.javaClass.simpleName}", false)
+        }
+        assertTrue("overlay did not start", waitFor(5_000) { OverlayService.running })
+        SystemClock.sleep(600) // window added and laid out
+    }
+
+    /** Clicks the overlay view with this content description, via accessibility (like a user tap). */
+    private fun clickOverlay(description: String): Boolean {
+        val ua = instr.uiAutomation
+        val info = ua.serviceInfo
+        info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+        ua.serviceInfo = info
+        for (w in ua.windows) {
+            val node = w.root?.findAccessibilityNodeInfosByText(description)
+                ?.firstOrNull { it.contentDescription?.toString() == description && it.isVisibleToUser } ?: continue
+            return node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+        }
+        return false
+    }
+
+    private fun overlayWindowCount(): Int =
+        instr.uiAutomation.windows.count { w -> w.root?.packageName == context.packageName }
+
+    @Test
+    fun everyExitPathClosesTheOverlayAndItRestarts() {
+        grantOverlayPermissions()
+        try {
+            // 1. × on the overlay (revealing auto-hidden controls first if needed).
+            startOverlay()
+            if (!clickOverlay("Close floating teleprompter")) {
+                assertTrue("no controls handle", clickOverlay("Show teleprompter controls; drag to move"))
+                SystemClock.sleep(400)
+                assertTrue("× not found", clickOverlay("Close floating teleprompter"))
+            }
+            assertTrue("× did not close the overlay", waitFor(3_000) { !OverlayService.running })
+            assertTrue("LensPrompt banner state not cleared", !OverlayService.runningState.value)
+            assertTrue("an overlay window remained", waitFor(2_000) { overlayWindowCount() == 0 })
+
+            // 2. Locked → 🔒 → [UNLOCK | ×] → ×.
+            startOverlay()
+            if (!clickOverlay("Lock the teleprompter")) {
+                assertTrue("no controls handle", clickOverlay("Show teleprompter controls; drag to move"))
+                SystemClock.sleep(400)
+                assertTrue("lock button missing", clickOverlay("Lock the teleprompter"))
+            }
+            SystemClock.sleep(500)
+            assertTrue("lock badge missing", clickOverlay("Locked. Tap for Unlock and Close"))
+            SystemClock.sleep(400)
+            assertTrue("× in lock strip missing", clickOverlay("Close floating teleprompter"))
+            assertTrue("lock-strip × did not close", waitFor(3_000) { !OverlayService.running })
+            (context.applicationContext as LensPromptApplication).settings.update { it.copy(overlayLocked = false) }
+
+            // 3. "Stop teleprompter" from the notification (same intent the action sends).
+            startOverlay()
+            context.startService(android.content.Intent(context, OverlayService::class.java).setAction(OverlayService.ACTION_STOP))
+            assertTrue("notification stop did not close", waitFor(3_000) { !OverlayService.running })
+            assertTrue("an overlay window remained", waitFor(2_000) { overlayWindowCount() == 0 })
+
+            // 4. "Stop floating mode" inside LensPrompt.
+            startOverlay()
+            OverlayService.stop(context)
+            assertTrue("in-app stop did not close", waitFor(3_000) { !OverlayService.running })
+            assertTrue("an overlay window remained", waitFor(2_000) { overlayWindowCount() == 0 })
+
+            // 5. And it starts normally again.
+            startOverlay()
+        } finally {
+            OverlayService.stop(context)
+            waitFor(3_000) { !OverlayService.running }
+            (context.applicationContext as LensPromptApplication).settings.update { it.copy(overlayLocked = false) }
         }
     }
 }

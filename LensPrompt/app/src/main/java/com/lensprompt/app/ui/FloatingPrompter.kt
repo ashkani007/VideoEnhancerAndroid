@@ -10,6 +10,18 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -112,6 +124,36 @@ fun openCameraApp(context: Context) {
             return
         } catch (_: ActivityNotFoundException) {
         } catch (_: SecurityException) {
+        }
+    }
+}
+
+/**
+ * Shown inside LensPrompt while the floating teleprompter is on, with a
+ * prominent way to stop it (the third exit, next to × on the overlay and
+ * "Stop teleprompter" in the notification).
+ */
+@Composable
+fun FloatingModeBanner(modifier: Modifier = Modifier) {
+    val running by OverlayService.runningState.collectAsState()
+    if (!running) return
+    val context = LocalContext.current
+    Surface(
+        color = LensColors.SurfaceHigh,
+        shape = RoundedCornerShape(14.dp),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Row(Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "Floating Teleprompter is running",
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f),
+            )
+            Button(
+                onClick = { OverlayService.stop(context) },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC62828), contentColor = Color.White),
+            ) { Text("STOP FLOATING MODE") }
         }
     }
 }
