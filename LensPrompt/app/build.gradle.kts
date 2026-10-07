@@ -1,5 +1,21 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+/*
+ * Release signing comes ONLY from the environment (CI secrets or a developer's
+ * shell). Nothing secret is ever read from, or written to, the repository.
+ * Without these variables the release build is produced unsigned (CI keeps
+ * working); see docs/RELEASE_SIGNING.md.
+ */
+val uploadKeystore: String? = System.getenv("LENSPROMPT_UPLOAD_KEYSTORE")?.takeIf { it.isNotBlank() && file(it).exists() }
+val uploadStorePassword: String? = System.getenv("LENSPROMPT_UPLOAD_STORE_PASSWORD")
+val uploadKeyAlias: String? = System.getenv("LENSPROMPT_UPLOAD_KEY_ALIAS")
+val uploadKeyPassword: String? = System.getenv("LENSPROMPT_UPLOAD_KEY_PASSWORD")
+val hasUploadKey = uploadKeystore != null && !uploadStorePassword.isNullOrEmpty() &&
+    !uploadKeyAlias.isNullOrEmpty() && !uploadKeyPassword.isNullOrEmpty()
+
+/** Play requires a strictly increasing versionCode; CI passes its run number. */
+val ciVersionCode: Int = System.getenv("LENSPROMPT_VERSION_CODE")?.toIntOrNull() ?: 1
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -14,7 +30,8 @@ android {
         applicationId = "com.lensprompt.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        // com.lensprompt.app is the permanent production application ID.
+        versionCode = ciVersionCode
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Offline speech (Vosk) ships a native library per ABI (~10 MB each).
@@ -22,8 +39,21 @@ android {
         ndk { abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64") }
     }
 
+    signingConfigs {
+        if (hasUploadKey) {
+            create("upload") {
+                storeFile = file(uploadKeystore!!)
+                storePassword = uploadStorePassword
+                keyAlias = uploadKeyAlias
+                keyPassword = uploadKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            // Signed with the upload key when it is provided; otherwise unsigned.
+            signingConfig = if (hasUploadKey) signingConfigs.getByName("upload") else null
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
