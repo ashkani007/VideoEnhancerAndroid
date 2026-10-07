@@ -7,7 +7,9 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -61,6 +63,8 @@ class SmokeTest {
         compose.onNodeWithText(ScriptRepository.WELCOME_TITLE, useUnmergedTree = true).assertExists()
         compose.onNodeWithText("Search scripts").assertExists()
         val before = app.scripts.scripts.value.size
+        // Diagnostic: dump the library's semantics tree to logcat (printed by CI).
+        compose.onRoot(useUnmergedTree = false).printToLog("LIBTREE")
         // Creating a script opens the editor with autosave.
         compose.onNodeWithText("New script").performClick()
         compose.waitUntil(5_000) { compose.onAllNodesWithText("Prompt").fetchSemanticsNodes().isNotEmpty() }
