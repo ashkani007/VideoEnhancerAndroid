@@ -54,8 +54,16 @@ android {
         release {
             // Signed with the upload key when it is provided; otherwise unsigned.
             signingConfig = if (hasUploadKey) signingConfigs.getByName("upload") else null
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        // Same code as release (R8, shrinking) but signed with the debug key, so CI
+        // can install and launch the minified app on the emulator. Never uploaded.
+        create("qa") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
         }
     }
 

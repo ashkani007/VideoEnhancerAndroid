@@ -212,6 +212,14 @@ jobs:
             adb logcat -c
             ./gradlew --no-daemon --stacktrace connectedDebugAndroidTest || (adb logcat -d -s LIBTREE:* LPVoskTest:* OfflineASR:* OfflineModel:* SpeechModels:* AndroidRuntime:E | head -250; exit 1)
             adb logcat -d -s LPVoskTest:* OfflineModel:*
+            ./gradlew --no-daemon --stacktrace assembleQa
+            adb install -r app/build/outputs/apk/qa/app-qa.apk
+            adb logcat -c
+            adb shell am start -W -n com.lensprompt.app/.MainActivity
+            sleep 6
+            adb shell pidof com.lensprompt.app || (echo "R8 build: app not running"; adb logcat -d -s AndroidRuntime:E | head -80; exit 1)
+            if adb logcat -d -s AndroidRuntime:E | grep -q "FATAL EXCEPTION"; then echo "R8 build crashed"; adb logcat -d -s AndroidRuntime:E | head -80; exit 1; fi
+            echo "R8 (minified) build launched without crashing"
 
       - name: Upload instrumented test reports
         if: always()
