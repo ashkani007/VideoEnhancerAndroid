@@ -5,8 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        // AGP 8.11.1 + Gradle 8.14.3: proven green on GitHub Actions in this repository.
-        id("com.android.application") version "8.11.1"
+        // AGP 8.13.0 (needs Gradle >= 8.13; KSP 2.3.x needs AGP >= 8.12).
+        id("com.android.application") version "8.13.0"
         // Kotlin 2.3.x supports AGP 8.2.2–8.13 and can read Kotlin 2.2 metadata (Media3 1.11).
         id("org.jetbrains.kotlin.android") version "2.3.21"
         id("org.jetbrains.kotlin.jvm") version "2.3.21"

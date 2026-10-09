@@ -46,16 +46,16 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Core unit tests (pure Kotlin)
-        run: ./gradlew --no-daemon --stacktrace :core:test
+        run: ./gradlew --no-daemon :core:test
 
       - name: App unit tests
-        run: ./gradlew --no-daemon --stacktrace :app:testDebugUnitTest
+        run: ./gradlew --no-daemon :app:testDebugUnitTest
 
       - name: Android lint
-        run: ./gradlew --no-daemon --stacktrace :app:lintDebug
+        run: ./gradlew --no-daemon :app:lintDebug
 
       - name: Assemble debug APK
-        run: ./gradlew --no-daemon --stacktrace :app:assembleDebug
+        run: ./gradlew --no-daemon :app:assembleDebug
 
       - name: Verify APK contents
         run: |
