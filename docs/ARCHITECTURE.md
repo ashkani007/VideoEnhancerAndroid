@@ -29,6 +29,18 @@
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## Browser (Phase 2)
+
+The Browser tab (WebView + Compose) is documented in [BROWSER.md](BROWSER.md). It reuses the VR
+renderer (a web page is just another texture on a flat virtual screen), the VR player (Media3,
+now with HLS/DASH) and the whole enhancement flow (a confirmed download is imported into the
+library and enters the normal analyze → preview → compare → full → play path). Navigation is a
+bottom bar: Home | Library | Browser | Enhance | Settings.
+
+Phase 2 also corrected the headset projection: each eye now uses an off-axis projection whose
+principal point is that eye's lens center, so "straight ahead" lands where the lens distortion
+is centered (previously it was the middle of the eye viewport).
+
 ## Key design decisions
 
 **Pure-Kotlin core.** Everything that can be wrong numerically — eye texture rectangles, mesh
