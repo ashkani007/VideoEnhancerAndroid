@@ -111,6 +111,15 @@ fun RecommendationScreen(c: AppContainer, nav: Navigator, videoId: Long) {
                 cloudNote?.let { Text(it, color = Warn) }
             }
             OptionCard("On this phone (AI)", dec.local)
+            c.settings.benchmarkMsPerMp?.let { msPerMp ->
+                val frames = (v.frameRate ?: 30f) * com.vrvision.core.enhance.PreviewSegment.length(v.durationMs) / 1000f
+                val seconds = frames * (v.width.toDouble() * v.height / 1e6) * msPerMp / 1000.0
+                Text(
+                    "Local 10-second preview: about ${com.vrvision.app.ui.components.formatDuration((seconds * 1000).toLong())} " +
+                        "(${c.settings.benchmarkInfo ?: "measured"}).",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } ?: Text("Tap \"Measure local speed\" to estimate how long local processing takes on this phone.", color = MaterialTheme.colorScheme.onSurfaceVariant)
             OptionCard("Cloud (AI)", dec.cloud)
 
             busy?.let { Text(it, color = MaterialTheme.colorScheme.primary) }

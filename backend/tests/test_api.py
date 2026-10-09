@@ -212,6 +212,18 @@ def test_delete_and_retention_cleanup(client, env):
     assert client.get(f"/v1/jobs/{jid}", headers=h).json()["status"] == "EXPIRED"
     assert client.get(f"/v1/jobs/{jid}/output?kind=preview", headers=h).status_code == 404
 
+    # Data of a queued/processing job is never removed by retention, even past expiry.
+    jid3 = client.post("/v1/jobs", json=job_body(clip, duration_ms=1000), headers=h).json()["id"]
+    with db.session() as s:
+        j = s.get(Job, jid3)
+        j.status = "PROCESSING"
+        j.expires_at = dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=1)
+        s.commit()
+    assert tasks.cleanup_expired() == 0
+    with db.session() as s:
+        s.get(Job, jid3).status = "FAILED"
+        s.commit()
+
     # Explicit delete.
     jid2 = client.post("/v1/jobs", json=job_body(clip, duration_ms=1000), headers=h).json()["id"]
     upload(client, h, jid2, data)

@@ -144,7 +144,9 @@ def cleanup_expired(now: dt.datetime | None = None) -> int:
     now = now or utcnow()
     count = 0
     with db.session() as s:
-        ids = [j.id for j in s.query(Job).filter(Job.expires_at <= now, Job.status != JobStatus.EXPIRED.value).all()]
+        # Never delete data under a job that is queued or running; it expires after it ends.
+        active = (JobStatus.EXPIRED.value, JobStatus.QUEUED.value, JobStatus.PROCESSING.value)
+        ids = [j.id for j in s.query(Job).filter(Job.expires_at <= now, Job.status.not_in(active)).all()]
     for job_id in ids:
         delete_job_data(job_id)
         _update(job_id, status=JobStatus.EXPIRED.value, stage="Deleted by retention policy")
