@@ -2,10 +2,11 @@
 
 ## Verification status
 
-- **No on-device testing yet.** The app compiles, passes lint and unit tests, and the APK is
-  produced in CI, but it has not been installed on a phone or used in a headset. Rendering,
-  head tracking, calibration feel, MediaCodec behaviour, WorkManager foreground execution and
-  performance are unverified on hardware.
+- **No physical-device testing yet.** The app compiles, passes lint and unit tests, and the APK is
+  produced in CI. On an Android emulator the app launches and the local AI enhancement pipeline
+  runs end to end on a tiny clip (see TESTING.md). It has not been installed on a phone or used
+  in a headset: rendering, head tracking, calibration feel, hardware codec behaviour, WorkManager
+  foreground execution and real performance are unverified on hardware.
 - **No phone performance numbers.** Host CPU timing (≈190 ms per 128×128 tile on an x86 CPU) is
   not representative. Back-of-envelope estimate (not a measurement): the network costs about
   2.4 MFLOP per source pixel, i.e. ~5 TFLOP per 1080p frame, so CPU inference on a phone is

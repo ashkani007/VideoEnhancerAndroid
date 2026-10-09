@@ -9,6 +9,7 @@
 | Android lint | `:app:lintDebug` | No lint errors (abortOnError). |
 | Debug APK | `:app:assembleDebug` | The app builds with all native libraries and models packaged. |
 | Backend tests (28) | `backend/tests` | Auth (missing/invalid key, invalid/expired token), consent required and versioned, quotas (size, output scale, layout, active jobs), owner-only access, resumable upload (wrong offset refused, resume from server offset, early completion refused), checksum mismatch and corrupt files rejected and purged, **end-to-end preview and full processing with real ONNX inference** on an FFmpeg-generated SBS clip with audio (resolution, frame count, audio present, eye-difference not increased, HEVC output, Range download), cancel deletes staged data, retention cleanup and delete-now remove objects, quote has no fake price; tiling contract and exact reference-engine upscaling in Python; real model keeps identical eyes bit-identical; model integrity check. |
+| Instrumented tests (emulator, API 34 x86_64) | `android/app/src/androidTest`, CI `android-device-tests` | **The real local AI pipeline runs on Android**: MediaCodec decode of a 1 s SBS H.264 clip with AAC → ONNX Runtime Real-ESRGAN inference per eye → H.264 encode → AAC remux → validation (15/15 frames, 320×128, audio present, decodable); identical eyes stay identical (mean abs diff 1.6, codec noise); a model with a wrong checksum is refused; calibration profiles survive a Room reopen; the app launches and stays resumed. |
 | Model reproducibility | CI `backend` job | Re-converting the official checkpoints yields byte-identical ONNX files. |
 | Docker | CI `backend-docker` job | API image builds; container serves `/v1/health`, issues a token, has ffmpeg and onnxruntime; compose files validate. |
 
@@ -17,7 +18,7 @@
 `tools/model/validate_model.py` and `tools/model/temporal_stability.py`; results in
 `docs/validation/` and summarized in [MODELS.md](MODELS.md).
 
-## Not yet tested — requires hardware
+## Not yet tested — requires a physical phone and headset
 
 None of the following has been executed; they are the acceptance tests for a device session
 (Galaxy S25 Ultra + passive headset). Use footage you own or that is licensed for testing

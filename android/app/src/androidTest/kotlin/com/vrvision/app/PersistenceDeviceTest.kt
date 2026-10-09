@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 class PersistenceDeviceTest {
 
     @Test
-    fun calibrationProfilesPersistAcrossDatabaseReopen() = runBlocking {
+    fun calibrationProfilesPersistAcrossDatabaseReopen(): Unit = runBlocking {
         val ctx = InstrumentationRegistry.getInstrumentation().targetContext
         val name = "calibration-test.db"
         ctx.deleteDatabase(name)

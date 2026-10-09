@@ -29,7 +29,7 @@ class LocalEnhancerDeviceTest {
     private val testCtx get() = InstrumentationRegistry.getInstrumentation().context
 
     @Test
-    fun enhancesStereoClipWithRealModel() = runBlocking {
+    fun enhancesStereoClipWithRealModel(): Unit = runBlocking {
         val src = File(ctx.cacheDir, "test_sbs.mp4")
         testCtx.assets.open("test_sbs.mp4").use { input -> src.outputStream().use { input.copyTo(it) } }
         val registry = ModelRegistry(ctx)

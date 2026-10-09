@@ -10,7 +10,8 @@ explicitly consent to an upload for that specific video.
 
 > **Status (honest summary).** The Android app builds in CI, passes unit tests and lint, and
 > produces a debug APK. The VR math, routing, planning and tiling logic are unit-tested on
-> the JVM. The backend passes 28 tests including an end-to-end run with real model inference,
+> the JVM, and instrumented tests on an Android emulator run the real local AI pipeline
+> (MediaCodec + ONNX Runtime + encode + audio remux + validation) on a short stereo clip. The backend passes 28 tests including an end-to-end run with real model inference,
 > and its Docker image builds and passes a smoke test in CI. **Nothing has been run on a
 > physical phone or in a headset yet**; on-device behaviour, performance and calibration
 > quality are unverified. See [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md).

@@ -42,7 +42,7 @@ class DeviceInspector(private val context: Context) : CodecSupport {
 
     override fun alignment(codec: OutputCodec): Int = candidates(codec.mime, true).mapNotNull {
         try {
-            val vc = it.getCapabilitiesForType(codec.mime).videoCapabilities
+            val vc = it.getCapabilitiesForType(codec.mime).videoCapabilities ?: return@mapNotNull null
             maxOf(vc.widthAlignment, vc.heightAlignment)
         } catch (_: Exception) { null }
     }.maxOrNull()?.coerceAtLeast(2) ?: 2
