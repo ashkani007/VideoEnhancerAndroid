@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Stylised headset: two lenses joined by a bridge. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FF5EC8FF"
+        android:pathData="M30,40h48a8,8 0,0 1,8 8v14a8,8 0,0 1,-8 8h-12l-6,-8h-12l-6,8h-12a8,8 0,0 1,-8 -8v-14a8,8 0,0 1,8 -8z" />
+    <path android:fillColor="#FF0E1116"
+        android:pathData="M41,55m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+    <path android:fillColor="#FF0E1116"
+        android:pathData="M67,55m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+</vector>
