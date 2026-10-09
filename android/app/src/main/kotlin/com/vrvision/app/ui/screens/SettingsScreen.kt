@@ -16,6 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.vrvision.app.AppContainer
@@ -54,11 +58,11 @@ fun SettingsScreen(c: AppContainer, nav: Navigator) {
                         value = p.cloudUrl, onValueChange = { v -> c.settings.update { it.copy(cloudUrl = v) } },
                         label = { Text("Backend URL (https://…)") }, singleLine = true, modifier = Modifier.fillMaxWidth(),
                     )
-                    var key by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(c.settings.cloudApiKey ?: "") }
+                    var key by remember { mutableStateOf(c.settings.cloudApiKey ?: "") }
                     OutlinedTextField(
                         value = key, onValueChange = { key = it; c.settings.cloudApiKey = it },
                         label = { Text("API key from the server operator") }, singleLine = true, modifier = Modifier.fillMaxWidth(),
-                        visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                        visualTransformation = PasswordVisualTransformation(),
                     )
                     Text(
                         "Before any upload VRVision may send the server a quote request containing only the video's size, " +
