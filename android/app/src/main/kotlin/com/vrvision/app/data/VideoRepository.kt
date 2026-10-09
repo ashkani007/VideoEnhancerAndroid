@@ -84,6 +84,7 @@ class VideoRepository(
                 layout = source.layout, packing = source.packing, projection = source.projection,
                 swapEyes = source.swapEyes, formatConfirmed = true, formatHint = "Inherited from source",
                 kind = VideoEntity.KIND_ENHANCED, sourceVideoId = source.id, enhancementJson = enhancementJson,
+                sizeBytes = file.length(),
             ),
         )
     }

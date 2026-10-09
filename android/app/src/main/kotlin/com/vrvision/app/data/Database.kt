@@ -81,7 +81,7 @@ data class JobEntity(
     /** LOCAL_AI, LOCAL_CONVENTIONAL or CLOUD. */
     val mode: String,
     val isPreview: Boolean,
-    /** QUEUED, RUNNING, SUCCEEDED, FAILED, CANCELLED, UNSUPPORTED, AWAITING_CONSENT. */
+    /** QUEUED, RUNNING, SUCCEEDED, FAILED, CANCELLED, UNSUPPORTED, REJECTED. */
     val status: String,
     val progress: Float = 0f,
     val stage: String = "",
@@ -90,6 +90,10 @@ data class JobEntity(
     val previewStartMs: Long = 0,
     val previewDurationMs: Long = 0,
     val outputVideoId: Long? = null,
+    /** Preview output file (app-private) or downloaded cloud output before registration. */
+    val outputPath: String? = null,
+    /** Timings, model, validation and audio notes as JSON once finished. */
+    val resultJson: String? = null,
     val workId: String? = null,
     val cloudJobId: String? = null,
     val createdAt: Long = System.currentTimeMillis(),

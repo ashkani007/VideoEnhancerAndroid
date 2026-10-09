@@ -18,6 +18,11 @@ import com.vrvision.app.ui.screens.LibraryScreen
 import com.vrvision.app.ui.screens.PlayerScreen
 import com.vrvision.app.ui.screens.SettingsScreen
 import com.vrvision.app.ui.screens.VideoInfoScreen
+import com.vrvision.app.ui.screens.EnhanceSettingsScreen
+import com.vrvision.app.ui.screens.RecommendationScreen
+import com.vrvision.app.ui.screens.CloudConsentScreen
+import com.vrvision.app.ui.screens.ProgressScreen
+import com.vrvision.app.ui.screens.CompareScreen
 import com.vrvision.app.ui.theme.VRVisionTheme
 
 /** App destinations. A simple back stack keeps navigation explicit and dependency-free. */
@@ -27,6 +32,11 @@ sealed interface Dest {
     data class Player(val videoId: Long) : Dest
     data object Calibration : Dest
     data object Settings : Dest
+    data class EnhanceSettings(val videoId: Long) : Dest
+    data class Recommendation(val videoId: Long) : Dest
+    data class CloudConsent(val videoId: Long) : Dest
+    data class Progress(val jobId: Long) : Dest
+    data class Compare(val jobId: Long) : Dest
 }
 
 class Navigator(private val stack: MutableList<Dest>) {
@@ -64,5 +74,10 @@ private fun Route(dest: Dest, nav: Navigator, c: AppContainer) {
         is Dest.Player -> PlayerScreen(c, nav, dest.videoId)
         Dest.Calibration -> CalibrationScreen(c, nav)
         Dest.Settings -> SettingsScreen(c, nav)
+        is Dest.EnhanceSettings -> EnhanceSettingsScreen(c, nav, dest.videoId)
+        is Dest.Recommendation -> RecommendationScreen(c, nav, dest.videoId)
+        is Dest.CloudConsent -> CloudConsentScreen(c, nav, dest.videoId)
+        is Dest.Progress -> ProgressScreen(c, nav, dest.jobId)
+        is Dest.Compare -> CompareScreen(c, nav, dest.jobId)
     }
 }

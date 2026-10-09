@@ -110,6 +110,10 @@ fun VideoInfoScreen(c: AppContainer, nav: Navigator, videoId: Long) {
                 onClick = { scope.launch { c.videos.setFormat(v.id, f); nav.go(Dest.Player(v.id)) } },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
             ) { Text("Play in VR") }
+            androidx.compose.material3.FilledTonalButton(
+                onClick = { scope.launch { c.videos.setFormat(v.id, f); nav.go(Dest.EnhanceSettings(v.id)) } },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+            ) { Text("Enhance (2× AI super resolution)…") }
             OutlinedButton(
                 onClick = { scope.launch { c.videos.remove(v.id); nav.back() } },
                 modifier = Modifier.fillMaxWidth().height(52.dp),

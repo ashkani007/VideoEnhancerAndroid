@@ -65,6 +65,19 @@ class AppSettings(context: Context) {
         get() = prefs.getLong("activeCalibration", -1L).takeIf { it > 0 }
         set(value) { prefs.edit().putLong("activeCalibration", value ?: -1L).apply() }
 
+    /** Operator-issued API key for the user's backend; private app storage, never logged. */
+    var cloudApiKey: String?
+        get() = prefs.getString("cloudApiKey", null)
+        set(value) { prefs.edit().putString("cloudApiKey", value?.trim()).apply() }
+
+    /** Last on-device benchmark: ms per source megapixel per frame, and when it was measured. */
+    var benchmarkMsPerMp: Float?
+        get() = prefs.getFloat("benchMsPerMp", -1f).takeIf { it > 0 }
+        set(value) { prefs.edit().putFloat("benchMsPerMp", value ?: -1f).apply() }
+    var benchmarkInfo: String?
+        get() = prefs.getString("benchInfo", null)
+        set(value) { prefs.edit().putString("benchInfo", value).apply() }
+
     /** Short-lived cloud session token, kept only in private app storage. */
     var cloudToken: String?
         get() = prefs.getString("cloudToken", null)

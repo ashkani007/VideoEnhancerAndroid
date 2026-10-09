@@ -67,6 +67,7 @@ fun LibraryScreen(c: AppContainer, nav: Navigator) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val originals by c.videos.originals().collectAsState(initial = null)
     val enhanced by c.videos.enhanced().collectAsState(initial = null)
+    val jobs by c.jobs.observeAll().collectAsState(initial = emptyList())
     val scope = rememberCoroutineScope()
     var importing by remember { mutableStateOf(false) }
     var importError by remember { mutableStateOf<String?>(null) }
@@ -100,9 +101,27 @@ fun LibraryScreen(c: AppContainer, nav: Navigator) {
             TabRow(selectedTabIndex = tab, containerColor = MaterialTheme.colorScheme.background, modifier = Modifier.padding(top = 8.dp)) {
                 Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text("Library") })
                 Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text("Enhanced") })
+                Tab(selected = tab == 2, onClick = { tab = 2 }, text = { Text("Jobs") })
             }
             val list = if (tab == 0) originals else enhanced
-            when {
+            if (tab == 2) {
+                if (jobs.isEmpty()) Text("No processing jobs yet.", modifier = Modifier.padding(24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(jobs, key = { it.id }) { j ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth().clickable {
+                                nav.go(if (j.isPreview && j.status == "SUCCEEDED") Dest.Compare(j.id) else Dest.Progress(j.id))
+                            },
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        ) {
+                            Column(Modifier.padding(14.dp)) {
+                                Text((if (j.isPreview) "Preview" else "Full video") + " · " + j.mode.replace('_', ' ').lowercase(), style = MaterialTheme.typography.titleMedium)
+                                Text("${j.status.lowercase()} · ${(j.progress * 100).toInt()}% · ${j.stage}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+                }
+            } else when {
                 list == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
                 list.isEmpty() -> EmptyState(tab == 0)
                 else -> LazyColumn(
