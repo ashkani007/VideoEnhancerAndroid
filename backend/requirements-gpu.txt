@@ -1,0 +1,3 @@
+# Additional packages for the GPU worker image (installed on top of a CUDA PyTorch base image).
+# The PyTorch engine loads the original Real-ESRGAN .pth checkpoints; onnxruntime-gpu is optional.
+-r requirements.txt

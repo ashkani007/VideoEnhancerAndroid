@@ -1,0 +1,29 @@
+# GPU worker: PyTorch + CUDA, original Real-ESRGAN checkpoints (VRV_SR_ENGINE=torch).
+# Requires the NVIDIA Container Toolkit on the host; see backend/README.md "GPU worker".
+FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ffmpeg curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /srv
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app ./app
+COPY worker ./worker
+COPY models ./models
+
+# Original checkpoints, verified against the published SHA-256 values.
+RUN cd models \
+ && curl -fsSLO https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-x4v3.pth \
+ && curl -fsSLO https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesr-general-wdn-x4v3.pth \
+ && echo "8dc7edb9ac80ccdc30c3a5dca6616509367f05fbc184ad95b731f05bece96292  realesr-general-x4v3.pth" | sha256sum -c - \
+ && echo "1641f8c4464b9f097c9fdda5589273713f67cf59f3d909e0bd688f0cee269dca  realesr-general-wdn-x4v3.pth" | sha256sum -c -
+
+RUN useradd --system --uid 10001 vrv && mkdir -p /data && chown vrv /data
+USER vrv
+ENV VRV_MODEL_DIR=/srv/models VRV_SR_ENGINE=torch VRV_TILE=512 \
+    VRV_UPLOAD_STAGING_DIR=/data/uploads VRV_WORK_DIR=/data/work
+CMD ["celery", "-A", "app.tasks", "worker", "--loglevel=INFO", "--concurrency=1"]
