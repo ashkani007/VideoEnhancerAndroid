@@ -104,6 +104,10 @@ fun EnhanceSettingsScreen(c: AppContainer, nav: Navigator, videoId: Long) {
                 InfoRow("Free storage", formatBytes(ds.freeStorageBytes))
                 InfoRow("Battery", ds.batteryPercent?.let { "$it%${if (ds.charging) " (charging)" else ""}" } ?: "Unknown")
                 InfoRow("Thermal state", ds.thermal.name.lowercase())
+                val caps = remember { c.device.summaries(listOf("video/hevc", "video/avc")).filter { it.encoder } }
+                caps.forEach { cap ->
+                    InfoRow("Encoder ${cap.name}", "${cap.mime.removePrefix("video/")} up to ${cap.maxWidth}×${cap.maxHeight}${if (cap.hardware) " (hardware)" else ""}")
+                }
                 p.issues.forEach { issue ->
                     Text(
                         (if (issue.severity == IssueSeverity.BLOCKING) "✕ " else if (issue.severity == IssueSeverity.WARNING) "! " else "• ") + issue.message,

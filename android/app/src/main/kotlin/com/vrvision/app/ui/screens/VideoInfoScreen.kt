@@ -78,6 +78,8 @@ fun VideoInfoScreen(c: AppContainer, nav: Navigator, videoId: Long) {
                 InfoRow("Audio", if (v.audioTrackCount == 0) "None" else "${v.audioTrackCount} track(s): ${v.audioSummary}")
                 InfoRow("Subtitles", if (v.subtitleTrackCount == 0) "None embedded" else "${v.subtitleTrackCount} track(s)")
                 InfoRow("File size", formatBytes(v.sizeBytes))
+                val decodable = remember(v.id) { c.device.canDecodeSource(v.videoMime, v.width, v.height, (v.frameRate ?: 30f).toDouble()) }
+                InfoRow("Decoder on this phone", if (decodable) "Supported" else "Not supported at this size/rate")
             }
 
             SectionCard("How should this video be shown?") {
