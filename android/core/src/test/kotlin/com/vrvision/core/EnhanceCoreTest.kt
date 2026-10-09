@@ -75,6 +75,17 @@ class EnhanceCoreTest {
         }
     }
 
+    @Test fun packedRgbToYuvMatchesPlanarPath() {
+        val w = 6; val h = 4
+        val planar = FloatArray(3 * w * h) { i -> ((i * 37) % 256) / 255f }
+        val packed = ByteArray(w * h * 3)
+        PixelOps.writePlanarToPacked(planar, w, h, packed, w, 0, 0)
+        val a = Yuv420.i420(w, h); val b = Yuv420.i420(w, h)
+        PixelOps.rgbPlanarToYuv(planar, w, h, a, 0, 0, ColorMatrix.BT709)
+        PixelOps.rgbPackedToYuv(packed, w, h, b, ColorMatrix.BT709)
+        for (i in a.y.indices) assertTrue(abs((a.y[i].toInt() and 0xFF) - (b.y[i].toInt() and 0xFF)) <= 1, "byte $i")
+    }
+
     @Test fun rgbToYuvAtOffsetWritesOnlyTarget() {
         val dst = Yuv420.i420(8, 8)
         dst.y.fill(16)

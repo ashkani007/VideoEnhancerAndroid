@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "models": [
+    {
+      "id": "realesr-general-x4v3-dn100",
+      "file": "realesr_general_x4v3_dn100.onnx",
+      "name": "Real-ESRGAN general v3 compact",
+      "version": "v0.2.5.0",
+      "sha256": "d19d17498804dbe1456df355fb7533ad6d27e0d94b90727958a16ac48b708327",
+      "scale": 4,
+      "denoise_strength": 1.0,
+      "denoise_label": "AI denoise on (strong)",
+      "license": "BSD-3-Clause",
+      "kind": "ai_super_resolution",
+      "runtime": "ONNX Runtime 1.31.0 (CPU)",
+      "input": "float32 NCHW RGB 0..1",
+      "output": "float32 NCHW RGB 0..1 at 4x"
+    },
+    {
+      "id": "realesr-general-x4v3-dn0",
+      "file": "realesr_general_x4v3_dn0.onnx",
+      "name": "Real-ESRGAN general v3 compact",
+      "version": "v0.2.5.0",
+      "sha256": "78aced0310a0452752dd83d25aec4d106308b90a4ffe6b8cbd49ab1960db6553",
+      "scale": 4,
+      "denoise_strength": 0.0,
+      "denoise_label": "AI denoise off (weak denoise variant)",
+      "license": "BSD-3-Clause",
+      "kind": "ai_super_resolution",
+      "runtime": "ONNX Runtime 1.31.0 (CPU)",
+      "input": "float32 NCHW RGB 0..1",
+      "output": "float32 NCHW RGB 0..1 at 4x"
+    }
+  ]
+}

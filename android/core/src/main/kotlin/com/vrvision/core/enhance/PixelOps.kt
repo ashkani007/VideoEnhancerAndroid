@@ -104,6 +104,51 @@ object PixelOps {
     }
 
     /**
+     * Converts a whole packed 8-bit RGB frame to YUV 4:2:0. Converting the assembled frame
+     * (rather than each tile) keeps chroma correct across tile seams.
+     */
+    fun rgbPackedToYuv(rgb: ByteArray, w: Int, h: Int, dst: Yuv420, m: ColorMatrix) {
+        val kg = 1f - m.kr - m.kb
+        for (row in 0 until h) {
+            val yRow = dst.yOffset + row * dst.yRowStride
+            var s = row * w * 3
+            for (col in 0 until w) {
+                val r = (rgb[s].toInt() and 0xFF) / 255f
+                val g = (rgb[s + 1].toInt() and 0xFF) / 255f
+                val b = (rgb[s + 2].toInt() and 0xFF) / 255f
+                dst.y[yRow + col] = clamp8(16f + 219f * (m.kr * r + kg * g + m.kb * b)).toByte()
+                s += 3
+            }
+        }
+        val cw = (w + 1) / 2; val ch = (h + 1) / 2
+        for (cy in 0 until ch) for (cx in 0 until cw) {
+            var r = 0; var g = 0; var b = 0; var n = 0
+            for (yy in cy * 2 until min(cy * 2 + 2, h)) for (xx in cx * 2 until min(cx * 2 + 2, w)) {
+                val i = (yy * w + xx) * 3
+                r += rgb[i].toInt() and 0xFF; g += rgb[i + 1].toInt() and 0xFF; b += rgb[i + 2].toInt() and 0xFF; n++
+            }
+            val rf = r / (255f * n); val gf = g / (255f * n); val bf = b / (255f * n)
+            val yv = m.kr * rf + kg * gf + m.kb * bf
+            dst.u[dst.uOffset + cy * dst.uRowStride + cx * dst.uPixelStride] = clamp8(128f + 224f * ((bf - yv) / (2f * (1f - m.kb)))).toByte()
+            dst.v[dst.vOffset + cy * dst.vRowStride + cx * dst.vPixelStride] = clamp8(128f + 224f * ((rf - yv) / (2f * (1f - m.kr)))).toByte()
+        }
+    }
+
+    /** Writes a CHW float tile (0..1) into a packed RGB frame at (dx, dy). */
+    fun writePlanarToPacked(src: FloatArray, w: Int, h: Int, dst: ByteArray, dstW: Int, dx: Int, dy: Int) {
+        val plane = w * h
+        for (row in 0 until h) {
+            var o = ((dy + row) * dstW + dx) * 3
+            for (col in 0 until w) {
+                val i = row * w + col
+                dst[o++] = clamp8(src[i] * 255f).toByte()
+                dst[o++] = clamp8(src[plane + i] * 255f).toByte()
+                dst[o++] = clamp8(src[2 * plane + i] * 255f).toByte()
+            }
+        }
+    }
+
+    /**
      * Copies a window of a packed RGB frame into a float CHW tensor (0..1). Pixels outside
      * [region] are filled by replicating the nearest region pixel, so the model never sees
      * data from another eye or outside the frame.

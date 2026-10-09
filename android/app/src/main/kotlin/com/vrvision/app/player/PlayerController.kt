@@ -31,10 +31,8 @@ import kotlinx.coroutines.launch
  */
 class PlayerController(context: Context, private val scope: CoroutineScope) {
 
-    private val player: ExoPlayer = ExoPlayer.Builder(context).build().apply {
-        // Keep A/V sync handled by ExoPlayer's audio clock; no frame dropping overrides.
-        videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-    }
+    // A/V sync is driven by ExoPlayer's audio clock; the GL renderer only displays frames.
+    private val player: ExoPlayer = ExoPlayer.Builder(context).build()
 
     private val _state = MutableStateFlow(MediaState())
     val state: StateFlow<MediaState> = _state.asStateFlow()
