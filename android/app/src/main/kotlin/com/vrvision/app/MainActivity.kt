@@ -1,5 +1,6 @@
 package com.vrvision.app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
@@ -80,7 +81,12 @@ private val rootDestinations = listOf(Dest.Home, Dest.Library, Dest.Browser, Des
 class MainActivity : ComponentActivity() {
     private val container get() = (application as VRVisionApp).container
 
-    /** Bluetooth controllers/keyboards go to the screen that registered for them (VR browser). */
+    /**
+     * Bluetooth controllers/keyboards go to the screen that registered for them (VR browser).
+     * dispatchKeyEvent is public Activity API; androidx marks ComponentActivity's override as
+     * restricted, which lint reports as a false positive for subclasses.
+     */
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean =
         container.keyHandler?.invoke(event) == true || super.dispatchKeyEvent(event)
 
