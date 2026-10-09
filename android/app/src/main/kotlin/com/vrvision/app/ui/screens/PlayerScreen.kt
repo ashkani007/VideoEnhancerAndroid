@@ -117,6 +117,9 @@ fun VrPlayback(
     startMs: Long,
     onExit: (Long) -> Unit,
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val prefs by c.settings.state.collectAsState()
     val player = remember { PlayerController(context, scope) }
     val tracker = remember { HeadTracker(context) }
     val state by player.state.collectAsState()
