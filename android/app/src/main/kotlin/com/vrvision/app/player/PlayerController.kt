@@ -84,9 +84,11 @@ class PlayerController(context: Context, private val scope: CoroutineScope) {
 
     fun setSurface(surface: Surface) = player.setVideoSurface(surface)
 
-    fun load(uri: Uri, startPositionMs: Long) {
+    /** [mimeType] tells Media3 how to read URLs without a telling extension (HLS, DASH). */
+    fun load(uri: Uri, startPositionMs: Long, mimeType: String? = null) {
         dispatch(MediaEvent.Load)
-        player.setMediaItem(MediaItem.fromUri(uri), startPositionMs.coerceAtLeast(0))
+        val item = MediaItem.Builder().setUri(uri).apply { if (mimeType != null) setMimeType(mimeType) }.build()
+        player.setMediaItem(item, startPositionMs.coerceAtLeast(0))
         player.prepare()
         applySubtitleSelection(_state.value.subtitlesEnabled)
         startProgress()

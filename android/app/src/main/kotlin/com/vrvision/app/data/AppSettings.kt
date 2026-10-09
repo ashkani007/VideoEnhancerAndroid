@@ -78,6 +78,23 @@ class AppSettings(context: Context) {
         get() = prefs.getString("benchInfo", null)
         set(value) { prefs.edit().putString("benchInfo", value).apply() }
 
+    // ---- Browser ----
+    var searchTemplate: String
+        get() = prefs.getString("searchTemplate", com.vrvision.core.browser.UrlPolicy.DEFAULT_SEARCH)!!
+        set(value) { prefs.edit().putString("searchTemplate", value).apply() }
+    var restoreBrowserSession: Boolean
+        get() = prefs.getBoolean("restoreBrowserSession", true)
+        set(value) { prefs.edit().putBoolean("restoreBrowserSession", value).apply() }
+    var vrScreenDistance: Float
+        get() = prefs.getFloat("vrScreenDistance", 2.0f)
+        set(value) { prefs.edit().putFloat("vrScreenDistance", value).apply() }
+    var vrScreenWidth: Float
+        get() = prefs.getFloat("vrScreenWidth", 2.4f)
+        set(value) { prefs.edit().putFloat("vrScreenWidth", value).apply() }
+    var dwellClick: Boolean
+        get() = prefs.getBoolean("dwellClick", true)
+        set(value) { prefs.edit().putBoolean("dwellClick", value).apply() }
+
     /** Short-lived cloud session token, kept only in private app storage. */
     var cloudToken: String?
         get() = prefs.getString("cloudToken", null)

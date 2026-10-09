@@ -39,8 +39,9 @@ class VideoRepository(
         dao.findByUri(uri.toString())?.let { return@withContext ImportResult.Imported(it.id, true) }
         try {
             context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        } catch (_: SecurityException) {
-            // Provider does not offer persistable grants; access lasts for this session only.
+        } catch (_: Exception) {
+            // Provider does not offer persistable grants (or it's an app-private file); access
+            // lasts for this session only.
         }
         val result = try {
             reader.read(uri)
