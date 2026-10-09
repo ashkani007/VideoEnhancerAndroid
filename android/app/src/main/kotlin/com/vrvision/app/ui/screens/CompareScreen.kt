@@ -67,7 +67,7 @@ import java.io.File
 @Composable
 fun CompareScreen(c: AppContainer, nav: Navigator, jobId: Long) {
     val context = LocalContext.current
-    val job by c.jobs.observe(jobId).collectAsState(initial = null)
+    val job by remember(jobId) { c.jobs.observe(jobId) }.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var t by remember { mutableFloatStateOf(0f) }
     var split by remember { mutableFloatStateOf(0.5f) }
@@ -75,7 +75,7 @@ fun CompareScreen(c: AppContainer, nav: Navigator, jobId: Long) {
     var frames by remember { mutableStateOf<Pair<Bitmap?, Bitmap?>?>(null) }
 
     val j = job
-    val video by c.videos.observe(j?.videoId ?: -1).collectAsState(initial = null)
+    val video by remember(j?.videoId) { c.videos.observe(j?.videoId ?: -1) }.collectAsState(initial = null)
     LaunchedEffect(j?.outputPath, video?.uri, t) {
         val v = video ?: return@LaunchedEffect
         val path = j?.outputPath ?: return@LaunchedEffect

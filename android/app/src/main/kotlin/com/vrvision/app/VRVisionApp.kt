@@ -22,6 +22,8 @@ class AppContainer(app: Application) {
     val device = DeviceInspector(app)
     val models = ModelRegistry(app)
     val jobs = JobManager(app, database.jobs(), settings)
+    /** For short writes that must outlive a screen (e.g. saving the resume position on exit). */
+    val appScope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO)
     /** Enhancement choices being edited, keyed by video id (survives navigation, not process death). */
     val drafts = mutableMapOf<Long, com.vrvision.app.ui.screens.EnhanceDraft>()
 }

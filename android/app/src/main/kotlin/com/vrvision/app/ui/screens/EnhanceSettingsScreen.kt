@@ -43,7 +43,7 @@ import com.vrvision.core.planning.OutputPlan
 
 @Composable
 fun EnhanceSettingsScreen(c: AppContainer, nav: Navigator, videoId: Long) {
-    val video by c.videos.observe(videoId).collectAsState(initial = null)
+    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
     var draft by remember { mutableStateOf<EnhanceDraft?>(null) }
     var plan by remember { mutableStateOf<OutputPlan?>(null) }
     LaunchedEffect(video?.id) { video?.let { draft = c.draft(it) } }

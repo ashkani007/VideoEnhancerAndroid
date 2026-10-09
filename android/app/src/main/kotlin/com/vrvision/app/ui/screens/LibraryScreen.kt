@@ -65,9 +65,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun LibraryScreen(c: AppContainer, nav: Navigator) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
-    val originals by c.videos.originals().collectAsState(initial = null)
-    val enhanced by c.videos.enhanced().collectAsState(initial = null)
-    val jobs by c.jobs.observeAll().collectAsState(initial = emptyList())
+    val originals by remember { c.videos.originals() }.collectAsState(initial = null)
+    val enhanced by remember { c.videos.enhanced() }.collectAsState(initial = null)
+    val jobs by remember { c.jobs.observeAll() }.collectAsState(initial = emptyList())
     val scope = rememberCoroutineScope()
     var importing by remember { mutableStateOf(false) }
     var importError by remember { mutableStateOf<String?>(null) }

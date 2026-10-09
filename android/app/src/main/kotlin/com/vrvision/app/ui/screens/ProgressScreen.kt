@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 /** Real progress only: frames processed (local) or the server's reported progress (cloud). */
 @Composable
 fun ProgressScreen(c: AppContainer, nav: Navigator, jobId: Long) {
-    val job by c.jobs.observe(jobId).collectAsState(initial = null)
+    val job by remember(jobId) { c.jobs.observe(jobId) }.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) { while (true) { delay(1000); now = System.currentTimeMillis() } }

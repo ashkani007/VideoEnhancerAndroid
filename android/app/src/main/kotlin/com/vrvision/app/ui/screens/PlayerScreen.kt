@@ -91,7 +91,7 @@ fun PlayerScreen(c: AppContainer, nav: Navigator, videoId: Long) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val prefs by c.settings.state.collectAsState()
-    val video by c.videos.observe(videoId).collectAsState(initial = null)
+    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
     val player = remember { PlayerController(context, scope) }
     val tracker = remember { HeadTracker(context) }
     val state by player.state.collectAsState()
@@ -119,7 +119,8 @@ fun PlayerScreen(c: AppContainer, nav: Navigator, videoId: Long) {
     DisposableEffect(Unit) {
         onDispose {
             val pos = player.currentPositionMs()
-            scope.launch { c.videos.savePosition(videoId, pos) }
+            // The composition's scope is already cancelled here; use the app scope.
+            c.appScope.launch { c.videos.savePosition(videoId, pos) }
             player.release()
         }
     }

@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun VideoInfoScreen(c: AppContainer, nav: Navigator, videoId: Long) {
-    val video by c.videos.observe(videoId).collectAsState(initial = null)
+    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     var format by remember { mutableStateOf<VideoFormat?>(null) }
     LaunchedEffect(video?.id) { if (format == null) video?.let { format = it.toFormat() } }

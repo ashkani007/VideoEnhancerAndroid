@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun CloudConsentScreen(c: AppContainer, nav: Navigator, videoId: Long) {
-    val video by c.videos.observe(videoId).collectAsState(initial = null)
+    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
     val prefs by c.settings.state.collectAsState()
     val scope = rememberCoroutineScope()
     var agreed by remember { mutableStateOf(false) }
