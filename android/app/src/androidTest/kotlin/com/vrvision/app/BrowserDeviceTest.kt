@@ -48,10 +48,10 @@ class BrowserDeviceTest {
 
     private fun <T> main(block: () -> T): T { var r: T? = null; instr.runOnMainSync { r = block() }; @Suppress("UNCHECKED_CAST") return r as T }
 
-    private fun waitFor(timeoutMs: Long = 15_000, cond: () -> Boolean) {
+    private fun waitFor(timeoutMs: Long = 15_000, describe: () -> String = { "" }, cond: () -> Boolean) {
         val end = System.currentTimeMillis() + timeoutMs
         while (System.currentTimeMillis() < end) { if (cond()) return; Thread.sleep(100) }
-        throw AssertionError("Condition not met within $timeoutMs ms")
+        throw AssertionError("Condition not met within $timeoutMs ms ${describe()}")
     }
 
     @Test
@@ -115,7 +115,14 @@ class BrowserDeviceTest {
         """.trimIndent()
         val id = main { browser.activeId!! }
         main { browser.webView(id).loadDataWithBaseURL("https://vrvision.test/page/", html, "text/html", "utf-8", null) }
-        waitFor { browser.ui.value[id]?.media?.size == 3 }
+        // The first WebView in the process starts Chromium, which is slow on an emulator; wait for
+        // the page itself, then re-run detection until the script sees all three sources.
+        waitFor(60_000, { "ui=${browser.ui.value[id]}" }) { browser.ui.value[id]?.let { !it.loading && it.url.startsWith("https://vrvision.test") } == true }
+        waitFor(20_000, { "media=${browser.ui.value[id]?.media}" }) {
+            main { browser.detectMedia() }
+            Thread.sleep(400)
+            browser.ui.value[id]?.media?.size == 3
+        }
         val media = browser.ui.value[id]!!.media
         val mp4 = media.first { it.kind == MediaKind.MP4 }
         assertEquals("https://vrvision.test/page/media/alps_vr180_sbs.mp4", mp4.url)
