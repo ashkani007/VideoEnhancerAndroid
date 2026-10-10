@@ -66,7 +66,11 @@ Install with `adb install -r app-debug.apk`, or copy the file to the phone and a
    - *Before/after*: frame-accurate split comparison with zoom, model name and version, timings,
      estimated full size. **Reject** deletes the preview; **Process full video** continues.
 4. **Enhanced** tab: verified outputs (codec, size, frame count, duration, audio, decodability).
-5. **Headset**: calibration with grid/checkerboard patterns, lens distortion, per-eye optical
+5. **Browser**: browse HTTPS sites, find videos on a page (*N videos* button), *Open in VRVision
+   Player* (MP4, WebM, HLS, DASH; choose flat/VR180/VR360 and mono/SBS/TB) or *Enhance Video*
+   (downloadable files only, with your confirmation). *VR* switches to a stereoscopic virtual
+   browser screen with gaze/tap/controller selection. See [docs/BROWSER.md](docs/BROWSER.md).
+6. **Headset**: calibration with grid/checkerboard patterns, lens distortion, per-eye optical
    centers, lens separation, offsets, zoom, FOV; multiple profiles; JSON export/import.
 
 ## Cloud processing
@@ -78,6 +82,7 @@ key you configured on the server. No cloud service is provided or preconfigured 
 ## Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — components, data flow, implementation checklist
+- [docs/BROWSER.md](docs/BROWSER.md) — integrated VR web browser: flows, VR mode, security
 - [docs/MODELS.md](docs/MODELS.md) — model choice, conversion, validation results, runtime
 - [docs/CALIBRATION.md](docs/CALIBRATION.md) — headset calibration guide
 - [docs/TESTING.md](docs/TESTING.md) — what is tested, how, and what is not

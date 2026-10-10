@@ -24,6 +24,16 @@ class AppContainer(app: Application) {
     val jobs = JobManager(app, database.jobs(), settings)
     /** For short writes that must outlive a screen (e.g. saving the resume position on exit). */
     val appScope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO)
+    val browserDb: com.vrvision.app.browser.BrowserDatabase =
+        Room.databaseBuilder(app, com.vrvision.app.browser.BrowserDatabase::class.java, "browser.db").build()
+    val browser by lazy {
+        com.vrvision.app.browser.BrowserController(app, browserDb.dao(), appScope) { settings.searchTemplate }
+    }
+    val downloads by lazy { com.vrvision.app.browser.BrowserDownloads(app, browserDb.dao(), videos, appScope) }
+
+    /** Hardware key handler of the screen that wants controller input (VR browser), if any. */
+    @Volatile var keyHandler: ((android.view.KeyEvent) -> Boolean)? = null
+
     /** Enhancement choices being edited, keyed by video id (survives navigation, not process death). */
     val drafts = mutableMapOf<Long, com.vrvision.app.ui.screens.EnhanceDraft>()
 }

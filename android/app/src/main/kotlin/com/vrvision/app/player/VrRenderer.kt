@@ -34,6 +34,9 @@ data class RenderConfig(
     val headsetMode: Boolean = true,
     val flatScreen: FlatScreenConfig = FlatScreenConfig(),
     val pattern: TestPattern = TestPattern.NONE,
+    /** Gaze reticle at the lens center (VR browser). Progress 0..1 fills it during a dwell. */
+    val reticle: Boolean = false,
+    val reticleProgress: Float = 0f,
     val xdpi: Float = 0f,
     val ydpi: Float = 0f,
     /** Symmetric horizontal inset protecting against the camera cutout. */
@@ -50,6 +53,8 @@ data class RenderConfig(
 class VrRenderer(
     private val onSurfaceReady: (Surface) -> Unit,
     private val orientation: () -> Quaternion,
+    /** For producers that draw with a Canvas (the VR browser), the buffer size to allocate. */
+    private val sourceBufferSize: Pair<Int, Int>? = null,
 ) : GLSurfaceView.Renderer, SurfaceTexture.OnFrameAvailableListener {
 
     @Volatile var config = RenderConfig()
@@ -77,6 +82,8 @@ class VrRenderer(
     private val proj = FloatArray(16)
     private val view = FloatArray(16)
     private val mvp = FloatArray(16)
+    private val shift = FloatArray(16)
+    private val shifted = FloatArray(16)
     private val quadBuffer = GlUtil.floats(floatArrayOf(-1f, -1f, 1f, -1f, -1f, 1f, 1f, 1f))
 
     override fun onSurfaceCreated(gl: GL10?, cfg: EGLConfig?) {
@@ -105,6 +112,7 @@ class VrRenderer(
         builtMeshKey = null
 
         val st = SurfaceTexture(oesTexture)
+        sourceBufferSize?.let { (w, h) -> st.setDefaultBufferSize(w, h) }
         st.setOnFrameAvailableListener(this)
         surfaceTexture = st
         val s = Surface(st)
@@ -179,7 +187,12 @@ class VrRenderer(
 
         val fov = (c.calibration.fovDegrees / c.calibration.zoom).coerceIn(20f, 140f)
         Matrix.perspectiveM(proj, 0, fov, aspect, 0.1f, 100f)
-        Matrix.multiplyMM(mvp, 0, proj, 0, view, 0)
+        // Off-axis projection: "straight ahead" must land on this eye's lens center (where the
+        // pre-distortion is centered), not on the middle of the eye viewport.
+        Matrix.setIdentityM(shift, 0)
+        Matrix.translateM(shift, 0, 2f * vp.centerU - 1f, 1f - 2f * vp.centerV, 0f)
+        Matrix.multiplyMM(shifted, 0, shift, 0, proj, 0)
+        Matrix.multiplyMM(mvp, 0, shifted, 0, view, 0)
 
         val rect = StereoMapper.eyeRect(c.layout, eye, c.swapEyes)
         GLES30.glUseProgram(sceneProgram)
@@ -211,6 +224,7 @@ class VrRenderer(
         GLES30.glUniform2f(GLES30.glGetUniformLocation(distortProgram, "uImageOffset"),
             if (c.headsetMode) cal.imageOffsetX else 0f, if (c.headsetMode) cal.imageOffsetY else 0f)
         GLES30.glUniform1f(GLES30.glGetUniformLocation(distortProgram, "uMargin"), if (c.headsetMode) cal.viewportMargin else 0f)
+        GLES30.glUniform2f(GLES30.glGetUniformLocation(distortProgram, "uReticle"), if (c.reticle) 0.012f else 0f, c.reticleProgress)
         drawQuad()
     }
 

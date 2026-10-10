@@ -92,12 +92,12 @@ class MetadataReader(private val context: Context) {
     }
 
     private fun displayName(uri: Uri): String =
-        context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
+        if (uri.scheme == "file") uri.lastPathSegment ?: "video" else context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
             if (c.moveToFirst()) c.getString(0) else null
         } ?: uri.lastPathSegment ?: "video"
 
     private fun fileSize(uri: Uri): Long? =
-        context.contentResolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { c ->
+        if (uri.scheme == "file") uri.path?.let { java.io.File(it).length() } else context.contentResolver.query(uri, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { c ->
             if (c.moveToFirst() && !c.isNull(0)) c.getLong(0) else null
         }
 

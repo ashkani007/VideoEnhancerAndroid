@@ -63,3 +63,21 @@
 - Compose is pinned to 1.11.x (BOM 2026.06.01) because Compose 1.12 requires compileSdk 37 and
   AGP 9.1. Moving to AGP 9 (built-in Kotlin) is the next dependency upgrade.
 - The release build is not configured for signing; only the debug APK is produced.
+
+## Browser (Phase 2)
+
+- Detection is best-effort: only sources the page exposes directly (video/source elements,
+  media links, media-looking request URLs) are found. Many sites use script-generated streams
+  (blob:), DRM, signed or login-only URLs, or block other players; those stay in the page.
+- The native player and downloads never receive the site's cookies or headers, so videos that
+  need a login or a referrer can't be opened or enhanced outside the page — by design.
+- HLS/DASH can be played but not enhanced (enhancement needs one downloadable file).
+- HTTP-only sites are not loaded (HTTPS-first without HTTP fallback).
+- VR browser mode: the page is rendered at 1280×720; text entry inside VR needs a Bluetooth
+  keyboard (the on-screen keyboard is not usable in a headset); fullscreen HTML5 video in VR mode
+  is not routed to the virtual screen (use *Open in VRVision Player* for VR videos).
+- Drawing the WebView into the VR surface uses a hardware canvas every frame; performance and
+  battery use on a phone are not measured yet.
+- Downloads use Android's DownloadManager and are visible in the system notification; there is no
+  pause/resume UI beyond what DownloadManager does itself.
+- Gaze/controller input and the VR rendering of web pages have not been tried in a real headset.

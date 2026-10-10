@@ -57,6 +57,7 @@ import com.vrvision.app.ui.components.formatDuration
 import com.vrvision.core.calibration.HeadsetCalibration
 import com.vrvision.core.media.PlaybackErrorClassifier
 import com.vrvision.core.media.PlaybackPhase
+import com.vrvision.core.media.VideoFormat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -86,12 +87,39 @@ fun ImmersiveLandscape(keepScreenOn: Boolean) {
     LaunchedEffect(keepScreenOn) { view.keepScreenOn = keepScreenOn }
 }
 
+/** Library playback: resumes from and saves the stored position. */
 @Composable
 fun PlayerScreen(c: AppContainer, nav: Navigator, videoId: Long) {
+    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
+    val v = video
+    VrPlayback(
+        c, nav,
+        source = v?.let { Uri.parse(it.uri) to null },
+        format = v?.toFormat(),
+        startMs = v?.lastPositionMs ?: 0,
+        onExit = { pos -> c.appScope.launch { c.videos.savePosition(videoId, pos) } },
+    )
+}
+
+/** Network playback handed off from the browser (no position is stored). */
+@Composable
+fun StreamPlayerScreen(c: AppContainer, nav: Navigator, url: String, mime: String?, format: VideoFormat) {
+    VrPlayback(c, nav, source = Uri.parse(url) to mime, format = format, startMs = 0, onExit = {})
+}
+
+/** The VR player shared by library and browser playback. */
+@Composable
+fun VrPlayback(
+    c: AppContainer,
+    nav: Navigator,
+    source: Pair<Uri, String?>?,
+    format: VideoFormat?,
+    startMs: Long,
+    onExit: (Long) -> Unit,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val prefs by c.settings.state.collectAsState()
-    val video by remember(videoId) { c.videos.observe(videoId) }.collectAsState(initial = null)
     val player = remember { PlayerController(context, scope) }
     val tracker = remember { HeadTracker(context) }
     val state by player.state.collectAsState()
@@ -108,9 +136,9 @@ fun PlayerScreen(c: AppContainer, nav: Navigator, videoId: Long) {
 
     LaunchedEffect(Unit) { calibration = c.profiles.active() }
     LaunchedEffect(prefs.useHeadTracking) { tracker.enabled = prefs.useHeadTracking }
-    LaunchedEffect(video?.id) {
-        val v = video ?: return@LaunchedEffect
-        if (!loaded) { player.load(Uri.parse(v.uri), v.lastPositionMs); loaded = true }
+    LaunchedEffect(source) {
+        val src = source ?: return@LaunchedEffect
+        if (!loaded) { player.load(src.first, startMs, src.second); loaded = true }
     }
     // Auto-hide controls 4 s after the last interaction while playing.
     LaunchedEffect(controlsVisible, interaction, state.isPlaying) {
@@ -118,15 +146,13 @@ fun PlayerScreen(c: AppContainer, nav: Navigator, videoId: Long) {
     }
     DisposableEffect(Unit) {
         onDispose {
-            val pos = player.currentPositionMs()
-            // The composition's scope is already cancelled here; use the app scope.
-            c.appScope.launch { c.videos.savePosition(videoId, pos) }
+            // The composition's scope is already cancelled here; onExit uses the app scope.
+            onExit(player.currentPositionMs())
             player.release()
         }
     }
     ImmersiveLandscape(keepScreenOn = state.keepScreenOn)
 
-    val format = video?.toFormat()
     Box(Modifier.fillMaxSize().background(Color.Black)) {
         if (format != null) {
             VrSurface(

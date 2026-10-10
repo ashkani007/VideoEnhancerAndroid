@@ -144,6 +144,7 @@ uniform float uK1;
 uniform float uK2;
 uniform vec2 uImageOffset;
 uniform float uMargin;
+uniform vec2 uReticle;     // x = radius (0 = off), y = dwell progress 0..1
 in vec2 vUv;
 out vec4 fragColor;
 void main() {
@@ -161,6 +162,15 @@ void main() {
         return;
     }
     fragColor = texture(uEye, vec2(src.x, 1.0 - src.y));
+    if (uReticle.x > 0.0) {
+        // Gaze reticle at the lens center (the gaze direction after off-axis projection).
+        float r = length(da);
+        if (r < uReticle.x * 0.35) fragColor = vec4(1.0);
+        else if (r > uReticle.x * 0.8 && r < uReticle.x) {
+            float a = atan(da.x, -da.y) / 6.2831853 + 0.5;
+            fragColor = a <= uReticle.y ? vec4(0.37, 0.78, 1.0, 1.0) : vec4(1.0, 1.0, 1.0, 0.9);
+        }
+    }
 }
 """
 

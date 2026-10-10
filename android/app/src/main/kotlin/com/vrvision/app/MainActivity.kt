@@ -1,13 +1,28 @@
 package com.vrvision.app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -23,11 +38,21 @@ import com.vrvision.app.ui.screens.RecommendationScreen
 import com.vrvision.app.ui.screens.CloudConsentScreen
 import com.vrvision.app.ui.screens.ProgressScreen
 import com.vrvision.app.ui.screens.CompareScreen
+import com.vrvision.app.ui.screens.BrowserScreen
+import com.vrvision.app.ui.screens.EnhanceHubScreen
+import com.vrvision.app.ui.screens.HomeScreen
+import com.vrvision.app.ui.screens.StreamPlayerScreen
 import com.vrvision.app.ui.theme.VRVisionTheme
+import com.vrvision.core.media.VideoFormat
 
 /** App destinations. A simple back stack keeps navigation explicit and dependency-free. */
 sealed interface Dest {
+    data object Home : Dest
     data object Library : Dest
+    data object Browser : Dest
+    data object EnhanceHub : Dest
+    /** A network video handed off from the browser. */
+    data class StreamPlayer(val url: String, val mime: String?, val format: VideoFormat) : Dest
     data class VideoInfo(val videoId: Long) : Dest
     data class Player(val videoId: Long) : Dest
     data object Calibration : Dest
@@ -46,20 +71,36 @@ class Navigator(private val stack: MutableList<Dest>) {
     fun replace(d: Dest) { stack.removeAt(stack.lastIndex); stack.add(d) }
     fun back() { if (canGoBack) stack.removeAt(stack.lastIndex) }
     fun home() { while (stack.size > 1) stack.removeAt(stack.lastIndex) }
+    /** Bottom-bar destinations each start their own stack. */
+    fun switchRoot(d: Dest) { stack.clear(); stack.add(d) }
+    val root: Dest get() = stack.first()
 }
 
+private val rootDestinations = listOf(Dest.Home, Dest.Library, Dest.Browser, Dest.EnhanceHub, Dest.Settings)
+
 class MainActivity : ComponentActivity() {
+    private val container get() = (application as VRVisionApp).container
+
+    /**
+     * Bluetooth controllers/keyboards go to the screen that registered for them (VR browser).
+     * dispatchKeyEvent is public Activity API; androidx marks ComponentActivity's override as
+     * restricted, which lint reports as a false positive for subclasses.
+     */
+    @SuppressLint("RestrictedApi")
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        container.keyHandler?.invoke(event) == true || super.dispatchKeyEvent(event)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val container = (application as VRVisionApp).container
         setContent {
             VRVisionTheme {
-                val stack = remember { mutableStateListOf<Dest>(Dest.Library) }
+                val stack = remember { mutableStateListOf<Dest>(Dest.Home) }
                 val nav = remember { Navigator(stack) }
                 BackHandler(enabled = stack.size > 1) { nav.back() }
-                Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-                    Route(stack.last(), nav, container)
+                Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+                    Box(Modifier.weight(1f).fillMaxWidth()) { Route(stack.last(), nav, container) }
+                    if (stack.size == 1) BottomBar(nav)
                 }
             }
         }
@@ -67,9 +108,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+private fun BottomBar(nav: Navigator) {
+    NavigationBar(modifier = Modifier.navigationBarsPadding()) {
+        rootDestinations.forEach { d ->
+            val (label, icon) = when (d) {
+                Dest.Home -> "Home" to Icons.Filled.Home
+                Dest.Library -> "Library" to Icons.AutoMirrored.Filled.List
+                Dest.Browser -> "Browser" to Icons.Filled.Search
+                Dest.EnhanceHub -> "Enhance" to Icons.Filled.Build
+                else -> "Settings" to Icons.Filled.Settings
+            }
+            NavigationBarItem(
+                selected = nav.root == d,
+                onClick = { if (nav.root != d) nav.switchRoot(d) },
+                icon = { Icon(icon, contentDescription = label) },
+                label = { Text(label) },
+            )
+        }
+    }
+}
+
+@Composable
 private fun Route(dest: Dest, nav: Navigator, c: AppContainer) {
     when (dest) {
+        Dest.Home -> HomeScreen(c, nav)
         Dest.Library -> LibraryScreen(c, nav)
+        Dest.Browser -> BrowserScreen(c, nav)
+        Dest.EnhanceHub -> EnhanceHubScreen(c, nav)
+        is Dest.StreamPlayer -> StreamPlayerScreen(c, nav, dest.url, dest.mime, dest.format)
         is Dest.VideoInfo -> VideoInfoScreen(c, nav, dest.videoId)
         is Dest.Player -> PlayerScreen(c, nav, dest.videoId)
         Dest.Calibration -> CalibrationScreen(c, nav)

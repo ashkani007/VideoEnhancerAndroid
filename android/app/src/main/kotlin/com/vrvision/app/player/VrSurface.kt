@@ -34,6 +34,7 @@ fun VrSurface(
     onSurface: (Surface) -> Unit = {},
     onTap: () -> Unit = {},
     onDoubleTap: () -> Unit = {},
+    sourceBufferSize: Pair<Int, Int>? = null,
 ) {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -48,6 +49,7 @@ fun VrSurface(
             val renderer = VrRenderer(
                 onSurfaceReady = { s -> post { onSurface(s) } },
                 orientation = { tracker.orientation() },
+                sourceBufferSize = sourceBufferSize,
             )
             holder[0] = renderer
             setRenderer(renderer)
