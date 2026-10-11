@@ -47,26 +47,132 @@ class DemoRepository implements FairMatchRepository {
   // Fictional people. `likesYou` = already chose the demo user (match on selection).
   // `answer` = how they respond to a request after a short delay (true accept, false decline, null no reply).
   late final List<_DemoPerson> _people = [
-    _DemoPerson('luca', 'Luca', 29, 'man', 'long_term', ['climbing', 'coffee', 'film', 'cooking'], ['honesty', 'family', 'humour'],
-        'Software engineer who makes a mean risotto. Dog person, cat-tolerant.', 'About 5 km away', likesYou: true, verified: true),
-    _DemoPerson('sam', 'Sam', 27, 'nonbinary', 'long_term', ['poetry', 'climbing', 'vinyl', 'tea'], ['kindness', 'creativity', 'honesty'],
-        'Bookseller, amateur climber, professional overthinker.', 'Less than 5 km away', likesYou: true, verified: true),
-    _DemoPerson('daniel', 'Daniel', 32, 'man', 'long_term', ['running', 'jazz', 'books', 'travel'], ['kindness', 'growth', 'honesty'],
-        'Paediatric nurse. Sunday long runs, Monday long naps.', 'About 10 km away', answer: true, verified: true),
-    _DemoPerson('kenji', 'Kenji', 30, 'man', 'long_term', ['ceramics', 'hiking', 'tea', 'languages'], ['curiosity', 'kindness', 'family'],
-        'Potter. My mugs are lopsided but full of love.', 'About 15 km away', answer: null),
-    _DemoPerson('river', 'River', 30, 'nonbinary', 'long_term_open_short', ['gardening', 'film', 'cooking'], ['curiosity', 'humour'],
-        'Community garden coordinator. Tomatoes are a personality.', 'About 10 km away', answer: false, verified: true),
-    _DemoPerson('omar', 'Omar', 27, 'man', 'long_term_open_short', ['football', 'photography', 'coffee'], ['loyalty', 'ambition'],
-        'Weekend photographer, weekday optimist.', 'About 20 km away', answer: true, inboxFull: true),
-    _DemoPerson('ivan', 'Ivan', 28, 'man', 'long_term', ['chess', 'museums', 'running'], ['honesty', 'growth'],
-        'Chess club regular looking for a life partner, not a stalemate.', 'About 5 km away', answer: null),
-    _DemoPerson('mateo', 'Mateo', 34, 'man', 'friendship_first', ['board games', 'baking', 'cycling'], ['humour', 'loyalty'],
-        'Will bake you sourdough. Strong opinions about board game rules.', 'About 25 km away', answer: true),
-    _DemoPerson('ari', 'Ari', 25, 'nonbinary', 'figuring_out', ['dancing', 'photography', 'travel'], ['adventure', 'independence'],
-        'Dancer seeking someone to explore the city with.', 'Less than 5 km away', answer: null, verified: true),
-    _DemoPerson('theo', 'Theo', 26, 'man', 'short_term_open_long', ['skating', 'festivals', 'music production'], ['creativity', 'adventure'],
-        'Making beats and bad puns.', 'About 30 km away', answer: false),
+    _DemoPerson(
+      'luca',
+      'Luca',
+      29,
+      'man',
+      'long_term',
+      ['climbing', 'coffee', 'film', 'cooking'],
+      ['honesty', 'family', 'humour'],
+      'Software engineer who makes a mean risotto. Dog person, cat-tolerant.',
+      'About 5 km away',
+      likesYou: true,
+      verified: true,
+    ),
+    _DemoPerson(
+      'sam',
+      'Sam',
+      27,
+      'nonbinary',
+      'long_term',
+      ['poetry', 'climbing', 'vinyl', 'tea'],
+      ['kindness', 'creativity', 'honesty'],
+      'Bookseller, amateur climber, professional overthinker.',
+      'Less than 5 km away',
+      likesYou: true,
+      verified: true,
+    ),
+    _DemoPerson(
+      'daniel',
+      'Daniel',
+      32,
+      'man',
+      'long_term',
+      ['running', 'jazz', 'books', 'travel'],
+      ['kindness', 'growth', 'honesty'],
+      'Paediatric nurse. Sunday long runs, Monday long naps.',
+      'About 10 km away',
+      answer: true,
+      verified: true,
+    ),
+    _DemoPerson(
+      'kenji',
+      'Kenji',
+      30,
+      'man',
+      'long_term',
+      ['ceramics', 'hiking', 'tea', 'languages'],
+      ['curiosity', 'kindness', 'family'],
+      'Potter. My mugs are lopsided but full of love.',
+      'About 15 km away',
+      answer: null,
+    ),
+    _DemoPerson(
+      'river',
+      'River',
+      30,
+      'nonbinary',
+      'long_term_open_short',
+      ['gardening', 'film', 'cooking'],
+      ['curiosity', 'humour'],
+      'Community garden coordinator. Tomatoes are a personality.',
+      'About 10 km away',
+      answer: false,
+      verified: true,
+    ),
+    _DemoPerson(
+      'omar',
+      'Omar',
+      27,
+      'man',
+      'long_term_open_short',
+      ['football', 'photography', 'coffee'],
+      ['loyalty', 'ambition'],
+      'Weekend photographer, weekday optimist.',
+      'About 20 km away',
+      answer: true,
+      inboxFull: true,
+    ),
+    _DemoPerson(
+      'ivan',
+      'Ivan',
+      28,
+      'man',
+      'long_term',
+      ['chess', 'museums', 'running'],
+      ['honesty', 'growth'],
+      'Chess club regular looking for a life partner, not a stalemate.',
+      'About 5 km away',
+      answer: null,
+    ),
+    _DemoPerson(
+      'mateo',
+      'Mateo',
+      34,
+      'man',
+      'friendship_first',
+      ['board games', 'baking', 'cycling'],
+      ['humour', 'loyalty'],
+      'Will bake you sourdough. Strong opinions about board game rules.',
+      'About 25 km away',
+      answer: true,
+    ),
+    _DemoPerson(
+      'ari',
+      'Ari',
+      25,
+      'nonbinary',
+      'figuring_out',
+      ['dancing', 'photography', 'travel'],
+      ['adventure', 'independence'],
+      'Dancer seeking someone to explore the city with.',
+      'Less than 5 km away',
+      answer: null,
+      verified: true,
+    ),
+    _DemoPerson(
+      'theo',
+      'Theo',
+      26,
+      'man',
+      'short_term_open_long',
+      ['skating', 'festivals', 'music production'],
+      ['creativity', 'adventure'],
+      'Making beats and bad puns.',
+      'About 30 km away',
+      answer: false,
+    ),
   ];
 
   static const _prompts = [
@@ -95,12 +201,24 @@ class DemoRepository implements FairMatchRepository {
   int get _limit => _tier == 'free' ? 5 : 15;
 
   Entitlements get _entitlements => switch (_tier) {
-        'plus' => const Entitlements(
-            tier: 'plus', dailySelections: 15, seeIncomingLikes: true, advancedFilters: true, profileAnalytics: true, aiAssistant: false),
-        'premium_ai' => const Entitlements(
-            tier: 'premium_ai', dailySelections: 15, seeIncomingLikes: true, advancedFilters: true, profileAnalytics: true, aiAssistant: true),
-        _ => Entitlements.free,
-      };
+    'plus' => const Entitlements(
+      tier: 'plus',
+      dailySelections: 15,
+      seeIncomingLikes: true,
+      advancedFilters: true,
+      profileAnalytics: true,
+      aiAssistant: false,
+    ),
+    'premium_ai' => const Entitlements(
+      tier: 'premium_ai',
+      dailySelections: 15,
+      seeIncomingLikes: true,
+      advancedFilters: true,
+      profileAnalytics: true,
+      aiAssistant: true,
+    ),
+    _ => Entitlements.free,
+  };
 
   Selections get _selections => Selections(max(0, _limit - _usedToday), _limit);
 
@@ -127,21 +245,18 @@ class DemoRepository implements FairMatchRepository {
       insights: !withInsights
           ? null
           : (sharedI.isEmpty && sharedV.isEmpty && !goalsAlign)
-              ? const Insights(
-                  available: false,
-                  explanation: 'Not enough shared profile information yet to say much about compatibility.',
-                )
-              : Insights(
-                  available: true,
-                  explanation: 'Based only on what you both chose to share. This is not a prediction of relationship success.',
-                  highlights: [
-                    if (goalsAlign) 'Looking for a similar kind of relationship',
-                    if (sharedV.isNotEmpty) 'Shares values you care about',
-                  ],
-                  sharedInterests: sharedI,
-                  sharedValues: sharedV,
-                  considerations: [if (!goalsAlign) 'You may be looking for different kinds of relationships'],
-                ),
+          ? const Insights(available: false, explanation: 'Not enough shared profile information yet to say much about compatibility.')
+          : Insights(
+              available: true,
+              explanation: 'Based only on what you both chose to share. This is not a prediction of relationship success.',
+              highlights: [
+                if (goalsAlign) 'Looking for a similar kind of relationship',
+                if (sharedV.isNotEmpty) 'Shares values you care about',
+              ],
+              sharedInterests: sharedI,
+              sharedValues: sharedV,
+              considerations: [if (!goalsAlign) 'You may be looking for different kinds of relationships'],
+            ),
     );
   }
 
@@ -247,10 +362,10 @@ class DemoRepository implements FairMatchRepository {
 
   @override
   Future<Map<String, dynamic>> exportData() async => {
-        'note': 'Demo mode export — contains only fictional demo data.',
-        'profile': {'first_name': _profile.firstName, 'interests': _profile.interests},
-        'matches': _matches.keys.toList(),
-      };
+    'note': 'Demo mode export — contains only fictional demo data.',
+    'profile': {'first_name': _profile.firstName, 'interests': _profile.interests},
+    'matches': _matches.keys.toList(),
+  };
 
   @override
   Future<void> deleteAccount() async => _signedIn = false;
@@ -271,7 +386,8 @@ class DemoRepository implements FairMatchRepository {
         pairId: null,
         candidates: const [],
         selections: _selections,
-        emptyReason: "You've seen every fictional demo profile. In the real app, new people appear as they join — "
+        emptyReason:
+            "You've seen every fictional demo profile. In the real app, new people appear as they join — "
             'we never show made-up profiles to real members.',
       );
     }
@@ -372,42 +488,48 @@ class DemoRepository implements FairMatchRepository {
       canSeeIncoming: ent.seeIncomingLikes,
       incoming: ent.seeIncomingLikes
           ? incoming
-              .map((p) => InterestItem(
+                .map(
+                  (p) => InterestItem(
                     id: 'in-${p.id}',
                     state: InterestState.pending,
                     statusText: 'Delivered',
                     profile: _card(p),
                     createdAt: DateTime.now().subtract(const Duration(hours: 3)),
                     expiresAt: DateTime.now().add(const Duration(hours: 45)),
-                  ))
-              .toList()
+                  ),
+                )
+                .toList()
           : const [],
-      outgoing: _outgoing.values.toList().reversed
-          .map((i) => InterestItem(
-                id: i.id,
-                state: i.state,
-                statusText: _copy(i.state),
-                profile: _card(_person(i.personId), withInsights: false),
-                createdAt: i.createdAt,
-                expiresAt: i.createdAt.add(const Duration(hours: 48)),
-              ))
+      outgoing: _outgoing.values
+          .toList()
+          .reversed
+          .map(
+            (i) => InterestItem(
+              id: i.id,
+              state: i.state,
+              statusText: _copy(i.state),
+              profile: _card(_person(i.personId), withInsights: false),
+              createdAt: i.createdAt,
+              expiresAt: i.createdAt.add(const Duration(hours: 48)),
+            ),
+          )
           .toList(),
       note: incoming.isNotEmpty && !ent.seeIncomingLikes
           ? 'People who chose you are shown in your Discover pairs first, so you can choose them back for free. '
-              'Plus lets you see and answer them here directly.'
+                'Plus lets you see and answer them here directly.'
           : null,
     );
   }
 
   String _copy(InterestState s) => switch (s) {
-        InterestState.waitlisted => "Waiting in line — they'll see it when they have room",
-        InterestState.pending => 'Delivered — waiting for their answer',
-        InterestState.matched => 'Matched',
-        InterestState.rejected => 'Not this time',
-        InterestState.expired => 'Expired',
-        InterestState.canceled => 'Canceled',
-        _ => '',
-      };
+    InterestState.waitlisted => "Waiting in line — they'll see it when they have room",
+    InterestState.pending => 'Delivered — waiting for their answer',
+    InterestState.matched => 'Matched',
+    InterestState.rejected => 'Not this time',
+    InterestState.expired => 'Expired',
+    InterestState.canceled => 'Canceled',
+    _ => '',
+  };
 
   @override
   Future<SelectionOutcome> respond(String interestId, bool accept) async {
@@ -576,10 +698,10 @@ class DemoRepository implements FairMatchRepository {
   // ------------------------------------------------------------ billing (simulated)
   @override
   Future<List<Product>> products() async => const [
-        Product(id: 'fairmatch_plus_monthly', kind: 'subscription', price: '9.99', currency: 'EUR', tier: 'plus'),
-        Product(id: 'fairmatch_premium_ai_monthly', kind: 'subscription', price: '19.99', currency: 'EUR', tier: 'premium_ai'),
-        Product(id: 'fairmatch_boost_30m', kind: 'consumable', price: '2.99', currency: 'EUR', boostMinutes: 30),
-      ];
+    Product(id: 'fairmatch_plus_monthly', kind: 'subscription', price: '9.99', currency: 'EUR', tier: 'plus'),
+    Product(id: 'fairmatch_premium_ai_monthly', kind: 'subscription', price: '19.99', currency: 'EUR', tier: 'premium_ai'),
+    Product(id: 'fairmatch_boost_30m', kind: 'consumable', price: '2.99', currency: 'EUR', boostMinutes: 30),
+  ];
 
   @override
   Future<void> verifyPurchase(String productId, String purchaseToken) async {
@@ -593,8 +715,21 @@ class DemoRepository implements FairMatchRepository {
 }
 
 class _DemoPerson {
-  _DemoPerson(this.id, this.name, this.age, this.gender, this.intent, this.interests, this.values, this.bio, this.distance,
-      {this.likesYou = false, this.answer, this.verified = false, this.inboxFull = false});
+  _DemoPerson(
+    this.id,
+    this.name,
+    this.age,
+    this.gender,
+    this.intent,
+    this.interests,
+    this.values,
+    this.bio,
+    this.distance, {
+    this.likesYou = false,
+    this.answer,
+    this.verified = false,
+    this.inboxFull = false,
+  });
   final String id, name, gender, intent, bio, distance;
   final int age;
   final List<String> interests, values;

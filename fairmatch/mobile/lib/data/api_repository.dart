@@ -11,8 +11,8 @@ import 'repository.dart';
 /// Talks to the FastAPI backend. Tokens live in the platform keystore (flutter_secure_storage).
 class ApiRepository implements FairMatchRepository {
   ApiRepository(this.baseUrl, {http.Client? client, FlutterSecureStorage? storage})
-      : _http = client ?? http.Client(),
-        _storage = storage ?? const FlutterSecureStorage();
+    : _http = client ?? http.Client(),
+      _storage = storage ?? const FlutterSecureStorage();
 
   final String baseUrl;
   final http.Client _http;
@@ -33,8 +33,14 @@ class ApiRepository implements FairMatchRepository {
   Stream<RealtimeEvent> get events => _events.stream;
 
   // ------------------------------------------------------------ transport
-  Future<dynamic> _req(String method, String path,
-      {Object? body, Map<String, String>? headers, bool auth = true, bool retried = false}) async {
+  Future<dynamic> _req(
+    String method,
+    String path, {
+    Object? body,
+    Map<String, String>? headers,
+    bool auth = true,
+    bool retried = false,
+  }) async {
     final uri = Uri.parse('$baseUrl$path');
     final h = {'Content-Type': 'application/json', 'Accept': 'application/json', ...?headers};
     if (auth && _access != null) h['Authorization'] = 'Bearer $_access';
@@ -59,23 +65,25 @@ class ApiRepository implements FairMatchRepository {
   ApiException _error(http.Response r) {
     try {
       final d = jsonDecode(utf8.decode(r.bodyBytes))['detail'];
-      if (d is Map) return ApiException(d['code']?.toString() ?? 'error', d['message']?.toString() ?? 'Something went wrong', status: r.statusCode);
+      if (d is Map) {
+        return ApiException(d['code']?.toString() ?? 'error', d['message']?.toString() ?? 'Something went wrong', status: r.statusCode);
+      }
     } catch (_) {}
     return ApiException('error', 'Something went wrong (${r.statusCode})', status: r.statusCode);
   }
 
   Future<bool> _refreshTokens() => _refreshing ??= () async {
-        try {
-          final res = await _req('POST', '/auth/refresh', body: {'refresh_token': _refresh}, auth: false, retried: true);
-          await _store(res as Map<String, dynamic>);
-          return true;
-        } catch (_) {
-          await _clear();
-          return false;
-        } finally {
-          _refreshing = null;
-        }
-      }();
+    try {
+      final res = await _req('POST', '/auth/refresh', body: {'refresh_token': _refresh}, auth: false, retried: true);
+      await _store(res as Map<String, dynamic>);
+      return true;
+    } catch (_) {
+      await _clear();
+      return false;
+    } finally {
+      _refreshing = null;
+    }
+  }();
 
   Future<void> _store(Map<String, dynamic> tokens) async {
     _access = tokens['access_token'] as String;
@@ -144,13 +152,18 @@ class ApiRepository implements FairMatchRepository {
   // ------------------------------------------------------------ auth
   @override
   Future<void> register({required String email, required String password, required DateTime dateOfBirth}) async {
-    final res = await _req('POST', '/auth/register', auth: false, body: {
-      'email': email,
-      'password': password,
-      'date_of_birth': dateOfBirth.toIso8601String().substring(0, 10),
-      'accept_terms': true,
-      'accept_privacy': true,
-    });
+    final res = await _req(
+      'POST',
+      '/auth/register',
+      auth: false,
+      body: {
+        'email': email,
+        'password': password,
+        'date_of_birth': dateOfBirth.toIso8601String().substring(0, 10),
+        'accept_terms': true,
+        'accept_privacy': true,
+      },
+    );
     await _store(res as Map<String, dynamic>);
     _openSocket();
   }
@@ -214,8 +227,13 @@ class ApiRepository implements FairMatchRepository {
 
   @override
   Future<SelectionOutcome> select(String pairId, String candidateId, String idempotencyKey) async => SelectionOutcome.fromJson(
-      await _req('POST', '/discover/select',
-          body: {'pair_id': pairId, 'candidate_id': candidateId}, headers: {'Idempotency-Key': idempotencyKey}) as Map<String, dynamic>);
+    await _req(
+      'POST',
+      '/discover/select',
+      body: {'pair_id': pairId, 'candidate_id': candidateId},
+      headers: {'Idempotency-Key': idempotencyKey},
+    ) as Map<String, dynamic>,
+  );
 
   @override
   Future<void> passPair(String pairId) async => _req('POST', '/discover/pass/$pairId');
@@ -257,7 +275,8 @@ class ApiRepository implements FairMatchRepository {
 
   @override
   Future<ChatMessage> sendMessage(String matchId, String body, String clientMessageId) async => ChatMessage.fromJson(
-      await _req('POST', '/matches/$matchId/messages', body: {'body': body, 'client_message_id': clientMessageId}) as Map<String, dynamic>);
+    await _req('POST', '/matches/$matchId/messages', body: {'body': body, 'client_message_id': clientMessageId}) as Map<String, dynamic>,
+  );
 
   @override
   Future<void> markRead(String matchId, int upToId) async => _req('POST', '/matches/$matchId/read', body: {'up_to_id': upToId});

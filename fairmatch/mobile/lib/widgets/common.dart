@@ -53,16 +53,19 @@ class Portrait extends StatelessWidget {
       ),
     );
     if (url != null && url!.isNotEmpty) {
-      art = Stack(fit: StackFit.expand, children: [
-        art,
-        Transform.translate(
-          offset: parallax,
-          child: Transform.scale(
-            scale: 1.08,
-            child: Image.network(url!, fit: BoxFit.cover, errorBuilder: (_, _, _) => const SizedBox.shrink()),
+      art = Stack(
+        fit: StackFit.expand,
+        children: [
+          art,
+          Transform.translate(
+            offset: parallax,
+            child: Transform.scale(
+              scale: 1.08,
+              child: Image.network(url!, fit: BoxFit.cover, errorBuilder: (_, _, _) => const SizedBox.shrink()),
+            ),
           ),
-        ),
-      ]);
+        ],
+      );
     }
     return ClipRRect(borderRadius: BorderRadius.circular(borderRadius), child: art);
   }
@@ -76,13 +79,17 @@ class _PortraitPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final r = Offset.zero & size;
-    canvas.drawRect(r, Paint()..shader = LinearGradient(colors: [cols[2], cols[0]], begin: Alignment.bottomLeft, end: Alignment.topRight).createShader(r));
+    canvas.drawRect(
+      r,
+      Paint()..shader = LinearGradient(colors: [cols[2], cols[0]], begin: Alignment.bottomLeft, end: Alignment.topRight).createShader(r),
+    );
     void blob(Offset c, double radius, Color color) {
       canvas.drawCircle(
         c + parallax * 0.5,
         radius,
         Paint()
-          ..shader = RadialGradient(colors: [color.withValues(alpha: 0.85), color.withValues(alpha: 0)]).createShader(Rect.fromCircle(center: c, radius: radius)),
+          ..shader = RadialGradient(colors: [color.withValues(alpha: 0.85), color.withValues(alpha: 0)])
+              .createShader(Rect.fromCircle(center: c, radius: radius)),
       );
     }
 
@@ -105,7 +112,14 @@ class _PortraitPainter extends CustomPainter {
 }
 
 class GlassPanel extends StatelessWidget {
-  const GlassPanel({super.key, required this.child, this.radius = FmRadius.md, this.padding = const EdgeInsets.all(FmSpace.md), this.blur = 18, this.tint});
+  const GlassPanel({
+    super.key,
+    required this.child,
+    this.radius = FmRadius.md,
+    this.padding = const EdgeInsets.all(FmSpace.md),
+    this.blur = 18,
+    this.tint,
+  });
   final Widget child;
   final double radius, blur;
   final EdgeInsets padding;
@@ -134,7 +148,16 @@ class GlassPanel extends StatelessWidget {
 
 /// Primary call-to-action with brand gradient, press-scale micro-interaction and haptics.
 class FmButton extends StatefulWidget {
-  const FmButton({super.key, required this.label, this.onPressed, this.icon, this.loading = false, this.secondary = false, this.expand = true, this.dense = false});
+  const FmButton({
+    super.key,
+    required this.label,
+    this.onPressed,
+    this.icon,
+    this.loading = false,
+    this.secondary = false,
+    this.expand = true,
+    this.dense = false,
+  });
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
@@ -160,7 +183,13 @@ class _FmButtonState extends State<FmButton> {
           SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2.2, color: fg))
         else ...[
           if (widget.icon != null) ...[Icon(widget.icon, color: fg, size: 20), const SizedBox(width: 8)],
-          Flexible(child: Text(widget.label, overflow: TextOverflow.ellipsis, style: context.text.labelLarge?.copyWith(color: fg))),
+          Flexible(
+            child: Text(
+              widget.label,
+              overflow: TextOverflow.ellipsis,
+              style: context.text.labelLarge?.copyWith(color: fg),
+            ),
+          ),
         ],
       ],
     );
@@ -168,6 +197,8 @@ class _FmButtonState extends State<FmButton> {
       button: true,
       enabled: enabled,
       label: widget.label,
+      excludeSemantics: true,
+      onTap: enabled ? widget.onPressed : null,
       child: GestureDetector(
         onTapDown: enabled ? (_) => setState(() => _down = true) : null,
         onTapCancel: () => setState(() => _down = false),
@@ -222,10 +253,16 @@ class Tag extends StatelessWidget {
         borderRadius: BorderRadius.circular(FmRadius.pill),
         border: Border.all(color: highlighted ? fm.accent.withValues(alpha: 0.4) : Colors.transparent),
       ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        if (icon != null) ...[Icon(icon, size: 14, color: fg), const SizedBox(width: 5)],
-        Text(label, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: fg)),
-      ]),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[Icon(icon, size: 14, color: fg), const SizedBox(width: 5)],
+          Text(
+            label,
+            style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: fg),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -236,14 +273,17 @@ class DemoBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        label: 'Demo: fictional profile',
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: compact ? 7 : 10, vertical: compact ? 3 : 5),
-          decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(FmRadius.pill)),
-          child: Text(compact ? 'DEMO' : 'DEMO · FICTIONAL',
-              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
-        ),
-      );
+    label: 'Demo: fictional profile',
+    excludeSemantics: true,
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: compact ? 7 : 10, vertical: compact ? 3 : 5),
+      decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(FmRadius.pill)),
+      child: Text(
+        compact ? 'DEMO' : 'DEMO · FICTIONAL',
+        style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 0.8),
+      ),
+    ),
+  );
 }
 
 class VerifiedBadge extends StatelessWidget {
@@ -251,9 +291,9 @@ class VerifiedBadge extends StatelessWidget {
   final double size;
   @override
   Widget build(BuildContext context) => Semantics(
-        label: 'Photo verified',
-        child: Icon(Icons.verified_rounded, size: size, color: const Color(0xFF60A5FA)),
-      );
+    label: 'Photo verified',
+    child: Icon(Icons.verified_rounded, size: size, color: const Color(0xFF60A5FA)),
+  );
 }
 
 /// Shimmering placeholder used for skeleton loading states.
@@ -330,22 +370,29 @@ class MessageState extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(FmSpace.xl),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Container(
-            width: 76,
-            height: 76,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: fm.accent.withValues(alpha: 0.12)),
-            child: Icon(icon, color: fm.accent, size: 34),
-          ),
-          const SizedBox(height: FmSpace.lg),
-          Text(title, style: context.text.headlineSmall, textAlign: TextAlign.center),
-          const SizedBox(height: FmSpace.xs),
-          Text(body, style: context.text.bodyMedium?.copyWith(color: fm.textMuted), textAlign: TextAlign.center),
-          if (action != null) ...[
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 76,
+              height: 76,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: fm.accent.withValues(alpha: 0.12)),
+              child: Icon(icon, color: fm.accent, size: 34),
+            ),
             const SizedBox(height: FmSpace.lg),
-            FmButton(label: actionLabel ?? 'Continue', onPressed: action, expand: false, secondary: true),
+            Text(title, style: context.text.headlineSmall, textAlign: TextAlign.center),
+            const SizedBox(height: FmSpace.xs),
+            Text(
+              body,
+              style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
+              textAlign: TextAlign.center,
+            ),
+            if (action != null) ...[
+              const SizedBox(height: FmSpace.lg),
+              FmButton(label: actionLabel ?? 'Continue', onPressed: action, expand: false, secondary: true),
+            ],
           ],
-        ]),
+        ),
       ),
     );
   }
@@ -359,22 +406,31 @@ class SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fm = context.fm;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (title != null)
-        Padding(
-          padding: const EdgeInsets.fromLTRB(FmSpace.xs, FmSpace.lg, FmSpace.xs, FmSpace.xs),
-          child: Text(title!.toUpperCase(), style: context.text.labelSmall),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (title != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(FmSpace.xs, FmSpace.lg, FmSpace.xs, FmSpace.xs),
+            child: Text(title!.toUpperCase(), style: context.text.labelSmall),
+          ),
+        Container(
+          decoration: BoxDecoration(
+            color: fm.surface,
+            borderRadius: BorderRadius.circular(FmRadius.lg),
+            border: Border.all(color: fm.stroke),
+          ),
+          child: Column(
+            children: [
+              for (var i = 0; i < children.length; i++) ...[
+                children[i],
+                if (i < children.length - 1) Divider(indent: FmSpace.md, endIndent: FmSpace.md, color: fm.stroke),
+              ],
+            ],
+          ),
         ),
-      Container(
-        decoration: BoxDecoration(color: fm.surface, borderRadius: BorderRadius.circular(FmRadius.lg), border: Border.all(color: fm.stroke)),
-        child: Column(children: [
-          for (var i = 0; i < children.length; i++) ...[
-            children[i],
-            if (i < children.length - 1) Divider(indent: FmSpace.md, endIndent: FmSpace.md, color: fm.stroke),
-          ],
-        ]),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -386,20 +442,22 @@ class AmbientBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fm = context.fm;
-    return Stack(children: [
-      Positioned.fill(child: ColoredBox(color: fm.background)),
-      Positioned(
-        top: -160,
-        left: -120,
-        child: _Glow(color: fm.accent.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.32 : 0.18), size: 420),
-      ),
-      Positioned(
-        top: 120,
-        right: -180,
-        child: _Glow(color: fm.accent2.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.20 : 0.12), size: 380),
-      ),
-      Positioned.fill(child: child),
-    ]);
+    return Stack(
+      children: [
+        Positioned.fill(child: ColoredBox(color: fm.background)),
+        Positioned(
+          top: -160,
+          left: -120,
+          child: _Glow(color: fm.accent.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.32 : 0.18), size: 420),
+        ),
+        Positioned(
+          top: 120,
+          right: -180,
+          child: _Glow(color: fm.accent2.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.20 : 0.12), size: 380),
+        ),
+        Positioned.fill(child: child),
+      ],
+    );
   }
 }
 
@@ -409,37 +467,48 @@ class _Glow extends StatelessWidget {
   final double size;
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(shape: BoxShape.circle, gradient: RadialGradient(colors: [color, color.withValues(alpha: 0)])),
-        ),
-      );
+    child: Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(colors: [color, color.withValues(alpha: 0)]),
+      ),
+    ),
+  );
 }
 
 String lifestyleLabel(String key, String value) {
-  const keys = {'smoking': 'Smoking', 'drinking': 'Drinking', 'exercise': 'Exercise', 'kids_want': 'Kids', 'pets': 'Pets', 'diet': 'Diet', 'sleep': 'Sleep'};
+  const keys = {
+    'smoking': 'Smoking',
+    'drinking': 'Drinking',
+    'exercise': 'Exercise',
+    'kids_want': 'Kids',
+    'pets': 'Pets',
+    'diet': 'Diet',
+    'sleep': 'Sleep',
+  };
   return '${keys[key] ?? key}: ${value.replaceAll('_', ' ')}';
 }
 
 double clampDouble(double v, double lo, double hi) => math.min(hi, math.max(lo, v));
 
 IconData intentIcon(String? intent) => switch (intent) {
-      'long_term' => Icons.favorite_rounded,
-      'long_term_open_short' || 'short_term_open_long' => Icons.all_inclusive_rounded,
-      'short_term' => Icons.local_fire_department_rounded,
-      'friendship_first' => Icons.emoji_people_rounded,
-      _ => Icons.explore_rounded,
-    };
+  'long_term' => Icons.favorite_rounded,
+  'long_term_open_short' || 'short_term_open_long' => Icons.all_inclusive_rounded,
+  'short_term' => Icons.local_fire_department_rounded,
+  'friendship_first' => Icons.emoji_people_rounded,
+  _ => Icons.explore_rounded,
+};
 
 String? shortIntent(String? intent) => switch (intent) {
-      'long_term' => 'Long-term',
-      'long_term_open_short' => 'Long-term, open',
-      'short_term_open_long' => 'Short-term, open',
-      'short_term' => 'Casual',
-      'friendship_first' => 'Friendship first',
-      'figuring_out' => 'Figuring it out',
-      _ => null,
-    };
+  'long_term' => 'Long-term',
+  'long_term_open_short' => 'Long-term, open',
+  'short_term_open_long' => 'Short-term, open',
+  'short_term' => 'Casual',
+  'friendship_first' => 'Friendship first',
+  'figuring_out' => 'Figuring it out',
+  _ => null,
+};
 
 String profileSubtitle(ProfileCard p) => [p.intentLabel, p.distance].whereType<String>().join(' · ');

@@ -305,3 +305,13 @@ def test_websocket_auth_and_realtime_match_event(client, db):
             raise AssertionError("expected close")
         except Exception:
             pass
+
+
+def test_progressive_onboarding_saves_name_before_gender(client):
+    """Regression: onboarding saves each answer as it goes, starting with the name alone."""
+    h = {"Authorization": "Bearer " + register(client).json()["access_token"]}
+    r = client.patch("/me/profile", headers=h, json={"first_name": "Maya"})
+    assert r.status_code == 200, r.text
+    assert r.json()["profile"]["completed"] is False
+    r = client.patch("/me/profile", headers=h, json={"gender": "woman"})
+    assert r.json()["profile"]["gender"] == "woman"

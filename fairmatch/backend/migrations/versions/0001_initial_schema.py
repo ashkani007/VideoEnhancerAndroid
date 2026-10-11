@@ -2,7 +2,7 @@
 
 Revision ID: 0001
 Revises: 
-Create Date: 2026-10-11 19:13:56.135275
+Create Date: 2026-10-11 20:32:51.318865
 """
 from alembic import op
 import sqlalchemy as sa
@@ -150,7 +150,7 @@ def upgrade() -> None:
     sa.Column('user_id', sa.UUID(), nullable=False),
     sa.Column('first_name', sa.String(length=40), nullable=False),
     sa.Column('bio', sa.Text(), nullable=False),
-    sa.Column('gender', sa.String(length=32), nullable=False),
+    sa.Column('gender', sa.String(length=32), nullable=True),
     sa.Column('show_gender', sa.Boolean(), nullable=False),
     sa.Column('interested_in', postgresql.ARRAY(sa.String(length=32)), nullable=False),
     sa.Column('relationship_intent', sa.String(length=32), nullable=True),

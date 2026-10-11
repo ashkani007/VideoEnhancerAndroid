@@ -15,10 +15,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget host(Widget child, FairMatchRepository repo, {Brightness brightness = Brightness.dark}) => ProviderScope(
-      retry: (_, _) => null,
-      overrides: [repoProvider.overrideWithValue(repo)],
-      child: MaterialApp(theme: buildTheme(brightness), home: Scaffold(body: child)),
-    );
+  retry: (_, _) => null,
+  overrides: [repoProvider.overrideWithValue(repo)],
+  child: MaterialApp(
+    theme: buildTheme(brightness),
+    home: Scaffold(body: child),
+  ),
+);
 
 Future<void> setSize(WidgetTester t, Size logical) async {
   t.view.physicalSize = logical * 2;
@@ -75,20 +78,26 @@ void main() {
   });
 
   testWidgets('Discover offline state offers retry', (t) async {
-    await t.pumpWidget(host(
-      const DiscoverScreen(),
-      _StubRepo(pair: () async => throw ApiException('offline', "You're offline. Check your connection and try again.")),
-    ));
+    await t.pumpWidget(
+      host(
+        const DiscoverScreen(),
+        _StubRepo(pair: () async => throw ApiException('offline', "You're offline. Check your connection and try again.")),
+      ),
+    );
     await t.pump(const Duration(milliseconds: 50));
     expect(find.text("You're offline"), findsOneWidget);
     expect(find.text('Try again'), findsOneWidget);
   });
 
   testWidgets('Discover empty state is honest and never fabricates people', (t) async {
-    await t.pumpWidget(host(
-      const DiscoverScreen(),
-      _StubRepo(pair: () async => const PairData(pairId: null, candidates: [], selections: Selections(5, 5), emptyReason: 'No new people')),
-    ));
+    await t.pumpWidget(
+      host(
+        const DiscoverScreen(),
+        _StubRepo(
+          pair: () async => const PairData(pairId: null, candidates: [], selections: Selections(5, 5), emptyReason: 'No new people'),
+        ),
+      ),
+    );
     await t.pump(const Duration(milliseconds: 50));
     expect(find.text("You're all caught up"), findsOneWidget);
     expect(find.text('No new people'), findsOneWidget);
@@ -132,13 +141,20 @@ void main() {
     await t.pump(const Duration(milliseconds: 100));
     expect(find.text('Hi Luca!'), findsOneWidget);
     await t.pump(const Duration(seconds: 5));
-    expect(find.byWidgetPredicate((w) => w is Text && (w.data ?? '').isNotEmpty && w.data != 'Hi Luca!' && w.data!.length > 12), findsWidgets);
+    expect(
+      find.byWidgetPredicate((w) => w is Text && (w.data ?? '').isNotEmpty && w.data != 'Hi Luca!' && w.data!.length > 12),
+      findsWidgets,
+    );
     await t.pump(const Duration(seconds: 5));
   });
 
   testWidgets('Registration blocks under-18 users on the device as well', (t) async {
     await setSize(t, const Size(412, 892));
-    await t.pumpWidget(ProviderScope(child: MaterialApp(theme: buildTheme(Brightness.dark), home: const AuthScreen(register: true))));
+    await t.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(theme: buildTheme(Brightness.dark), home: const AuthScreen(register: true)),
+      ),
+    );
     await t.enterText(find.byType(TextFormField).at(0), 'teen@example.com');
     await t.enterText(find.byType(TextFormField).at(1), 'a-long-password');
     await t.tap(find.text('Continue'));
@@ -148,7 +164,11 @@ void main() {
 
   testWidgets('Welcome offers account creation and a clearly labelled demo', (t) async {
     await setSize(t, const Size(360, 740));
-    await t.pumpWidget(ProviderScope(child: MaterialApp(theme: buildTheme(Brightness.light), home: const WelcomeScreen())));
+    await t.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(theme: buildTheme(Brightness.light), home: const WelcomeScreen()),
+      ),
+    );
     await t.pump();
     expect(find.text('Create account'), findsOneWidget);
     expect(find.text('Explore the demo with fictional profiles'), findsOneWidget);

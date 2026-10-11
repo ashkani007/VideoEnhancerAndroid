@@ -45,7 +45,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
       }
     });
-    billing.storeProducts({..._plans.keys, 'fairmatch_boost_30m'}).then((p) => mounted ? setState(() => _store = p) : null).catchError((_) {});
+    billing
+        .storeProducts({..._plans.keys, 'fairmatch_boost_30m'})
+        .then((p) => mounted ? setState(() => _store = p) : null)
+        .catchError((_) {});
   }
 
   @override
@@ -94,61 +97,75 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
     final tier = me?.entitlements.tier ?? 'free';
     return Scaffold(
       appBar: AppBar(title: const Text('FairMatch plans')),
-      body: ListView(padding: const EdgeInsets.fromLTRB(FmSpace.md, 0, FmSpace.md, FmSpace.xxl), children: [
-        Text('Upgrade if it helps — never because you have to.', style: context.text.headlineSmall),
-        const SizedBox(height: FmSpace.xs),
-        Text(
-          'Matching, messaging and every safety feature stay free. Paid plans never override anyone\'s preferences or '
-          'buy you a match.',
-          style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
-        ),
-        const SizedBox(height: FmSpace.lg),
-        for (final e in _plans.entries) ...[
-          _PlanTile(
-            name: e.value.$1,
-            icon: e.value.$2,
-            features: e.value.$3,
-            price: price(e.key),
-            current: (e.key.contains('plus') && tier == 'plus') || (e.key.contains('premium') && tier == 'premium_ai'),
-            busy: _busy == e.key,
-            onBuy: () => _buy(e.key),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(FmSpace.md, 0, FmSpace.md, FmSpace.xxl),
+        children: [
+          Text('Upgrade if it helps — never because you have to.', style: context.text.headlineSmall),
+          const SizedBox(height: FmSpace.xs),
+          Text(
+            'Matching, messaging and every safety feature stay free. Paid plans never override anyone\'s preferences or '
+            'buy you a match.',
+            style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
           ),
-          const SizedBox(height: FmSpace.md),
-        ],
-        Container(
-          padding: const EdgeInsets.all(FmSpace.lg),
-          decoration: BoxDecoration(color: fm.surface, borderRadius: BorderRadius.circular(FmRadius.xl), border: Border.all(color: fm.stroke)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Icon(Icons.bolt_rounded, color: fm.warning),
-              const SizedBox(width: 8),
-              Expanded(child: Text('Profile Boost · 30 min', style: context.text.titleLarge)),
-              Text(price('fairmatch_boost_30m'), style: context.text.titleMedium),
-            ]),
-            const SizedBox(height: FmSpace.xs),
-            Text(
-              'Shown a little more often to people who already fit your preferences. Boosted cards are labelled “Promoted”, '
-              'are capped at 10% of recommendations, and never guarantee a match.',
-              style: context.text.bodySmall,
+          const SizedBox(height: FmSpace.lg),
+          for (final e in _plans.entries) ...[
+            _PlanTile(
+              name: e.value.$1,
+              icon: e.value.$2,
+              features: e.value.$3,
+              price: price(e.key),
+              current: (e.key.contains('plus') && tier == 'plus') || (e.key.contains('premium') && tier == 'premium_ai'),
+              busy: _busy == e.key,
+              onBuy: () => _buy(e.key),
             ),
             const SizedBox(height: FmSpace.md),
-            FmButton(
-              label: me?.boostActiveUntil != null ? 'Boost active' : 'Boost my profile',
-              secondary: true,
-              loading: _busy == 'fairmatch_boost_30m',
-              onPressed: me?.boostActiveUntil != null ? null : () => _buy('fairmatch_boost_30m', consumable: true),
+          ],
+          Container(
+            padding: const EdgeInsets.all(FmSpace.lg),
+            decoration: BoxDecoration(
+              color: fm.surface,
+              borderRadius: BorderRadius.circular(FmRadius.xl),
+              border: Border.all(color: fm.stroke),
             ),
-          ]),
-        ),
-        const SizedBox(height: FmSpace.lg),
-        Center(child: TextButton(onPressed: () => ref.read(billingProvider).restore(), child: const Text('Restore purchases'))),
-        Text(
-          'Subscriptions renew monthly until cancelled. Cancel anytime in Google Play → Payments & subscriptions; '
-          'you keep access until the end of the period you paid for. Prices include VAT where applicable.',
-          style: context.text.bodySmall,
-          textAlign: TextAlign.center,
-        ),
-      ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.bolt_rounded, color: fm.warning),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text('Profile Boost · 30 min', style: context.text.titleLarge)),
+                    Text(price('fairmatch_boost_30m'), style: context.text.titleMedium),
+                  ],
+                ),
+                const SizedBox(height: FmSpace.xs),
+                Text(
+                  'Shown a little more often to people who already fit your preferences. Boosted cards are labelled “Promoted”, '
+                  'are capped at 10% of recommendations, and never guarantee a match.',
+                  style: context.text.bodySmall,
+                ),
+                const SizedBox(height: FmSpace.md),
+                FmButton(
+                  label: me?.boostActiveUntil != null ? 'Boost active' : 'Boost my profile',
+                  secondary: true,
+                  loading: _busy == 'fairmatch_boost_30m',
+                  onPressed: me?.boostActiveUntil != null ? null : () => _buy('fairmatch_boost_30m', consumable: true),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: FmSpace.lg),
+          Center(
+            child: TextButton(onPressed: () => ref.read(billingProvider).restore(), child: const Text('Restore purchases')),
+          ),
+          Text(
+            'Subscriptions renew monthly until cancelled. Cancel anytime in Google Play → Payments & subscriptions; '
+            'you keep access until the end of the period you paid for. Prices include VAT where applicable.',
+            style: context.text.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -179,32 +196,49 @@ class _PlanTile extends StatelessWidget {
         gradient: LinearGradient(colors: [fm.accent.withValues(alpha: 0.22), fm.accent2.withValues(alpha: 0.12)]),
         border: Border.all(color: current ? fm.success : fm.accent.withValues(alpha: 0.35), width: current ? 2 : 1),
       ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Icon(icon, color: fm.accent),
-          const SizedBox(width: 8),
-          Expanded(child: Text(name, style: context.text.headlineSmall)),
-          if (price.isNotEmpty)
-            Text.rich(TextSpan(children: [
-              TextSpan(text: price, style: context.text.titleLarge),
-              TextSpan(text: ' /month', style: context.text.bodySmall),
-            ])),
-        ]),
-        const SizedBox(height: FmSpace.sm),
-        for (final f in features)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 5),
-            child: Row(children: [
-              Icon(Icons.check_rounded, size: 17, color: fm.success),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: fm.accent),
               const SizedBox(width: 8),
-              Expanded(child: Text(f, style: context.text.bodyMedium)),
-            ]),
+              Expanded(child: Text(name, style: context.text.headlineSmall)),
+              if (price.isNotEmpty)
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: price, style: context.text.titleLarge),
+                      TextSpan(text: ' /month', style: context.text.bodySmall),
+                    ],
+                  ),
+                ),
+            ],
           ),
-        const SizedBox(height: FmSpace.md),
-        current
-            ? Row(children: [Icon(Icons.check_circle_rounded, color: fm.success), const SizedBox(width: 6), const Text('Your current plan')])
-            : FmButton(label: 'Choose $name', loading: busy, onPressed: onBuy),
-      ]),
+          const SizedBox(height: FmSpace.sm),
+          for (final f in features)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Row(
+                children: [
+                  Icon(Icons.check_rounded, size: 17, color: fm.success),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(f, style: context.text.bodyMedium)),
+                ],
+              ),
+            ),
+          const SizedBox(height: FmSpace.md),
+          current
+              ? Row(
+                  children: [
+                    Icon(Icons.check_circle_rounded, color: fm.success),
+                    const SizedBox(width: 6),
+                    const Text('Your current plan'),
+                  ],
+                )
+              : FmButton(label: 'Choose $name', loading: busy, onPressed: onBuy),
+        ],
+      ),
     );
   }
 }

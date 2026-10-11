@@ -75,9 +75,9 @@ def update_profile(body: ProfileIn, db: Session = Depends(get_db), user: User = 
     data = body.model_dump(exclude_unset=True)
     p = user.profile
     if p is None:
-        if not data.get("first_name") or not data.get("gender"):
-            raise bad_request("missing_fields", "first_name and gender are required to create a profile")
-        p = Profile(user_id=user.id, first_name=data["first_name"], gender=data["gender"], interested_in=[], interests=[], values=[],
+        if not data.get("first_name"):
+            raise bad_request("missing_fields", "Please add your first name first")
+        p = Profile(user_id=user.id, first_name=data["first_name"], gender=data.get("gender"), interested_in=[], interests=[], values=[],
                     lifestyle={}, communication={}, dealbreakers={}, prompts=[], bio="", show_gender=True, age_min=18,
                     age_max=99, max_distance_km=50, show_distance=True, read_receipts=True, ai_processing_consent=False,
                     allow_ai_on_my_profile=True, discoverable=True, completed=False)

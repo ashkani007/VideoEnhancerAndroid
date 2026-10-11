@@ -43,11 +43,7 @@ class FmColors extends ThemeExtension<FmColors> {
 
   final Color background, surface, surfaceHigh, stroke, accent, accent2, text, textMuted, success, warning, danger, glass;
 
-  LinearGradient get brandGradient => LinearGradient(
-        colors: [accent, accent2],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
+  LinearGradient get brandGradient => LinearGradient(colors: [accent, accent2], begin: Alignment.topLeft, end: Alignment.bottomRight);
 
   static const dark = FmColors(
     background: Color(0xFF0B0B14),
@@ -113,23 +109,22 @@ ThemeData buildTheme(Brightness brightness) {
   final base = ThemeData(brightness: brightness, useMaterial3: true, fontFamily: 'Inter');
   TextStyle display(double size, FontWeight w, {double ls = -0.5}) =>
       TextStyle(fontFamily: 'Jakarta', fontSize: size, fontWeight: w, letterSpacing: ls, color: c.text, height: 1.12);
-  final textTheme = base.textTheme
-      .copyWith(
-        displayLarge: display(44, FontWeight.w800, ls: -1.2),
-        displayMedium: display(36, FontWeight.w800, ls: -1),
-        displaySmall: display(30, FontWeight.w700, ls: -0.8),
-        headlineMedium: display(26, FontWeight.w700),
-        headlineSmall: display(22, FontWeight.w700, ls: -0.3),
-        titleLarge: display(19, FontWeight.w700, ls: -0.2),
-        titleMedium: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w600, color: c.text),
-        titleSmall: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: c.text),
-        bodyLarge: TextStyle(fontFamily: 'Inter', fontSize: 16, height: 1.45, color: c.text),
-        bodyMedium: TextStyle(fontFamily: 'Inter', fontSize: 14.5, height: 1.45, color: c.text),
-        bodySmall: TextStyle(fontFamily: 'Inter', fontSize: 12.5, height: 1.4, color: c.textMuted),
-        labelLarge: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w600, color: c.text, letterSpacing: 0.1),
-        labelMedium: TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w600, color: c.textMuted),
-        labelSmall: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w700, color: c.textMuted, letterSpacing: 0.6),
-      );
+  final textTheme = base.textTheme.copyWith(
+    displayLarge: display(44, FontWeight.w800, ls: -1.2),
+    displayMedium: display(36, FontWeight.w800, ls: -1),
+    displaySmall: display(30, FontWeight.w700, ls: -0.8),
+    headlineMedium: display(26, FontWeight.w700),
+    headlineSmall: display(22, FontWeight.w700, ls: -0.3),
+    titleLarge: display(19, FontWeight.w700, ls: -0.2),
+    titleMedium: TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w600, color: c.text),
+    titleSmall: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: c.text),
+    bodyLarge: TextStyle(fontFamily: 'Inter', fontSize: 16, height: 1.45, color: c.text),
+    bodyMedium: TextStyle(fontFamily: 'Inter', fontSize: 14.5, height: 1.45, color: c.text),
+    bodySmall: TextStyle(fontFamily: 'Inter', fontSize: 12.5, height: 1.4, color: c.textMuted),
+    labelLarge: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w600, color: c.text, letterSpacing: 0.1),
+    labelMedium: TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w600, color: c.textMuted),
+    labelSmall: TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w700, color: c.textMuted, letterSpacing: 0.6),
+  );
   final scheme = ColorScheme.fromSeed(
     seedColor: c.accent,
     brightness: brightness,
@@ -161,16 +156,30 @@ ThemeData buildTheme(Brightness brightness) {
       labelStyle: TextStyle(color: c.textMuted),
       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.md), borderSide: BorderSide.none),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.md), borderSide: BorderSide(color: c.stroke)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.md), borderSide: BorderSide(color: c.accent, width: 1.6)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.md), borderSide: BorderSide(color: c.danger)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(FmRadius.md),
+        borderSide: BorderSide(color: c.stroke),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(FmRadius.md),
+        borderSide: BorderSide(color: c.accent, width: 1.6),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(FmRadius.md),
+        borderSide: BorderSide(color: c.danger),
+      ),
     ),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? Colors.white : c.textMuted),
       trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? c.accent : c.surfaceHigh),
       trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
     ),
-    sliderTheme: SliderThemeData(activeTrackColor: c.accent, thumbColor: Colors.white, inactiveTrackColor: c.surfaceHigh, overlayColor: c.accent.withValues(alpha: 0.15)),
+    sliderTheme: SliderThemeData(
+      activeTrackColor: c.accent,
+      thumbColor: Colors.white,
+      inactiveTrackColor: c.surfaceHigh,
+      overlayColor: c.accent.withValues(alpha: 0.15),
+    ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       backgroundColor: c.surfaceHigh,
@@ -184,8 +193,6 @@ ThemeData buildTheme(Brightness brightness) {
       showDragHandle: true,
       dragHandleColor: c.textMuted.withValues(alpha: 0.4),
     ),
-    pageTransitionsTheme: const PageTransitionsTheme(builders: {
-      TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
-    }),
+    pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: FadeForwardsPageTransitionsBuilder()}),
   );
 }

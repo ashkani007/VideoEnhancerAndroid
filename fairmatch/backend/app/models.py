@@ -93,7 +93,8 @@ class Profile(Base):
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     first_name: Mapped[str] = mapped_column(String(40))
     bio: Mapped[str] = mapped_column(Text, default="")
-    gender: Mapped[str] = mapped_column(String(32))  # woman | man | nonbinary | other self-described label
+    # woman | man | nonbinary | other. Nullable only while onboarding is in progress (profile not completed).
+    gender: Mapped[str | None] = mapped_column(String(32))
     show_gender: Mapped[bool] = mapped_column(Boolean, default=True)
     interested_in: Mapped[list[str]] = mapped_column(ARRAY(String(32)), default=list)
     # long_term | long_term_open_short | short_term_open_long | short_term | friendship_first | figuring_out

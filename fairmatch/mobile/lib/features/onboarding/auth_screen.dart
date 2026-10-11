@@ -41,6 +41,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       firstDate: DateTime(now.year - 100),
       lastDate: now,
       helpText: 'Your date of birth',
+      initialEntryMode: DatePickerEntryMode.input,
     );
     if (d != null) setState(() => _dob = d);
   }
@@ -62,7 +63,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         await session.login(_email.text.trim(), _password.text);
       }
     } on ApiException catch (e) {
-      setState(() => _error = e.isOffline ? "Can't reach the FairMatch server. You can still try the demo from the welcome screen." : e.message);
+      setState(
+        () => _error = e.isOffline ? "Can't reach the FairMatch server. You can still try the demo from the welcome screen." : e.message,
+      );
     } catch (_) {
       setState(() => _error = 'Something went wrong. Please try again.');
     } finally {
@@ -79,74 +82,87 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       body: SafeArea(
         child: Form(
           key: _form,
-          child: ListView(padding: const EdgeInsets.all(FmSpace.lg), children: [
-            Text(reg ? 'Create your account' : 'Welcome back', style: context.text.displaySmall),
-            const SizedBox(height: FmSpace.xs),
-            Text(
-              reg ? 'It takes about three minutes. Only the essentials are required.' : 'Sign in to continue.',
-              style: context.text.bodyLarge?.copyWith(color: fm.textMuted),
-            ),
-            const SizedBox(height: FmSpace.xl),
-            TextFormField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              autofillHints: const [AutofillHints.email],
-              decoration: const InputDecoration(labelText: 'Email'),
-              validator: (v) => (v == null || !RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v.trim())) ? 'Enter a valid email' : null,
-            ),
-            const SizedBox(height: FmSpace.md),
-            TextFormField(
-              controller: _password,
-              obscureText: _obscure,
-              autofillHints: [reg ? AutofillHints.newPassword : AutofillHints.password],
-              decoration: InputDecoration(
-                labelText: 'Password',
-                helperText: reg ? 'At least 10 characters' : null,
-                suffixIcon: IconButton(
-                  tooltip: _obscure ? 'Show password' : 'Hide password',
-                  icon: Icon(_obscure ? Icons.visibility_rounded : Icons.visibility_off_rounded),
-                  onPressed: () => setState(() => _obscure = !_obscure),
-                ),
+          child: ListView(
+            padding: const EdgeInsets.all(FmSpace.lg),
+            children: [
+              Text(reg ? 'Create your account' : 'Welcome back', style: context.text.displaySmall),
+              const SizedBox(height: FmSpace.xs),
+              Text(
+                reg ? 'It takes about three minutes. Only the essentials are required.' : 'Sign in to continue.',
+                style: context.text.bodyLarge?.copyWith(color: fm.textMuted),
               ),
-              validator: (v) => (v == null || (reg && v.length < 10) || v.isEmpty) ? (reg ? 'Use at least 10 characters' : 'Enter your password') : null,
-            ),
-            if (reg) ...[
+              const SizedBox(height: FmSpace.xl),
+              TextFormField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                autofillHints: const [AutofillHints.email],
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (v) => (v == null || !RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v.trim())) ? 'Enter a valid email' : null,
+              ),
               const SizedBox(height: FmSpace.md),
-              InkWell(
-                borderRadius: BorderRadius.circular(FmRadius.md),
-                onTap: _pickDob,
-                child: InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: 'Date of birth',
-                    helperText: 'Used to confirm you are 18+. Only your age is shown to others.',
-                    helperMaxLines: 2,
+              TextFormField(
+                controller: _password,
+                obscureText: _obscure,
+                autofillHints: [reg ? AutofillHints.newPassword : AutofillHints.password],
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  helperText: reg ? 'At least 10 characters' : null,
+                  suffixIcon: IconButton(
+                    tooltip: _obscure ? 'Show password' : 'Hide password',
+                    icon: Icon(_obscure ? Icons.visibility_rounded : Icons.visibility_off_rounded),
+                    onPressed: () => setState(() => _obscure = !_obscure),
                   ),
-                  child: Text(_dob == null ? 'Select' : DateFormat.yMMMMd().format(_dob!)),
                 ),
+                validator: (v) => (v == null || (reg && v.length < 10) || v.isEmpty)
+                    ? (reg ? 'Use at least 10 characters' : 'Enter your password')
+                    : null,
               ),
-              const SizedBox(height: FmSpace.md),
-              CheckboxListTile(
-                value: _terms,
-                onChanged: (v) => setState(() => _terms = v ?? false),
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-                title: Text('I agree to the Terms of Service and Privacy Policy, and confirm I am 18 or older.', style: context.text.bodyMedium),
-              ),
-            ],
-            if (_error != null) ...[
-              const SizedBox(height: FmSpace.sm),
-              Semantics(
-                liveRegion: true,
-                child: Container(
-                  padding: const EdgeInsets.all(FmSpace.sm),
-                  decoration: BoxDecoration(color: fm.danger.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(FmRadius.sm)),
-                  child: Text(_error!, style: TextStyle(color: fm.danger)),
+              if (reg) ...[
+                const SizedBox(height: FmSpace.md),
+                Semantics(
+                  button: true,
+                  label: 'Date of birth: ${_dob == null ? 'not set' : DateFormat.yMMMMd().format(_dob!)}',
+                  excludeSemantics: true,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(FmRadius.md),
+                    onTap: _pickDob,
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        labelText: 'Date of birth',
+                        helperText: 'Used to confirm you are 18+. Only your age is shown to others.',
+                        helperMaxLines: 2,
+                      ),
+                      child: Text(_dob == null ? 'Select' : DateFormat.yMMMMd().format(_dob!)),
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: FmSpace.md),
+                CheckboxListTile(
+                  value: _terms,
+                  onChanged: (v) => setState(() => _terms = v ?? false),
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: Text(
+                    'I agree to the Terms of Service and Privacy Policy, and confirm I am 18 or older.',
+                    style: context.text.bodyMedium,
+                  ),
+                ),
+              ],
+              if (_error != null) ...[
+                const SizedBox(height: FmSpace.sm),
+                Semantics(
+                  liveRegion: true,
+                  child: Container(
+                    padding: const EdgeInsets.all(FmSpace.sm),
+                    decoration: BoxDecoration(color: fm.danger.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(FmRadius.sm)),
+                    child: Text(_error!, style: TextStyle(color: fm.danger)),
+                  ),
+                ),
+              ],
+              const SizedBox(height: FmSpace.lg),
+              FmButton(label: reg ? 'Continue' : 'Sign in', loading: _busy, onPressed: _submit),
             ],
-            const SizedBox(height: FmSpace.lg),
-            FmButton(label: reg ? 'Continue' : 'Sign in', loading: _busy, onPressed: _submit),
-          ]),
+          ),
         ),
       ),
     );

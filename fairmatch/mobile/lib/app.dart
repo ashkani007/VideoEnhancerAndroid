@@ -30,17 +30,17 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.onDispose(refresh.dispose);
 
   CustomTransitionPage<void> fade(Widget child, GoRouterState s) => CustomTransitionPage(
-        key: s.pageKey,
-        child: child,
-        transitionDuration: FmMotion.medium,
-        transitionsBuilder: (ctx, a, _, c) => FadeTransition(
-          opacity: CurvedAnimation(parent: a, curve: FmMotion.curve),
-          child: SlideTransition(
-            position: Tween(begin: const Offset(0, 0.03), end: Offset.zero).animate(CurvedAnimation(parent: a, curve: FmMotion.curve)),
-            child: c,
-          ),
-        ),
-      );
+    key: s.pageKey,
+    child: child,
+    transitionDuration: FmMotion.medium,
+    transitionsBuilder: (ctx, a, _, c) => FadeTransition(
+      opacity: CurvedAnimation(parent: a, curve: FmMotion.curve),
+      child: SlideTransition(
+        position: Tween(begin: const Offset(0, 0.03), end: Offset.zero).animate(CurvedAnimation(parent: a, curve: FmMotion.curve)),
+        child: c,
+      ),
+    ),
+  );
 
   return GoRouter(
     initialLocation: '/',
@@ -63,16 +63,29 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/', builder: (_, _) => const SplashScreen()),
       GoRoute(path: '/welcome', pageBuilder: (_, s) => fade(const WelcomeScreen(), s)),
-      GoRoute(path: '/auth', pageBuilder: (_, s) => fade(AuthScreen(register: s.uri.queryParameters['mode'] != 'login'), s)),
+      GoRoute(
+        path: '/auth',
+        pageBuilder: (_, s) => fade(AuthScreen(register: s.uri.queryParameters['mode'] != 'login'), s),
+      ),
       GoRoute(path: '/onboarding', pageBuilder: (_, s) => fade(const OnboardingFlow(), s)),
       StatefulShellRoute.indexedStack(
         builder: (ctx, s, shell) => AppShell(shell: shell),
         branches: [
-          StatefulShellBranch(routes: [GoRoute(path: '/discover', builder: (_, _) => const DiscoverScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/likes', builder: (_, _) => const LikesScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/matches', builder: (_, _) => const MatchesScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/ai', builder: (_, _) => const AiScreen())]),
-          StatefulShellBranch(routes: [GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen())]),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/discover', builder: (_, _) => const DiscoverScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/likes', builder: (_, _) => const LikesScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/matches', builder: (_, _) => const MatchesScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/ai', builder: (_, _) => const AiScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen())],
+          ),
         ],
       ),
       GoRoute(
@@ -116,14 +129,17 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const FairMatchLogo(size: 64),
-            const SizedBox(height: FmSpace.md),
-            Text('FairMatch', style: context.text.headlineMedium),
-          ]),
-        ),
-      );
+    body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const FairMatchLogo(size: 64),
+          const SizedBox(height: FmSpace.md),
+          Text('FairMatch', style: context.text.headlineMedium),
+        ],
+      ),
+    ),
+  );
 }
 
 /// Two interlocking rings — two choices, one connection.
@@ -139,10 +155,18 @@ class FairMatchLogo extends StatelessWidget {
       child: SizedBox(
         width: size * 1.5,
         height: size,
-        child: Stack(children: [
-          Positioned(left: 0, child: _Ring(size: size, color: fm.accent)),
-          Positioned(right: 0, child: _Ring(size: size, color: fm.accent2)),
-        ]),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              child: _Ring(size: size, color: fm.accent),
+            ),
+            Positioned(
+              right: 0,
+              child: _Ring(size: size, color: fm.accent2),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -154,12 +178,12 @@ class _Ring extends StatelessWidget {
   final Color color;
   @override
   Widget build(BuildContext context) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: color, width: size * 0.14),
-          boxShadow: [BoxShadow(color: color.withValues(alpha: 0.45), blurRadius: size * 0.4)],
-        ),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(color: color, width: size * 0.14),
+      boxShadow: [BoxShadow(color: color.withValues(alpha: 0.45), blurRadius: size * 0.4)],
+    ),
+  );
 }

@@ -28,33 +28,40 @@ class DiscoverScreen extends ConsumerWidget {
         bottom: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(FmSpace.md, FmSpace.lg, FmSpace.md, 0),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Discover', style: context.text.displaySmall),
-                  const SizedBox(height: 2),
-                  Text('Two people, chosen with care.', style: context.text.bodyMedium?.copyWith(color: fm.textMuted)),
-                ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Discover', style: context.text.displaySmall),
+                        const SizedBox(height: 2),
+                        Text('Two people, chosen with care.', style: context.text.bodyMedium?.copyWith(color: fm.textMuted)),
+                      ],
+                    ),
+                  ),
+                  if (sel != null) _SelectionsPill(sel),
+                ],
               ),
-              if (sel != null) _SelectionsPill(sel),
-            ]),
-            const SizedBox(height: FmSpace.md),
-            Expanded(
-              child: Padding(
-                // Leave room for the floating navigation bar.
-                padding: EdgeInsets.only(bottom: 84 + MediaQuery.paddingOf(context).bottom),
-                child: pair.when(
-                skipLoadingOnRefresh: false,
-                loading: () => const Padding(padding: EdgeInsets.only(bottom: 128), child: ArenaSkeleton()),
-                error: (e, _) => MessageState.error(e, onRetry: () => ref.read(pairProvider.notifier).next()),
-                data: (p) => p.isEmpty
-                    ? _EmptyPool(reason: p.emptyReason)
-                    : TwoChoiceArena(key: ValueKey(p.pairId), pair: p),
+              const SizedBox(height: FmSpace.md),
+              Expanded(
+                child: Padding(
+                  // Leave room for the floating navigation bar.
+                  padding: EdgeInsets.only(bottom: 84 + MediaQuery.paddingOf(context).bottom),
+                  child: pair.when(
+                    skipLoadingOnRefresh: false,
+                    loading: () => const Padding(padding: EdgeInsets.only(bottom: 128), child: ArenaSkeleton()),
+                    error: (e, _) => MessageState.error(e, onRetry: () => ref.read(pairProvider.notifier).next()),
+                    data: (p) => p.isEmpty ? _EmptyPool(reason: p.emptyReason) : TwoChoiceArena(key: ValueKey(p.pairId), pair: p),
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
@@ -73,13 +80,20 @@ class _SelectionsPill extends StatelessWidget {
       triggerMode: TooltipTriggerMode.tap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(color: fm.surface, borderRadius: BorderRadius.circular(FmRadius.pill), border: Border.all(color: fm.stroke)),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.favorite_rounded, size: 15, color: fm.accent2),
-          const SizedBox(width: 6),
-          Text('${s.remaining}/${s.dailyLimit}', style: context.text.titleSmall),
-          Text(' today', style: context.text.bodySmall),
-        ]),
+        decoration: BoxDecoration(
+          color: fm.surface,
+          borderRadius: BorderRadius.circular(FmRadius.pill),
+          border: Border.all(color: fm.stroke),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.favorite_rounded, size: 15, color: fm.accent2),
+            const SizedBox(width: 6),
+            Text('${s.remaining}/${s.dailyLimit}', style: context.text.titleSmall),
+            Text(' today', style: context.text.bodySmall),
+          ],
+        ),
       ),
     );
   }
@@ -91,15 +105,15 @@ class _EmptyPool extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Padding(
-        padding: EdgeInsets.zero,
-        child: MessageState(
-          icon: Icons.nights_stay_rounded,
-          title: "You're all caught up",
-          body: reason ?? 'No new people match your preferences right now.',
-          actionLabel: 'Check again',
-          action: () => ref.read(pairProvider.notifier).next(),
-        ),
-      );
+    padding: EdgeInsets.zero,
+    child: MessageState(
+      icon: Icons.nights_stay_rounded,
+      title: "You're all caught up",
+      body: reason ?? 'No new people match your preferences right now.',
+      actionLabel: 'Check again',
+      action: () => ref.read(pairProvider.notifier).next(),
+    ),
+  );
 }
 
 enum _Phase { idle, submitting, result }
@@ -216,90 +230,101 @@ class _TwoChoiceArenaState extends ConsumerState<TwoChoiceArena> with TickerProv
   void _next() => ref.read(pairProvider.notifier).next();
 
   void _open(int index) {
-    context.push('/view',
-        extra: ProfileDetailArgs(
-          cards: widget.pair.candidates,
-          initialIndex: index,
-          onChoose: _phase == _Phase.idle ? (i) => _select(i) : null,
-        ));
+    context.push(
+      '/view',
+      extra: ProfileDetailArgs(
+        cards: widget.pair.candidates,
+        initialIndex: index,
+        onChoose: _phase == _Phase.idle ? (i) => _select(i) : null,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final cands = widget.pair.candidates;
     final fm = context.fm;
-    return LayoutBuilder(builder: (ctx, c) {
-      const gap = FmSpace.sm;
-      final wide = c.maxWidth > 700;
-      final cardW = wide ? 300.0 : (c.maxWidth - gap) / 2;
-      final arenaW = cands.length == 1 ? cardW : cardW * 2 + gap;
-      return Column(children: [
-        Expanded(
-          child: Center(
-            child: SizedBox(
-              width: arenaW,
-              child: AnimatedBuilder(
-                animation: Listenable.merge([_choose, _enter]),
-                builder: (ctx, _) {
-                  final t = Curves.easeInOutCubic.transform(_choose.value);
-                  final enter = Curves.easeOutCubic.transform(_enter.value);
-                  return Stack(clipBehavior: Clip.none, children: [
-                    Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                      for (var i = 0; i < cands.length; i++) ...[
-                        if (i > 0) const SizedBox(width: gap),
-                        SizedBox(
-                          width: cardW,
-                          child: _animatedCard(i, cands[i], t, enter, cardW + gap),
-                        ),
-                      ],
-                    ]),
-                    if (cands.length == 2 && _phase == _Phase.idle)
-                      Center(
-                        child: ExcludeSemantics(
-                          child: Opacity(
-                            opacity: enter,
-                            child: Container(
-                              width: 34,
-                              height: 34,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: fm.background, border: Border.all(color: fm.stroke)),
-                              child: Text('or', style: context.text.labelMedium),
-                            ),
+    return LayoutBuilder(
+      builder: (ctx, c) {
+        const gap = FmSpace.sm;
+        final wide = c.maxWidth > 700;
+        final cardW = wide ? 300.0 : (c.maxWidth - gap) / 2;
+        final arenaW = cands.length == 1 ? cardW : cardW * 2 + gap;
+        return Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: SizedBox(
+                  width: arenaW,
+                  child: AnimatedBuilder(
+                    animation: Listenable.merge([_choose, _enter]),
+                    builder: (ctx, _) {
+                      final t = Curves.easeInOutCubic.transform(_choose.value);
+                      final enter = Curves.easeOutCubic.transform(_enter.value);
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              for (var i = 0; i < cands.length; i++) ...[
+                                if (i > 0) const SizedBox(width: gap),
+                                SizedBox(width: cardW, child: _animatedCard(i, cands[i], t, enter, cardW + gap)),
+                              ],
+                            ],
                           ),
-                        ),
-                      ),
-                  ]);
+                          if (cands.length == 2 && _phase == _Phase.idle)
+                            Center(
+                              child: ExcludeSemantics(
+                                child: Opacity(
+                                  opacity: enter,
+                                  child: Container(
+                                    width: 34,
+                                    height: 34,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: fm.background,
+                                      border: Border.all(color: fm.stroke),
+                                    ),
+                                    child: Text('or', style: context.text.labelMedium),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: FmSpace.md),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 88),
+              child: AnimatedSwitcher(
+                duration: FmMotion.of(context, FmMotion.medium),
+                child: switch (_phase) {
+                  _Phase.idle => _PassBar(single: cands.length == 1, onPass: _pass),
+                  _Phase.submitting => _StatusLine(
+                    key: const ValueKey('sending'),
+                    icon: null,
+                    text: _chosenIndex == null ? 'Finding your next pair…' : 'Sending your choice…',
+                  ),
+                  _Phase.result => _StatusLine(
+                    key: const ValueKey('result'),
+                    icon: _outcome!.matched
+                        ? Icons.favorite_rounded
+                        : (_outcome!.state == InterestState.waitlisted ? Icons.hourglass_top_rounded : Icons.mark_email_read_rounded),
+                    text: _outcome!.matched ? "It's mutual!" : '${_outcome!.statusText}\nWe\'ll let you know if it becomes a match.',
+                  ),
                 },
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: FmSpace.md),
-        ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 88),
-          child: AnimatedSwitcher(
-            duration: FmMotion.of(context, FmMotion.medium),
-            child: switch (_phase) {
-              _Phase.idle => _PassBar(single: cands.length == 1, onPass: _pass),
-              _Phase.submitting => _StatusLine(
-                  key: const ValueKey('sending'),
-                  icon: null,
-                  text: _chosenIndex == null ? 'Finding your next pair…' : 'Sending your choice…',
-                ),
-              _Phase.result => _StatusLine(
-                  key: const ValueKey('result'),
-                  icon: _outcome!.matched
-                      ? Icons.favorite_rounded
-                      : (_outcome!.state == InterestState.waitlisted ? Icons.hourglass_top_rounded : Icons.mark_email_read_rounded),
-                  text: _outcome!.matched
-                      ? "It's mutual!"
-                      : '${_outcome!.statusText}\nWe\'ll let you know if it becomes a match.',
-                ),
-            },
-          ),
-        ),
-      ]);
-    });
+          ],
+        );
+      },
+    );
   }
 
   Widget _animatedCard(int i, ProfileCard p, double t, double enter, double shift) {
@@ -320,12 +345,7 @@ class _TwoChoiceArenaState extends ConsumerState<TwoChoiceArena> with TickerProv
         offset: Offset(dx, enterDy),
         child: Transform.scale(
           scale: scale,
-          child: ArenaCard(
-            profile: p,
-            enabled: _phase == _Phase.idle,
-            onOpen: () => _open(i),
-            onChoose: () => _select(i),
-          ),
+          child: ArenaCard(profile: p, enabled: _phase == _Phase.idle, onOpen: () => _open(i), onChoose: () => _select(i)),
         ),
       ),
     );
@@ -340,24 +360,27 @@ class _PassBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fm = context.fm;
-    return Column(key: const ValueKey('pass'), children: [
-      FmButton(
-        label: single ? 'Not this time' : 'Neither for now',
-        icon: Icons.autorenew_rounded,
-        secondary: true,
-        expand: false,
-        dense: true,
-        onPressed: onPass,
-      ),
-      const SizedBox(height: 8),
-      Text(
-        single ? 'Only one new person fits your preferences right now.' : 'Choosing is never required. Tap a card to see more.',
-        style: context.text.bodySmall?.copyWith(color: fm.textMuted),
-        textAlign: TextAlign.center,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-    ]);
+    return Column(
+      key: const ValueKey('pass'),
+      children: [
+        FmButton(
+          label: single ? 'Not this time' : 'Neither for now',
+          icon: Icons.autorenew_rounded,
+          secondary: true,
+          expand: false,
+          dense: true,
+          onPressed: onPass,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          single ? 'Only one new person fits your preferences right now.' : 'Choosing is never required. Tap a card to see more.',
+          style: context.text.bodySmall?.copyWith(color: fm.textMuted),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
   }
 }
 
@@ -371,16 +394,18 @@ class _StatusLine extends StatelessWidget {
     final fm = context.fm;
     return Semantics(
       liveRegion: true,
-      child: Column(children: [
-        SizedBox(
-          height: 30,
-          child: icon == null
-              ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4, color: fm.accent))
-              : Icon(icon, color: fm.accent2, size: 28),
-        ),
-        const SizedBox(height: 8),
-        Text(text, textAlign: TextAlign.center, style: context.text.bodyMedium),
-      ]),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: icon == null
+                ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.4, color: fm.accent))
+                : Icon(icon, color: fm.accent2, size: 28),
+          ),
+          const SizedBox(height: 8),
+          Text(text, textAlign: TextAlign.center, style: context.text.bodyMedium),
+        ],
+      ),
     );
   }
 }
@@ -394,27 +419,31 @@ class _LimitSheet extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(FmSpace.lg, 0, FmSpace.lg, FmSpace.lg),
-        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("That's today's selections", style: context.text.headlineSmall),
-          const SizedBox(height: FmSpace.xs),
-          Text(
-            'Daily selections keep FairMatch intentional and fair for everyone. They refresh tomorrow. '
-            'You can still pass, browse profiles, chat with matches, and choose back anyone who already chose you.',
-            style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
-          ),
-          const SizedBox(height: FmSpace.lg),
-          FmButton(label: 'Got it', onPressed: () => Navigator.pop(context)),
-          const SizedBox(height: FmSpace.sm),
-          Center(
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                context.push('/subscription');
-              },
-              child: const Text('Plus offers 15 selections a day'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("That's today's selections", style: context.text.headlineSmall),
+            const SizedBox(height: FmSpace.xs),
+            Text(
+              'Daily selections keep FairMatch intentional and fair for everyone. They refresh tomorrow. '
+              'You can still pass, browse profiles, chat with matches, and choose back anyone who already chose you.',
+              style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
             ),
-          ),
-        ]),
+            const SizedBox(height: FmSpace.lg),
+            FmButton(label: 'Got it', onPressed: () => Navigator.pop(context)),
+            const SizedBox(height: FmSpace.sm),
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  context.push('/subscription');
+                },
+                child: const Text('Plus offers 15 selections a day'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

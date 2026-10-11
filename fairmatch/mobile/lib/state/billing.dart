@@ -39,7 +39,10 @@ class BillingService {
       return;
     }
     if (details == null) {
-      throw ApiException('store_unavailable', 'Google Play is not available on this device. Try again from an Android device with Play Store.');
+      throw ApiException(
+        'store_unavailable',
+        'Google Play is not available on this device. Try again from an Android device with Play Store.',
+      );
     }
     final param = PurchaseParam(productDetails: details);
     if (consumable) {

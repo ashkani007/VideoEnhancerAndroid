@@ -105,128 +105,148 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       appBar: AppBar(title: const Text('Edit profile')),
       body: p == null
           ? const Center(child: CircularProgressIndicator())
-          : ListView(padding: const EdgeInsets.fromLTRB(FmSpace.md, 0, FmSpace.md, FmSpace.xxl), children: [
-              Text('Photos', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              SizedBox(
-                height: 132,
-                child: ListView(scrollDirection: Axis.horizontal, children: [
-                  for (final ph in p.photos)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Stack(children: [
-                        SizedBox(width: 100, height: 132, child: Portrait(name: p.firstName, url: ph.url, borderRadius: FmRadius.md)),
-                        Positioned(
-                          right: 4,
-                          top: 4,
-                          child: IconButton.filledTonal(
-                            tooltip: 'Remove photo',
-                            visualDensity: VisualDensity.compact,
-                            onPressed: () async {
-                              await ref.read(repoProvider).deletePhoto(ph.id);
-                              final me = await ref.refresh(meProvider.future);
-                              setState(() => p.photos = me.profile?.photos ?? []);
-                            },
-                            icon: const Icon(Icons.close_rounded, size: 16),
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(FmSpace.md, 0, FmSpace.md, FmSpace.xxl),
+              children: [
+                Text('Photos', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                SizedBox(
+                  height: 132,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      for (final ph in p.photos)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Stack(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 132,
+                                child: Portrait(name: p.firstName, url: ph.url, borderRadius: FmRadius.md),
+                              ),
+                              Positioned(
+                                right: 4,
+                                top: 4,
+                                child: IconButton.filledTonal(
+                                  tooltip: 'Remove photo',
+                                  visualDensity: VisualDensity.compact,
+                                  onPressed: () async {
+                                    await ref.read(repoProvider).deletePhoto(ph.id);
+                                    final me = await ref.refresh(meProvider.future);
+                                    setState(() => p.photos = me.profile?.photos ?? []);
+                                  },
+                                  icon: const Icon(Icons.close_rounded, size: 16),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ]),
-                    ),
-                  if (p.photos.length < 6)
-                    InkWell(
-                      onTap: _addPhoto,
-                      borderRadius: BorderRadius.circular(FmRadius.md),
-                      child: Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(FmRadius.md),
-                          border: Border.all(color: context.fm.accent.withValues(alpha: 0.5), width: 1.5),
+                      if (p.photos.length < 6)
+                        Semantics(
+                          button: true,
+                          label: 'Add photo',
+                          child: InkWell(
+                            onTap: _addPhoto,
+                            borderRadius: BorderRadius.circular(FmRadius.md),
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(FmRadius.md),
+                                border: Border.all(color: context.fm.accent.withValues(alpha: 0.5), width: 1.5),
+                              ),
+                              child: Icon(Icons.add_a_photo_rounded, color: context.fm.accent),
+                            ),
+                          ),
                         ),
-                        child: Icon(Icons.add_a_photo_rounded, color: context.fm.accent),
-                      ),
-                    ),
-                ]),
-              ),
-              const SizedBox(height: FmSpace.lg),
-              Text('About you', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              TextField(controller: _bio, maxLines: 4, maxLength: 600, decoration: const InputDecoration(hintText: 'A few lines about you')),
-              const SizedBox(height: FmSpace.md),
-              Text('Looking for', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              Wrap(spacing: 8, runSpacing: 8, children: [
-                for (final e in intentLabels.entries)
-                  ChoiceChip(label: Text(e.value), selected: p.intent == e.key, onSelected: (_) => setState(() => p.intent = e.key)),
-              ]),
-              const SizedBox(height: FmSpace.lg),
-              Text('Prompts', style: context.text.titleLarge),
-              for (var i = 0; i < _promptQuestions.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(top: FmSpace.sm),
-                  child: TextField(
-                    controller: _promptAnswers[i],
-                    maxLength: 300,
-                    decoration: InputDecoration(
-                      labelText: _promptQuestions[i],
-                      suffixIcon: IconButton(
-                        tooltip: 'Remove prompt',
-                        icon: const Icon(Icons.delete_outline_rounded),
-                        onPressed: () => setState(() {
-                          _promptQuestions.removeAt(i);
-                          _promptAnswers.removeAt(i).dispose();
-                        }),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: FmSpace.lg),
+                Text('About you', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                TextField(
+                  controller: _bio,
+                  maxLines: 4,
+                  maxLength: 600,
+                  decoration: const InputDecoration(hintText: 'A few lines about you'),
+                ),
+                const SizedBox(height: FmSpace.md),
+                Text('Looking for', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final e in intentLabels.entries)
+                      ChoiceChip(label: Text(e.value), selected: p.intent == e.key, onSelected: (_) => setState(() => p.intent = e.key)),
+                  ],
+                ),
+                const SizedBox(height: FmSpace.lg),
+                Text('Prompts', style: context.text.titleLarge),
+                for (var i = 0; i < _promptQuestions.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(top: FmSpace.sm),
+                    child: TextField(
+                      controller: _promptAnswers[i],
+                      maxLength: 300,
+                      decoration: InputDecoration(
+                        labelText: _promptQuestions[i],
+                        suffixIcon: IconButton(
+                          tooltip: 'Remove prompt',
+                          icon: const Icon(Icons.delete_outline_rounded),
+                          onPressed: () => setState(() {
+                            _promptQuestions.removeAt(i);
+                            _promptAnswers.removeAt(i).dispose();
+                          }),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              if (_promptQuestions.length < 3)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.add_rounded),
-                    label: const Text('Add a prompt'),
-                    onPressed: () async {
-                      final q = await showModalBottomSheet<String>(
-                        context: context,
-                        builder: (_) => ListView(shrinkWrap: true, children: [
-                          for (final q in promptQuestions.where((q) => !_promptQuestions.contains(q)))
-                            ListTile(title: Text(q), onTap: () => Navigator.pop(context, q)),
-                        ]),
-                      );
-                      if (q != null) {
-                        setState(() {
-                          _promptQuestions.add(q);
-                          _promptAnswers.add(TextEditingController());
-                        });
-                      }
-                    },
+                if (_promptQuestions.length < 3)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      icon: const Icon(Icons.add_rounded),
+                      label: const Text('Add a prompt'),
+                      onPressed: () async {
+                        final q = await showModalBottomSheet<String>(
+                          context: context,
+                          builder: (_) => ListView(
+                            shrinkWrap: true,
+                            children: [
+                              for (final q in promptQuestions.where((q) => !_promptQuestions.contains(q)))
+                                ListTile(title: Text(q), onTap: () => Navigator.pop(context, q)),
+                            ],
+                          ),
+                        );
+                        if (q != null) {
+                          setState(() {
+                            _promptQuestions.add(q);
+                            _promptAnswers.add(TextEditingController());
+                          });
+                        }
+                      },
+                    ),
                   ),
-                ),
-              const SizedBox(height: FmSpace.lg),
-              Text('Interests', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              _SetEditor(options: interestOptions, values: p.interests, max: 10, onChanged: (v) => setState(() => p.interests = v)),
-              const SizedBox(height: FmSpace.lg),
-              Text('Values', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              _SetEditor(options: valueOptions, values: p.values, max: 5, onChanged: (v) => setState(() => p.values = v)),
-              const SizedBox(height: FmSpace.lg),
-              Text('Lifestyle', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              QuestionGroup(
-                questions: lifestyleQuestions,
-                answers: p.lifestyle,
-                onChanged: () => setState(() {}),
-              ),
-              Text('Communication', style: context.text.titleLarge),
-              const SizedBox(height: FmSpace.sm),
-              QuestionGroup(
-                questions: communicationQuestions,
-                answers: p.communication,
-                onChanged: () => setState(() {}),
-              ),
-              FmButton(label: 'Save', loading: _saving, onPressed: _save),
-            ]),
+                const SizedBox(height: FmSpace.lg),
+                Text('Interests', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                _SetEditor(options: interestOptions, values: p.interests, max: 10, onChanged: (v) => setState(() => p.interests = v)),
+                const SizedBox(height: FmSpace.lg),
+                Text('Values', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                _SetEditor(options: valueOptions, values: p.values, max: 5, onChanged: (v) => setState(() => p.values = v)),
+                const SizedBox(height: FmSpace.lg),
+                Text('Lifestyle', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                QuestionGroup(questions: lifestyleQuestions, answers: p.lifestyle, onChanged: () => setState(() {})),
+                Text('Communication', style: context.text.titleLarge),
+                const SizedBox(height: FmSpace.sm),
+                QuestionGroup(questions: communicationQuestions, answers: p.communication, onChanged: () => setState(() {})),
+                FmButton(label: 'Save', loading: _saving, onPressed: _save),
+              ],
+            ),
     );
   }
 }

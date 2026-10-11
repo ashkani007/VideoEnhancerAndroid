@@ -70,60 +70,71 @@ class _SafetySheetState extends ConsumerState<_SafetySheet> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(FmSpace.lg, 0, FmSpace.lg, FmSpace.lg + MediaQuery.viewInsetsOf(context).bottom),
         child: SingleChildScrollView(
-          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(_reporting ? 'Report ${widget.name}' : 'Safety', style: context.text.headlineSmall),
-            const SizedBox(height: 4),
-            Text(
-              _reporting
-                  ? "Reports are confidential — ${widget.name} won't know who reported them."
-                  : 'You are always in control of who can reach you.',
-              style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
-            ),
-            const SizedBox(height: FmSpace.md),
-            if (!_reporting) ...[
-              if (widget.matchId != null)
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_reporting ? 'Report ${widget.name}' : 'Safety', style: context.text.headlineSmall),
+              const SizedBox(height: 4),
+              Text(
+                _reporting
+                    ? "Reports are confidential — ${widget.name} won't know who reported them."
+                    : 'You are always in control of who can reach you.',
+                style: context.text.bodyMedium?.copyWith(color: fm.textMuted),
+              ),
+              const SizedBox(height: FmSpace.md),
+              if (!_reporting) ...[
+                if (widget.matchId != null)
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.heart_broken_outlined),
+                    title: const Text('Unmatch'),
+                    subtitle: const Text('End the conversation quietly'),
+                    onTap: _busy ? null : () => _run(() => repo.unmatch(widget.matchId!), 'Unmatched'),
+                  ),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.heart_broken_outlined),
-                  title: const Text('Unmatch'),
-                  subtitle: const Text('End the conversation quietly'),
-                  onTap: _busy ? null : () => _run(() => repo.unmatch(widget.matchId!), 'Unmatched'),
+                  leading: const Icon(Icons.block_rounded),
+                  title: Text('Block ${widget.name}'),
+                  subtitle: const Text("They won't be able to see or contact you"),
+                  onTap: _busy ? null : () => _run(() => repo.block(widget.userId), '${widget.name} is blocked'),
                 ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.block_rounded),
-                title: Text('Block ${widget.name}'),
-                subtitle: const Text("They won't be able to see or contact you"),
-                onTap: _busy ? null : () => _run(() => repo.block(widget.userId), '${widget.name} is blocked'),
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.flag_outlined, color: fm.danger),
-                title: Text('Report ${widget.name}', style: TextStyle(color: fm.danger)),
-                subtitle: const Text('Tell our safety team what happened'),
-                onTap: () => setState(() => _reporting = true),
-              ),
-            ] else ...[
-              RadioGroup<String>(
-                groupValue: _reason,
-                onChanged: (v) => setState(() => _reason = v),
-                child: Column(children: [
-                  for (final e in reportReasons.entries)
-                    RadioListTile<String>(contentPadding: EdgeInsets.zero, value: e.key, title: Text(e.value)),
-                ]),
-              ),
-              const SizedBox(height: FmSpace.xs),
-              TextField(controller: _details, maxLines: 3, maxLength: 2000, decoration: const InputDecoration(hintText: 'Anything else we should know? (optional)')),
-              const SizedBox(height: FmSpace.sm),
-              FmButton(
-                label: 'Report and block',
-                loading: _busy,
-                onPressed: _reason == null
-                    ? null
-                    : () => _run(() => repo.report(widget.userId, _reason!, _details.text), 'Thanks — our team will review this.'),
-              ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.flag_outlined, color: fm.danger),
+                  title: Text('Report ${widget.name}', style: TextStyle(color: fm.danger)),
+                  subtitle: const Text('Tell our safety team what happened'),
+                  onTap: () => setState(() => _reporting = true),
+                ),
+              ] else ...[
+                RadioGroup<String>(
+                  groupValue: _reason,
+                  onChanged: (v) => setState(() => _reason = v),
+                  child: Column(
+                    children: [
+                      for (final e in reportReasons.entries)
+                        RadioListTile<String>(contentPadding: EdgeInsets.zero, value: e.key, title: Text(e.value)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: FmSpace.xs),
+                TextField(
+                  controller: _details,
+                  maxLines: 3,
+                  maxLength: 2000,
+                  decoration: const InputDecoration(hintText: 'Anything else we should know? (optional)'),
+                ),
+                const SizedBox(height: FmSpace.sm),
+                FmButton(
+                  label: 'Report and block',
+                  loading: _busy,
+                  onPressed: _reason == null
+                      ? null
+                      : () => _run(() => repo.report(widget.userId, _reason!, _details.text), 'Thanks — our team will review this.'),
+                ),
+              ],
             ],
-          ]),
+          ),
         ),
       ),
     );

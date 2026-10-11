@@ -21,14 +21,55 @@ const cities = [
 ];
 
 const interestOptions = [
-  'hiking', 'climbing', 'running', 'yoga', 'cycling', 'football', 'surfing', 'dancing', 'cooking', 'baking', 'coffee', 'tea',
-  'wine', 'film', 'theatre', 'museums', 'books', 'poetry', 'photography', 'design', 'ceramics', 'gardening', 'board games',
-  'chess', 'gaming', 'jazz', 'vinyl', 'festivals', 'music production', 'travel', 'languages', 'volunteering',
+  'hiking',
+  'climbing',
+  'running',
+  'yoga',
+  'cycling',
+  'football',
+  'surfing',
+  'dancing',
+  'cooking',
+  'baking',
+  'coffee',
+  'tea',
+  'wine',
+  'film',
+  'theatre',
+  'museums',
+  'books',
+  'poetry',
+  'photography',
+  'design',
+  'ceramics',
+  'gardening',
+  'board games',
+  'chess',
+  'gaming',
+  'jazz',
+  'vinyl',
+  'festivals',
+  'music production',
+  'travel',
+  'languages',
+  'volunteering',
 ];
 
 const valueOptions = [
-  'honesty', 'kindness', 'humour', 'family', 'ambition', 'curiosity', 'growth', 'loyalty', 'adventure', 'creativity',
-  'independence', 'faith', 'community', 'sustainability',
+  'honesty',
+  'kindness',
+  'humour',
+  'family',
+  'ambition',
+  'curiosity',
+  'growth',
+  'loyalty',
+  'adventure',
+  'creativity',
+  'independence',
+  'faith',
+  'community',
+  'sustainability',
 ];
 
 const lifestyleQuestions = {
@@ -82,16 +123,18 @@ class ChoiceTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(FmRadius.md),
               border: Border.all(color: selected ? fm.accent : fm.stroke, width: selected ? 1.6 : 1),
             ),
-            child: Row(children: [
-              if (icon != null) ...[Icon(icon, color: selected ? fm.accent : fm.textMuted, size: 20), const SizedBox(width: 12)],
-              Expanded(child: Text(label, style: context.text.titleMedium)),
-              Icon(
-                selected
-                    ? (multi ? Icons.check_box_rounded : Icons.radio_button_checked_rounded)
-                    : (multi ? Icons.check_box_outline_blank_rounded : Icons.radio_button_unchecked_rounded),
-                color: selected ? fm.accent : fm.textMuted,
-              ),
-            ]),
+            child: Row(
+              children: [
+                if (icon != null) ...[Icon(icon, color: selected ? fm.accent : fm.textMuted, size: 20), const SizedBox(width: 12)],
+                Expanded(child: Text(label, style: context.text.titleMedium)),
+                Icon(
+                  selected
+                      ? (multi ? Icons.check_box_rounded : Icons.radio_button_checked_rounded)
+                      : (multi ? Icons.check_box_outline_blank_rounded : Icons.radio_button_unchecked_rounded),
+                  color: selected ? fm.accent : fm.textMuted,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,10 +150,15 @@ class TagPicker extends StatelessWidget {
   final VoidCallback onChanged;
 
   @override
-  Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('${selected.length} of $max selected', style: context.text.bodySmall),
-        const SizedBox(height: FmSpace.sm),
-        Wrap(spacing: 8, runSpacing: 8, children: [
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('${selected.length} of $max selected', style: context.text.bodySmall),
+      const SizedBox(height: FmSpace.sm),
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
           for (final o in options)
             FilterChip(
               label: Text(o),
@@ -121,8 +169,10 @@ class TagPicker extends StatelessWidget {
                 onChanged();
               },
             ),
-        ]),
-      ]);
+        ],
+      ),
+    ],
+  );
 }
 
 class QuestionGroup extends StatelessWidget {
@@ -132,11 +182,16 @@ class QuestionGroup extends StatelessWidget {
   final VoidCallback onChanged;
 
   @override
-  Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        for (final q in questions.entries) ...[
-          Text(q.value.$1, style: context.text.titleSmall),
-          const SizedBox(height: FmSpace.xs),
-          Wrap(spacing: 8, runSpacing: 8, children: [
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      for (final q in questions.entries) ...[
+        Text(q.value.$1, style: context.text.titleSmall),
+        const SizedBox(height: FmSpace.xs),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
             for (final o in q.value.$2.entries)
               ChoiceChip(
                 label: Text(o.value),
@@ -146,8 +201,10 @@ class QuestionGroup extends StatelessWidget {
                   onChanged();
                 },
               ),
-          ]),
-          const SizedBox(height: FmSpace.lg),
-        ],
-      ]);
+          ],
+        ),
+        const SizedBox(height: FmSpace.lg),
+      ],
+    ],
+  );
 }

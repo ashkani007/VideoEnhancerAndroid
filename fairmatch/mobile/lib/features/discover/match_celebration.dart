@@ -49,98 +49,112 @@ class _MatchCelebrationState extends State<_MatchCelebration> with SingleTickerP
     final a = CurvedAnimation(parent: widget.animation, curve: Curves.easeOutBack);
     return Material(
       color: Colors.transparent,
-      child: Stack(children: [
-        Positioned.fill(
-          child: FadeTransition(
-            opacity: widget.animation,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-              child: ColoredBox(color: fm.background.withValues(alpha: 0.72)),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: FadeTransition(
+              opacity: widget.animation,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                child: ColoredBox(color: fm.background.withValues(alpha: 0.72)),
+              ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: AnimatedBuilder(
-            animation: _loop,
-            builder: (_, _) => CustomPaint(painter: _SparklePainter(_loop.value, [fm.accent, fm.accent2, Colors.white])),
+          Positioned.fill(
+            child: AnimatedBuilder(
+              animation: _loop,
+              builder: (_, _) => CustomPaint(painter: _SparklePainter(_loop.value, [fm.accent, fm.accent2, Colors.white])),
+            ),
           ),
-        ),
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(FmSpace.lg),
-            child: Column(children: [
-              const Spacer(),
-              SizedBox(
-                height: 200,
-                child: AnimatedBuilder(
-                  animation: a,
-                  builder: (_, _) {
-                    final t = a.value;
-                    return Stack(alignment: Alignment.center, children: [
-                      Container(
-                        width: 230 * t.clamp(0, 1.2),
-                        height: 230 * t.clamp(0, 1.2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(colors: [fm.accent.withValues(alpha: 0.5), fm.accent2.withValues(alpha: 0)]),
-                        ),
-                      ),
-                      Transform.translate(offset: Offset(-58 * t - (1 - t) * 160, 0), child: _Bubble(name: widget.me, color: fm.accent)),
-                      Transform.translate(
-                        offset: Offset(58 * t + (1 - t) * 160, 0),
-                        child: Hero(
-                          tag: 'portrait-${widget.other.id}',
-                          child: _Bubble(name: widget.other.firstName, url: widget.other.photos.firstOrNull, color: fm.accent2),
-                        ),
-                      ),
-                      Transform.scale(
-                        scale: t,
-                        child: Container(
-                          width: 46,
-                          height: 46,
-                          decoration: BoxDecoration(shape: BoxShape.circle, gradient: fm.brandGradient, boxShadow: [
-                            BoxShadow(color: fm.accent2.withValues(alpha: 0.6), blurRadius: 24),
-                          ]),
-                          child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 24),
-                        ),
-                      ),
-                    ]);
-                  },
-                ),
-              ),
-              const SizedBox(height: FmSpace.xl),
-              FadeTransition(
-                opacity: widget.animation,
-                child: Column(children: [
-                  ShaderMask(
-                    shaderCallback: (r) => fm.brandGradient.createShader(r),
-                    child: Text("It's mutual.", style: context.text.displayMedium?.copyWith(color: Colors.white)),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(FmSpace.lg),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    height: 200,
+                    child: AnimatedBuilder(
+                      animation: a,
+                      builder: (_, _) {
+                        final t = a.value;
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: 230 * t.clamp(0, 1.2),
+                              height: 230 * t.clamp(0, 1.2),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(colors: [fm.accent.withValues(alpha: 0.5), fm.accent2.withValues(alpha: 0)]),
+                              ),
+                            ),
+                            Transform.translate(
+                              offset: Offset(-58 * t - (1 - t) * 160, 0),
+                              child: _Bubble(name: widget.me, color: fm.accent),
+                            ),
+                            Transform.translate(
+                              offset: Offset(58 * t + (1 - t) * 160, 0),
+                              child: Hero(
+                                tag: 'portrait-${widget.other.id}',
+                                child: _Bubble(name: widget.other.firstName, url: widget.other.photos.firstOrNull, color: fm.accent2),
+                              ),
+                            ),
+                            Transform.scale(
+                              scale: t,
+                              child: Container(
+                                width: 46,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: fm.brandGradient,
+                                  boxShadow: [BoxShadow(color: fm.accent2.withValues(alpha: 0.6), blurRadius: 24)],
+                                ),
+                                child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 24),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
+                  const SizedBox(height: FmSpace.xl),
+                  FadeTransition(
+                    opacity: widget.animation,
+                    child: Column(
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (r) => fm.brandGradient.createShader(r),
+                          child: Text("It's mutual.", style: context.text.displayMedium?.copyWith(color: Colors.white)),
+                        ),
+                        const SizedBox(height: FmSpace.sm),
+                        Text(
+                          'You and ${widget.other.firstName} chose each other.',
+                          textAlign: TextAlign.center,
+                          style: context.text.titleMedium?.copyWith(color: Colors.white),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Take your time — a thoughtful first message goes a long way.',
+                          textAlign: TextAlign.center,
+                          style: context.text.bodyMedium?.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  FmButton(label: 'Say hello', icon: Icons.chat_bubble_rounded, onPressed: () => Navigator.pop(context, true)),
                   const SizedBox(height: FmSpace.sm),
-                  Text(
-                    'You and ${widget.other.firstName} chose each other.',
-                    textAlign: TextAlign.center,
-                    style: context.text.titleMedium?.copyWith(color: Colors.white),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('Keep discovering', style: TextStyle(color: Colors.white70)),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Take your time — a thoughtful first message goes a long way.',
-                    textAlign: TextAlign.center,
-                    style: context.text.bodyMedium?.copyWith(color: Colors.white70),
-                  ),
-                ]),
+                ],
               ),
-              const Spacer(),
-              FmButton(label: 'Say hello', icon: Icons.chat_bubble_rounded, onPressed: () => Navigator.pop(context, true)),
-              const SizedBox(height: FmSpace.sm),
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Keep discovering', style: TextStyle(color: Colors.white70)),
-              ),
-            ]),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -153,16 +167,18 @@ class _Bubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 132,
-        height: 132,
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-          boxShadow: [BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 30)],
-        ),
-        child: ClipOval(child: Portrait(name: name, url: url, borderRadius: 0)),
-      );
+    width: 132,
+    height: 132,
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: color,
+      boxShadow: [BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 30)],
+    ),
+    child: ClipOval(
+      child: Portrait(name: name, url: url, borderRadius: 0),
+    ),
+  );
 }
 
 class _SparklePainter extends CustomPainter {

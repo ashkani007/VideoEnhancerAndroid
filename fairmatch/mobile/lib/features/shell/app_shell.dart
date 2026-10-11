@@ -28,35 +28,37 @@ class AppShell extends ConsumerWidget {
     ref.listen(realtimeProvider, (_, next) {
       final e = next.value;
       if (e is MatchEvent && context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          persist: false,
-          content: const Text("It's a match! Someone accepted your request 💜"),
-          action: SnackBarAction(label: 'Open', onPressed: () => shell.goBranch(2)),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            persist: false,
+            content: const Text("It's a match! Someone accepted your request 💜"),
+            action: SnackBarAction(label: 'Open', onPressed: () => shell.goBranch(2)),
+          ),
+        );
       }
     });
     final likes = ref.watch(likesProvider).value;
     final matches = ref.watch(matchesProvider).value;
-    final badges = [
-      0,
-      likes?.incomingCount ?? 0,
-      matches?.fold<int>(0, (a, m) => a + m.unread) ?? 0,
-      0,
-      0,
-    ];
+    final badges = [0, likes?.incomingCount ?? 0, matches?.fold<int>(0, (a, m) => a + m.unread) ?? 0, 0, 0];
     final isDemo = ref.watch(sessionProvider).isDemo;
     return Scaffold(
       extendBody: true,
-      body: Stack(children: [
-        shell,
-        if (isDemo)
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(child: Center(child: Padding(padding: EdgeInsets.only(top: 2), child: DemoBadge()))),
-          ),
-      ]),
+      body: Stack(
+        children: [
+          shell,
+          if (isDemo)
+            const Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                child: Center(
+                  child: Padding(padding: EdgeInsets.only(top: 2), child: DemoBadge()),
+                ),
+              ),
+            ),
+        ],
+      ),
       bottomNavigationBar: _FloatingNav(
         index: shell.currentIndex,
         badges: badges,
@@ -88,7 +90,9 @@ class _FloatingNav extends StatelessWidget {
         child: Row(
           children: [
             for (var i = 0; i < AppShell._items.length; i++)
-              Expanded(child: _NavItem(item: AppShell._items[i], selected: i == index, badge: badges[i], onTap: () => onTap(i))),
+              Expanded(
+                child: _NavItem(item: AppShell._items[i], selected: i == index, badge: badges[i], onTap: () => onTap(i)),
+              ),
           ],
         ),
       ),
@@ -111,6 +115,8 @@ class _NavItem extends StatelessWidget {
       selected: selected,
       button: true,
       label: badge > 0 ? '${item.$3}, $badge new' : item.$3,
+      excludeSemantics: true,
+      onTap: onTap,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(FmRadius.lg),
@@ -120,37 +126,48 @@ class _NavItem extends StatelessWidget {
           height: 56,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(FmRadius.lg),
-            gradient: selected
-                ? LinearGradient(colors: [fm.accent.withValues(alpha: 0.22), fm.accent2.withValues(alpha: 0.14)])
-                : null,
+            gradient: selected ? LinearGradient(colors: [fm.accent.withValues(alpha: 0.22), fm.accent2.withValues(alpha: 0.14)]) : null,
           ),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Stack(clipBehavior: Clip.none, children: [
-              AnimatedScale(
-                scale: selected ? 1.1 : 1,
-                duration: d,
-                curve: FmMotion.spring,
-                child: Icon(selected ? item.$1 : item.$2, size: 23, color: selected ? fm.accent : fm.textMuted),
-              ),
-              if (badge > 0)
-                Positioned(
-                  right: -8,
-                  top: -4,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                    decoration: BoxDecoration(color: fm.accent2, borderRadius: BorderRadius.circular(10)),
-                    child: Text('$badge', style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  AnimatedScale(
+                    scale: selected ? 1.1 : 1,
+                    duration: d,
+                    curve: FmMotion.spring,
+                    child: Icon(selected ? item.$1 : item.$2, size: 23, color: selected ? fm.accent : fm.textMuted),
                   ),
+                  if (badge > 0)
+                    Positioned(
+                      right: -8,
+                      top: -4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                        decoration: BoxDecoration(color: fm.accent2, borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          '$badge',
+                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 3),
+              Text(
+                item.$3,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  color: selected ? fm.text : fm.textMuted,
                 ),
-            ]),
-            const SizedBox(height: 3),
-            Text(
-              item.$3,
-              maxLines: 1,
-              overflow: TextOverflow.fade,
-              style: TextStyle(fontSize: 10.5, fontWeight: selected ? FontWeight.w700 : FontWeight.w500, color: selected ? fm.text : fm.textMuted),
-            ),
-          ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

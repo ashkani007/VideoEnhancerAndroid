@@ -156,7 +156,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Future<void> _send([String? text, ChatMessage? retry]) async {
     final body = (text ?? _input.text).trim();
     if (body.isEmpty) return;
-    final local = retry?.copyWith(status: DeliveryStatus.sending) ??
+    final local =
+        retry?.copyWith(status: DeliveryStatus.sending) ??
         ChatMessage(
           id: -DateTime.now().microsecondsSinceEpoch,
           matchId: widget.matchId,
@@ -208,10 +209,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
     final draft = _input.text.trim();
     if (draft.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Write a draft first — AI will suggest kinder, clearer versions.')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Write a draft first — AI will suggest kinder, clearer versions.')));
       return;
     }
-    final picked = await showModalBottomSheet<String>(context: context, builder: (_) => _RephraseSheet(draft: draft));
+    final picked = await showModalBottomSheet<String>(
+      context: context,
+      builder: (_) => _RephraseSheet(draft: draft),
+    );
     if (picked != null) {
       _input.text = picked;
       setState(() {});
@@ -230,18 +235,33 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ? const Text('Chat')
             : InkWell(
                 onTap: () => context.push('/view', extra: ProfileDetailArgs(cards: [p])),
-                child: Row(children: [
-                  SizedBox(width: 38, height: 38, child: ClipOval(child: Portrait(name: p.firstName, url: p.photos.firstOrNull, borderRadius: 0))),
-                  const SizedBox(width: 10),
-                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Row(children: [
-                      Text(p.firstName, style: context.text.titleMedium),
-                      if (p.verified) const Padding(padding: EdgeInsets.only(left: 4), child: VerifiedBadge(size: 15)),
-                    ]),
-                    Text(_theyTyping ? 'typing…' : (p.isDemo ? 'Fictional demo profile' : 'Matched'),
-                        style: context.text.bodySmall?.copyWith(color: _theyTyping ? fm.accent : fm.textMuted)),
-                  ]),
-                ]),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 38,
+                      height: 38,
+                      child: ClipOval(
+                        child: Portrait(name: p.firstName, url: p.photos.firstOrNull, borderRadius: 0),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(p.firstName, style: context.text.titleMedium),
+                            if (p.verified) const Padding(padding: EdgeInsets.only(left: 4), child: VerifiedBadge(size: 15)),
+                          ],
+                        ),
+                        Text(
+                          _theyTyping ? 'typing…' : (p.isDemo ? 'Fictional demo profile' : 'Matched'),
+                          style: context.text.bodySmall?.copyWith(color: _theyTyping ? fm.accent : fm.textMuted),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
         actions: [
           if (p != null)
@@ -255,70 +275,90 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
         ],
       ),
-      body: Column(children: [
-        Expanded(
-          child: _loading
-              ? const Center(child: CircularProgressIndicator())
-              : _error != null
-                  ? MessageState.error(_error!, onRetry: () {
+      body: Column(
+        children: [
+          Expanded(
+            child: _loading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                ? MessageState.error(
+                    _error!,
+                    onRetry: () {
                       setState(() => _loading = true);
                       _load();
-                    })
-                  : RefreshIndicator(
-                      onRefresh: _catchUp,
-                      child: _messages.isEmpty
-                          ? ListView(children: [_EmptyChat(profile: p, onPick: (s) => setState(() => _input.text = s))])
-                          : ListView.builder(
-                              controller: _scroll,
-                              reverse: true,
-                              padding: const EdgeInsets.fromLTRB(FmSpace.md, FmSpace.md, FmSpace.md, FmSpace.md),
-                              itemCount: reversed.length + (_theyTyping ? 1 : 0),
-                              itemBuilder: (_, i) {
-                                if (_theyTyping && i == 0) return const _TypingBubble();
-                                final m = reversed[i - (_theyTyping ? 1 : 0)];
-                                return _Bubble(message: m, onRetry: m.status == DeliveryStatus.failed ? () => _send(m.body, m) : null);
-                              },
-                            ),
-                    ),
-        ),
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(FmSpace.sm, FmSpace.xs, FmSpace.sm, FmSpace.sm),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              IconButton(tooltip: 'AI writing help', onPressed: _assist, icon: Icon(Icons.auto_awesome, color: fm.accent)),
-              Expanded(
-                child: TextField(
-                  controller: _input,
-                  minLines: 1,
-                  maxLines: 5,
-                  maxLength: 2000,
-                  buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
-                  textCapitalization: TextCapitalization.sentences,
-                  onChanged: _onChanged,
-                  decoration: InputDecoration(
-                    hintText: 'Write something thoughtful…',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.xl), borderSide: BorderSide.none),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.xl), borderSide: BorderSide(color: fm.stroke)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.xl), borderSide: BorderSide(color: fm.accent)),
+                    },
+                  )
+                : RefreshIndicator(
+                    onRefresh: _catchUp,
+                    child: _messages.isEmpty
+                        ? ListView(
+                            children: [_EmptyChat(profile: p, onPick: (s) => setState(() => _input.text = s))],
+                          )
+                        : ListView.builder(
+                            controller: _scroll,
+                            reverse: true,
+                            padding: const EdgeInsets.fromLTRB(FmSpace.md, FmSpace.md, FmSpace.md, FmSpace.md),
+                            itemCount: reversed.length + (_theyTyping ? 1 : 0),
+                            itemBuilder: (_, i) {
+                              if (_theyTyping && i == 0) return const _TypingBubble();
+                              final m = reversed[i - (_theyTyping ? 1 : 0)];
+                              return _Bubble(message: m, onRetry: m.status == DeliveryStatus.failed ? () => _send(m.body, m) : null);
+                            },
+                          ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              AnimatedScale(
-                scale: _input.text.trim().isEmpty ? 0.85 : 1,
-                duration: FmMotion.of(context, FmMotion.fast),
-                child: IconButton.filled(
-                  tooltip: 'Send',
-                  onPressed: _input.text.trim().isEmpty ? null : () => _send(),
-                  style: IconButton.styleFrom(backgroundColor: fm.accent, minimumSize: const Size(48, 48)),
-                  icon: const Icon(Icons.arrow_upward_rounded, color: Colors.white),
-                ),
-              ),
-            ]),
           ),
-        ),
-      ]),
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(FmSpace.sm, FmSpace.xs, FmSpace.sm, FmSpace.sm),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                    tooltip: 'AI writing help',
+                    onPressed: _assist,
+                    icon: Icon(Icons.auto_awesome, color: fm.accent),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: _input,
+                      minLines: 1,
+                      maxLines: 5,
+                      maxLength: 2000,
+                      buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                      textCapitalization: TextCapitalization.sentences,
+                      onChanged: _onChanged,
+                      decoration: InputDecoration(
+                        hintText: 'Write something thoughtful…',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(FmRadius.xl), borderSide: BorderSide.none),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(FmRadius.xl),
+                          borderSide: BorderSide(color: fm.stroke),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(FmRadius.xl),
+                          borderSide: BorderSide(color: fm.accent),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  AnimatedScale(
+                    scale: _input.text.trim().isEmpty ? 0.85 : 1,
+                    duration: FmMotion.of(context, FmMotion.fast),
+                    child: IconButton.filled(
+                      tooltip: 'Send',
+                      onPressed: _input.text.trim().isEmpty ? null : () => _send(),
+                      style: IconButton.styleFrom(backgroundColor: fm.accent, minimumSize: const Size(48, 48)),
+                      icon: const Icon(Icons.arrow_upward_rounded, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -368,23 +408,35 @@ class _Bubble extends StatelessWidget {
                 bottomRight: Radius.circular(mine ? 4 : FmRadius.md),
               ),
             ),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisSize: MainAxisSize.min, children: [
-              Text(message.body, style: context.text.bodyLarge?.copyWith(color: mine ? Colors.white : fm.text)),
-              const SizedBox(height: 3),
-              Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(DateFormat.Hm().format(message.createdAt),
-                    style: TextStyle(fontSize: 10.5, color: mine ? Colors.white70 : fm.textMuted)),
-                if (statusIcon != null) ...[
-                  const SizedBox(width: 4),
-                  Icon(statusIcon, size: 14,
-                      color: message.status == DeliveryStatus.read
-                          ? const Color(0xFF7DD3FC)
-                          : message.status == DeliveryStatus.failed
-                              ? Colors.amberAccent
-                              : Colors.white70),
-                ],
-              ]),
-            ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(message.body, style: context.text.bodyLarge?.copyWith(color: mine ? Colors.white : fm.text)),
+                const SizedBox(height: 3),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      DateFormat.Hm().format(message.createdAt),
+                      style: TextStyle(fontSize: 10.5, color: mine ? Colors.white70 : fm.textMuted),
+                    ),
+                    if (statusIcon != null) ...[
+                      const SizedBox(width: 4),
+                      Icon(
+                        statusIcon,
+                        size: 14,
+                        color: message.status == DeliveryStatus.read
+                            ? const Color(0xFF7DD3FC)
+                            : message.status == DeliveryStatus.failed
+                            ? Colors.amberAccent
+                            : Colors.white70,
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -418,18 +470,21 @@ class _TypingBubbleState extends State<_TypingBubble> with SingleTickerProviderS
         decoration: BoxDecoration(color: fm.surfaceHigh, borderRadius: BorderRadius.circular(FmRadius.md)),
         child: AnimatedBuilder(
           animation: _c,
-          builder: (_, _) => Row(mainAxisSize: MainAxisSize.min, children: [
-            for (var i = 0; i < 3; i++)
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                width: 7,
-                height: 7,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: fm.textMuted.withValues(alpha: 0.35 + 0.65 * (((_c.value * 3 - i) % 3) < 1 ? 1 : 0)),
+          builder: (_, _) => Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < 3; i++)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  width: 7,
+                  height: 7,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: fm.textMuted.withValues(alpha: 0.35 + 0.65 * (((_c.value * 3 - i) % 3) < 1 ? 1 : 0)),
+                  ),
                 ),
-              ),
-          ]),
+            ],
+          ),
         ),
       ),
     );
@@ -452,33 +507,48 @@ class _EmptyChat extends StatelessWidget {
     ];
     return Padding(
       padding: const EdgeInsets.all(FmSpace.lg),
-      child: Column(children: [
-        const SizedBox(height: FmSpace.xl),
-        if (p != null) SizedBox(width: 96, height: 96, child: ClipOval(child: Portrait(name: p.firstName, url: p.photos.firstOrNull, borderRadius: 0))),
-        const SizedBox(height: FmSpace.md),
-        Text('You matched with ${p?.firstName ?? 'someone'}', style: context.text.headlineSmall, textAlign: TextAlign.center),
-        const SizedBox(height: 6),
-        Text('Break the ice with something personal.', style: context.text.bodyMedium?.copyWith(color: fm.textMuted)),
-        const SizedBox(height: FmSpace.lg),
-        for (final s in starters)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(FmRadius.md),
-              onTap: () => onPick(s),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(color: fm.surface, borderRadius: BorderRadius.circular(FmRadius.md), border: Border.all(color: fm.stroke)),
-                child: Row(children: [
-                  Icon(Icons.lightbulb_outline_rounded, size: 18, color: fm.accent),
-                  const SizedBox(width: 10),
-                  Expanded(child: Text(s, style: context.text.bodyMedium)),
-                ]),
+      child: Column(
+        children: [
+          const SizedBox(height: FmSpace.xl),
+          if (p != null)
+            SizedBox(
+              width: 96,
+              height: 96,
+              child: ClipOval(
+                child: Portrait(name: p.firstName, url: p.photos.firstOrNull, borderRadius: 0),
               ),
             ),
-          ),
-      ]),
+          const SizedBox(height: FmSpace.md),
+          Text('You matched with ${p?.firstName ?? 'someone'}', style: context.text.headlineSmall, textAlign: TextAlign.center),
+          const SizedBox(height: 6),
+          Text('Break the ice with something personal.', style: context.text.bodyMedium?.copyWith(color: fm.textMuted)),
+          const SizedBox(height: FmSpace.lg),
+          for (final s in starters)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(FmRadius.md),
+                onTap: () => onPick(s),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: fm.surface,
+                    borderRadius: BorderRadius.circular(FmRadius.md),
+                    border: Border.all(color: fm.stroke),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.lightbulb_outline_rounded, size: 18, color: fm.accent),
+                      const SizedBox(width: 10),
+                      Expanded(child: Text(s, style: context.text.bodyMedium)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -499,18 +569,22 @@ class _RephraseSheet extends ConsumerWidget {
             if (!snap.hasData) {
               return const SizedBox(height: 180, child: Center(child: CircularProgressIndicator()));
             }
-            return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Suggestions', style: context.text.headlineSmall),
-              Text('Only your draft is sent to the AI — never your conversation.', style: context.text.bodySmall),
-              const SizedBox(height: FmSpace.md),
-              for (final s in snap.data!)
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.auto_awesome),
-                  title: Text(s),
-                  onTap: () => Navigator.pop(context, s),
-                ),
-            ]);
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Suggestions', style: context.text.headlineSmall),
+                Text('Only your draft is sent to the AI — never your conversation.', style: context.text.bodySmall),
+                const SizedBox(height: FmSpace.md),
+                for (final s in snap.data!)
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.auto_awesome),
+                    title: Text(s),
+                    onTap: () => Navigator.pop(context, s),
+                  ),
+              ],
+            );
           },
         ),
       ),

@@ -12,8 +12,16 @@ class _MemoryStorage extends FlutterSecureStorage {
   final data = <String, String>{};
 
   @override
-  Future<void> write({required String key, required String? value, AppleOptions? iOptions, AndroidOptions? aOptions,
-      LinuxOptions? lOptions, WebOptions? webOptions, AppleOptions? mOptions, WindowsOptions? wOptions}) async {
+  Future<void> write({
+    required String key,
+    required String? value,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async {
     if (value == null) {
       data.remove(key);
     } else {
@@ -22,20 +30,38 @@ class _MemoryStorage extends FlutterSecureStorage {
   }
 
   @override
-  Future<String?> read({required String key, AppleOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions,
-          WebOptions? webOptions, AppleOptions? mOptions, WindowsOptions? wOptions}) async =>
-      data[key];
+  Future<String?> read({
+    required String key,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async => data[key];
 
   @override
-  Future<void> delete({required String key, AppleOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions,
-          WebOptions? webOptions, AppleOptions? mOptions, WindowsOptions? wOptions}) async =>
-      data.remove(key);
+  Future<void> delete({
+    required String key,
+    AppleOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    AppleOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async => data.remove(key);
 }
 
 void main() {
   test('maps API error envelopes to ApiException codes', () async {
-    final client = MockClient((req) async => http.Response(
-        jsonEncode({'detail': {'code': 'daily_limit_reached', 'message': 'No more today'}}), 429));
+    final client = MockClient(
+      (req) async => http.Response(
+        jsonEncode({
+          'detail': {'code': 'daily_limit_reached', 'message': 'No more today'},
+        }),
+        429,
+      ),
+    );
     final repo = ApiRepository('http://api.test', client: client, storage: _MemoryStorage());
     expect(
       () => repo.select('p', 'c', 'k'),
@@ -47,7 +73,15 @@ void main() {
     String? key;
     final client = MockClient((req) async {
       key = req.headers['Idempotency-Key'];
-      return http.Response(jsonEncode({'state': 'PENDING', 'status_text': 'Delivered', 'matched': false, 'selections': {'remaining': 4, 'daily_limit': 5}}), 200);
+      return http.Response(
+        jsonEncode({
+          'state': 'PENDING',
+          'status_text': 'Delivered',
+          'matched': false,
+          'selections': {'remaining': 4, 'daily_limit': 5},
+        }),
+        200,
+      );
     });
     final repo = ApiRepository('http://api.test', client: client, storage: _MemoryStorage());
     final out = await repo.select('p', 'c', 'idem-123');
@@ -65,7 +99,9 @@ void main() {
       }
       if (req.url.path == '/likes') {
         meCalls++;
-        if (req.headers['Authorization'] != 'Bearer new-access') return http.Response('{"detail":{"code":"invalid_token","message":"x"}}', 401);
+        if (req.headers['Authorization'] != 'Bearer new-access') {
+          return http.Response('{"detail":{"code":"invalid_token","message":"x"}}', 401);
+        }
         return http.Response(jsonEncode({'incoming_count': 0, 'can_see_incoming': false, 'incoming': [], 'outgoing': []}), 200);
       }
       return http.Response('', 404);
