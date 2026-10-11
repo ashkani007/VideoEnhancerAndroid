@@ -1,0 +1,17 @@
+backend/.venv/
+backend/media/
+backend/.env
+__pycache__/
+.pytest_cache/
+*.pyc
+# Flutter
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/key.properties
+*.jks
+*.keystore
+mobile/ios/Pods/
