@@ -133,7 +133,8 @@ dependencies {
     implementation("com.alphacephei:vosk-android:0.3.75@aar")
     implementation("net.java.dev.jna:jna:5.18.1@aar")
 
-    // On-device face contours for lip-movement detection (bundled model, no network).
+    // Bundled face contours run on device; ML Kit still reports technical metrics
+    // and installation identifiers. See docs/DATA_MAP.md and the privacy policy.
     implementation("com.google.mlkit:face-detection:16.1.7")
 
     testImplementation("junit:junit:4.13.2")

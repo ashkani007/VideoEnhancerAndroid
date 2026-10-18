@@ -215,7 +215,7 @@ class OverlayService : Service() {
                     if (micGranted()) type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
                     startForeground(NOTIFICATION_ID, n, type)
                 }
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && micGranted() ->
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && micGranted() ->
                     startForeground(NOTIFICATION_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
                 else -> startForeground(NOTIFICATION_ID, n)
             }

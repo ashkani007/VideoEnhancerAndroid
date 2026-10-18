@@ -28,10 +28,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Install compile SDK
         run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
-      - name: Unit tests and dependency audit
+      - name: Lint, unit tests, minified build and dependency audit
         working-directory: LensPrompt
         run: |
-          ./gradlew --no-daemon testDebugUnitTest :core:test
+          ./gradlew --no-daemon :app:lintDebug testDebugUnitTest :core:test :app:assembleQa
           ./gradlew --no-daemon :app:dependencies --configuration debugRuntimeClasspath > runtime-dependencies.txt
       - name: Enable KVM
         run: |
@@ -59,5 +59,6 @@ jobs:
             LensPrompt/app/build/reports/tests/
             LensPrompt/core/build/reports/tests/
             LensPrompt/app/build/reports/androidTests/
+            LensPrompt/app/build/reports/lint-results-debug.*
             LensPrompt/app/build/outputs/androidTest-results/
             LensPrompt/app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml
