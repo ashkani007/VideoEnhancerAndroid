@@ -1,3 +1,5 @@
+> Publication work, 18 October 2026: [current audit and blockers](docs/PUBLISHING_STATUS_2026-10-18.md), [public privacy policy](https://lensprompt-privacy.ideal-jam-4118.chatgpt.site), [store materials](store/README.md). Console changes and fresh Android 15/16 tests remain blocked by access/environment limits.
+
 # LensPrompt
 
 A mobile teleprompter for people recording themselves with a phone. Its main feature is **Smart Follow**: the app listens to you and keeps the text in step with where you actually are in the script. You don't have to match a fixed scroll speed.

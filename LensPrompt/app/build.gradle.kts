@@ -42,9 +42,9 @@ android {
         // purchases, Pro never granted. Turn on only for a Play testing track with
         // -Plensprompt.billingEnabled=true once the products exist in Play Console.
         buildConfigField("boolean", "BILLING_ENABLED", (findProperty("lensprompt.billingEnabled") ?: "false").toString())
-        // Public URLs filled in when they exist (-Plensprompt.privacyPolicyUrl=…).
-        buildConfigField("String", "PRIVACY_POLICY_URL", "\"${findProperty("lensprompt.privacyPolicyUrl") ?: ""}\"")
-        buildConfigField("String", "SUPPORT_EMAIL", "\"${findProperty("lensprompt.supportEmail") ?: ""}\"")
+        // Verified public policy and owner contact; properties allow an explicit release override.
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"${findProperty("lensprompt.privacyPolicyUrl") ?: "https://lensprompt-privacy.ideal-jam-4118.chatgpt.site"}\"")
+        buildConfigField("String", "SUPPORT_EMAIL", "\"${findProperty("lensprompt.supportEmail") ?: "abbasian7iraj@gmail.com"}\"")
     }
 
     signingConfigs {

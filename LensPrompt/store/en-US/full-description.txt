@@ -1,0 +1,32 @@
+Stay on script while you speak to the camera.
+
+LensPrompt is a teleprompter for creators, presenters, educators and anyone preparing a scripted video. Keep your words close to the lens, adjust the reading view, and choose speech-assisted or fixed-speed scrolling.
+
+FLOATING TELEPROMPTER
+Open a movable, resizable script window above a compatible camera or recording app. Adjust its position, text size, line spacing and background transparency. Mirror the text, lock the window, and close it from the overlay or its notification.
+
+SMART FOLLOW
+Smart Follow uses recognized speech to estimate your position in the script and adapt scrolling to your delivery. It can wait during pauses and help you find your place as you continue. Recognition quality depends on language, speech engine, microphone access and your device. You can switch to manual scrolling whenever you prefer.
+
+RECORD INSIDE LENSPROMPT
+Use the built-in camera to record video with optional sound while reading your script. Recordings are saved on your phone. Optional lip-movement assistance helps estimate speaking activity; it does not recognize words by itself.
+
+MANUAL CONTROL
+Choose a fixed scrolling speed or move through the script by hand. Adjust font size, margins, reading position, alignment, mirroring and countdown timing to suit your setup.
+
+MULTILINGUAL SCRIPTS
+Write or paste scripts in your preferred language, including right-to-left text. Recognition choices include English, Persian, Dutch, German, French and Spanish, subject to the speech service and available packs. The interface includes English, Persian and Dutch.
+
+OPTIONAL OFFLINE SPEECH PACKS
+Download or import a Vosk language pack for recognition on your phone. Automatic mode can still use your system speech service. Prefer on-device recognition is a preference, not a guarantee; see the privacy policy for engine routing and third-party processing.
+
+IMPORTANT CAMERA AND MICROPHONE DETAILS
+An external camera app recording sound may take exclusive microphone access. In that situation, the floating teleprompter can continue at your manual scrolling speed instead of following speech. For speech assistance while filming, try the built-in recorder with a suitable offline pack and check compatibility on your phone.
+
+YOUR DATA AND CHOICES
+No LensPrompt account or advertising is required. Scripts and settings are saved on your device and may be included in Android backup or device transfer. Your system speech provider may process audio online. Google ML Kit processes camera frames on the device and sends technical usage and diagnostic information to Google. Speech packs are downloaded from alphacephei.com at your request.
+
+Camera and microphone access are used for the features you enable. Floating mode requires permission to display over other apps. Read the privacy policy for details and controls.
+
+Privacy policy: https://lensprompt-privacy.ideal-jam-4118.chatgpt.site
+Support: abbasian7iraj@gmail.com

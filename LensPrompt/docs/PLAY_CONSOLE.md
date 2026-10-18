@@ -1,83 +1,67 @@
-# Google Play Console: tasks and draft texts for LensPrompt 1.0
+# LensPrompt — Play Console worksheet
 
-Package: **`com.lensprompt.app`** (permanent; never change without the owner's approval).
+Prepared 18 October 2026. **No section was saved, submitted or verified in Console during this session.** See `DATA_MAP.md` and `PUBLISHING_STATUS_2026-10-18.md` for evidence and limits.
 
-## A. Account and app setup (owner)
+## App setup answers ready for entry
 
-1. Create the developer account, or use an existing one. Complete identity verification. A new personal account must run a **closed test with testers for 14 days** before production access. Check the current requirement in Play Console.
-2. Create the app "LensPrompt" with default language, app type **App**, **Free** (Pro is in-app).
-3. Turn on **Play App Signing**. Create the upload key and add it to GitHub secrets (`docs/RELEASE_SIGNING.md`).
-4. Upload the signed AAB to **Internal testing**, then to Closed testing.
+| Section | Prepared answer | Evidence / review requirement |
+|---|---|---|
+| Privacy policy | `https://lensprompt-privacy.ideal-jam-4118.chatgpt.site` | Public HTTPS HTML; anonymous HTTP 200. No PDF or sign-in. Same developer/app/package in policy. |
+| App access | All features available without login; no test credentials needed | Source has no authentication. Normal Android permission prompts are not account access restrictions. |
+| Ads | **No** | No advertising placements or advertising SDK directly present. ML Kit metrics are not advertising. |
+| Content rating | App/utility questionnaire: no built-in mature, violent, gambling or sexual content; no public user exchange/social features | Do not invent an IARC rating. Review exact questions/attestations. Private script editing is not a public UGC service. |
+| Target audience | Proposed **18 and over**, adult creators and presenters; not directed at children | Product targeting choice for owner review, distinct from content rating. |
+| Data safety | **Collects data: Yes. Per-type answers require resolution below.** | ML Kit metrics/installation ID alone rule out “no data.” |
+| Government apps | **No** | Independent teleprompter, no government services or affiliation. |
+| Financial features | **No financial features** | No lending, banking, investing, crypto or financial service. Disabled in-app billing is not a financial-services feature. |
+| Health apps | **No health features** | No medical or fitness functionality. Mouth movement estimates speaking, not health. |
+| Category | App → **Video Players & Editors** | Select only tags that are available and accurate. |
+| Developer contact | **abbasian7iraj@gmail.com**; website may be the public policy page | Email retrieved from authenticated GitHub profile. Do not fabricate phone, legal address, trader status or business identifiers. Existing account details need Console verification. |
+| Main store listing | `store/en-US/` and `store/graphics/` | Title 25, short 68, full 2964 characters excluding final newline. Actual screenshots pending. |
 
-## B. Policy declarations (App content)
+Reviewer access instructions:
 
-| Item | What to enter |
-|---|---|
-| Privacy policy URL | The hosted version of `docs/PRIVACY_POLICY.md`, with `[[OWNER]]` items completed |
-| Ads | No ads |
-| App access | All features are available without login. No credentials are needed. |
-| Content rating | Questionnaire: utility/productivity, no user-generated content shared with others |
-| Target audience | Adults / 16+ or 18+ (owner decision; not designed for children) |
-| Data safety | Use `docs/DATA_MAP.md` §4. **First check ML Kit's current data disclosure.** |
-| Government apps / financial / health | No |
-| **Foreground service: `specialUse`** | See text C1, plus a demo video |
-| **Foreground service: `microphone`** | See text C2 (same video) |
-| Permissions: camera, microphone | Explained in the listing and in the app |
+1. Open LensPrompt; no sign-in is required. Use the welcome script.
+2. Tap a script to edit or its play button to prompt. Manual mode works without recognition.
+3. Smart Follow needs microphone permission and a functioning system speech provider or installed offline model. The system route may process audio online.
+4. For floating mode, choose Use with phone camera, allow Android Display over other apps, and return. Close using the window ×, notification Stop or Stop floating mode in LensPrompt.
+5. Built-in preview/recording needs camera access; sound needs microphone permission. Optional packs download over internet or import through the Android file picker.
 
-## C. Draft declaration texts
+## Data safety worksheet — not ready for final submission
 
-**C1 – specialUse foreground service**
+Google's form covers SDK collection even when it goes to Google instead of the developer, and remote ephemeral processing. The exact uploaded AAB/build flags were not matched to source. “We have no server” is not a reason to answer No.
 
-> LensPrompt shows a floating teleprompter window (SYSTEM_ALERT_WINDOW) over the user's camera app, so they can read their script while recording with the camera app they already use. The foreground service keeps this user-started window alive while another app is in front. It always shows a notification with a "Stop teleprompter" action, and the user can close it at any time with ✕ on the window or "Stop floating mode" in LensPrompt. It runs only while the floating teleprompter is open.
+| Data type | Working treatment | Purpose and unresolved details |
+|---|---|---|
+| Device or other IDs | **Collected: Yes** for ML Kit installation identifier | Analytics/technical diagnostics. Treat as required until a genuine global opt-out is verified; the lip toggle does not prove initialization telemetry stops. |
+| App info and performance → Diagnostics | **Collected: Yes** for SDK technical/error/performance information | Analytics and technical maintenance. Device/OS and API configuration are technical records. Do not invent crash-log collection. |
+| App activity → App interactions | Candidate **Collected: Yes** for ML Kit initialization/detection/release events | Analytics. Map SDK event semantics to the form; do not claim all navigation is tracked. |
+| Audio → Voice or sound recordings | **Submission blocker:** assess system speech transmission; do not answer No because Vosk is local | Optional feature, app functionality. Provider can receive audio online; establish its role, disclosures/consent and any sharing exception. |
+| Transcripts / other user-generated content | Review provider transcript handling as a separate category | No stored script prompt is sent. Do not invent direct script uploads; the provider can derive text from audio. |
+| Local scripts / video files | No app upload found for stored files | Android/gallery backups and explicit transfers need policy disclosure; distinguish them from a developer backend. |
+| Approximate location | No location API access found; do not infer this automatically from IP requests | Download hosts see an IP. Location derivation/use by providers needs evidence. |
+| Purchases / financial information | No default purchase collection found | Verify `BILLING_ENABLED=false` in the actual active AAB. |
 
-**C2 – microphone foreground service**
+**Sharing:** ML Kit says it does not onward-share its listed metrics. This does not automatically establish that LensPrompt's transfer to Google is exempt from the form's sharing definition. Assess Google's applicable SDK/service-provider role and the form's user-initiated/disclosure exemptions. Assess system speech separately. Neither “shared: No” nor an expansive unsupported answer should be presented as verified fact.
 
-> While the floating teleprompter is open, its "Smart Follow" feature listens to the user reading their script and scrolls the text along with their voice. Audio is processed on the device (offline speech packs) or by the device's speech recognition service, and is not stored or uploaded by LensPrompt. Listening starts only when the user presses Play with Smart Follow on, and stops when they pause, switch to manual or close the window.
+**Ephemeral:** Do not select ephemeral unless a provider establishes that off-device data stays only in memory for the real-time request. That is not established for all recognition services or SDK metrics here.
 
-**Demo video (record on a real device, 30–60 s):**
+**Encryption:** ML Kit documents HTTPS, and model endpoints start with HTTPS. The prepared manifest disables app cleartext traffic. This does not control another app's speech service. Do not attest that all collected data paths are encrypted before resolving provider behavior.
 
-1. Open LensPrompt and choose a script.
-2. Tap "Use with phone camera" and grant permissions.
-3. The overlay appears over the camera app; tap ▶ with AUTO on and read.
-4. Show the text following the voice.
-5. Show the notification with "Stop teleprompter" and tap it.
+**Deletion:** Users can delete local scripts/packs and media recordings. There is no LensPrompt account. Do not claim LensPrompt remotely deletes every provider's metrics, transcripts or backups. The policy supplies a support/rights contact. Read the exact Console deletion question before selecting an option.
 
-## D. Store listing drafts
+If speech-provider handling cannot be resolved, leave the form unfinished or implement and test a constrained local-only route in a later release. Public notice is not a substitute for an in-app disclosure and affirmative consent where required.
 
-**App name (≤30):** `LensPrompt – Teleprompter`
+## Foreground-service declaration drafts
 
-**Short description (≤80):** `A teleprompter that works over the camera you already use, and follows your voice.`
+**specialUse:** LensPrompt displays a movable teleprompter over a compatible camera app after the user starts floating mode. The foreground service keeps the visible script and controls available while the camera app is in front. It ends when the user closes the overlay, chooses notification Stop, or stops floating mode in LensPrompt. It does not start at boot or run as a background video recorder.
 
-**Full description (draft):**
+**microphone:** When the user presses Play with Smart Follow enabled in floating mode, microphone input aligns and scrolls the script. The active engine can be an on-device Vosk pack or the user's system recognition provider, which may process audio online. Pause, manual mode and closing the overlay stop its listening session. Another recording app may take the microphone, causing manual-speed fallback. The service starts from the visible app after microphone permission is granted.
 
-> LensPrompt is a teleprompter for creators, presenters, teachers and anyone who records scripted video.
->
-> • **Works over your camera app.** A floating, resizable teleprompter stays on top of Samsung Camera, Google Camera, Instagram, TikTok or any camera app. Place it right next to your selfie camera.
-> • **Smart Follow.** LensPrompt listens as you read and scrolls with you: it slows when you slow down, waits when you pause and finds its place again if you skip ahead. Prefer a fixed speed? Use manual scrolling.
-> • **Offline speech.** Optional offline speech packs (English, Dutch, Persian, German, French, Spanish) keep recognition on your phone.
-> • **Built-in camera.** Record directly in LensPrompt, with the script in front of the lens and sound recorded alongside.
-> • **Made for reading.** Adjustable text size, line spacing, transparency, alignment and mirror mode, a lock mode and a reading marker.
-> • **Private by design.** No account, no ads, no analytics. Your scripts stay on your device.
+A real-device demo is pending. Show start, permissions, visible overlay over camera, speech following while the mic is available, pause, notification Stop and disappearance. Demonstrate sound-recording conflicts honestly. Verify notification denial and lock-screen behavior separately. This draft is not a submitted declaration.
 
-**Graphics needed (owner/designer):**
+## Save and approval process
 
-- 512×512 icon. Derive it from `res/drawable/ic_launcher_foreground.xml`.
-- 1024×500 feature graphic.
-- At least 2 phone screenshots, ideally 6 to 8:
-  - library;
-  - floating teleprompter over a camera app;
-  - Smart Follow in action;
-  - the settings panel;
-  - offline speech packs;
-  - built-in camera.
+When access is restored, enter and save reversible draft changes, then record each resulting complete/draft status. Stop before final legal attestations, binding acceptance, review submission or production rollout and present the concrete pending action to the owner. A prepared worksheet does not mean a Console section is complete.
 
-**Category:** Video Players & Editors, or Productivity (owner decision).
-
-## E. Before production
-
-- [ ] Physical-device test pass (see the RC report).
-- [ ] Privacy policy hosted, and the URL set in the build (`-Plensprompt.privacyPolicyUrl=…`). Set the support e-mail (`-Plensprompt.supportEmail=…`).
-- [ ] Data safety submitted.
-- [ ] Foreground-service declarations approved.
-- [ ] Closed testing period completed (if required for the account).
-- [ ] Pro: keep billing off for 1.0, or follow `docs/MONETIZATION.md`.
+See `CLOSED_TEST_PLAN.md` and `INTERNAL_TESTING_DIAGNOSIS.md` for testing.

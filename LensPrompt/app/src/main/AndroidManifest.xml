@@ -27,6 +27,7 @@
 
     <application
         android:name=".LensPromptApplication"
+        android:usesCleartextTraffic="false"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
