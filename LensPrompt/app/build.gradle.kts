@@ -43,7 +43,7 @@ android {
         // -Plensprompt.billingEnabled=true once the products exist in Play Console.
         buildConfigField("boolean", "BILLING_ENABLED", (findProperty("lensprompt.billingEnabled") ?: "false").toString())
         // Verified public policy and owner contact; properties allow an explicit release override.
-        buildConfigField("String", "PRIVACY_POLICY_URL", "\"${findProperty("lensprompt.privacyPolicyUrl") ?: "https://lensprompt-privacy.ideal-jam-4118.chatgpt.site"}\"")
+        buildConfigField("String", "PRIVACY_POLICY_URL", "\"${findProperty("lensprompt.privacyPolicyUrl") ?: "https://ashkani007.github.io/VideoEnhancerAndroid/"}\"")
         buildConfigField("String", "SUPPORT_EMAIL", "\"${findProperty("lensprompt.supportEmail") ?: "abbasian7iraj@gmail.com"}\"")
     }
 

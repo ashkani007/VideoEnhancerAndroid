@@ -6,7 +6,7 @@ Prepared 18 October 2026. **No section was saved, submitted or verified in Conso
 
 | Section | Prepared answer | Evidence / review requirement |
 |---|---|---|
-| Privacy policy | `https://lensprompt-privacy.ideal-jam-4118.chatgpt.site` | Public HTTPS HTML; anonymous HTTP 200. No PDF or sign-in. Same developer/app/package in policy. |
+| Privacy policy | `https://ashkani007.github.io/VideoEnhancerAndroid/` | Pages deployment succeeded; anonymous HTTPS 200 verified on 18 October 2026 UTC / 19 October Brussels. Owner reports URL saved in Console; Console state remains inaccessible to the agent. |
 | App access | All features available without login; no test credentials needed | Source has no authentication. Normal Android permission prompts are not account access restrictions. |
 | Ads | **No** | No advertising placements or advertising SDK in source or resolved debug dependencies. ML Kit metrics are not advertising. |
 | Content rating | App/utility questionnaire: no built-in mature, violent, gambling or sexual content; no public user exchange/social features | Do not invent an IARC rating. Review exact questions/attestations. Private script editing is not a public UGC service. |

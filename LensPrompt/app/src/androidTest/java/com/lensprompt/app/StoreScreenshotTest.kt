@@ -39,8 +39,17 @@ class StoreScreenshotTest {
         val bitmap = requireNotNull(instr.uiAutomation.takeScreenshot()) { "No actual display screenshot" }
         bitmap.setHasAlpha(false)
         val dir = File(instr.targetContext.getExternalFilesDir(null), "store-screenshots").apply { mkdirs() }
-        File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        val screenshot = File(dir, "$name.png")
+        screenshot.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
         bitmap.recycle()
+        // AGP uninstalls the test app before the shell script can pull its
+        // external files. Preserve each actual capture under the disposable
+        // emulator's shell-owned directory while instrumentation is still alive.
+        val output = "/data/local/tmp/lensprompt-store-screenshots"
+        val copied = ParcelFileDescriptor.AutoCloseInputStream(
+            instr.uiAutomation.executeShellCommand("mkdir -p '$output' && cp '${screenshot.absolutePath}' '$output/$name.png' && echo SCREENSHOT_SAVED"),
+        ).use { it.readBytes().toString(Charsets.UTF_8).trim() }
+        assertTrue("Actual screenshot could not be preserved: $name", copied == "SCREENSHOT_SAVED")
     }
 
     @Test

@@ -28,5 +28,5 @@ No LensPrompt account or advertising is required. Scripts and settings are saved
 
 Camera and microphone access are used for the features you enable. Floating mode requires permission to display over other apps. Read the privacy policy for details and controls.
 
-Privacy policy: https://lensprompt-privacy.ideal-jam-4118.chatgpt.site
+Privacy policy: https://ashkani007.github.io/VideoEnhancerAndroid/
 Support: abbasian7iraj@gmail.com

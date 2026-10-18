@@ -1,5 +1,7 @@
 # LensPrompt publication readiness — 18 October 2026
 
+> Historical report. See `PUBLISHING_STATUS_2026-10-19.md` for the verified Pages deployment, completed CI results and subsequent QA fixes.
+
 ## Verified result
 
 The source audit, publication fixes, store materials and declaration worksheets are prepared on the isolated local branch `codex/lensprompt-play-readiness-20261018`. The public privacy policy is live at **https://lensprompt-privacy.ideal-jam-4118.chatgpt.site/**. Anonymous HTTPS returned 200; Cloud Browser also displayed the policy without sign-in, with the correct app, package, developer, contact and all 13 sections. Desktop layout was inspected; responsive CSS and mobile viewport are present, but a mobile browser rendering has not been inspected.
