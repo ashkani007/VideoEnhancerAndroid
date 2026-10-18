@@ -6,10 +6,10 @@ The `LensPrompt public privacy policy` workflow publishes only `index.html` and 
 
 Prerequisites:
 
-1. A GitHub connection capable of creating repository branches and commits and opening pull requests. Current branch-create requests return 403; a plain Git push also failed because this environment has no GitHub credentials. The user's authorization in chat does not change the app's OAuth/installation permissions.
+1. A GitHub connection capable of creating repository branches and commits and opening pull requests. Connector write access is now verified; the prepared branch and draft PR #4 are on GitHub. The original local commits remain preserved; API copies have identical trees and documented new IDs.
 2. An authenticated repository administrator opens repository Settings → Pages and selects GitHub Actions under Build and deployment → Source. This repository was public and had `has_pages=false` at the last read.
 3. The `github-pages` environment permits the branch being published. Keep its protections; do not disable them to make an arbitrary workflow pass. If a deployment needs owner approval, the owner approves that concrete policy deployment.
-4. Push the separate readiness branch and review its PR. The policy workflow can run on the prepared branch or after a reviewed merge. GitHub's workflow-dispatch UI normally requires the workflow on the default branch, so do not rely on a not-yet-visible Run workflow button for the first deployment.
+4. The separate readiness branch and draft PR #4 are now on GitHub; review the PR. The policy workflow can run on the prepared branch or after a reviewed merge. GitHub's workflow-dispatch UI normally requires the workflow on the default branch, so do not rely on a not-yet-visible Run workflow button for the first deployment.
 
 Verification after deployment:
 
@@ -24,4 +24,4 @@ Local packaging check:
 python3 LensPrompt/tools/prepare_privacy_pages.py --output /tmp/lensprompt-policy-pages
 ```
 
-Official workflow requirements were checked against https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages . The workflow has not run and Pages has not been enabled in this session.
+Official workflow requirements were checked against https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages . Run 39161886722 packaged the policy successfully, then failed in configure-pages with 404 Not Found: Pages must first be enabled and configured for GitHub Actions. Pages has not been enabled and no GitHub Pages URL is claimed. See https://github.com/ashkani007/VideoEnhancerAndroid/actions/runs/39161886722 .

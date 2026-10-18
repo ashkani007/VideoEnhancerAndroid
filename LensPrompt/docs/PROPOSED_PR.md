@@ -10,6 +10,6 @@ An API 35 software emulator booted, but a basic setup command timed out before a
 
 Pending review: actual UI screenshots and physical-device microphone/camera/overlay behavior; API 35/36 runtime checks; matching the active AAB to source/build flags; provider-specific Data safety and consent answers. Local debug/QA alignment does not certify Play-delivered AAB splits. No Console changes, release uploads, review submissions or tester invitations were made.
 
-PR base: `claude/lensprompt-android-dev-s2ojat`. Prepared branch: `codex/lensprompt-play-readiness-20261018`. Do not merge into the unrelated old default-branch project without a separate review. No remote PR exists because integration writes return 403.
+PR base: `claude/lensprompt-android-dev-s2ojat`. Prepared branch: `codex/lensprompt-play-readiness-20261018`. Do not merge into the unrelated old default-branch project without a separate review. Draft PR #4 is open: https://github.com/ashkani007/VideoEnhancerAndroid/pull/4 . Connector writes are now working; copied GitHub trees match the three preserved local commits.
 
-The public Sites policy remains the app default until the prepared Pages workflow is deployed and its returned URL is verified. Pages settings have not been changed.
+The public Sites policy remains the app default until the prepared Pages workflow is deployed and its returned URL is verified. Pages packaging passed in run 39161886722; deployment stopped at configure-pages with 404 because repository Pages needs administrator enablement for GitHub Actions. Pages settings have not been changed.

@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-18T20:12:33.567112+00:00",
+  "repository": "ashkani007/VideoEnhancerAndroid",
+  "draftPullRequest": "https://github.com/ashkani007/VideoEnhancerAndroid/pull/4",
+  "targetBranch": "claude/lensprompt-android-dev-s2ojat",
+  "targetCommit": "b255abee786d447f6cc8aba6e3cf3532c563e4b3",
+  "readinessBranch": "codex/lensprompt-play-readiness-20261018",
+  "deliveryMethod": "GitHub connector Git database API; exact original trees, new GitHub commit identities",
+  "originalLocalCommitsPreserved": true,
+  "copies": [
+    {
+      "local": "03683a656ca572a18fc4799b0b4dc26ef905d954",
+      "github": "5c751e69fb8aace650c047015c61fc7ff09dad07",
+      "verifiedTree": "fa809e4ee15c1a32c3063e197d60c164685fe956"
+    },
+    {
+      "local": "21685ad0c335fad013db6828895e0a10f22d9d49",
+      "github": "c64891ae00796b67a44b2f26bf153029b2e9bd63",
+      "verifiedTree": "8094384509746c49c549a23d70f4893a3fc382be"
+    },
+    {
+      "local": "86534f409200b9c59da53150490e7e5dffd9195e",
+      "github": "85bf98593e112ad920855678fc31d631d13c897b",
+      "verifiedTree": "75eb3c7ba8e5f8417e09beec6ead5c11050f2b4a"
+    }
+  ],
+  "guardedFastForwardFrom": "b255abee786d447f6cc8aba6e3cf3532c563e4b3",
+  "force": false,
+  "googlePlayModified": false,
+  "pagesAttempt": {
+    "run": 39161886722,
+    "prepare": "success",
+    "configurePages": "failure",
+    "httpStatus": 404,
+    "deployment": "not run",
+    "requiredSetup": "Repository administrator selects Settings > Pages > Source: GitHub Actions"
+  },
+  "runtimeQaRun": 39161886725,
+  "runtimeQaStatusAtRecord": "in_progress"
+}

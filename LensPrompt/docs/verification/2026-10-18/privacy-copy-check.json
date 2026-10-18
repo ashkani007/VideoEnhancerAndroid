@@ -1,0 +1,14 @@
+{
+  "tasks": [
+    ":app:processDebugResources",
+    ":app:testDebugUnitTest"
+  ],
+  "exit": 0,
+  "tests": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scope": "Offline-pack disclosures and source comment; no behavior/package/version changes"
+}

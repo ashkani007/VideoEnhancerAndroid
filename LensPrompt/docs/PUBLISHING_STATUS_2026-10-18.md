@@ -6,17 +6,17 @@ The source audit, publication fixes, store materials and declaration worksheets 
 
 **75 fresh unit tests passed** (66 core, 9 app), debug and minified/shrunk QA APKs built, instrumentation source compiled, and native/ZIP 16 KB alignment checks passed. Details and artifact hashes are in `ANDROID_BUILD_RESULTS_2026-10-18.md` and `verification/2026-10-18/`.
 
-**No Play Console section was modified, saved or submitted. No app release was uploaded, promoted or published. No tester was added or invited. No remote GitHub branch, commit or PR was created.** Existing internal-track availability is user-reported and was not independently reverified.
+**No Play Console section was modified, saved or submitted. No app release was uploaded, promoted or published. No tester was added or invited. The readiness branch is now on GitHub with draft PR #4: https://github.com/ashkani007/VideoEnhancerAndroid/pull/4 . The development branch remains at its audited base commit.** Existing internal-track availability is user-reported and was not independently reverified.
 
 ## Access and verification record
 
 | Operation | Result |
 |---|---|
 | GitHub read | Successful for `ashkani007/VideoEnhancerAndroid`, specified development branch, head `b255abee786d447f6cc8aba6e3cf3532c563e4b3` |
-| GitHub write and authorized retry | Branch and Git-tree creation returned **403 Resource not accessible by integration**. A non-interactive Git push also failed because shell Git has no authentication. User/admin repository rights do not confer those rights on the integration. These are technical access limitations, not missing conversational authorization. |
+| GitHub write recovery | After the owner installed/authorized the Codex Connector, branch creation, blob/tree/commit creation and a guarded fast-forward succeeded. Draft PR **#4** targets the development branch. API-created commit IDs differ from the original local IDs; all three original local commits are preserved and each copied tree was verified identical. |
 | Play Console and authorized retry | Both exact navigations to `https://play.google.com/console` were rejected by automatic browser security review. Its reported reason referred to a different origin (`https://google.play`). No Console content was observed, so this is not evidence of a Google authentication failure. No workaround was attempted. |
-| GitHub browser | Repository Pages settings showed Sign in. Secure sign-in recovery failed/timed out; a fresh target page remained signed out. No password or verification code was requested in chat. |
-| GitHub Pages | Repository metadata reported `has_pages=false`. Policy-only workflow and packaging are prepared and locally verified; Pages settings/deployment remain unchanged. Use the live Sites policy until a returned Pages URL is verified. |
+| Browser restriction | The owner instructed the agent to use the connector and stop browser authentication. That instruction is in effect; subsequent GitHub work used the connector only. |
+| GitHub Pages | Run **39161886722** successfully packaged the policy artifact, then `configure-pages@v5` failed with **404 Not Found** because the repository Pages site is not enabled/configured for Actions. No deployment occurred. An administrator must select Settings → Pages → Build and deployment → Source: GitHub Actions. Keep the live Sites URL meanwhile. |
 | Existing CI | Historical run **37666303409**, base source, API 34: 10 instrumented tests, 0 failures/skips, report generated 7 October 2026. This does not validate today's changes or Android 15/16. |
 | Fresh build | Full JDK/SDK setup resolved initial environment failures. 75 unit tests pass; debug and minified QA compilation, instrumentation-source compilation and alignment checks pass. No signing key was uploaded or exposed. |
 | Runtime UI/device checks | No connected user phone or usable KVM acceleration. API 35 software emulation reported boot after 554 seconds, but its first setup command timed out before app installation/tests. The owned emulator was stopped. No app runtime success or screenshots are claimed; see the recorded attempt in the build evidence. |
@@ -37,7 +37,7 @@ The source audit, publication fixes, store materials and declaration worksheets 
 ## Prepared implementation and materials
 
 1. Public policy/contact defaults expose the existing in-app Privacy policy and Contact support buttons. Email `abbasian7iraj@gmail.com` came from the authenticated GitHub profile; it was not invented.
-2. English, Persian and Dutch privacy summaries disclose system speech, ML Kit metrics and backup accurately.
+2. English, Persian and Dutch privacy summaries disclose system speech, ML Kit metrics and backup accurately. The offline-pack description also states that automatic mode/failures can use online system speech, replacing its earlier blanket “nothing is uploaded” claim.
 3. Recognized speech is redacted from routine diagnostic log lines while explicit user-requested diagnostics remain useful. The regression test passed.
 4. App cleartext traffic is disabled; existing network endpoints use HTTPS. This does not control another app's recognition service.
 5. Actual-interface screenshot instrumentation and API 35/36 CI are prepared. Instrumentation compiles; execution/screenshots require separate successful evidence.
@@ -49,7 +49,7 @@ Applying code fixes to the already-installed Play build eventually needs a **nec
 
 ## Remaining actions
 
-1. Restore repository write capability or complete GitHub sign-in in the task's Cloud Browser. Push this isolated branch and open a PR **against `claude/lensprompt-android-dev-s2ojat`**, not the unrelated older default-branch project. Review before merging. Enable Pages from repository Settings only when authenticated administration is available.
+1. Review draft PR **#4**, already opened **against `claude/lensprompt-android-dev-s2ojat`**. Preserve the unrelated older default-branch project. Inspect the new QA results and review before merging. Enable Pages from repository Settings using an administrator; do not change the app policy URL before a real deployment is verified.
 2. Restore permitted Play Console access. Inspect the existing application and active AAB rather than recreating or unnecessarily replacing it. Verify tester list membership, matching Google account, opt-in link, distribution/device compatibility and Play installation; signature conflicts are a separate installation issue. Warn and preserve/export scripts before any uninstall or clear-storage action.
 3. Resolve system speech-provider handling, Data safety type/sharing/security/retention answers and required in-app disclosure/consent in `PLAY_CONSOLE.md`. ML Kit alone rules out “no data collected.” Do not submit unsupported blanket encryption, ephemeral-processing or deletion claims.
 4. Save reversible setup/listing changes and verify each resulting status. Owner approval is still required before final legal attestations, binding agreements, review submission or production release.
@@ -72,3 +72,15 @@ Applying code fixes to the already-installed Play build eventually needs a **nec
 Source branch: https://github.com/ashkani007/VideoEnhancerAndroid/tree/claude/lensprompt-android-dev-s2ojat
 
 Historical CI: https://github.com/ashkani007/VideoEnhancerAndroid/actions/runs/37666303409
+
+## Connector delivery record
+
+Draft PR: https://github.com/ashkani007/VideoEnhancerAndroid/pull/4
+
+| Original preserved local commit | GitHub API copy | Verified tree |
+|---|---|---|
+| `03683a656ca572a18fc4799b0b4dc26ef905d954` | `5c751e69fb8aace650c047015c61fc7ff09dad07` | `fa809e4ee15c1a32c3063e197d60c164685fe956` |
+| `21685ad0c335fad013db6828895e0a10f22d9d49` | `c64891ae00796b67a44b2f26bf153029b2e9bd63` | `8094384509746c49c549a23d70f4893a3fc382be` |
+| `86534f409200b9c59da53150490e7e5dffd9195e` | `85bf98593e112ad920855678fc31d631d13c897b` | `75eb3c7ba8e5f8417e09beec6ead5c11050f2b4a` |
+
+Each copied commit carries an `Original-local-commit` trailer. The original local branch/history was not reset, rebased or discarded. A follow-up corrects remaining offline-pack copy and updates this status. Remote validation is active: https://github.com/ashkani007/VideoEnhancerAndroid/actions/runs/39161886725 and https://github.com/ashkani007/VideoEnhancerAndroid/actions/runs/39161886758 . Do not treat a running job as a pass.
