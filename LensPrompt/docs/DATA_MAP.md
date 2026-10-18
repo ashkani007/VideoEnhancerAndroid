@@ -36,7 +36,7 @@ Scope: branch `claude/lensprompt-android-dev-s2ojat`, head `b255abee786d447f6cc8
 
 Only MainActivity is exported. OverlayService is not exported, uses immutable PendingIntents, and is not sticky. App background handling stops the built-in prompter microphone and recording on ON_STOP. Overlay mode intentionally persists until stopped. Camera and microphone hardware are optional manifest features. No location, contacts, SMS, call log, broad media-read or accessibility permission is explicitly requested.
 
-Billing and other SDK manifests may merge additional normal permissions (for example `com.android.vending.BILLING`). The full merged manifest, resolved transitive dependency graph and uploaded AAB were not obtained in this environment. The prepared QA workflow exports them for comparison. Do not describe this table as the complete uploaded-artifact permission list.
+Billing and other SDK manifests may merge additional normal permissions (for example `com.android.vending.BILLING`). A fresh debug merged manifest has now been generated: it contains the eight explicit permissions above plus `com.android.vending.BILLING`, `android.permission.ACCESS_NETWORK_STATE` and `com.lensprompt.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`. The latter is a signature-level internal receiver protection rather than a runtime user permission. No advertising-ID permission appears. ML Kit and AndroidX startup providers are non-exported; ML Kit initialization is present regardless of the lip-assistance toggle. This is the locally built debug artifact, not proof of the exact uploaded AAB. The fresh resolved dependency graph is recorded in `verification/2026-10-18/selected-sdk-dependencies.txt`; release-AAB matching remains pending.
 
 ## SDK evidence and Data safety consequences
 
@@ -47,3 +47,7 @@ Billing and other SDK manifests may merge additional normal permissions (for exa
 - The system speech provider is not fixed by the app. Audio transmission, transcript handling, encryption, deletion and provider role need resolution in the worksheet before a final declaration. Do not simply label it ephemeral, unshared or always encrypted.
 
 Use `PLAY_CONSOLE.md` for the conservative worksheet and unresolved questions. All Console answers are drafts until owner review and saved-state verification.
+
+Fresh generated debug BuildConfig confirms `APPLICATION_ID=com.lensprompt.app`, version 1.0.0/code 1, `BILLING_ENABLED=false`, and the verified policy URL and owner support email. This verifies defaults for this local build; Console AAB configuration still requires comparison. Vosk’s official documentation also confirms offline Android recognition (https://alphacephei.com/vosk/), matching the inspected local Model/Recognizer PCM route.
+
+Resolved dependency verification: ML Kit Common 18.11.0, Google DataTransport and Firebase encoder/component libraries accompany Face Detection 16.1.7. There is no Firebase Analytics/Crashlytics or advertising library in the resolved debug graph. Billing transitively links Play Services Location 19.0.0, but no location permission or application location API call was found; dependency presence alone is not a collection declaration. See `ANDROID_BUILD_RESULTS_2026-10-18.md` for the fresh build, 75 passing unit tests and APK alignment evidence.

@@ -1,0 +1,245 @@
+{
+  "task": ":app:lintDebug",
+  "errors": 0,
+  "warnings": 20,
+  "issues": [
+    {
+      "id": "InternalInsetResource",
+      "severity": "Warning",
+      "message": "Using internal inset dimension resource `status_bar_height` is not supported",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "250",
+          "column": "24"
+        }
+      ]
+    },
+    {
+      "id": "NewerVersionAvailable",
+      "severity": "Warning",
+      "message": "A newer version of net.java.dev.jna:jna than 5.18.1 is available: 5.19.1",
+      "locations": [
+        {
+          "file": "LensPrompt/app/build.gradle.kts",
+          "line": "134",
+          "column": "20"
+        }
+      ]
+    },
+    {
+      "id": "DiscouragedApi",
+      "severity": "Warning",
+      "message": "Use of this function is discouraged because resource reflection makes it harder to perform build optimizations and compile-time verification of code. It is much more efficient to retrieve resources by identifier (e.g. `R.foo.bar`) than by name (e.g. `getIdentifier(\"bar\", \"foo\", null)`).",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "250",
+          "column": "34"
+        }
+      ]
+    },
+    {
+      "id": "PluralsCandidate",
+      "severity": "Warning",
+      "message": "Formatting %d followed by words (\"words\"): This should probably be a plural rather than a string",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/res/values/strings.xml",
+          "line": "115",
+          "column": "5"
+        }
+      ]
+    },
+    {
+      "id": "ObsoleteSdkInt",
+      "severity": "Warning",
+      "message": "Unnecessary; `SDK_INT` is always >= 26",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "198",
+          "column": "13"
+        }
+      ]
+    },
+    {
+      "id": "ObsoleteSdkInt",
+      "severity": "Warning",
+      "message": "Unnecessary; `SDK_INT` is always >= 26",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "1206",
+          "column": "17"
+        }
+      ]
+    },
+    {
+      "id": "ObsoleteSdkInt",
+      "severity": "Warning",
+      "message": "This folder configuration (`v26`) is unnecessary; `minSdkVersion` is 26. Merge all the resources in this folder into `mipmap-anydpi`.",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/res/mipmap-anydpi-v26"
+        }
+      ]
+    },
+    {
+      "id": "MonochromeLauncherIcon",
+      "severity": "Warning",
+      "message": "The application adaptive icon is missing a monochrome tag",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+          "line": "2",
+          "column": "1"
+        }
+      ]
+    },
+    {
+      "id": "MonochromeLauncherIcon",
+      "severity": "Warning",
+      "message": "The application adaptive roundIcon is missing a monochrome tag",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml",
+          "line": "2",
+          "column": "1"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `String.toUri` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/ui/AboutScreen.kt",
+          "line": "50",
+          "column": "58"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension property `View.isVisible` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "622",
+          "column": "20"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `String.toUri` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "1200",
+          "column": "63"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `SharedPreferences.edit` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/speech/RecognizerVerdicts.kt",
+          "line": "20",
+          "column": "9"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `SharedPreferences.edit` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/speech/RecognizerVerdicts.kt",
+          "line": "25",
+          "column": "19"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `Canvas.withClip` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/ScriptViewport.kt",
+          "line": "110",
+          "column": "9"
+        }
+      ]
+    },
+    {
+      "id": "UseKtx",
+      "severity": "Warning",
+      "message": "Use the KTX extension function `SharedPreferences.edit` instead?",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/data/SettingsRepository.kt",
+          "line": "140",
+          "column": "9"
+        }
+      ]
+    },
+    {
+      "id": "ClickableViewAccessibility",
+      "severity": "Warning",
+      "message": "`onTouch` should call `View#performClick` when a click is detected",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "461",
+          "column": "22"
+        }
+      ]
+    },
+    {
+      "id": "ClickableViewAccessibility",
+      "severity": "Warning",
+      "message": "`onTouch` should call `View#performClick` when a click is detected",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlayService.kt",
+          "line": "490",
+          "column": "22"
+        }
+      ]
+    },
+    {
+      "id": "SetTextI18n",
+      "severity": "Warning",
+      "message": "Do not concatenate text displayed with `setText`. Use resource string with placeholders.",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlaySettingsPanel.kt",
+          "line": "102",
+          "column": "34"
+        }
+      ]
+    },
+    {
+      "id": "SetTextI18n",
+      "severity": "Warning",
+      "message": "String literal in `setText` can not be translated. Use Android resources instead.",
+      "locations": [
+        {
+          "file": "LensPrompt/app/src/main/java/com/lensprompt/app/overlay/OverlaySettingsPanel.kt",
+          "line": "102",
+          "column": "37"
+        }
+      ]
+    }
+  ]
+}

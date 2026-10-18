@@ -1,0 +1,46 @@
+Selected SDK entries from :app:dependencies --configuration debugRuntimeClasspath
+Gradle task completed successfully on 18 October 2026.
+This is a selected inventory; it does not prove runtime transmissions.
+
+com.android.billingclient:billing:8.0.0
+com.google.android.datatransport:transport-api:3.0.0
+com.google.android.datatransport:transport-backend-cct:3.1.8
+com.google.android.datatransport:transport-api:3.0.0 (*)
+com.google.android.datatransport:transport-runtime:3.1.8
+com.google.firebase:firebase-encoders:17.0.0
+com.google.firebase:firebase-encoders-proto:16.0.0
+com.google.firebase:firebase-encoders:17.0.0 (*)
+com.google.firebase:firebase-encoders-json:18.0.0
+com.google.android.datatransport:transport-runtime:3.1.8 (*)
+com.google.android.gms:play-services-base:18.5.0
+com.google.android.gms:play-services-basement:18.4.0
+com.google.android.gms:play-services-tasks:18.2.0
+com.google.android.gms:play-services-basement:18.4.0 (*)
+com.google.android.gms:play-services-location:19.0.0
+com.google.android.gms:play-services-base:18.0.0 -> 18.5.0 (*)
+com.google.android.gms:play-services-basement:18.0.0 -> 18.4.0 (*)
+com.google.android.gms:play-services-places-placereport:17.0.0
+com.google.android.gms:play-services-basement:17.0.0 -> 18.4.0 (*)
+com.google.android.gms:play-services-tasks:18.0.0 -> 18.2.0 (*)
+com.google.android.gms:play-services-tasks:18.2.0 (*)
+com.alphacephei:vosk-android:0.3.75
+net.java.dev.jna:jna:5.18.1
+com.google.mlkit:face-detection:16.1.7
+com.google.android.datatransport:transport-api:2.2.1 -> 3.0.0 (*)
+com.google.android.datatransport:transport-backend-cct:2.3.3 -> 3.1.8 (*)
+com.google.android.datatransport:transport-runtime:2.2.6 -> 3.1.8 (*)
+com.google.android.gms:play-services-base:18.5.0 (*)
+com.google.android.gms:play-services-mlkit-face-detection:17.1.0
+com.google.android.gms:play-services-base:18.1.0 -> 18.5.0 (*)
+com.google.android.gms:play-services-basement:18.1.0 -> 18.4.0 (*)
+com.google.android.gms:play-services-tasks:18.0.2 -> 18.2.0 (*)
+com.google.firebase:firebase-components:16.1.0
+com.google.firebase:firebase-annotations:16.0.0
+com.google.firebase:firebase-encoders:16.1.0 -> 17.0.0 (*)
+com.google.firebase:firebase-encoders-json:17.1.0 -> 18.0.0 (*)
+com.google.mlkit:common:18.5.0 -> 18.11.0
+com.google.firebase:firebase-components:16.1.0 (*)
+com.google.mlkit:vision-common:17.2.0
+com.google.mlkit:common:18.5.0 -> 18.11.0 (*)
+com.google.mlkit:vision-interfaces:16.1.0
+com.google.mlkit:common:18.11.0 (*)

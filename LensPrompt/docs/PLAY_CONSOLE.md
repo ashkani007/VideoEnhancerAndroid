@@ -8,7 +8,7 @@ Prepared 18 October 2026. **No section was saved, submitted or verified in Conso
 |---|---|---|
 | Privacy policy | `https://lensprompt-privacy.ideal-jam-4118.chatgpt.site` | Public HTTPS HTML; anonymous HTTP 200. No PDF or sign-in. Same developer/app/package in policy. |
 | App access | All features available without login; no test credentials needed | Source has no authentication. Normal Android permission prompts are not account access restrictions. |
-| Ads | **No** | No advertising placements or advertising SDK directly present. ML Kit metrics are not advertising. |
+| Ads | **No** | No advertising placements or advertising SDK in source or resolved debug dependencies. ML Kit metrics are not advertising. |
 | Content rating | App/utility questionnaire: no built-in mature, violent, gambling or sexual content; no public user exchange/social features | Do not invent an IARC rating. Review exact questions/attestations. Private script editing is not a public UGC service. |
 | Target audience | Proposed **18 and over**, adult creators and presenters; not directed at children | Product targeting choice for owner review, distinct from content rating. |
 | Data safety | **Collects data: Yes. Per-type answers require resolution below.** | ML Kit metrics/installation ID alone rule out “no data.” |
@@ -40,7 +40,7 @@ Google's form covers SDK collection even when it goes to Google instead of the d
 | Transcripts / other user-generated content | Review provider transcript handling as a separate category | No stored script prompt is sent. Do not invent direct script uploads; the provider can derive text from audio. |
 | Local scripts / video files | No app upload found for stored files | Android/gallery backups and explicit transfers need policy disclosure; distinguish them from a developer backend. |
 | Approximate location | No location API access found; do not infer this automatically from IP requests | Download hosts see an IP. Location derivation/use by providers needs evidence. |
-| Purchases / financial information | No default purchase collection found | Verify `BILLING_ENABLED=false` in the actual active AAB. |
+| Purchases / financial information | No default purchase collection found | Fresh local debug BuildConfig verifies `BILLING_ENABLED=false`; still match the actual active AAB. |
 
 **Sharing:** ML Kit says it does not onward-share its listed metrics. This does not automatically establish that LensPrompt's transfer to Google is exempt from the form's sharing definition. Assess Google's applicable SDK/service-provider role and the form's user-initiated/disclosure exemptions. Assess system speech separately. Neither “shared: No” nor an expansive unsupported answer should be presented as verified fact.
 
@@ -65,3 +65,7 @@ A real-device demo is pending. Show start, permissions, visible overlay over cam
 When access is restored, enter and save reversible draft changes, then record each resulting complete/draft status. Stop before final legal attestations, binding acceptance, review submission or production rollout and present the concrete pending action to the owner. A prepared worksheet does not mean a Console section is complete.
 
 See `CLOSED_TEST_PLAN.md` and `INTERNAL_TESTING_DIAGNOSIS.md` for testing.
+
+Local artifact follow-up: the fresh merged debug manifest contains no advertising-ID permission. It contains Billing and ACCESS_NETWORK_STATE from dependencies plus an internal AndroidX signature permission. Do not confuse an unused Billing permission with an active purchase flow. The uploaded AAB remains unverified.
+
+Fresh validation: 75 unit tests passed (66 core, 9 app); debug and minified QA APKs built, the instrumentation source compiled, and native/ZIP alignment checks passed. None of these results resolves provider-specific Data safety questions or means a Console section has been saved. See `ANDROID_BUILD_RESULTS_2026-10-18.md`.

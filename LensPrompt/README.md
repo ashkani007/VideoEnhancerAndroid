@@ -1,4 +1,4 @@
-> Publication work, 18 October 2026: [current audit and blockers](docs/PUBLISHING_STATUS_2026-10-18.md), [public privacy policy](https://lensprompt-privacy.ideal-jam-4118.chatgpt.site), [store materials](store/README.md). Console changes and fresh Android 15/16 tests remain blocked by access/environment limits.
+> Publication work, 18 October 2026: [current audit and blockers](docs/PUBLISHING_STATUS_2026-10-18.md), [75 passing unit tests and Android builds](docs/ANDROID_BUILD_RESULTS_2026-10-18.md), [public privacy policy](https://lensprompt-privacy.ideal-jam-4118.chatgpt.site/), [store materials](store/README.md). Console/remote PR access and actual Android 15/16 device acceptance remain pending.
 
 # LensPrompt
 
