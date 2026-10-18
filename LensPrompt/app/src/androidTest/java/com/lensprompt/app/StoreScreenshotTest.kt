@@ -32,6 +32,10 @@ class StoreScreenshotTest {
     private val instr get() = InstrumentationRegistry.getInstrumentation()
     private val app get() = instr.targetContext.applicationContext as LensPromptApplication
 
+    private fun shell(command: String): String = ParcelFileDescriptor.AutoCloseInputStream(
+        instr.uiAutomation.executeShellCommand(command),
+    ).use { it.readBytes().toString(Charsets.UTF_8).trim() }
+
     private fun capture(name: String) {
         compose.waitForIdle()
         // Allow compositor/keyboard transitions to settle; this is not a speech test.
@@ -46,10 +50,13 @@ class StoreScreenshotTest {
         // external files. Preserve each actual capture under the disposable
         // emulator's shell-owned directory while instrumentation is still alive.
         val output = "/data/local/tmp/lensprompt-store-screenshots"
-        val copied = ParcelFileDescriptor.AutoCloseInputStream(
-            instr.uiAutomation.executeShellCommand("mkdir -p '$output' && cp '${screenshot.absolutePath}' '$output/$name.png' && echo SCREENSHOT_SAVED"),
-        ).use { it.readBytes().toString(Charsets.UTF_8).trim() }
-        assertTrue("Actual screenshot could not be preserved: $name", copied == "SCREENSHOT_SAVED")
+        // UiAutomation executes one process; it does not interpret shell
+        // operators or quoted argument groups. These generated paths have no spaces.
+        shell("mkdir -p $output")
+        shell("cp ${screenshot.absolutePath} $output/$name.png")
+        val copiedSize = shell("stat -c %s $output/$name.png").toLongOrNull()
+        assertTrue("Actual screenshot could not be preserved: $name (bytes=$copiedSize)",
+            screenshot.length() > 0 && copiedSize == screenshot.length())
     }
 
     @Test
@@ -80,9 +87,7 @@ class StoreScreenshotTest {
 
         // Shell app-op is confined to this disposable emulator; the user grants
         // the same permission through Android Settings on a real device.
-        ParcelFileDescriptor.AutoCloseInputStream(
-            instr.uiAutomation.executeShellCommand("appops set ${instr.targetContext.packageName} SYSTEM_ALERT_WINDOW allow"),
-        ).use { it.readBytes() }
+        shell("appops set ${instr.targetContext.packageName} SYSTEM_ALERT_WINDOW allow")
         compose.runOnUiThread { OverlayService.start(compose.activity, script.id) }
         compose.waitUntil(10_000) { OverlayService.running }
         SystemClock.sleep(1_000)
