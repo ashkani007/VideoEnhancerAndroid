@@ -1,3 +1,5 @@
+> Historical proposal. Use the actual draft PR #4 description and PUBLISHING_STATUS_2026-10-19.md for current results.
+
 # Prepare LensPrompt privacy disclosures and publication QA
 
 The default build hides its Privacy policy and Contact support buttons because their values are empty. Its privacy summary omits ML Kit technical collection, and routine diagnostics can log recognized speech.

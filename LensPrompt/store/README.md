@@ -1,11 +1,13 @@
-# Store materials
+# LensPrompt store assets — reviewed 19 October 2026
 
-English title, short description and full description are in `en-US/`. Category: **Video Players & Editors**. Natural search terms included in the copy: teleprompter, floating teleprompter, Smart Follow, speech-assisted scrolling, video recording, offline speech, multilingual scripts. Google Play has no separate keyword field; do not paste a keyword list into the listing.
+English listing copy and existing-brand graphics are included. Title: 25/30 characters; short description: 68/80; full description: 2,960/4,000, excluding the final newline. The full description uses the verified public policy URL https://ashkani007.github.io/VideoEnhancerAndroid/ .
 
-`graphics/` contains a 512×512 RGBA PNG icon, derived from the existing launcher vector, and a 1024×500 RGB PNG feature graphic. Run `python tools/build_store_assets.py` from LensPrompt to regenerate them. They are branding assets, not screenshots or evidence that a feature passed testing.
+- Icon: 512×512 RGBA PNG, derived from the app launcher vector.
+- Feature graphic: 1024×500 RGB PNG; branding, not a fabricated interface.
+- `screenshots/phone-en-US/`: four actual API 36 PR-build screenshots selected as store candidates: library, script editor, paused manual prompter and settings. All are 1080×1920 RGB PNGs with unchanged source pixels.
+- `screenshots/reference/`: actual About/privacy and floating-window captures for functional review. The floating window is over LensPrompt's own library, not a camera; background text shows through at the chosen opacity. Retake on an actual phone over the intended camera with a readable opacity before selecting it as a professional store image.
+- `screenshots/PROVENANCE.json`: source commit, workflow/artifact identity, dimensions and SHA-256 hashes. API 35 also produced six validated actual PNGs; its metadata is in the verification report.
 
-**Actual app screenshots are still pending.** `StoreScreenshotTest` captures the real app library, editor, paused manual prompter, settings, About and floating window without simulated speech or generated camera imagery. The publication QA workflow renders the emulator at 1080×1920. It compiles successfully, but the local software emulator timed out during setup before app installation. Connector writes are now restored and the accelerated API 35/36 workflow is active; inspect its completed artifacts before claiming screenshot success. Review and convert the resulting PNGs to RGB for upload; do not invent a camera image or imply that the paused prompter demonstrates live Smart Follow.
+**No screenshot has been uploaded to Play Console.** These captures belong to the proposed PR debug build, not a verified Play-installed release. Match the intended signed release and its behavior before upload. Same package/version labels alone do not prove binary identity. The paused prompter does not demonstrate live speech synchronization, external-camera compatibility or microphone concurrency.
 
-Capture an additional real-phone video/frames showing voice synchronization, an actual camera recording with sound, and the floating overlay over the chosen camera app. Do not claim every camera app permits overlays or simultaneous microphone access. A foreground-service declaration demo is separate from store screenshots.
-
-The copy is based on inspected source; camera, live microphone and Android 15/16 behavior require the physical-device acceptance plan in `docs/CLOSED_TEST_PLAN.md` before production. No store listing has been saved to Play Console in this session.
+The actual real-phone camera/foreground-service demonstration is still pending. No camera scene or interface was generated, composited or replaced for store use. The 18-case CSV is a blank physical-device run log; `NOT RUN` entries are not counted as completed closed testing.

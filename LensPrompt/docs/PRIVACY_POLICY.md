@@ -95,6 +95,6 @@ LensPrompt is intended for adult creators and presenters and is not directed to 
 
 ## 13. This webpage and policy changes
 
-This public policy page is hosted using OpenAI Sites infrastructure and its hosting providers. Delivering the page can involve normal web-server information such as IP address and request headers under the providers' policies. The page itself has no sign-in, advertising scripts or analytics code added by Supernova studio. Opening external links or sending email involves the service you choose.
+This public policy page is hosted on GitHub Pages by GitHub and its hosting providers. Delivering the page can involve normal web-server information such as IP address and request headers under the providers' policies. The page itself has no sign-in, advertising scripts or analytics code added by Supernova studio. Opening external links or sending email involves the service you choose.
 
 We will update this policy when practices change and show the new revision date. A change to advertising, billing, recognition providers or data collection requires corresponding updates to the app disclosures and store declarations. For questions, contact **Supernova studio** at **abbasian7iraj@gmail.com**.

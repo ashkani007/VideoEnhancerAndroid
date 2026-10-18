@@ -1,0 +1,290 @@
+{
+  "commit": "f030884a25a7be2a668d0a3ab700762c43fd8e0a",
+  "run": 39172281502,
+  "apis": {
+    "35": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "artifact_id": 12153351907,
+      "artifact_sha256": "31ddd357d3754f1d11a9468bdc24c470c324b8a3379c75b7e3e4e9395bddda88",
+      "tests_detail": [
+        {
+          "name": "captureRealScreensAndVerifyPrivacyEntry",
+          "classname": "com.lensprompt.app.StoreScreenshotTest",
+          "time": "9.062",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "libraryListsScriptsAndCreatesNew",
+          "classname": "com.lensprompt.app.SmokeTest",
+          "time": "1.567",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "manualScrollAndSmartFollowRunWithoutCrashing",
+          "classname": "com.lensprompt.app.SmokeTest",
+          "time": "6.106",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "settingsPanelBuilds",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "0.93",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "everyExitPathClosesTheOverlayAndItRestarts",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "6.192",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "autoHiddenControlsCanBeRevealedThroughAccessibility",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "3.651",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "overlayServiceShowsItsWindow",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "2.602",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "textNeverRendersOutsideTheViewportAndReflows",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "0.327",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "appCapturedAudioIsMuxedAlignedAndTrimmed",
+          "classname": "com.lensprompt.app.AvMuxerTest",
+          "time": "1.26",
+          "failure": false,
+          "skipped": false
+        }
+      ],
+      "screenshots": [
+        {
+          "name": "01-library.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 71170,
+          "sha256": "814871a7bedcdd850ecbb48bc98d808a373fa285f8c00983d28f821fd794b6de"
+        },
+        {
+          "name": "02-script-editor.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 216518,
+          "sha256": "28995d587bfd8fb0d2f69e4f4568a8142d48a5480e42e8f0847c7f01a3334b2d"
+        },
+        {
+          "name": "03-manual-prompter.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 166316,
+          "sha256": "62a2df149c63c8f2689579b2abc44152e8458d52045db1f950607cfbddb65485"
+        },
+        {
+          "name": "04-settings.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 150113,
+          "sha256": "a598abe5a480968e00dff9fc08ae8112c53f6ae8627f2652ce5bec01b6e86b17"
+        },
+        {
+          "name": "05-privacy-and-licenses.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 183848,
+          "sha256": "898639305cd98843d732fbb3d5051aa2ab6fe70f7c9123080e0bd63ec2f41361"
+        },
+        {
+          "name": "06-floating-window.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 146917,
+          "sha256": "7d2fe9e8381c8d03097fecc9d5cfc41c21120b8bf21aa97015826f94826437a7"
+        }
+      ],
+      "lint": {
+        "Error": 0,
+        "Fatal": 0,
+        "Warning": 35,
+        "Information": 0
+      },
+      "android_runtime_error_log_bytes": 0,
+      "unit_tests": {
+        "app": {
+          "tests": 9,
+          "failures": 0,
+          "ignored": 0
+        },
+        "core": {
+          "tests": 66,
+          "failures": 0,
+          "ignored": 0
+        }
+      }
+    },
+    "36": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "artifact_id": 12153317182,
+      "artifact_sha256": "b65e8e7e95b5668a99cc93cc5574b3f315111f9c4ab66c23ea6e1418dea95d7b",
+      "tests_detail": [
+        {
+          "name": "captureRealScreensAndVerifyPrivacyEntry",
+          "classname": "com.lensprompt.app.StoreScreenshotTest",
+          "time": "8.947",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "libraryListsScriptsAndCreatesNew",
+          "classname": "com.lensprompt.app.SmokeTest",
+          "time": "1.733",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "manualScrollAndSmartFollowRunWithoutCrashing",
+          "classname": "com.lensprompt.app.SmokeTest",
+          "time": "6.791",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "settingsPanelBuilds",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "0.497",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "everyExitPathClosesTheOverlayAndItRestarts",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "4.785",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "autoHiddenControlsCanBeRevealedThroughAccessibility",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "3.493",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "overlayServiceShowsItsWindow",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "2.624",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "textNeverRendersOutsideTheViewportAndReflows",
+          "classname": "com.lensprompt.app.FloatingOverlayTest",
+          "time": "0.278",
+          "failure": false,
+          "skipped": false
+        },
+        {
+          "name": "appCapturedAudioIsMuxedAlignedAndTrimmed",
+          "classname": "com.lensprompt.app.AvMuxerTest",
+          "time": "1.288",
+          "failure": false,
+          "skipped": false
+        }
+      ],
+      "screenshots": [
+        {
+          "name": "01-library.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 71140,
+          "sha256": "01c659558e38125cf74aa7954848531b1986004f87a28effa62bd4c01172101a"
+        },
+        {
+          "name": "02-script-editor.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 216540,
+          "sha256": "d02f056066ea1439ab4a20a5d9fa686d708bfae7aa57a2d99a484bb58e34f261"
+        },
+        {
+          "name": "03-manual-prompter.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 166094,
+          "sha256": "c4168e7099f81b924d213dda3135f2262163661c83dc35687b63b328358dc2fb"
+        },
+        {
+          "name": "04-settings.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 115478,
+          "sha256": "84fdfcdc0a75790c0680a1e42d8c3dccd383abf87a43a5a5d3babd8082aa298a"
+        },
+        {
+          "name": "05-privacy-and-licenses.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 178165,
+          "sha256": "472f2f22dd37de308a7494fbed01d63f12fb8861df94c62439a69960102269c5"
+        },
+        {
+          "name": "06-floating-window.png",
+          "width": 1080,
+          "height": 1920,
+          "mode": "RGB",
+          "bytes": 147272,
+          "sha256": "d42aa4ec5ef27b861389325b8b75d1262c09e3718e36ddfcb8befb35c0844662"
+        }
+      ],
+      "lint": {
+        "Error": 0,
+        "Fatal": 0,
+        "Warning": 35,
+        "Information": 0
+      },
+      "android_runtime_error_log_bytes": 0,
+      "unit_tests": {
+        "app": {
+          "tests": 9,
+          "failures": 0,
+          "ignored": 0
+        },
+        "core": {
+          "tests": 66,
+          "failures": 0,
+          "ignored": 0
+        }
+      }
+    }
+  }
+}

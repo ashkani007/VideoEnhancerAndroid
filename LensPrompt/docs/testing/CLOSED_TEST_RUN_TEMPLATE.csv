@@ -1,0 +1,19 @@
+case_id,scenario,device_model,android_api,installed_version,actual_test_date,speech_route,network_state,permissions,expected_result,actual_result,evidence_reference,status
+O1,Floating move resize rotate and mirror,,,,,,,,Text stays within reachable window bounds,,,NOT RUN
+O2,Close normal hidden locked notification and in-app then reopen,,,,,,,,Every close path stops overlay and microphone,,,NOT RUN
+S1,Live Smart Follow pauses speed changes repetitions and skipped sentences,,,,,,,,Speech drives smooth scrolling without sustained runaway,,,NOT RUN
+S2,Microphone denied or revoked,,,,,,,,Usable manual mode and no crash or hidden listening,,,NOT RUN
+S3,Offline automatic and system routes with failures and airplane mode,,,,,,,,Actual route and fallback match disclosures,,,NOT RUN
+C1,Camera recording with and without sound,,,,,,,,Saved playable recordings with correct orientation,,,NOT RUN
+C2,Sound recording and Smart Follow together with sync claps,,,,,,,,Record measured A/V sync and real speech behavior,,,NOT RUN
+M1,Overlay above stock camera with camera audio on and off,,,,,,,,Mic ownership and indicated manual fallback are accurate,,,NOT RUN
+L1,EN NL FA language switching and mixed RTL text,,,,,,,,Readable text and correct language handling,,,NOT RUN
+U1,Manual speed drag pause countdown and restart,,,,,,,,Full script remains reachable and position stable,,,NOT RUN
+B1,Background call screen lock unlock and resume,,,,,,,,No unauthorized capture or service restart,,,NOT RUN
+P1,Overlay camera notifications and mic permission combinations,,,,,,,,Clear recovery without crash or blocked exit,,,NOT RUN
+D1,Script create edit duplicate delete restart and backup restore,,,,,,,,No silent loss and behavior matches policy,,,NOT RUN
+D2,Model download cancel import bad ZIP no network and low storage,,,,,,,,Clear failures without corrupting an existing model,,,NOT RUN
+Q1,30-minute use and repeated open close on API 35 and 36,,,,,,,,No crash ANR leaked mic or unbounded memory growth,,,NOT RUN
+A1,TalkBack large font and bright camera background,,,,,,,,Labeled reachable essential controls including close,,,NOT RUN
+V1,Eligible account Play installation or update,,,,,,,,Correct package version signer and installer with data preserved,,,NOT RUN
+R1,Actual AAB flags permissions alignment and privacy link,,,,,,,,Installed binary matches the policy and declarations,,,NOT RUN

@@ -1,0 +1,25 @@
+{
+  "requestedUrl": "https://play.google.com/console/",
+  "pageObserved": false,
+  "consoleFieldsSaved": 0,
+  "googleLoginWallObserved": false,
+  "captchaObserved": false,
+  "firstAutomaticRejection": {
+    "reportedOrigin": "https://google.play",
+    "reason": "Origin authority was not granted; review also cited an earlier instruction against browser authentication attempts."
+  },
+  "anonymousHttpsHeadRedirectCheck": [
+    {"url": "https://play.google.com/console/", "status": 301, "location": "https://play.google.com/console/developers"},
+    {"url": "https://play.google.com/console/developers", "status": 302, "location": "https://play.google.com/console/about"},
+    {"url": "https://play.google.com/console/about", "status": 301, "location": "https://google.play/business/"}
+  ],
+  "headCheckStoppedBeforeCrossOriginFetch": true,
+  "secondAutomaticRejectionAfterRedirectVerification": {
+    "reportedOrigin": "https://play.google.com",
+    "reason": "Although the origin is now correct, this is another browser-console retry after the user explicitly instructed the agent to stop browser authentication attempts; the preceding read-only redirect check does not authorize repeating the blocked browser action."
+  },
+  "newestUserRequestAuthorizesConsoleNavigation": true,
+  "noFurtherBrowserRetryOrWorkaround": true,
+  "directPublisherConnectorFound": false,
+  "notes": "The redirect is issued by the official HTTPS Google endpoint; it is not a guessed domain. The latest blocker is automatic-review authorization, not an observed Google authentication error."
+}
