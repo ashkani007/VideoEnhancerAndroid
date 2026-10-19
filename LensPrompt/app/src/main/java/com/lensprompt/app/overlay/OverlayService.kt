@@ -215,7 +215,7 @@ class OverlayService : Service() {
                     if (micGranted()) type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
                     startForeground(NOTIFICATION_ID, n, type)
                 }
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && micGranted() ->
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && micGranted() ->
                     startForeground(NOTIFICATION_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
                 else -> startForeground(NOTIFICATION_ID, n)
             }
@@ -360,6 +360,9 @@ class OverlayService : Service() {
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.argb(110, 0, 0, 0)) }
             contentDescription = getString(R.string.overlay_show_controls)
             alpha = 0.75f
+            // Accessibility ACTION_CLICK must reveal the toolbar too, without
+            // depending on a touch gesture being synthesized by the service.
+            setOnClickListener { showControls() }
         }
         lockBadge = TextView(ui).apply {
             text = "🔒"
@@ -472,7 +475,7 @@ class OverlayService : Service() {
                     applyRect(apply(start, dx, dy))
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (moved) saveWindow() else if (v === miniHandle) showControls()
+                    if (moved) saveWindow() else v.performClick()
                 }
                 MotionEvent.ACTION_CANCEL -> if (moved) saveWindow()
             }

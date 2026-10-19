@@ -1,0 +1,45 @@
+name: LensPrompt public privacy policy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/lensprompt-play-readiness-20261018
+      - claude/lensprompt-android-dev-s2ojat
+      - main
+    paths:
+      - LensPrompt/docs/privacy-policy.html
+      - LensPrompt/tools/prepare_privacy_pages.py
+      - .github/workflows/lensprompt-privacy-pages.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lensprompt-privacy-pages
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Prepare the policy webpage only
+        run: python3 LensPrompt/tools/prepare_privacy_pages.py --output _privacy_site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _privacy_site
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publish the privacy webpage
+        id: deployment
+        uses: actions/deploy-pages@v4

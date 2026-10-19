@@ -1,0 +1,19 @@
+OK             lib/arm64-v8a/libandroidx.graphics.path.so              LOAD align 0x4000   stored
+OK             lib/arm64-v8a/libface_detector_v2_jni.so                LOAD align 0x4000   stored
+OK             lib/arm64-v8a/libimage_processing_util_jni.so           LOAD align 0x4000   stored
+OK             lib/arm64-v8a/libjnidispatch.so                         LOAD align 0x4000   stored
+OK             lib/arm64-v8a/libsurface_util_jni.so                    LOAD align 0x4000   stored
+OK             lib/arm64-v8a/libvosk.so                                LOAD align 0x4000   stored
+OK             lib/armeabi-v7a/libandroidx.graphics.path.so            LOAD align 0x4000   stored
+n/a (32-bit)   lib/armeabi-v7a/libface_detector_v2_jni.so              LOAD align 0x1000   stored
+OK             lib/armeabi-v7a/libimage_processing_util_jni.so         LOAD align 0x4000   stored
+OK             lib/armeabi-v7a/libjnidispatch.so                       LOAD align 0x4000   stored
+OK             lib/armeabi-v7a/libsurface_util_jni.so                  LOAD align 0x4000   stored
+n/a (32-bit)   lib/armeabi-v7a/libvosk.so                              LOAD align 0x1000   stored
+OK             lib/x86_64/libandroidx.graphics.path.so                 LOAD align 0x4000   stored
+OK             lib/x86_64/libface_detector_v2_jni.so                   LOAD align 0x4000   stored
+OK             lib/x86_64/libimage_processing_util_jni.so              LOAD align 0x4000   stored
+OK             lib/x86_64/libjnidispatch.so                            LOAD align 0x4000   stored
+OK             lib/x86_64/libsurface_util_jni.so                       LOAD align 0x4000   stored
+OK             lib/x86_64/libvosk.so                                   LOAD align 0x4000   stored
+0 64-bit libraries not 16 KB compatible

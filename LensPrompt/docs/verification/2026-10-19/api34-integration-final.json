@@ -1,0 +1,14 @@
+{
+  "code_commit": "f030884a25a7be2a668d0a3ab700762c43fd8e0a",
+  "run": 39172281615,
+  "artifact_id": 12153671935,
+  "artifact_sha256": "2d30d7729e257b0d27f0eff7909cbc5097b037a50d596794719691a177cb1053",
+  "api": 34,
+  "instrumented": {
+    "tests": 12,
+    "failures": 0,
+    "skipped": 0
+  },
+  "minified_launch_job": "success",
+  "actual_microphone_or_phone_camera_certified": false
+}

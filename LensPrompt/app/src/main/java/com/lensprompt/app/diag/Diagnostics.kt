@@ -150,7 +150,10 @@ object Diagnostics {
 
     fun text(): String = full().joinToString("\n") { (k, v) -> "$k: $v" }
 
-    fun logLine(): String = full().joinToString(" | ") { (k, v) -> "$k=$v" }
+    /** Speech excerpts are available only in the user-requested HUD/clipboard export. */
+    fun logLine(): String = full().joinToString(" | ") { (k, v) ->
+        "$k=${if (k == "LAST RESULT") "[redacted]" else v}"
+    }
 
     fun log(event: String) = Log.i(TAG, "$event — ${logLine()}")
 }

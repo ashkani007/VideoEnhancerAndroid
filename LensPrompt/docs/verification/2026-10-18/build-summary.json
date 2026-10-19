@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-18",
+  "sourceCommitRecordingVerifiedCode": "21685ad0c335fad013db6828895e0a10f22d9d49",
+  "finalBuildExit": 0,
+  "core": {
+    "tests": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 9
+  },
+  "app": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 3
+  },
+  "debugLint": {
+    "errors": 0,
+    "warnings": 20
+  },
+  "instrumentationCodeCompilation": "passed",
+  "instrumentationExecution": "not started; environment setup command timed out",
+  "androidApiRuntimeValidation": "pending",
+  "artifacts": [
+    {
+      "variant": "debug",
+      "task": ":app:assembleDebug",
+      "apkSha256": "06d41e7d622722bf9cf194ac9602a14adaab5c8438d768ecc4d9dd006ab5607e",
+      "apkBytes": 77802512,
+      "packageBadging": "package: name='com.lensprompt.app' versionCode='1' versionName='1.0.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+      "native64BitAlignment": "passed",
+      "zipalign16Kb": "passed",
+      "playUpload": false
+    },
+    {
+      "variant": "qa",
+      "task": ":app:assembleQa",
+      "apkSha256": "237e1073bdd2d06bcbd105ef07ffa71785d80820c47f542da6e14fa8584c4466",
+      "apkBytes": 60046134,
+      "packageBadging": "package: name='com.lensprompt.app' versionCode='1' versionName='1.0.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'",
+      "native64BitAlignment": "passed",
+      "zipalign16Kb": "passed",
+      "playUpload": false
+    }
+  ],
+  "softwareEmulatorAttempt": "software-emulator-attempt.json"
+}

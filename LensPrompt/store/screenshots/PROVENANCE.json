@@ -1,0 +1,69 @@
+{
+  "source": "Actual Android instrumentation UiAutomation screenshots; unchanged pixels/files",
+  "code_commit": "f030884a25a7be2a668d0a3ab700762c43fd8e0a",
+  "workflow_run": 39172281502,
+  "artifact_id": 12153317182,
+  "api": 36,
+  "variant": "debug",
+  "dimensions": "1080x1920",
+  "format": "RGB PNG",
+  "play_active_release_matched": false,
+  "live_speech_or_external_camera_demonstrated": false,
+  "screenshots": [
+    {
+      "name": "01-library.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 71140,
+      "sha256": "01c659558e38125cf74aa7954848531b1986004f87a28effa62bd4c01172101a",
+      "intended_use": "store candidate; match to signed release before upload"
+    },
+    {
+      "name": "02-script-editor.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 216540,
+      "sha256": "d02f056066ea1439ab4a20a5d9fa686d708bfae7aa57a2d99a484bb58e34f261",
+      "intended_use": "store candidate; match to signed release before upload"
+    },
+    {
+      "name": "03-manual-prompter.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 166094,
+      "sha256": "c4168e7099f81b924d213dda3135f2262163661c83dc35687b63b328358dc2fb",
+      "intended_use": "store candidate; match to signed release before upload"
+    },
+    {
+      "name": "04-settings.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 115478,
+      "sha256": "84fdfcdc0a75790c0680a1e42d8c3dccd383abf87a43a5a5d3babd8082aa298a",
+      "intended_use": "store candidate; match to signed release before upload"
+    },
+    {
+      "name": "05-privacy-and-licenses.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 178165,
+      "sha256": "472f2f22dd37de308a7494fbed01d63f12fb8861df94c62439a69960102269c5",
+      "intended_use": "functional reference; not selected for store upload"
+    },
+    {
+      "name": "06-floating-window.png",
+      "width": 1080,
+      "height": 1920,
+      "mode": "RGB",
+      "bytes": 147272,
+      "sha256": "d42aa4ec5ef27b861389325b8b75d1262c09e3718e36ddfcb8befb35c0844662",
+      "intended_use": "functional reference; not selected for store upload"
+    }
+  ],
+  "visual_review": "All six actual captures inspected. Four readable library/editor/manual/settings images selected as candidates. About proves the privacy entry. Floating view over the app library has distracting background text at this transparency and needs a real-camera retake for a professional store image."
+}

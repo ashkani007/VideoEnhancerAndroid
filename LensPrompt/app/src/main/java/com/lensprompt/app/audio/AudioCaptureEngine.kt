@@ -337,7 +337,8 @@ class RecognizerAudioFeed {
         writer = Thread({ writeLoop() }, "lensprompt-asr-feed").apply { start() }
     }
 
-    /** New pipe for a new recognizer session; returns the read end to pass to it. */
+    /** New pipe for EXTRA_AUDIO_SOURCE (Android 13+); returns the recognizer's read end. */
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Synchronized
     fun openSession(): ParcelFileDescriptor {
         closeSession()

@@ -1,3 +1,5 @@
+> Publication work, 19 October 2026: [draft PR #4](https://github.com/ashkani007/VideoEnhancerAndroid/pull/4), [current audit and blockers](docs/PUBLISHING_STATUS_2026-10-19.md), [public policy on GitHub Pages](https://ashkani007.github.io/VideoEnhancerAndroid/), [reviewed store materials](store/README.md). Code f030884 passed 75 unit tests and 9 instrumented checks on each of API 35/36; real screenshots are included. Console saves, physical acceptance and genuine closed testing remain incomplete.
+
 # LensPrompt
 
 A mobile teleprompter for people recording themselves with a phone. Its main feature is **Smart Follow**: the app listens to you and keeps the text in step with where you actually are in the script. You don't have to match a fixed scroll speed.
@@ -9,7 +11,7 @@ A mobile teleprompter for people recording themselves with a phone. Its main fea
 | Module | What it is | Needs |
 |---|---|---|
 | `core/` | Pure-Kotlin Smart Follow engine, the recognition simulator and their tests | JDK 17+ |
-| `app/` | Android app (Kotlin, Jetpack Compose, CameraX, SpeechRecognizer) | Android SDK 35 |
+| `app/` | Android app (Kotlin, Jetpack Compose, CameraX, SpeechRecognizer) | Android SDK 36 |
 
 `settings.gradle.kts` includes `:app` only when it finds an Android SDK (`local.properties` → `sdk.dir`, `ANDROID_HOME` or `ANDROID_SDK_ROOT`). That way the engine can be built and tested anywhere.
 
@@ -18,7 +20,7 @@ A mobile teleprompter for people recording themselves with a phone. Its main fea
 ```bash
 cd LensPrompt
 ./gradlew :core:test          # Smart Follow engine tests (no Android SDK needed)
-./gradlew test assembleDebug  # everything + debug APK (needs Android SDK 35)
+./gradlew test assembleDebug  # everything + debug APK (needs Android SDK 36)
 # APK: app/build/outputs/apk/debug/app-debug.apk
 ```
 

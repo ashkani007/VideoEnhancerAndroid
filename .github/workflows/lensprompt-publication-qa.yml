@@ -1,0 +1,64 @@
+name: LensPrompt publication QA (Android 15 and 16)
+
+on:
+  push:
+    branches: [codex/lensprompt-play-readiness-20261018]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        api: [35, 36]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install compile SDK
+        run: sdkmanager 'platforms;android-36' 'build-tools;35.0.0'
+      - name: Lint, unit tests, minified build and dependency audit
+        working-directory: LensPrompt
+        run: |
+          ./gradlew --no-daemon :app:lintDebug testDebugUnitTest :core:test :app:assembleQa
+          ./gradlew --no-daemon :app:dependencies --configuration debugRuntimeClasspath > runtime-dependencies.txt
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Capture actual app and run UI / overlay / mux checks
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          working-directory: LensPrompt
+          script: bash tools/run_publication_qa.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: LensPrompt-publication-evidence-api-${{ matrix.api }}
+          path: |
+            evidence/
+            LensPrompt/runtime-dependencies.txt
+            LensPrompt/app/build/reports/tests/
+            LensPrompt/core/build/reports/tests/
+            LensPrompt/app/build/reports/androidTests/
+            LensPrompt/app/build/reports/lint-results-debug.*
+            LensPrompt/app/build/outputs/androidTest-results/
+            LensPrompt/app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml

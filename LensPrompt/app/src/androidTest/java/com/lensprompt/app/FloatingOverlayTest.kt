@@ -204,11 +204,18 @@ class FloatingOverlayTest {
         info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         ua.serviceInfo = info
         val end = SystemClock.uptimeMillis() + timeoutMs
+        fun clickMatching(node: AccessibilityNodeInfo?): Boolean {
+            if (node == null) return false
+            if (node.contentDescription?.toString() == description && node.isVisibleToUser &&
+                node.performAction(AccessibilityNodeInfo.ACTION_CLICK)) return true
+            for (i in 0 until node.childCount) {
+                if (clickMatching(node.getChild(i))) return true
+            }
+            return false
+        }
         do {
             for (w in ua.windows) {
-                val node = w.root?.findAccessibilityNodeInfosByText(description)
-                    ?.firstOrNull { it.contentDescription?.toString() == description && it.isVisibleToUser } ?: continue
-                return node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                if (clickMatching(w.root)) return true
             }
             SystemClock.sleep(100)
         } while (SystemClock.uptimeMillis() < end)
@@ -217,6 +224,28 @@ class FloatingOverlayTest {
 
     private fun overlayWindowCount(): Int =
         instr.uiAutomation.windows.count { w -> w.root?.packageName == context.packageName }
+
+    @Test
+    fun autoHiddenControlsCanBeRevealedThroughAccessibility() {
+        grantOverlayPermissions()
+        val app = context.applicationContext as LensPromptApplication
+        val before = app.settings.settings.value
+        app.settings.update { it.copy(overlayAutoHide = true, overlayLocked = false, smartFollow = false) }
+        try {
+            startOverlay()
+            // The mini handle only appears after auto-hide. Its accessible
+            // action must reveal the same close button as a physical tap.
+            assertTrue("auto-hidden controls cannot be revealed", clickOverlay("Show teleprompter controls; drag to move", 10_000))
+            assertTrue("close button missing after revealing controls", clickOverlay("Close floating teleprompter"))
+            assertTrue("revealed close button did not stop the overlay", waitFor(3_000) { !OverlayService.running })
+        } finally {
+            OverlayService.stop(context)
+            waitFor(3_000) { !OverlayService.running }
+            app.settings.update {
+                it.copy(overlayAutoHide = before.overlayAutoHide, overlayLocked = before.overlayLocked, smartFollow = before.smartFollow)
+            }
+        }
+    }
 
     @Test
     fun everyExitPathClosesTheOverlayAndItRestarts() {

@@ -1,3 +1,5 @@
+> Historical audit: several findings below were fixed before the current branch head. For the current source audit and unresolved publication blockers, use [PUBLISHING_STATUS_2026-10-18.md](PUBLISHING_STATUS_2026-10-18.md). Do not use old findings as current Console declarations.
+
 # LensPrompt 1.0 production audit
 
 > **Status update (RC1):**

@@ -1,0 +1,18 @@
+{
+  "androidApi": 35,
+  "environment": "disposable software emulator; no connected user phone",
+  "hardwareAccelerationCheckExit": 3,
+  "hardwareAccelerationReason": "KVM requires a CPU that supports vmx or svm",
+  "softwareAcceleration": "off",
+  "bootCompleted": true,
+  "bootSeconds": 554,
+  "setupCommandTimeout": {
+    "command": "adb shell svc power stayon true",
+    "seconds": 20
+  },
+  "appInstalledForThisAttempt": false,
+  "appInstrumentationStarted": false,
+  "screenshotsCaptured": 0,
+  "cleanup": "owned emulator stopped",
+  "interpretation": "Environment/setup attempt; not an app test failure or a successful UI validation."
+}

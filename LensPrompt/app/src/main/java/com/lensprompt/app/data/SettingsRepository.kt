@@ -13,7 +13,8 @@ enum class PromptAlign { START, CENTER }
  * Which speech recognizer Smart Follow uses.
  *  AUTO: the system recognizer normally; the offline pack (LensPrompt's own mic)
  *        while recording video with sound, when the pack is installed.
- *  OFFLINE: always the offline pack when installed (fully on-device, no restarts).
+ *  OFFLINE: prefer the installed offline pack; an unavailable/failed local route
+ *           can still fall back to the system recognizer.
  *  SYSTEM: always the system recognizer.
  */
 enum class SpeechEngineChoice { AUTO, OFFLINE, SYSTEM }
