@@ -1,6 +1,6 @@
 # LensPrompt — Play Console worksheet
 
-Prepared 18 October 2026. **No section was saved, submitted or verified in Console during this session.** See `DATA_MAP.md` and `PUBLISHING_STATUS_2026-10-18.md` for evidence and limits.
+Updated 19 October 2026. **No section was saved, submitted or verified in Console by the agent.** The official Console route now opens Google's sign-in page; the secure authentication request timed out and sign-in has not been verified. See `DATA_MAP.md`, `CONSOLE_ENTRY_SHEET_2026-10-19.md` and `PUBLISHING_STATUS_2026-10-19.md` for evidence and limits.
 
 ## App setup answers ready for entry
 
@@ -10,14 +10,14 @@ Prepared 18 October 2026. **No section was saved, submitted or verified in Conso
 | App access | All features available without login; no test credentials needed | Source has no authentication. Normal Android permission prompts are not account access restrictions. |
 | Ads | **No** | No advertising placements or advertising SDK in source or resolved debug dependencies. ML Kit metrics are not advertising. |
 | Content rating | App/utility questionnaire: no built-in mature, violent, gambling or sexual content; no public user exchange/social features | Do not invent an IARC rating. Review exact questions/attestations. Private script editing is not a public UGC service. |
-| Target audience | Proposed **18 and over**, adult creators and presenters; not directed at children | Product targeting choice for owner review, distinct from content rating. |
+| Target audience | **13–15, 16–17, and 18 and over**; not intended for children under 13 | Explicitly confirmed by the owner on 19 October 2026. The policy has been aligned. This is separate from the IARC content rating and does not remove applicable local protections for minors. No Console selection has been saved. |
 | Data safety | **Collects data: Yes. Per-type answers require resolution below.** | ML Kit metrics/installation ID alone rule out “no data.” |
 | Government apps | **No** | Independent teleprompter, no government services or affiliation. |
 | Financial features | **No financial features** | No lending, banking, investing, crypto or financial service. Disabled in-app billing is not a financial-services feature. |
 | Health apps | **No health features** | No medical or fitness functionality. Mouth movement estimates speaking, not health. |
 | Category | App → **Video Players & Editors** | Select only tags that are available and accurate. |
 | Developer contact | **abbasian7iraj@gmail.com**; website may be the public policy page | Email retrieved from authenticated GitHub profile. Do not fabricate phone, legal address, trader status or business identifiers. Existing account details need Console verification. |
-| Main store listing | `store/en-US/` and `store/graphics/` | Title 25, short 68, full 2964 characters excluding final newline. Actual screenshots pending. |
+| Main store listing | `store/en-US/` and `store/graphics/` | Title 25, short 68, full 2960 characters excluding final newline. Four actual UI screenshot candidates are in `store/screenshots/phone-en-US/`; match the proposed build to the intended signed release before upload. |
 
 Reviewer access instructions:
 

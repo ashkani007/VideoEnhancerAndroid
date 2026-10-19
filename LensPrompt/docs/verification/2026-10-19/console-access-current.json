@@ -1,0 +1,33 @@
+{
+  "checked_date_utc": "2026-10-19",
+  "requested_url": "https://play.google.com/console/",
+  "observed_public_page": "https://google.play/business/",
+  "observed_auth_origin": "https://accounts.google.com",
+  "observed_auth_heading": "Sign in — to continue to Google Play Console",
+  "observed_fields": [
+    "Email or phone"
+  ],
+  "secure_auth_operation": "browserAuth.request: visible identifier field and Next button",
+  "secure_auth_error": "timed out awaiting tools/call after 300s",
+  "recovery_errors": [
+    "lensPlayTab20261019 is not defined",
+    "Tab not found in browser 1."
+  ],
+  "authentication_result": "unknown; no signed-in Console evidence",
+  "saved_sections": [],
+  "privacy_url_saved_state": "owner reported; not independently verified",
+  "active_internal_release": "owner reported 1.0.0/version code 1; unchanged by agent",
+  "target_audience": {
+    "source": "explicit owner instruction, 19 October 2026",
+    "intended": "teenagers aged 13 and above and adults; not under 13",
+    "prepared_console_groups": [
+      "13–15",
+      "16–17",
+      "18 and over"
+    ],
+    "console_saved": false,
+    "policy_sources_updated": true
+  },
+  "no_play_upload_review_or_production_action": true,
+  "no_credentials_recorded": true
+}

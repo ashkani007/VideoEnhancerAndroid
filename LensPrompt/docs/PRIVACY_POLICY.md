@@ -1,6 +1,6 @@
 # LensPrompt Privacy Policy
 
-Last updated: 18 October 2026
+Last updated: 19 October 2026
 
 LensPrompt (Android package `com.lensprompt.app`) is published by **Supernova studio**. This policy explains how LensPrompt handles information when you write scripts, use the floating teleprompter or Smart Follow, and record video.
 
@@ -89,9 +89,9 @@ There is no LensPrompt user account to delete and no developer-held cloud script
 
 Depending on applicable law, including the GDPR in the EEA, you may have rights of access, correction, deletion, restriction, portability, objection and withdrawal of consent, and a right to complain to a data-protection authority. Contact the email above for data Supernova studio holds; manage local data on your phone and contact the relevant provider for its own records. Withdrawal does not affect earlier lawful processing.
 
-## 12. Children
+## 12. Teen users and children
 
-LensPrompt is intended for adult creators and presenters and is not directed to children. We do not ask for a date of birth or knowingly collect children's personal information through a LensPrompt account. If you believe a child sent personal information to our support contact, contact us to request review and deletion.
+LensPrompt is intended for teenagers aged 13 and above and adults. It is not directed to children under 13. LensPrompt does not ask for a date of birth and does not create user accounts. The data practices described above, including third-party speech processing and ML Kit technical collection, also apply to teen users. If you believe a child under 13 has provided personal information to our support contact, contact us to request review and deletion.
 
 ## 13. This webpage and policy changes
 

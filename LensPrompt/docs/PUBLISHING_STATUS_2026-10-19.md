@@ -38,17 +38,15 @@ The selected library/editor/paused manual/settings PNGs are actual proposed-debu
 
 The active Play 1.0.0/code 1 has not been matched to this source, signer or flags. Identical package/version labels do not establish identical binaries. New code/privacy fixes require a reviewed, approved higher-version signed update to reach installed apps. No replacement was uploaded merely to investigate “Item not found.”
 
-## Console state and precise access blocker
+## Console state and current access blocker
 
 Owner-reported state: internal release 1.0.0/code 1 active, 1/11 setup tasks complete, privacy URL saved, production access unavailable. **No new Console section was observed, saved or submitted by the agent.**
 
-The exact requested `https://play.google.com/console/` navigation was denied before page observation by automatic browser review, first naming `https://google.play` and citing the earlier instruction against browser authentication attempts. A subsequent anonymous, TLS-validated **HEAD-only** check established the real official redirect chain:
+The latest authorization allowed the official `https://play.google.com/console/` navigation. It rendered Google's public `https://google.play/business/` page. Following its visible Console/sign-in link reached the Google Accounts page headed **Sign in — to continue to Google Play Console**, with an **Email or phone** field and **Next** button. This is an observed authentication requirement, replacing the earlier automatic-review blocker.
 
-1. `/console/` → 301 → `https://play.google.com/console/developers`
-2. → 302 → `https://play.google.com/console/about`
-3. → 301 → `https://google.play/business/`
+The secure `browserAuth.request` was issued for that visible identifier field and Next button, without reading or entering credentials through model-visible APIs. It returned the transport error **`timed out awaiting tools/call after 300s`**. A subsequent attempt to inspect the existing handle reported **`lensPlayTab20261019 is not defined`**, indicating loss of the browser runtime binding. Authentication outcome remains unknown; no success, credential submission, CAPTCHA, or access to an app dashboard can be inferred from the timeout. No setup form was reached or saved. Do not describe this as a GitHub permission failure or a Google bot-detection rejection.
 
-That check stopped before a cross-origin fetch. The different host is issued by Google's official endpoint, not a guessed destination. A single recheck of the **same official URL**, after that verification, was again denied by automatic review. This time it named the correct `https://play.google.com` origin but still cited the old browser-stop instruction, despite the latest user request authorizing Console navigation. No further retry/workaround was attempted. No Google sign-in wall or CAPTCHA was observed; do not call this a verified Google authentication failure. Available tools/plugin discovery did not yield a dedicated Play publishing connector.
+The remaining App access, Ads, Content rating, Target audience, Data safety, Government, Financial, Health, category/contact and Store Listing saves all depend on a verified signed-in Console session. The privacy URL's saved state and active internal release are still owner-reported. Available tools do not expose a dedicated Play publishing connector.
 
 ## Prepared declarations and remaining discrepancies
 
@@ -56,7 +54,7 @@ That check stopped before a cross-origin fetch. The different host is issued by 
 
 Data collection cannot truthfully be declared absent: system speech may transmit audio, ML Kit collects technical metrics/installation identifiers, and Android backup/transfer may copy scripts/settings. The default build disables billing and has no ad SDK, separate developer analytics/crash SDK, account or backend. Match the active AAB before final declarations. Resolve speech-provider handling, sharing/security/retention and any required disclosure/consent; do not submit unsupported global assurances.
 
-Target audience remains an owner decision. The existing policy describes adult creators; no answer was received to the age-group question. An age-target declaration must agree with that policy, and is distinct from an IARC content rating.
+The owner explicitly confirmed **teenagers aged 13 and above and adults, not children under 13**, on 19 October 2026. The Markdown/HTML policy and both Console worksheets now agree. Prepared target selections are **13–15, 16–17, and 18 and over**; none has been saved in Console. The earlier adult-only proposal is superseded. Google notes that teen groups can include children under local law; applicable minor protections, provider terms and consent requirements still need to be met. This decision is separate from the IARC content rating.
 
 “Item not found” and Play installation remain unverified on the phone. Account eligibility/catalogue availability and a sideloaded APK signer/version conflict are separate checks. Do not uninstall or clear storage without preserving scripts, settings and app-private media.
 

@@ -1,6 +1,6 @@
 # LensPrompt — source-backed Console entry sheet
 
-Updated 19 October 2026, Europe/Brussels. Prepared for package `com.lensprompt.app`, Supernova studio. **These are drafts, not saved Console declarations.** Automatic browser review blocked observation before the official Console page opened. The active Play AAB has not been matched to source; no new release was uploaded.
+Updated 19 October 2026, Europe/Brussels. Prepared for package `com.lensprompt.app`, Supernova studio. **These are drafts, not saved Console declarations.** The official Console route now opens Google's sign-in page. The secure authentication request timed out; successful sign-in has not been observed. The active Play AAB has not been matched to source; no new release was uploaded.
 
 ## Entries ready for exact-form review
 
@@ -15,9 +15,11 @@ Updated 19 October 2026, Europe/Brussels. Prepared for package `com.lensprompt.a
 | Health declaration | No health features. | Lip movement estimates speaking activity; it is not diagnosis, medical assessment or fitness tracking. |
 | App category | App → Video Players & Editors | Accurate category for prompting/recording. Use only available tags that match the real app. |
 | Listing contact | abbasian7iraj@gmail.com | Previously verified owner contact, already public in the policy. Do not invent phone, business identifiers, address, trader status or account verification details. |
-| Target audience | **Owner decision pending.** Existing policy/draft says adult creators, 18+. | No response was received to the age-group question. Do not submit an adult-only or teen-inclusive declaration without establishing intended audience and matching the policy. |
+| Target audience | **Ages 13–15, 16–17, and 18 and over.** Exclude all groups under 13. | Explicitly confirmed by the owner on 19 October 2026; the privacy policy now describes teens aged 13+ and adults. Verify exact form options before saving. This is a targeting decision, not an IARC rating or a declaration that all teens are legal adults. |
 
 ## Reviewer instructions
+
+The target audience is confirmed, but the Console selection is still pending sign-in. Google notes that teen groups may include children under local law. Review the applicable Families/User Data requirements, system speech provider terms and any required disclosure/consent before final submission. Excluding users under 13 does not establish that every minor-related obligation is resolved. Reference: https://support.google.com/googleplay/android-developer/answer/9867159?hl=en .
 
 LensPrompt does not require an account or login. Open the welcome script and use Prompt to read it. Manual scrolling works without speech recognition. For Smart Follow, grant microphone access and use a supported system recognizer or an installed Vosk pack. Automatic mode and failure fallback can use a system provider that processes audio online.
 
