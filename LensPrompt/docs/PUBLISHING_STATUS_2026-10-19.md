@@ -2,7 +2,7 @@
 
 ## Verified outcome
 
-Public policy: **https://ashkani007.github.io/VideoEnhancerAndroid/**. Pages run **39161886722** succeeded at 21:54 UTC on 18 October. A fresh anonymous HTTPS request returned 200 and HTML containing the correct app, package, developer, contact and all 13 sections. The policy includes responsive CSS/mobile metadata; an actual mobile-browser rendering was not inspected. The owner reports the URL saved in Console; the agent has not observed that saved state.
+Public policy: **https://ashkani007.github.io/VideoEnhancerAndroid/**. The age-13+ revision was deployed successfully by Pages run **39314955731** from commit `a96d13e8446a44ef1942b3f833cc9457697d8c9e`. A fresh anonymous HTTPS request on 19 October returned **200**, `text/html`, 18,914 bytes, SHA-256 `90e34a40b24a7182663024ca2c6df8d167fa1f723129154125fc11a0b208a7a8`. The response contains the 19 October revision date, teens aged 13+ and adults, the exclusion of under-13 targeting, and GitHub hosting disclosure. The policy-only packaging check passed all 13 sections, identity/contact, mobile metadata and absence of scripts. An actual mobile-browser rendering was not inspected. The owner reports the URL saved in Console; the agent has not observed that saved state.
 
 Draft PR **#4** is open against `claude/lensprompt-android-dev-s2ojat`: https://github.com/ashkani007/VideoEnhancerAndroid/pull/4 . The development branch remains at `b255abee786d447f6cc8aba6e3cf3532c563e4b3`. No merge, Play upload, external tester invitation, review submission, production publication or account/payment change was performed.
 
