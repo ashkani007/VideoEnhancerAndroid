@@ -1,0 +1,5 @@
+cache/
+__pycache__/
+output/**/*_mix.wav
+output/**/still_*.png
+output/**/*_video.mp4

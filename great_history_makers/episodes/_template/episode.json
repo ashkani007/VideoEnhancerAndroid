@@ -1,0 +1,23 @@
+{
+  "series": "Great History Makers",
+  "episode": 0,
+  "title": "TITLE",
+  "subtitle": "PLACE · YEAR",
+  "language": "en",
+  "fps": 24,
+  "duration": 5.0,
+  "scenes_module": "scenes.py",
+  "scenes": [
+    {"id": "s1", "start": 0.0, "duration": 5.0, "beat": "One-line description of the visual beat"}
+  ],
+  "transitions": [],
+  "narration": [{"scene": "s1", "text": "Narration line (see HISTORY.md for the claim check)."}],
+  "subtitles": [{"start": 0.4, "end": 4.6, "text": "Narration line\nsplit over two lines."}],
+  "titles": [{"start": 0.3, "end": 3.5, "kind": "title", "text": "TITLE", "sub": "PLACE · YEAR", "y": 250}],
+  "audio": {
+    "narration_file": "audio/narration.wav",
+    "music": {"root_hz": 146.83, "mode": "phrygian", "seed": 1},
+    "sfx": [{"type": "wind", "start": 0.0, "end": 5.0, "gain": 0.5}],
+    "loudness_lufs": -15
+  }
+}
