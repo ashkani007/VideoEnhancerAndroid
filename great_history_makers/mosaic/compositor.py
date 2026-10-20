@@ -45,3 +45,47 @@ def wave_deform(premult, t, amp, wavelength, speed=1.0, axis="y", phase=0.0, pow
         d = amp * u * (np.sin(k * dist - om * t + phase) + secondary * np.sin(2.1 * k * dist - 1.6 * om * t))
         mx, my = X, Y - d
     return cv2.remap(premult, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+
+
+def _wave_disp(X, Y, t, h, w, amp, wavelength, speed, axis, phase, power, anchor, secondary):
+    k = 2 * np.pi / wavelength
+    om = 2 * np.pi * speed
+    if axis == "y":
+        u = np.clip((Y - anchor * h) / max(1.0, (1 - anchor) * h), 0, 1) ** power
+        d = amp * u * (np.sin(k * Y - om * t + phase) + secondary * np.sin(2.3 * k * Y - 1.7 * om * t + phase * 2))
+        return d, np.zeros_like(d)
+    dist = np.abs(X - anchor * w)
+    u = np.clip(dist / max(1.0, w), 0, 1) ** power
+    d = amp * u * (np.sin(k * dist - om * t + phase) + secondary * np.sin(2.1 * k * dist - 1.6 * om * t))
+    # a flag shortens slightly where it ripples, so trailing tiles drift toward the pole
+    dx = -0.12 * amp * u * (1 + np.cos(k * dist - om * t + phase)) * np.sign(X - anchor * w + 1e-6)
+    return dx, d
+
+
+def rigid_tile_wave(premult, tiles, t, amp, wavelength, speed=1.0, axis="y", phase=0.0, power=1.4,
+                    anchor=0.0, secondary=0.35):
+    """Cloth motion that moves every tessera as a rigid unit (no stretched stones).
+
+    Each tile is displaced by the wave evaluated at its centroid; the inverse map
+    looks up which tile lands on each output pixel. Small gaps that open between
+    tiles read as grout, exactly as in a real mosaic."""
+    h, w = premult.shape[:2]
+    lab = tiles["labels"]
+    tdx, tdy = _wave_disp(tiles["cx"], tiles["cy"], t, h, w, amp, wavelength, speed, axis, phase, power,
+                          anchor, secondary)
+    X, Y = np.meshgrid(np.arange(w, dtype=np.float32), np.arange(h, dtype=np.float32))
+    sdx, sdy = _wave_disp(X, Y, t, h, w, amp, wavelength, speed, axis, phase, power, anchor, secondary)
+    qx = np.clip(np.rint(X - sdx), 0, w - 1).astype(np.int32)
+    qy = np.clip(np.rint(Y - sdy), 0, h - 1).astype(np.int32)
+    L = lab[qy, qx]
+    ok = L >= 0
+    mx = np.where(ok, X - tdx[np.maximum(L, 0)], X - sdx).astype(np.float32)
+    my = np.where(ok, Y - tdy[np.maximum(L, 0)], Y - sdy).astype(np.float32)
+    # reject pixels whose source tile differs from the tile we chose (prevents doubled edges)
+    sx = np.clip(np.rint(mx), 0, w - 1).astype(np.int32)
+    sy = np.clip(np.rint(my), 0, h - 1).astype(np.int32)
+    out = cv2.remap(premult, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+    # where neighbouring tiles part, show grout (as a real mosaic would), never background
+    gap = ok & (lab[sy, sx] != L)
+    out[gap] = (62, 54, 46, 255)
+    return out

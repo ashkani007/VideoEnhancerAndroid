@@ -8,49 +8,198 @@
   "duration": 20.0,
   "scenes_module": "scenes.py",
   "scenes": [
-    {"id": "s1_overlook", "start": 0.0,  "duration": 5.0, "beat": "Cyrus and his guards look toward the walls of Babylon"},
-    {"id": "s2_gate",     "start": 5.0,  "duration": 5.0, "beat": "The Persian army passes through the Ishtar Gate"},
-    {"id": "s3_court",    "start": 10.0, "duration": 5.0, "beat": "The new ruler with Babylonian officials and townspeople"},
-    {"id": "s4_sunset",   "start": 15.0, "duration": 5.0, "beat": "Babylon and the Euphrates at sunset"}
+    {
+      "id": "s1_overlook",
+      "start": 0.0,
+      "duration": 5.0,
+      "beat": "Cyrus and his guards look toward the walls of Babylon"
+    },
+    {
+      "id": "s2_gate",
+      "start": 5.0,
+      "duration": 5.0,
+      "beat": "The Persian army passes through the Ishtar Gate"
+    },
+    {
+      "id": "s3_court",
+      "start": 10.0,
+      "duration": 5.0,
+      "beat": "The new ruler with Babylonian officials and townspeople"
+    },
+    {
+      "id": "s4_sunset",
+      "start": 15.0,
+      "duration": 5.0,
+      "beat": "Babylon and the Euphrates at sunset"
+    }
   ],
   "transitions": [
-    {"at": 5.0,  "type": "mosaic", "duration": 0.8, "direction": [1, 0.3]},
-    {"at": 10.0, "type": "mosaic", "duration": 0.8, "direction": [-1, 0.2]},
-    {"at": 15.0, "type": "dissolve", "duration": 1.0}
+    {
+      "at": 5.0,
+      "type": "mosaic",
+      "duration": 0.8,
+      "direction": [
+        1,
+        0.3
+      ]
+    },
+    {
+      "at": 10.0,
+      "type": "mosaic",
+      "duration": 0.8,
+      "direction": [
+        -1,
+        0.2
+      ]
+    },
+    {
+      "at": 15.0,
+      "type": "dissolve",
+      "duration": 1.0
+    }
   ],
   "narration": [
-    {"scene": "s1_overlook", "text": "In 539 BCE, Cyrus the Great of Persia set his sights on Babylon.",
-     "speak_as": "In five thirty-nine B.C.E., Cyrus the Great of Persia set his sights on Babylon."},
-    {"scene": "s2_gate", "text": "A Babylonian chronicle records that his army entered the city without a battle."},
-    {"scene": "s3_court", "text": "Temple rites went on, and Cyrus proclaimed that Babylon's own god had chosen him."},
-    {"scene": "s4_sunset", "text": "One of the greatest cities of the ancient world now had a new ruler."}
+    {
+      "scene": "s1_overlook",
+      "text": "In 539 BCE, Cyrus the Great of Persia set his sights on Babylon.",
+      "speak_as": "In five thirty-nine B.C.E., Cyrus the Great of Persia set his sights on Babylon."
+    },
+    {
+      "scene": "s2_gate",
+      "text": "A Babylonian chronicle records that his army entered the city without a battle."
+    },
+    {
+      "scene": "s3_court",
+      "text": "Temple rites went on, and Cyrus proclaimed that Babylon's own god had chosen him."
+    },
+    {
+      "scene": "s4_sunset",
+      "text": "One of the greatest cities of the ancient world now had a new ruler."
+    }
   ],
   "subtitles": [
-    {"start": 0.45, "end": 2.35, "text": "In 539 BCE,"},
-    {"start": 2.35, "end": 4.85, "text": "Cyrus the Great of Persia\nset his sights on Babylon."},
-    {"start": 5.25, "end": 7.25, "text": "A Babylonian chronicle records"},
-    {"start": 7.25, "end": 9.85, "text": "that his army entered the city\nwithout a battle."},
-    {"start": 10.25, "end": 12.0, "text": "Temple rites went on,"},
-    {"start": 12.0, "end": 14.85, "text": "and Cyrus proclaimed that\nBabylon's own god had chosen him."},
-    {"start": 15.3, "end": 17.4, "text": "One of the greatest cities\nof the ancient world"},
-    {"start": 17.4, "end": 19.4, "text": "now had a new ruler."}
+    {
+      "start": 0.45,
+      "end": 2.35,
+      "text": "In 539 BCE,",
+      "y": 1420
+    },
+    {
+      "start": 2.35,
+      "end": 4.85,
+      "text": "Cyrus the Great of Persia\nset his sights on Babylon.",
+      "y": 1420
+    },
+    {
+      "start": 5.25,
+      "end": 7.25,
+      "text": "A Babylonian chronicle records",
+      "y": 470
+    },
+    {
+      "start": 7.25,
+      "end": 9.85,
+      "text": "that his army entered the city\nwithout a battle.",
+      "y": 470
+    },
+    {
+      "start": 10.25,
+      "end": 12.0,
+      "text": "Temple rites went on,",
+      "y": 1300
+    },
+    {
+      "start": 12.0,
+      "end": 14.85,
+      "text": "and Cyrus proclaimed that\nBabylon's own god had chosen him.",
+      "y": 1300
+    },
+    {
+      "start": 15.3,
+      "end": 17.4,
+      "text": "One of the greatest cities\nof the ancient world",
+      "y": 1300
+    },
+    {
+      "start": 17.4,
+      "end": 19.4,
+      "text": "now had a new ruler.",
+      "y": 1300
+    }
   ],
   "titles": [
-    {"start": 0.25, "end": 4.2, "kind": "title", "text": "CYRUS THE GREAT", "sub": "BABYLON · 539 BCE", "y": 250},
-    {"start": 10.3, "end": 14.6, "kind": "note", "text": "Artistic reconstruction", "y": 205},
-    {"start": 18.0, "end": 20.0, "kind": "endcard", "text": "GREAT HISTORY MAKERS", "sub": "EPISODE 1", "y": 420}
+    {
+      "start": 0.25,
+      "end": 4.2,
+      "kind": "title",
+      "text": "CYRUS THE GREAT",
+      "sub": "BABYLON · 539 BCE",
+      "y": 250
+    },
+    {
+      "start": 10.3,
+      "end": 14.6,
+      "kind": "note",
+      "text": "Artistic reconstruction",
+      "y": 205
+    },
+    {
+      "start": 18.0,
+      "end": 20.0,
+      "kind": "endcard",
+      "text": "GREAT HISTORY MAKERS",
+      "sub": "EPISODE 1",
+      "y": 420
+    }
   ],
   "audio": {
     "narration_file": "audio/narration.wav",
-    "music": {"root_hz": 146.83, "mode": "hijaz", "seed": 3},
+    "music": {
+      "root_hz": 146.83,
+      "mode": "hijaz",
+      "seed": 3
+    },
     "sfx": [
-      {"type": "wind", "start": 0.0, "end": 5.6, "gain": 0.5},
-      {"type": "march", "start": 4.6, "end": 10.4, "gain": 0.55, "period": 1.1},
-      {"type": "crowd", "start": 4.8, "end": 15.2, "gain": 0.35},
-      {"type": "water", "start": 14.4, "end": 20.0, "gain": 0.45},
-      {"type": "whoosh", "start": 4.6, "gain": 0.35},
-      {"type": "whoosh", "start": 9.6, "gain": 0.35},
-      {"type": "chime", "start": 18.0, "gain": 0.4}
+      {
+        "type": "wind",
+        "start": 0.0,
+        "end": 5.6,
+        "gain": 0.5
+      },
+      {
+        "type": "march",
+        "start": 4.6,
+        "end": 10.4,
+        "gain": 0.55,
+        "period": 1.1
+      },
+      {
+        "type": "crowd",
+        "start": 4.8,
+        "end": 15.2,
+        "gain": 0.35
+      },
+      {
+        "type": "water",
+        "start": 14.4,
+        "end": 20.0,
+        "gain": 0.45
+      },
+      {
+        "type": "whoosh",
+        "start": 4.6,
+        "gain": 0.35
+      },
+      {
+        "type": "whoosh",
+        "start": 9.6,
+        "gain": 0.35
+      },
+      {
+        "type": "chime",
+        "start": 18.0,
+        "gain": 0.4
+      }
     ],
     "loudness_lufs": -15
   }

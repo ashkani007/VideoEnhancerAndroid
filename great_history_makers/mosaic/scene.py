@@ -3,7 +3,7 @@ import zlib
 
 import numpy as np
 
-from .compositor import composite, wave_deform
+from .compositor import composite, rigid_tile_wave, wave_deform
 from .geom import S, T, about
 from .painter import Painter
 from .tessellate import MosaicSprite, render_tiles, tessellate, tint
@@ -125,6 +125,7 @@ class Figure:
             self.sprites[p.name] = make_sprite(
                 ctx, p.draw, self.BOUNDS, tile * p.tile_mul, f"{name}:{p.name}", unit_scale=k,
                 haze=haze, haze_amt=haze_amt, variation=p.variation, pad=pad, outline="outline",
+                keep_tiles=bool(p.deform),
                 rows=2 if tile * p.tile_mul * ctx.ppu > 3 else 1)
 
     def emit_at(self, root, pose, t):
@@ -140,9 +141,11 @@ class Figure:
             if p.deform:
                 d = p.deform
                 wind = pose.get("_wind", 1.0)
-                pm = wave_deform(pm, t, d["amp"] * spr.ppu * wind, d["wl"] * spr.ppu, d.get("speed", 0.5),
-                                 d.get("axis", "y"), d.get("phase", 0.0), d.get("power", 1.4),
-                                 d.get("anchor", 0.0))
+                fn = rigid_tile_wave if spr.tiles is not None else wave_deform
+                extra = (spr.tiles,) if spr.tiles is not None else ()
+                pm = fn(pm, *extra, t + pose.get("_phase", 0.0), d["amp"] * spr.ppu * wind, d["wl"] * spr.ppu,
+                        d.get("speed", 0.5), d.get("axis", "y"), d.get("phase", 0.0), d.get("power", 1.4),
+                        d.get("anchor", 0.0))
             out.append((pm, world[p.name] @ spr.pixel_to_unit(), pose.get("_opacity", 1.0)))
         return out
 

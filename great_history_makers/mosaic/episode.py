@@ -45,7 +45,7 @@ class Episode:
             self.transitions.append((tr, w))
         self.overlays = [text.from_spec(ctx, s) for s in self.cfg.get("titles", [])]
         if burn_subtitles:
-            self.overlays += [text.subtitle(ctx, c["text"], c["start"], c["end"])
+            self.overlays += [text.subtitle(ctx, c["text"], c["start"], c["end"], c.get("y", 1300))
                               for c in self.cfg.get("subtitles", [])]
         self.duration = self.cfg["duration"]
 
@@ -62,7 +62,16 @@ class Episode:
             return np.zeros((self.ctx.H, self.ctx.W, 3), np.float32)
         return sc.render(self.ctx, t - e["start"])
 
-    def frame(self, t):
+    def frame(self, t, solo=None):
+        """solo=scene index renders that scene alone (no transitions), with soft clip edges."""
+        if solo is not None:
+            e = self.timeline[solo]
+            out = self._render_scene(solo, t)
+            edge = min(t - e["start"], e["start"] + e["duration"] - t)
+            out *= smoothstep(edge / 0.25)
+            for ov in self.overlays:
+                ov.apply(out, t)
+            return (np.clip(out, 0, 1) * 255 + 0.5).astype(np.uint8)
         out = None
         for tr, wipe in self.transitions:
             d = tr["duration"]

@@ -205,9 +205,13 @@ def persian_guard(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0, spear=Tr
     return Figure(ctx, f"guard{variant}", parts, k, tile, haze, haze_amt)
 
 
-def persian_soldier(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0, standard=False):
-    """Marching soldier in Median riding dress (hood, belted tunic, trousers) with
-    separate thigh/shin pieces for a simple walk cycle."""
+def persian_soldier(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0, standard=False, shield=True):
+    """Marching soldier in Median riding dress (hood, belted tunic, trousers).
+
+    Rig: thigh/shin per leg (walk cycle), swinging spear arm with a spear that sways
+    on its own pivot, a wicker shield (spara, after Achaemenid reliefs and Herodotus
+    7.61) slung on the far side, and for standard bearers a golden-eagle standard
+    (Xenophon) with a cloth banner animated tile-by-tile."""
     tunics = [("terracotta", "terracotta_dk", "lapis", "ochre"),
               ("ochre", "ochre_dk", "terracotta", "sand"),
               ("lapis", "lapis_dk", "sand", "ochre"),
@@ -233,6 +237,15 @@ def persian_soldier(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0, standa
             p.line([(x * 0.7, 490), (x * 1.3, 744)], tun_dk, 6)
         p.poly([(44, 270), (86, 256), (112, 560), (72, 572)], "umber")  # quiver / bow case
 
+    def shield_(p):
+        # spara: tall wicker shield with leather rim, carried on the far side
+        p.smooth([(-20, 300), (150, 290), (166, 520), (150, 780), (-10, 790), (-24, 540)], "umber", 6)
+        p.smooth([(-6, 314), (138, 306), (150, 520), (136, 764), (4, 772), (-10, 540)], "ochre", 6)
+        for y in range(330, 770, 34):
+            p.line([(0, y), (144, y - 4)], "ochre_dk", 6)
+        for x in range(20, 140, 30):
+            p.line([(x, 320), (x + 2, 760)], "sand", 3)
+
     def arm(p):
         p.smooth([(-30, 252), (26, 252), (24, 430), (-10, 470), (-70, 486), (-74, 452), (-18, 420)], tun, 6)
         p.line([(-6, 300), (-4, 420)], tun_dk, 6)
@@ -255,31 +268,42 @@ def persian_soldier(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0, standa
 
     def head(p):
         _hood_back(p, hood)
-        _face(p, beard="hair_lt", curls="umber", beard_len=0.55, ear=False)
+        _face(p, beard="umber", curls="hair_lt", beard_len=0.55, ear=False)
         _hood(p, hood, "umber")
 
     tf, sf = leg(trous)
-    tb, sb = leg(trous)
+    tb, sb = leg(mix_dark(trous))
     parts = [
         PartSpec("thigh_b", tb, pivot=(0, 575), parent="body", z=0, variation=0.05),
         PartSpec("shin_b", sb, pivot=(0, 780), parent="thigh_b", z=0),
         PartSpec("body", body, pivot=(0, 600), z=2),
-        PartSpec("thigh_f", tf, pivot=(0, 575), parent="body", z=1),
-        PartSpec("shin_f", sf, pivot=(0, 780), parent="thigh_f", z=1),
+        PartSpec("thigh_f", tf, pivot=(0, 575), parent="body", z=1.5),
+        PartSpec("shin_f", sf, pivot=(0, 780), parent="thigh_f", z=1.5),
         PartSpec("head", head, pivot=(0, 210), parent="body", z=3, tile_mul=0.62),
         PartSpec("arm", arm, pivot=(-2, 262), parent="body", z=5),
         PartSpec("spear", spear_, pivot=(-100, 470), parent="arm", z=4),
         PartSpec("hand", hand, pivot=(-74, 470), parent="arm", z=6, tile_mul=0.7),
     ]
+    if shield and not standard:
+        parts.append(PartSpec("shield", shield_, pivot=(70, 300), parent="body", z=1))
     if standard:
         def banner(p):
-            p.poly([(-96, -300), (110, -290), (126, -150), (-96, -160)], "crimson")
-            p.poly([(-96, -300), (110, -290), (112, -270), (-96, -280)], "gold")
-            p.poly([(-96, -180), (124, -170), (126, -150), (-96, -160)], "gold")
-            p.circle(10, -228, 22, "gold")
-        parts.append(PartSpec("banner", banner, pivot=(-100, -230), parent="spear", z=4,
-                              deform=dict(amp=10, wl=260, speed=0.7, axis="x", anchor=0.0, power=1.2)))
-    return Figure(ctx, f"soldier{variant}{'s' if standard else ''}", parts, k, tile, haze, haze_amt)
+            p.poly([(-96, -390), (190, -378), (210, -150), (-96, -160)], "crimson")
+            p.poly([(-96, -390), (190, -378), (192, -352), (-96, -362)], "gold")
+            p.poly([(-96, -186), (206, -176), (210, -150), (-96, -160)], "gold")
+            p.circle(50, -270, 34, "gold")
+            p.circle(50, -270, 16, "crimson_dk")
+            for x in range(-80, 200, 28):  # fringe
+                p.line([(x, -152), (x + 2, -126)], "gold", 6)
+        parts.append(PartSpec("banner", banner, pivot=(-100, -270), parent="spear", z=4,
+                              deform=dict(amp=22, wl=230, speed=0.85, axis="x", anchor=0.0, power=1.1)))
+    return Figure(ctx, f"soldier{variant}{'s' if standard else ''}{'' if shield else 'n'}", parts, k, tile,
+                  haze, haze_amt)
+
+
+def mix_dark(name):
+    """Far-side limbs are drawn one shade darker so the two legs read separately."""
+    return {"lapis": "lapis_dk", "terracotta": "terracotta_dk", "sand": "sand_dk", "ochre": "ochre_dk"}.get(name, name)
 
 
 def babylonian_official(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0):

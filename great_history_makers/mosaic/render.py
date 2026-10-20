@@ -36,18 +36,22 @@ def encoder_args(enc, quality):
             "-profile:v", "high", "-tune", "animation"]
 
 
-def _init(ep_dir, quality, burn, only):
-    global _EP
+_SOLO = None
+
+
+def _init(ep_dir, quality, burn, only, solo=None):
+    global _EP, _SOLO
+    _SOLO = solo
     from .episode import Episode, load_config, make_ctx
     _EP = Episode(ep_dir, make_ctx(load_config(ep_dir), quality), burn_subtitles=burn, only_scenes=only)
 
 
 def _frame(i):
-    return i, _EP.frame(i / _EP.ctx.fps).tobytes()
+    return i, _EP.frame(i / _EP.ctx.fps, solo=_SOLO).tobytes()
 
 
 def render_video(ep_dir, out_path, quality="preview", workers=None, frames=None, burn=True, prefer_gpu=True,
-                 log=print):
+                 log=print, solo=None):
     from .episode import load_config, make_ctx
     cfg = load_config(ep_dir)
     ctx = make_ctx(cfg, quality)
@@ -62,7 +66,7 @@ def render_video(ep_dir, out_path, quality="preview", workers=None, frames=None,
     workers = workers or max(1, min(os.cpu_count() or 2, 6) - 0)
     t0 = time.time()
     mpctx = mp.get_context("spawn")
-    with mpctx.Pool(workers, initializer=_init, initargs=(ep_dir, quality, burn, None)) as pool:
+    with mpctx.Pool(workers, initializer=_init, initargs=(ep_dir, quality, burn, [solo] if solo is not None else None, solo)) as pool:
         for k, (i, buf) in enumerate(pool.imap(_frame, range(f0, f1), chunksize=2)):
             proc.stdin.write(buf)
             if k % 24 == 0:
@@ -75,9 +79,15 @@ def render_video(ep_dir, out_path, quality="preview", workers=None, frames=None,
     return enc
 
 
-def mux(video, audio, out_path, lufs=-15):
-    cmd = [ffmpeg_bin(), "-y", "-hide_banner", "-loglevel", "error", "-i", video, "-i", audio, "-map", "0:v",
-           "-map", "1:a", "-c:v", "copy", "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11", "-ar", "48000",
+def mux(video, audio, out_path, lufs=-15, trim=None):
+    """trim=(start, duration) cuts the episode mix to a single-scene clip with short fades."""
+    af = f"loudnorm=I={lufs}:TP=-1.5:LRA=11"
+    ain = ["-i", audio]
+    if trim:
+        ain = ["-ss", f"{trim[0]:.3f}", "-t", f"{trim[1]:.3f}", "-i", audio]
+        af = f"afade=t=in:d=0.25,afade=t=out:st={trim[1] - 0.3:.3f}:d=0.3," + af
+    cmd = [ffmpeg_bin(), "-y", "-hide_banner", "-loglevel", "error", "-i", video] + ain + ["-map", "0:v",
+           "-map", "1:a", "-c:v", "copy", "-af", af, "-ar", "48000",
            "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", out_path]
     subprocess.run(cmd, check=True)
 

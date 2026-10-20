@@ -23,6 +23,7 @@ py produce.py episodes\ep01_cyrus_babylon --quality final
 # single frame / partial render for quick look-dev
 py produce.py episodes\ep01_cyrus_babylon --still 12.5
 py produce.py episodes\ep01_cyrus_babylon --frames 0 120
+py produce.py episodes\ep01_cyrus_babylon --scene 2       # one scene as a standalone clip
 ```
 
 Outputs go to `output/<episode>/`: MP4 (H.264, yuv420p, AAC, faststart), `.en.srt`,
@@ -54,7 +55,9 @@ mosaic/qc.py           format checks, flicker/black-frame detection, loudness, c
 
 **Why the mosaic stays stable:** each layer or body part is tessellated **once** into a
 sprite. Animation moves those sprites rigidly (cut-out rigging) or bends them by at most
-a few tiles (cloth). Water animates **per tile** (each stone changes colour; none moves).
+a few tiles (cloth). Cloth is animated with **rigid-tile deformation**: each tessera
+is moved whole along the wave, and the gaps that open show grout, so stones never
+stretch or melt. Water animates **per tile** (each stone changes colour; none moves).
 Tile size is defined in design units, so the 720p preview and the 1080p master share
 the same tile layout.
 

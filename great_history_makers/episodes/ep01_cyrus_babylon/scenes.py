@@ -213,52 +213,61 @@ def scene2(ctx):
         M.paving(p, -600, 1320, 2600, 900, a="bone", b="sand", border="lapis_dk", cell=120)
     roadspr = make_sprite(ctx, road, (-600, 1320, 2600, 900), BG_TILE, "s2_road")
 
-    # onlookers on the wall top and at its foot
+    # onlookers on the wall top: some stroll along the parapet, all bob and turn
     minis = [F.mini_person(ctx, 0.05, FAR_TILE, variant=i) for i in range(8)]
     wall_top = []
-    for i in range(14):
-        x = 780 + i * 70 + (i % 3) * 12
+    for i in range(16):
+        x = 700 + i * 66 + (i % 3) * 12
+        v = (8 + 6 * (i % 3)) * (-1 if i % 2 else 1) if i % 4 == 1 else 0.0
         wall_top.append(FigureItem(minis[i % 8], x, 742, flip=(i % 2 == 0),
-                                   pose_fn=lambda t, i=i: {"head": (0, 6 * math.sin(t * 0.8 + i),
-                                                                    4 * math.sin(t * 1.7 + i * 2))}))
+                                   motion_fn=lambda t, v=v, i=i: (v * t, -abs(5 * math.sin(t * 5 + i)) if v else 0),
+                                   pose_fn=lambda t, i=i: {"head": (12 * math.sin(t * 0.9 + i), 0,
+                                                                    6 * math.sin(t * 2.1 + i * 2))}))
+    # townspeople at the foot of the wall: heads follow the column, some raise an arm
     cits = [F.babylonian_citizen(ctx, 0.3, FIG_TILE, variant=i) for i in range(6)]
     onlook = []
-    for i, x in enumerate([860, 990, 1120, 1250, 1380]):
+    for i, x in enumerate([860, 960, 1060, 1170, 1270, 1380]):
         def pose(t, i=i):
-            p = motion.idle(t, i * 0.7, head=3.0, arm=1.5)
-            if i in (2, 5):  # a couple of people lift an arm as the column passes
-                p["arm"] = (p["arm"][0] - motion.gesture(t, 1.0 + i * 0.2, 2.0 + i * 0.2, 3.6, 4.6, 28), 0, 0)
+            p = motion.idle(t, i * 0.7, head=1.5, arm=1.5)
+            p["head"] = (p["head"][0] + 6 * math.sin(t * 0.7 + i * 0.9), 0, p["head"][2])
+            if i % 2 == 0:  # raised hand, repeated gently
+                wave = max(0.0, math.sin(2 * math.pi * (t / 2.4) + i)) ** 2
+                p["arm"] = (p["arm"][0] - 40 * wave, 0, 0)
+            p["body"] = (p["body"][0] + 1.2 * math.sin(t * 1.1 + i), 0, 0)
             return p
         onlook.append(FigureItem(cits[i % 6], x, 1318 - (i % 2) * 8, flip=False, pose_fn=pose))
 
     period = 1.1
-    far_k, near_k = 0.29, 0.42
-    far_v = 2 * 2 * 430 * math.sin(math.radians(17)) * far_k / period
-    near_v = 2 * 2 * 430 * math.sin(math.radians(17)) * near_k / period
+    far_k, near_k = 0.29, 0.44
+    stride = 2 * 2 * 430 * math.sin(math.radians(21))
+    far_v, near_v = stride * far_k / period, stride * near_k / period
     far_sold = [F.persian_soldier(ctx, far_k, FIG_TILE, variant=i) for i in range(4)]
     far_std = F.persian_soldier(ctx, far_k, FIG_TILE, variant=0, standard=True)
     near_sold = [F.persian_soldier(ctx, near_k, FIG_TILE, variant=i) for i in range(4)]
-    near_std = F.persian_soldier(ctx, near_k, FIG_TILE, variant=1, standard=True)
+    near_std = [F.persian_soldier(ctx, near_k, FIG_TILE, variant=1, standard=True),
+                F.persian_soldier(ctx, near_k, FIG_TILE, variant=3, standard=True)]
 
-    def column(figs, std, x0, y, spacing, v, n, seed):
+    def column(figs, stds, std_at, x0, y, spacing, v, n, seed):
         items = []
         for i in range(n):
-            f = std if i == 2 else figs[(i * 3 + seed) % len(figs)]
-            ph = (i * 1.7 + seed) % 6.28
+            f = stds[std_at.index(i) % len(stds)] if i in std_at else figs[(i * 3 + seed) % len(figs)]
+            ph = (i * 2.3 + seed) % 6.28  # each soldier in his own step phase
             items.append(FigureItem(f, x0 + i * spacing, y + (i % 2) * 6,
                                     pose_fn=lambda t, ph=ph: motion.walk(t, period, ph),
                                     motion_fn=lambda t, v=v: (-v * t, 0)))
         return items
-    far_col = column(far_sold, far_std, 420, 1352, 125, far_v, 16, 1)
-    near_col = column(near_sold, near_std, 360, 1880, 210, near_v, 11, 2)
+    far_col = column(far_sold, [far_std], [3, 11], 380, 1352, 118, far_v, 18, 1)
+    near_col = column(near_sold, near_std, [2, 6], 330, 1770, 215, near_v, 12, 2)
 
     def near_ground(p):
-        M.paving(p, -800, 1700, 3000, 500, a="sand", b="bone", border="terracotta", cell=150)
-    ngr = make_sprite(ctx, near_ground, (-800, 1700, 3000, 500), BG_TILE, "s2_nground")
+        M.paving(p, -800, 1600, 3000, 600, a="sand", b="bone", border="terracotta", cell=150)
+    ngr = make_sprite(ctx, near_ground, (-800, 1600, 3000, 600), BG_TILE, "s2_nground")
 
     def cam(t):
         e = ease_in_out(t / 5.0)
-        return dict(zoom=lerp(1.04, 1.08, e), ox=lerp(60, -120, e), oy=0)
+        # medium tracking shot: the camera drifts left far slower than the column marches,
+        # so the soldiers visibly walk across frame and into the gate
+        return dict(zoom=lerp(1.05, 1.08, e), ox=lerp(40, -110, e), oy=0)
 
     return Scene("s2_gate", 5.0, [
         Layer(0.05, [SpriteItem(sky)]),
@@ -269,6 +278,8 @@ def scene2(ctx):
     ], cam, fx=[
         fx.Glow((900, 300), 700, "sun_hot", 0.18, parallax=0.05),
         fx.Dust(150, seed=5, strength=0.4, drift=(-22, -5), region=(0, 0.45, 1, 1), parallax=0.9),
+        fx.Dust(90, seed=6, color="sand", strength=0.45, drift=(-60, -10), size=(1.5, 3.5),
+                region=(0, 0.84, 1, 0.95), parallax=1.0),
         fx.Haze(1340, 70, "ivory", 0.08, parallax=GP),
         fx.Grade(gain=(1.04, 1.0, 0.95), gamma=1.05, sat=1.06),
         fx.Vignette(0.4),

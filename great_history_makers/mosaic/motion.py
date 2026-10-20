@@ -18,22 +18,26 @@ def idle(t, seed=0.0, head=1.6, sway=0.45, arm=1.2, breath=3.0, wind=1.0):
     }
 
 
-def walk(t, period=1.1, seed=0.0, swing=17.0, bob=7.0, arm=5.0):
-    """Two-step walk cycle with knee bend and body bob (facing -x)."""
+def walk(t, period=1.1, seed=0.0, swing=21.0, bob=9.0, arm=9.0):
+    """Two-step walk cycle (facing -x): alternating thighs, knee bend during the swing
+    phase, body bob at double support, swinging spear arm with a counter-swaying spear,
+    shield bounce and a small head nod. All limbs move on their own pivots."""
     ph = 2 * math.pi * (t / period) + seed
-    s = math.sin(ph)
-    knee_f = 22 * max(0.0, -math.cos(ph))      # bend while the leg swings through
-    knee_b = 22 * max(0.0, math.cos(ph))
+    s, c = math.sin(ph), math.cos(ph)
     return {
         "thigh_f": (swing * s, 0, 0),
-        "shin_f": (-knee_f, 0, 0),
+        "shin_f": (-30 * max(0.0, c) ** 1.5, 0, 0),      # front leg swings forward when cos > 0
         "thigh_b": (-swing * s, 0, 0),
-        "shin_b": (-knee_b, 0, 0),
-        "body": (1.5 + 0.8 * math.sin(2 * ph), 0, -bob * abs(math.cos(ph))),
-        "head": (1.2 * math.sin(ph * 0.5 + seed), 0, 0),
-        "arm": (arm * -s * 0.4, 0, 0),
-        "spear": (0, 0, 0),
-        "_wind": 1.3,
+        "shin_b": (-30 * max(0.0, -c) ** 1.5, 0, 0),
+        "body": (2.0 + 1.0 * math.sin(2 * ph), 0, -bob * abs(c)),
+        "head": (2.2 * math.sin(2 * ph + 0.6), 0, 2.5 * math.sin(2 * ph)),
+        "arm": (-arm * s, 0, 0),
+        "hand": (3.0 * math.sin(ph + 0.4), 0, 0),
+        "spear": (arm * s * 0.75 + 1.8 * math.sin(2 * ph + 0.9), 0, 0),
+        "shield": (2.5 * math.sin(2 * ph + 1.2), 0, 4 * math.sin(2 * ph + 0.8)),
+        "banner": (0, 0, 0),
+        "_wind": 1.0,
+        "_phase": seed * 0.3,
     }
 
 

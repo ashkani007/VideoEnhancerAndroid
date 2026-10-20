@@ -31,6 +31,7 @@ def main():
     ap.add_argument("--no-burn-subs", action="store_true")
     ap.add_argument("--cpu-encode", action="store_true", help="skip NVENC probe")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--scene", type=int, default=None, help="render one scene (1-based) as a standalone clip")
     a = ap.parse_args()
 
     ep = os.path.abspath(a.episode)
@@ -47,15 +48,22 @@ def main():
 
     ctx = make_ctx(cfg, a.quality)
     tag = f"{name}_{a.quality}_{ctx.W}x{ctx.H}"
+    solo, trim = None, None
+    if a.scene is not None:
+        solo = a.scene - 1
+        sc = cfg["scenes"][solo]
+        a.frames = (int(round(sc["start"] * ctx.fps)), int(round((sc["start"] + sc["duration"]) * ctx.fps)))
+        trim = (sc["start"], sc["duration"])
+        tag = f"{name}_scene{a.scene}_{a.quality}_{ctx.W}x{ctx.H}"
     t0 = time.time()
     wav = os.path.join(out_dir, f"{name}_mix.wav")
     voice = audio.build_mix(ep, cfg, wav)
     print(f"[audio] mix written ({'with narration' if voice else 'NO narration file - music & SFX only'})")
     silent = os.path.join(out_dir, f"{tag}_video.mp4")
     enc = render.render_video(ep, silent, a.quality, a.workers, a.frames, not a.no_burn_subs,
-                              prefer_gpu=not a.cpu_encode)
+                              prefer_gpu=not a.cpu_encode, solo=solo)
     final = os.path.join(out_dir, f"{tag}.mp4")
-    render.mux(silent, wav, final, cfg.get("audio", {}).get("loudness_lufs", -15))
+    render.mux(silent, wav, final, cfg.get("audio", {}).get("loudness_lufs", -15), trim)
     os.remove(silent)
     text.write_srt(cfg.get("subtitles", []), os.path.join(out_dir, f"{name}.en.srt"))
     if a.frames is None:

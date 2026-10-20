@@ -89,17 +89,31 @@ def _with_shadow(img, radius, strength=0.8, offset=(0, 0)):
     return Image.alpha_composite(sh, img)
 
 
-def subtitle(ctx, text, start, end, y=1440, size=50):
+# Safe area for Reels / Shorts (design units, 1080x1920): keep clear of the top
+# ~13% (account bar), the bottom ~22% (caption/CTA UI) and the right-hand icon rail.
+SAFE = dict(top=250, bottom=1500, left=90, right=930)
+
+
+def subtitle(ctx, text, start, end, y=1300, size=64):
+    """Large, high-contrast caption on a soft dark plate, centred inside the safe area."""
     s = ctx.pxpd
     img, d = _canvas(ctx.W, ctx.H)
     font = _font("sub", int(size * s))
     lines = text.split("\n")
-    lh = size * 1.22 * s
+    lh = size * 1.24 * s
+    cx = (SAFE["left"] + SAFE["right"]) / 2 * s
+    y = min(max(y, SAFE["top"] + 60), SAFE["bottom"] - 60)
     y0 = y * s - lh * len(lines) / 2
+    widths = [d.textlength(ln, font=font) for ln in lines]
+    pw, ph = max(widths) + 44 * s, lh * len(lines) + 24 * s
+    plate = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(plate).rounded_rectangle([cx - pw / 2, y0 - 10 * s, cx + pw / 2, y0 - 10 * s + ph],
+                                            radius=int(18 * s), fill=(20, 14, 10, 150))
+    plate = plate.filter(ImageFilter.GaussianBlur(3 * s))
     for i, ln in enumerate(lines):
-        _draw_line(d, ctx.W / 2, y0 + i * lh, ln, font, _rgba("ivory"), stroke=max(1, int(3.2 * s)),
-                   stroke_fill=_rgba("black", 230))
-    return Overlay(_with_shadow(img, 7 * s, 0.75, (0, int(3 * s))), start, end, 0.18)
+        _draw_line(d, cx, y0 + i * lh, ln, font, (250, 244, 228, 255), stroke=max(1, int(3.6 * s)),
+                   stroke_fill=_rgba("black", 240))
+    return Overlay(Image.alpha_composite(plate, _with_shadow(img, 5 * s, 0.6, (0, int(2 * s)))), start, end, 0.15)
 
 
 def ornament(d, cx, y, half, s, col):
