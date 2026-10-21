@@ -102,13 +102,19 @@ def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitt
     Returns (premult_uint8, tiles_or_None).
     """
     params = dict(tile=round(tile, 3), seed=seed, grout=grout_frac, var=variation, rows=rows,
-                  jit=jitter, gc=str(grout_color), keep=keep_tiles, light=light, v=3)
+                  jit=jitter, gc=str(grout_color), keep=keep_tiles, light=light, v=4)
     path = None
     if cache:
         os.makedirs(CACHE_DIR, exist_ok=True)
         path = os.path.join(CACHE_DIR, _cache_key(rgba, params) + ".npz")
         if os.path.exists(path):
-            z = np.load(path)
+            try:
+                z = np.load(path)
+                z["premult"]
+            except Exception:
+                os.remove(path)
+                return tessellate(rgba, tile, seed, grout_frac, variation, rows, jitter, grout_color, keep_tiles,
+                                  cache, light)
             tiles = None
             if keep_tiles:
                 tiles = {k[2:]: z[k] for k in z.files if k.startswith("t_")}
@@ -205,7 +211,9 @@ def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitt
                      gmix=gmix.astype(np.float16), cx=cx.astype(np.float32), cy=cy.astype(np.float32))
     if path:
         extra = {"t_" + k: v for k, v in (tiles or {}).items()}
-        np.savez_compressed(path, premult=premult, **extra)
+        tmp = f"{path}.{os.getpid()}.tmp.npz"
+        np.savez_compressed(tmp, premult=premult, **extra)
+        os.replace(tmp, path)  # atomic: parallel workers never see a half-written file
     return premult, tiles
 
 

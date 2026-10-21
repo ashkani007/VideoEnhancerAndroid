@@ -108,8 +108,8 @@ class TileScatterItem:
     offset_fn(tiles, t) -> (dx, dy, visible) arrays per tile, in sprite pixels.
     Used for tiles assembling into an image or falling out of an aged mosaic."""
 
-    def __init__(self, sprite, offset_fn, below=None):
-        self.sprite, self.offset_fn = sprite, offset_fn
+    def __init__(self, sprite, offset_fn, below=None, opacity=1.0):
+        self.sprite, self.offset_fn, self.opacity = sprite, offset_fn, opacity
         tl = sprite.tiles
         ys, xs = np.nonzero(tl["labels"] >= 0)
         self.ys, self.xs = ys.astype(np.int32), xs.astype(np.int32)
@@ -125,7 +125,8 @@ class TileScatterItem:
         y = self.ys + np.rint(dy[self.tid]).astype(np.int32)
         ok = vis[self.tid] & (x >= 0) & (x < w) & (y >= 0) & (y < h)
         img[y[ok], x[ok]] = self.px[ok]
-        return [(img, self.sprite.pixel_to_unit(), 1.0)]
+        op = self.opacity(t) if callable(self.opacity) else self.opacity
+        return [(img, self.sprite.pixel_to_unit(), op)]
 
 
 class PartSpec:

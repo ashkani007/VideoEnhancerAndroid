@@ -1,0 +1,636 @@
+{
+ "series": "Great History Makers",
+ "episode": "1-v3",
+ "title": "Cyrus the Great",
+ "subtitle": "The Conquest of Babylon · 539 BCE",
+ "language": "en",
+ "fps": 30,
+ "duration": 56.3,
+ "scenes_module": "scenes.py",
+ "scenes": [
+  {
+   "id": "01_open",
+   "start": 0.0,
+   "duration": 2.25,
+   "beat": "Hero view: Babylon's glazed walls, Ishtar Gate and Etemenanki across the Euphrates at golden morning",
+   "cap_y": 1410
+  },
+  {
+   "id": "02_camp",
+   "start": 2.25,
+   "duration": 3.05,
+   "beat": "Cyrus in the Persian camp turns toward the distant city",
+   "cap_y": 1410
+  },
+  {
+   "id": "03_market",
+   "start": 5.3,
+   "duration": 2.95,
+   "beat": "Babylonian market street",
+   "cap_y": 1410
+  },
+  {
+   "id": "04_opis",
+   "start": 8.25,
+   "duration": 2.45,
+   "beat": "Battle of Opis: layered ranks, standards, cavalry, arrows, marching dust; close foreground rank",
+   "cap_y": 1410
+  },
+  {
+   "id": "05_advance",
+   "start": 10.7,
+   "duration": 2.9,
+   "beat": "The army climbs the road through irrigated fields toward Babylon",
+   "cap_y": 1410
+  },
+  {
+   "id": "06_citizens",
+   "start": 13.6,
+   "duration": 4.2,
+   "beat": "Babylonians on streets and rooftops react: pointing, talking, watching (foreground reveal)",
+   "cap_y": 1410
+  },
+  {
+   "id": "07_sources",
+   "start": 17.8,
+   "duration": 1.8,
+   "beat": "Two kinds of evidence: Babylonian chronicle tablet and Greek scroll",
+   "cap_y": 1410
+  },
+  {
+   "id": "08_entry",
+   "start": 19.6,
+   "duration": 2.1,
+   "beat": "Persian troops pass through the Ishtar Gate (tracking shot)",
+   "cap_y": 1410
+  },
+  {
+   "id": "09_hall",
+   "start": 21.7,
+   "duration": 2.6,
+   "beat": "Cyrus with Babylonian officials",
+   "cap_y": 1410
+  },
+  {
+   "id": "10_closeup",
+   "start": 24.3,
+   "duration": 1.98,
+   "beat": "Close-up: Cyrus turns his head and opens his hand",
+   "cap_y": 1410
+  },
+  {
+   "id": "11_marduk",
+   "start": 26.28,
+   "duration": 1.82,
+   "beat": "Esagila: Marduk's emblems, priests, incense, lamps",
+   "cap_y": 1410
+  },
+  {
+   "id": "12_cylinder",
+   "start": 28.1,
+   "duration": 3.35,
+   "beat": "The Cyrus Cylinder turning on its long axis",
+   "cap_y": 1410
+  },
+  {
+   "id": "13_restoration",
+   "start": 31.45,
+   "duration": 4.1,
+   "beat": "Artisans restore a sanctuary; families return",
+   "cap_y": 1410
+  },
+  {
+   "id": "14_foundation",
+   "start": 35.55,
+   "duration": 2.6,
+   "beat": "The clay cylinder is set into a brick foundation niche (reconstruction)",
+   "cap_y": 1410
+  },
+  {
+   "id": "15_scribe",
+   "start": 38.15,
+   "duration": 3.35,
+   "beat": "A scribe presses wedges into clay",
+   "cap_y": 1410
+  },
+  {
+   "id": "16_map",
+   "start": 41.5,
+   "duration": 3.95,
+   "beat": "Map: Babylonia joins the Persian realm (approx. c. 539 BCE)",
+   "cap_y": 1410
+  },
+  {
+   "id": "17_centuries",
+   "start": 45.45,
+   "duration": 7.2,
+   "beat": "Tesserae fall from an aged panel, then fly in to form a portrait roundel of Cyrus",
+   "cap_y": 1410
+  },
+  {
+   "id": "18_finale",
+   "start": 52.65,
+   "duration": 3.65,
+   "beat": "Cyrus in silhouette on a ridge with a crimson standard, Babylon under a deep sunset; title",
+   "cap_y": 1410
+  }
+ ],
+ "transitions": [
+  {
+   "at": 2.25,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 5.3,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 8.25,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 10.7,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 13.6,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 17.8,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 19.6,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 21.7,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 24.3,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 26.28,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 28.1,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 31.45,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 35.55,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 38.15,
+   "type": "dissolve",
+   "duration": 0.18
+  },
+  {
+   "at": 41.5,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 45.45,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 52.65,
+   "type": "dissolve",
+   "duration": 0.6
+  }
+ ],
+ "captions": {
+  "transcript": "audio/transcript.txt",
+  "words": "audio/words_aligned.json",
+  "groups": [
+   "In 539 BCE,",
+   "Cyrus the Great turned his attention / to Babylon,",
+   "one of the ancient world's / greatest cities.",
+   "After the Persian / victory at Opis,",
+   "Babylon came under / Persian control.",
+   "Ancient accounts describe / the city's capture",
+   "with little resistance, / though details differ.",
+   "Cyrus entered Babylon",
+   "and presented himself / as a legitimate king,",
+   "honoring local traditions / and the god Marduk.",
+   "The famous Cyrus Cylinder / records his royal claims",
+   "and his restoration / of religious sites",
+   "and displaced communities.",
+   "It is an extraordinary / artifact,",
+   "but not a modern declaration / of human rights.",
+   "Babylon became part / of a vast Persian Empire.",
+   "More than twenty-five / centuries later,",
+   "the story of Cyrus / still raises questions",
+   "about power, conquest,",
+   "and how rulers wish / to be remembered."
+  ],
+  "style": "outline",
+  "size": 62
+ },
+ "titles": [
+  {
+   "start": 0.1,
+   "end": 2.2,
+   "kind": "title",
+   "text": "BABYLON",
+   "sub": "539 BCE",
+   "y": 300,
+   "size": 100
+  },
+  {
+   "start": 17.95,
+   "end": 19.5,
+   "kind": "note",
+   "text": "Babylonian chronicle",
+   "x": 300,
+   "y": 600,
+   "size": 36
+  },
+  {
+   "start": 17.95,
+   "end": 19.5,
+   "kind": "note",
+   "text": "Greek historians",
+   "x": 790,
+   "y": 600,
+   "size": 36
+  },
+  {
+   "start": 21.8,
+   "end": 24.2,
+   "kind": "note",
+   "text": "Artistic reconstruction",
+   "y": 300,
+   "size": 36
+  },
+  {
+   "start": 28.3,
+   "end": 31.3,
+   "kind": "note",
+   "text": "Cyrus Cylinder · clay · after 539 BCE · British Museum",
+   "y": 520,
+   "size": 34
+  },
+  {
+   "start": 35.7,
+   "end": 38.0,
+   "kind": "note",
+   "text": "Foundation deposit · reconstruction",
+   "y": 300,
+   "size": 36
+  },
+  {
+   "start": 38.3,
+   "end": 41.3,
+   "kind": "note",
+   "text": "A royal inscription in the Mesopotamian tradition",
+   "y": 300,
+   "size": 36
+  },
+  {
+   "start": 41.6,
+   "end": 45.3,
+   "kind": "maplabel",
+   "text": "THE PERSIAN EMPIRE",
+   "y": 190,
+   "size": 60
+  },
+  {
+   "start": 41.8,
+   "end": 45.3,
+   "kind": "note",
+   "text": "Approximate extent, c. 539 BCE",
+   "y": 290,
+   "size": 36
+  },
+  {
+   "start": 54.85,
+   "end": 56.3,
+   "kind": "title",
+   "text": "CYRUS THE GREAT",
+   "sub": "GREAT HISTORY MAKERS",
+   "y": 300,
+   "size": 84
+  }
+ ],
+ "map_labels": {
+  "start": 42.4,
+  "end": 45.3
+ },
+ "audio": {
+  "narration_file": "audio/New tts node (2).mp3",
+  "narration_gain": 1.0,
+  "music": {
+   "root_hz": 146.83,
+   "mode": "hijaz",
+   "seed": 7,
+   "gain": 0.32,
+   "drum_from": 8.25,
+   "drum_to": 21.7,
+   "melody": [
+    [
+     0.6,
+     4,
+     2.0
+    ],
+    [
+     3.0,
+     3,
+     1.2
+    ],
+    [
+     4.4,
+     2,
+     1.4
+    ],
+    [
+     6.2,
+     1,
+     1.0
+    ],
+    [
+     7.4,
+     0,
+     2.6
+    ],
+    [
+     22.0,
+     4,
+     1.6
+    ],
+    [
+     24.0,
+     5,
+     1.2
+    ],
+    [
+     25.4,
+     4,
+     2.0
+    ],
+    [
+     28.4,
+     3,
+     1.4
+    ],
+    [
+     30.2,
+     2,
+     1.6
+    ],
+    [
+     32.4,
+     1,
+     1.2
+    ],
+    [
+     34.0,
+     0,
+     3.0
+    ],
+    [
+     42.0,
+     4,
+     1.6
+    ],
+    [
+     44.0,
+     3,
+     1.4
+    ],
+    [
+     46.0,
+     2,
+     1.8
+    ],
+    [
+     48.4,
+     1,
+     1.4
+    ],
+    [
+     50.2,
+     0,
+     2.0
+    ],
+    [
+     52.8,
+     4,
+     1.4
+    ],
+    [
+     54.4,
+     0,
+     1.9
+    ]
+   ]
+  },
+  "sfx": [
+   {
+    "type": "water",
+    "start": 0.0,
+    "end": 2.6,
+    "gain": 0.4
+   },
+   {
+    "type": "wind",
+    "start": 0.0,
+    "end": 2.6,
+    "gain": 0.2
+   },
+   {
+    "type": "fire",
+    "start": 2.25,
+    "end": 5.4,
+    "gain": 0.3
+   },
+   {
+    "type": "flutter",
+    "start": 2.25,
+    "end": 5.4,
+    "gain": 0.3
+   },
+   {
+    "type": "crowd",
+    "start": 5.2,
+    "end": 8.4,
+    "gain": 0.3
+   },
+   {
+    "type": "march",
+    "start": 8.2,
+    "end": 13.7,
+    "gain": 0.45,
+    "period": 1.1
+   },
+   {
+    "type": "hooves",
+    "start": 8.25,
+    "end": 10.75,
+    "gain": 0.3
+   },
+   {
+    "type": "flutter",
+    "start": 8.25,
+    "end": 13.6,
+    "gain": 0.2
+   },
+   {
+    "type": "crowd",
+    "start": 13.5,
+    "end": 17.9,
+    "gain": 0.35
+   },
+   {
+    "type": "wind",
+    "start": 13.5,
+    "end": 17.9,
+    "gain": 0.2
+   },
+   {
+    "type": "march",
+    "start": 19.5,
+    "end": 21.8,
+    "gain": 0.4,
+    "period": 1.1
+   },
+   {
+    "type": "crowd",
+    "start": 19.6,
+    "end": 24.4,
+    "gain": 0.25
+   },
+   {
+    "type": "fire",
+    "start": 26.2,
+    "end": 28.2,
+    "gain": 0.25
+   },
+   {
+    "type": "taps",
+    "start": 31.45,
+    "end": 35.6,
+    "gain": 0.3,
+    "period": 0.9,
+    "offset": 0.25
+   },
+   {
+    "type": "crowd",
+    "start": 31.4,
+    "end": 35.6,
+    "gain": 0.15
+   },
+   {
+    "type": "fire",
+    "start": 35.55,
+    "end": 38.2,
+    "gain": 0.2
+   },
+   {
+    "type": "stylus",
+    "start": 38.15,
+    "end": 41.5,
+    "gain": 0.25,
+    "period": 0.8
+   },
+   {
+    "type": "clink",
+    "start": 45.45,
+    "end": 48.0,
+    "gain": 0.3,
+    "count": 22
+   },
+   {
+    "type": "clink",
+    "start": 47.75,
+    "end": 50.5,
+    "gain": 0.22,
+    "count": 30
+   },
+   {
+    "type": "wind",
+    "start": 52.5,
+    "end": 56.3,
+    "gain": 0.3
+   },
+   {
+    "type": "flutter",
+    "start": 52.6,
+    "end": 56.3,
+    "gain": 0.25
+   },
+   {
+    "type": "whoosh",
+    "start": 7.85,
+    "gain": 0.2
+   },
+   {
+    "type": "whoosh",
+    "start": 19.2,
+    "gain": 0.2
+   },
+   {
+    "type": "whoosh",
+    "start": 41.1,
+    "gain": 0.2
+   },
+   {
+    "type": "whoosh",
+    "start": 45.05,
+    "gain": 0.2
+   },
+   {
+    "type": "chime",
+    "start": 54.85,
+    "gain": 0.28
+   }
+  ],
+  "loudness_lufs": -14
+ },
+ "qc_allow_motion": [
+  [
+   45.4,
+   51.2,
+   "tiles fall from the panel, then fly in to assemble the portrait"
+  ]
+ ]
+}

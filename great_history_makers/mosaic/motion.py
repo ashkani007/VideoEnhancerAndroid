@@ -18,7 +18,7 @@ def idle(t, seed=0.0, head=1.6, sway=0.45, arm=1.2, breath=3.0, wind=1.0):
     }
 
 
-def walk(t, period=1.1, seed=0.0, swing=21.0, bob=9.0, arm=9.0):
+def walk(t, period=1.1, seed=0.0, swing=21.0, bob=9.0, arm=9.0, lean=2.5):
     """Two-step walk cycle (facing -x): alternating thighs, knee bend during the swing
     phase, body bob at double support, swinging spear arm with a counter-swaying spear,
     shield bounce and a small head nod. All limbs move on their own pivots."""
@@ -29,7 +29,8 @@ def walk(t, period=1.1, seed=0.0, swing=21.0, bob=9.0, arm=9.0):
         "shin_f": (-30 * max(0.0, c) ** 1.5, 0, 0),      # front leg swings forward when cos > 0
         "thigh_b": (-swing * s, 0, 0),
         "shin_b": (-30 * max(0.0, -c) ** 1.5, 0, 0),
-        "body": (2.0 + 1.0 * math.sin(2 * ph), 0, -bob * abs(c)),
+        # weight transfer: forward lean, surge on each push-off, drop at double support
+        "body": (lean + 1.2 * math.sin(2 * ph), 4.0 * math.sin(2 * ph - 0.6), -bob * abs(c)),
         "head": (2.2 * math.sin(2 * ph + 0.6), 0, 2.5 * math.sin(2 * ph)),
         "arm": (-arm * s, 0, 0),
         "hand": (3.0 * math.sin(ph + 0.4), 0, 0),
@@ -108,4 +109,30 @@ def pray(t, t0=0.4, seed=0.0):
     """Mesopotamian gesture of greeting/prayer: one hand raised before the face."""
     p = idle(t, seed, head=1.0, arm=0.8)
     p["arm"] = (p["arm"][0] - 62 * smoothstep((t - t0) / 0.9), 0, 0)
+    return p
+
+
+def react(t, seed=0.0, kind="look"):
+    """Civilian reactions with individual timing (never synchronised):
+    look (head follows something passing), point (arm extends and holds),
+    chest (hand raised to the chest), talk (quick nods and small hand moves),
+    lift (child/partner lifted attention: body rises on toes)."""
+    p = idle(t, seed, head=1.4, sway=0.5, arm=1.0)
+    h = p["head"]
+    if kind == "look":
+        turn = 7 * math.sin(t * 0.55 + seed) + 3 * math.sin(t * 1.3 + seed * 2)
+        p["head"] = (h[0] + turn, 0, h[2])
+    elif kind == "point":
+        g = gesture(t, 0.4 + (seed % 1.0), 1.1 + (seed % 1.0), 3.0, 3.8, 1.0)
+        p["arm"] = (p["arm"][0] + 42 * g, 0, 0)
+        p["head"] = (h[0] - 4 * g, 0, h[2])
+    elif kind == "chest":
+        g = gesture(t, 0.8 + (seed % 0.7), 1.5 + (seed % 0.7), 3.4, 4.2, 1.0)
+        p["arm"] = (p["arm"][0] - 40 * g, 0, 0)
+    elif kind == "talk":
+        p["head"] = (h[0] + 3.5 * math.sin(t * 6.5 + seed) * (0.5 + 0.5 * math.sin(t * 1.1)), 0, h[2])
+        p["arm"] = (p["arm"][0] + 8 * math.sin(t * 3.1 + seed), 0, 0)
+    elif kind == "lift":
+        p["body"] = (p["body"][0], 0, -10 * max(0.0, math.sin(t * 1.7 + seed)))
+        p["head"] = (h[0] - 5, 0, h[2])
     return p

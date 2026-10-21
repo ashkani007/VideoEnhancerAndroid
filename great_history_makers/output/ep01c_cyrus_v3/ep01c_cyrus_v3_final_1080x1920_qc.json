@@ -1,0 +1,30 @@
+{
+  "file": "/home/user/VideoEnhancerAndroid/great_history_makers/output/ep01c_cyrus_v3/ep01c_cyrus_v3_final_1080x1920.mp4",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30.0,
+  "duration": 56.3,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "bitrate_kbps": 56377,
+  "mean_frame_diff": 1.348,
+  "max_frame_diff": 6.465,
+  "flicker_spikes_s": [],
+  "black_frames_s": [],
+  "loudness_lufs": -14.7,
+  "true_peak_dbfs": -1.2,
+  "checks": {
+    "resolution": true,
+    "codec_h264": true,
+    "pix_fmt_yuv420p": true,
+    "fps": true,
+    "duration": true,
+    "has_audio": true,
+    "no_flicker_spikes": true,
+    "no_black_frames": true
+  },
+  "passed": true,
+  "encoder": "libx264",
+  "narration": true,
+  "render_seconds": 1059
+}

@@ -179,3 +179,47 @@ class MosaicWipe:
         edge = (m > 0.02) & (m < 0.98) & self.grout
         out[edge] *= 0.55
         return out
+
+
+class CinematicGrade:
+    """V3 grade: local contrast, gentle S-curve, split toning (navy shadows / golden
+    highlights), vibrance + saturation. Endpoints are preserved, so it neither clips
+    highlights nor crushes shadows; a final soft-knee keeps highlight detail."""
+
+    def __init__(self, sat=1.18, vibrance=0.3, curve=0.22, local=0.35, local_sigma=40,
+                 warm=(1.07, 1.0, 0.88), cool=(0.9, 0.96, 1.1), exposure=1.0, fade=None):
+        self.sat, self.vib, self.curve, self.local, self.sigma = sat, vibrance, curve, local, local_sigma
+        self.warm = np.array(warm, np.float32)
+        self.cool = np.array(cool, np.float32)
+        self.exposure, self.fade = exposure, fade
+
+    def __call__(self, frame, t, ctx, cam):
+        np.clip(frame, 0, 1, out=frame)
+        if self.exposure != 1.0:
+            frame *= self.exposure
+        L = frame @ np.array([0.2126, 0.7152, 0.0722], np.float32)
+        if self.local:
+            blur = cv2.GaussianBlur(L, (0, 0), self.sigma * ctx.pxpd)
+            L2 = np.clip(L + self.local * (L - blur), 0, 1.2)
+            frame *= ((L2 + 1e-3) / (L + 1e-3))[..., None]
+            L = L2
+        if self.curve:
+            Lc = np.clip(L, 0, 1)
+            s = Lc * Lc * (3 - 2 * Lc)
+            Ln = Lc + self.curve * (s - Lc)
+            frame *= ((Ln + 1e-3) / (Lc + 1e-3))[..., None]
+            L = Ln
+        ws = ((1 - np.clip(L, 0, 1)) ** 2)[..., None]
+        wh = (np.clip(L, 0, 1) ** 2)[..., None]
+        frame *= 1 + ws * (self.cool - 1) + wh * (self.warm - 1)
+        mx, mn = frame.max(-1), frame.min(-1)
+        satn = np.clip((mx - mn) / (mx + 1e-3), 0, 1)
+        gain = self.sat + self.vib * (1 - satn)
+        Lf = (frame @ np.array([0.2126, 0.7152, 0.0722], np.float32))[..., None]
+        frame[:] = Lf + (frame - Lf) * gain[..., None]
+        # soft knee above 0.9 so bright gold and sun keep their detail
+        hi = frame > 0.9
+        frame[hi] = 0.9 + 0.1 * np.tanh((frame[hi] - 0.9) / 0.1)
+        np.clip(frame, 0, 1, out=frame)
+        if self.fade:
+            frame *= self.fade(t)

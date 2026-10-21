@@ -76,6 +76,8 @@ def render_video(ep_dir, out_path, quality="preview", workers=None, frames=None,
     workers = workers or max(1, min(os.cpu_count() or 2, 6) - 0)
     t0 = time.time()
     mpctx = mp.get_context("spawn")
+    # build once in the parent first: fails fast with a readable error and fills the tile cache
+    _init_inner(ep_dir, quality, burn, [solo] if solo is not None else None)
     with mpctx.Pool(workers, initializer=_init, initargs=(ep_dir, quality, burn, [solo] if solo is not None else None, solo)) as pool:
         for k, (i, buf) in enumerate(pool.imap(_frame, range(f0, f1), chunksize=2)):
             proc.stdin.write(buf)
