@@ -29,11 +29,12 @@ class Episode:
         self.cfg = load_config(ep_dir)
         mod = load_scenes_module(ep_dir, self.cfg)
         self.timeline = self.cfg["scenes"]
-        order = list(mod.SCENES)
+        order = list(getattr(mod, "SHOTS", None) or mod.SCENES)
+        with_dur = hasattr(mod, "SHOTS")
         self.scenes = []
         for i, entry in enumerate(self.timeline):
             if only_scenes is None or i in only_scenes:
-                self.scenes.append(order[i](ctx))
+                self.scenes.append(order[i](ctx, entry["duration"]) if with_dur else order[i](ctx))
             else:
                 self.scenes.append(None)
         self.transitions = []
@@ -44,10 +45,33 @@ class Episode:
                                   seed=int(tr["at"] * 10))
             self.transitions.append((tr, w))
         self.overlays = [text.from_spec(ctx, s) for s in self.cfg.get("titles", [])]
+        if hasattr(mod, "map_labels") and "map_labels" in self.cfg:
+            ml = self.cfg["map_labels"]
+            for name, x, y in mod.map_labels():
+                self.overlays.append(text.note(ctx, name, ml["start"], ml["end"], y, 30, x, kind="label"))
+        self.cues = self.subtitle_cues()
         if burn_subtitles:
-            self.overlays += [text.subtitle(ctx, c["text"], c["start"], c["end"], c.get("y", 1300))
-                              for c in self.cfg.get("subtitles", [])]
+            style = self.cfg.get("captions", {}).get("style", "plate")
+            size = self.cfg.get("captions", {}).get("size", 60)
+            for c in self.cues:
+                if style == "outline":
+                    self.overlays.append(text.caption(ctx, c["text"], c["start"], c["end"], c.get("y", 1300), size))
+                else:
+                    self.overlays.append(text.subtitle(ctx, c["text"], c["start"], c["end"], c.get("y", 1300)))
         self.duration = self.cfg["duration"]
+
+    def subtitle_cues(self):
+        """Cues from forced-alignment word timestamps when configured, else from episode.json."""
+        cc = self.cfg.get("captions")
+        if not cc:
+            return self.cfg.get("subtitles", [])
+        from . import captions
+        cues = captions.build_groups(cc["groups"], os.path.join(self.dir, cc["transcript"]),
+                                     os.path.join(self.dir, cc["words"]))
+        for c in cues:
+            shot = self.timeline[self._scene_index(c["start"] + 0.05)]
+            c["y"] = shot.get("cap_y", 1300)
+        return cues
 
     def _scene_index(self, t):
         for i, e in enumerate(self.timeline):
@@ -88,8 +112,8 @@ class Episode:
                 break
         if out is None:
             out = self._render_scene(self._scene_index(t), t)
-        if t < 0.4:
-            out *= smoothstep(t / 0.4)
+        if t < 0.2:
+            out *= smoothstep(t / 0.2)
         for ov in self.overlays:
             ov.apply(out, t)
         return (np.clip(out, 0, 1) * 255 + 0.5).astype(np.uint8)
@@ -100,5 +124,5 @@ def make_ctx(cfg, quality):
     if quality == "final":
         return Ctx(1080, 1920, fps, ss=1.25)
     if quality == "draft":
-        return Ctx(480, 854, fps, ss=1.25)
+        return Ctx(540, 960, fps, ss=1.25)
     return Ctx(720, 1280, fps, ss=1.25)

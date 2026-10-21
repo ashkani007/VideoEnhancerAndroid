@@ -1,0 +1,30 @@
+{
+  "file": "/home/user/VideoEnhancerAndroid/great_history_makers/output/ep01b_cyrus_babylon_short/ep01b_cyrus_babylon_short_preview_720x1280.mp4",
+  "width": 720,
+  "height": 1280,
+  "fps": 30.0,
+  "duration": 56.3,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "bitrate_kbps": 13594,
+  "mean_frame_diff": 1.015,
+  "max_frame_diff": 4.795,
+  "flicker_spikes_s": [],
+  "black_frames_s": [],
+  "loudness_lufs": -14.7,
+  "true_peak_dbfs": -1.3,
+  "checks": {
+    "resolution": true,
+    "codec_h264": true,
+    "pix_fmt_yuv420p": true,
+    "fps": true,
+    "duration": true,
+    "has_audio": true,
+    "no_flicker_spikes": true,
+    "no_black_frames": true
+  },
+  "passed": true,
+  "encoder": "libx264",
+  "narration": true,
+  "render_seconds": 191
+}

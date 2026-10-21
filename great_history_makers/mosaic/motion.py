@@ -58,3 +58,54 @@ def merge(*poses):
                 a = out[k]
                 out[k] = (a[0] + v[0], a[1] + v[1], a[2] + v[2])
     return out
+
+
+def gallop(t, period=0.62, seed=0.0, amp=26.0):
+    """Four-beat-ish gallop: diagonal leg pairs, body pitch and bob, nodding neck,
+    rider sways with the horse."""
+    ph = 2 * math.pi * (t / period) + seed
+    s = math.sin(ph)
+    return {
+        "leg_ff": (amp * s, 0, 0), "leg_hb": (amp * 0.9 * s, 0, 0),
+        "leg_fb": (-amp * math.sin(ph + 0.6), 0, 0), "leg_hf": (-amp * 0.9 * math.sin(ph + 0.6), 0, 0),
+        "body": (2.5 * math.sin(ph + 1.0), 0, -14 * abs(math.cos(ph))),
+        "neck": (6 * math.sin(ph + 0.4), 0, 0),
+        "rider": (-2.5 * math.sin(ph + 1.0), 0, 0),
+        "rhead": (2 * math.sin(2 * ph), 0, 0),
+        "rarm": (3 * math.sin(ph), 0, 0),
+        "_wind": 1.4,
+    }
+
+
+def amble(t, period=1.3, seed=0.0):
+    """Slow donkey/horse walk."""
+    p = gallop(t, period, seed, amp=14.0)
+    p["body"] = (0.8 * math.sin(2 * math.pi * t / period * 2 + seed), 0, -4 * abs(math.cos(2 * math.pi * t / period + seed)))
+    p["_wind"] = 0.6
+    return p
+
+
+def work(t, kind, period=1.1, seed=0.0):
+    """Small repeated labour actions on the 'arm' part: hammer strikes, placing bricks,
+    pressing a stylus into clay. Sharp downbeat, slow recovery."""
+    ph = ((t / period) + seed / 6.283) % 1.0
+    if kind == "hammer":
+        a = -55 * (1 - ph) ** 3 + 0 if ph < 0.35 else -55 * smoothstep((ph - 0.35) / 0.65)
+        a = 10 + a
+    elif kind == "brick":
+        a = -38 * math.sin(math.pi * ph) ** 2
+    elif kind == "stylus":
+        a = -6 * abs(math.sin(2 * math.pi * ph * 2))
+    else:
+        a = 4 * math.sin(2 * math.pi * ph)
+    base = idle(t, seed, head=1.6, sway=0.6, arm=0.0)
+    base["arm"] = (a, 0, 0)
+    base["head"] = (base["head"][0] + (4 if kind in ("hammer", "stylus") else 0), 0, base["head"][2])
+    return base
+
+
+def pray(t, t0=0.4, seed=0.0):
+    """Mesopotamian gesture of greeting/prayer: one hand raised before the face."""
+    p = idle(t, seed, head=1.0, arm=0.8)
+    p["arm"] = (p["arm"][0] - 62 * smoothstep((t - t0) / 0.9), 0, 0)
+    return p

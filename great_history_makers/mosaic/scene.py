@@ -102,6 +102,32 @@ class TileAnimItem:
         return [(img, self.sprite.pixel_to_unit(), 1.0)]
 
 
+class TileScatterItem:
+    """Moves individual tesserae as rigid units by forward-splatting their pixels.
+
+    offset_fn(tiles, t) -> (dx, dy, visible) arrays per tile, in sprite pixels.
+    Used for tiles assembling into an image or falling out of an aged mosaic."""
+
+    def __init__(self, sprite, offset_fn, below=None):
+        self.sprite, self.offset_fn = sprite, offset_fn
+        tl = sprite.tiles
+        ys, xs = np.nonzero(tl["labels"] >= 0)
+        self.ys, self.xs = ys.astype(np.int32), xs.astype(np.int32)
+        self.tid = tl["labels"][ys, xs]
+        self.px = sprite.premult[ys, xs]
+        self.below = below  # optional premult image drawn first (e.g. bare plaster)
+
+    def emit(self, t):
+        h, w = self.sprite.premult.shape[:2]
+        dx, dy, vis = self.offset_fn(self.sprite.tiles, t)
+        img = self.below.copy() if self.below is not None else np.zeros((h, w, 4), np.uint8)
+        x = self.xs + np.rint(dx[self.tid]).astype(np.int32)
+        y = self.ys + np.rint(dy[self.tid]).astype(np.int32)
+        ok = vis[self.tid] & (x >= 0) & (x < w) & (y >= 0) & (y < h)
+        img[y[ok], x[ok]] = self.px[ok]
+        return [(img, self.sprite.pixel_to_unit(), 1.0)]
+
+
 class PartSpec:
     def __init__(self, name, draw, pivot=(0, 0), parent=None, z=0, tile_mul=1.0, deform=None,
                  variation=0.07):

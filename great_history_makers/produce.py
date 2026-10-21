@@ -65,7 +65,12 @@ def main():
     final = os.path.join(out_dir, f"{tag}.mp4")
     render.mux(silent, wav, final, cfg.get("audio", {}).get("loudness_lufs", -15), trim)
     os.remove(silent)
-    text.write_srt(cfg.get("subtitles", []), os.path.join(out_dir, f"{name}.en.srt"))
+    cues = cfg.get("subtitles", [])
+    if cfg.get("captions"):
+        from mosaic import captions
+        cc = cfg["captions"]
+        cues = captions.build_groups(cc["groups"], os.path.join(ep, cc["transcript"]), os.path.join(ep, cc["words"]))
+    text.write_srt(cues, os.path.join(out_dir, f"{name}.en.srt"))
     if a.frames is None:
         rep = qc.run(final, cfg, os.path.join(out_dir, tag), ctx.W, ctx.H)
         rep.update(encoder=enc, narration=voice, render_seconds=round(time.time() - t0))

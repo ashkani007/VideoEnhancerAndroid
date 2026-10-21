@@ -408,3 +408,249 @@ def mini_person(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0):
     parts = [PartSpec("body", body, pivot=(0, 990), z=0),
              PartSpec("head", head, pivot=(0, 240), parent="body", z=1)]
     return Figure(ctx, f"mini{variant}", parts, k, tile, haze, haze_amt)
+
+
+# ======================================================================= V2 additions
+def _legs(shade, shade_far=None, shoe="umber", hip=575, knee=780):
+    """Thigh/shin part pairs for any walking figure (same proportions as the soldier)."""
+    def thigh(col):
+        def f(p):
+            p.smooth([(-32, hip - 15), (32, hip - 15), (28, knee + 10), (-24, knee + 10)], col, 4)
+        return f
+
+    def shin(col):
+        def f(p):
+            p.smooth([(-24, knee - 10), (26, knee - 10), (22, 960), (-20, 960)], col, 4)
+            p.poly([(-66, 990), (-56, 952), (24, 952), (26, 1000), (-66, 1000)], shoe)
+        return f
+    far = shade_far or mix_dark(shade)
+    return [PartSpec("thigh_b", thigh(far), pivot=(0, hip), parent="body", z=0),
+            PartSpec("shin_b", shin(far), pivot=(0, knee), parent="thigh_b", z=0),
+            PartSpec("thigh_f", thigh(shade), pivot=(0, hip), parent="body", z=1.5),
+            PartSpec("shin_f", shin(shade), pivot=(0, knee), parent="thigh_f", z=1.5)]
+
+
+def townsman(ctx, k, tile=6.0, variant=0, tool=None, haze=None, haze_amt=0.0):
+    """Babylonian man in a knee-length tunic with real legs (walks) and a working arm.
+
+    tool: None | 'hammer' | 'brick' | 'basket' (carried on the head) | 'stylus' (scribe
+    with a clay tablet) | 'bundle' (returning traveller)."""
+    looks = [("sand", "terracotta", "skin"), ("bone", "lapis", "skin_dk"), ("ochre", "umber", "skin"),
+             ("terracotta", "sand", "skin_dk"), ("olive", "bone", "skin")]
+    robe, acc, skin = looks[variant % len(looks)]
+    dk = {"sand": "sand_dk", "bone": "sand", "ochre": "ochre_dk", "terracotta": "terracotta_dk",
+          "olive": "green_dk"}[robe]
+
+    def body(p):
+        p.rect(-22, 150, 42, 110, skin)
+        p.smooth([(-44, 244), (-62, 330), (-56, 480), (-70, 790), (72, 790), (64, 480), (60, 300), (44, 244)],
+                 robe, 6)
+        p.poly([(-60, 340), (62, 290), (64, 330), (-58, 390)], acc)
+        p.rect(-60, 470, 122, 16, acc)
+        p.line([(-10, 500), (-30, 780)], dk, 5)
+        p.line([(30, 500), (40, 780)], dk, 5)
+        if tool == "bundle":
+            p.smooth([(30, 260), (130, 250), (150, 420), (40, 440)], "bone", 5)
+            p.line([(40, 300), (140, 300)], "umber", 6)
+
+    def arm(p):
+        # bare forearm: sleeve to the elbow, then skin, hand at (-92, 470)
+        p.smooth([(-26, 252), (24, 252), (22, 400), (-12, 410), (-18, 330)], robe, 5)
+        p.smooth([(-14, 380), (16, 392), (-70, 486), (-90, 462)], skin, 5)
+        p.ellipse(-94, 468, 18, 15, skin)
+        if tool == "hammer":
+            p.line([(-94, 468), (-150, 360)], "umber", 9)
+            p.rect(-178, 330, 56, 34, "stone_dk")
+        elif tool == "brick":
+            p.rect(-150, 430, 80, 40, "brick")
+            p.line([(-150, 450), (-70, 450)], "terracotta_dk", 3)
+        elif tool == "stylus":
+            p.line([(-96, 470), (-140, 420)], "bone", 6)
+
+    def tablet(p):
+        p.smooth([(-150, 400), (-60, 396), (-56, 520), (-150, 524)], "sand", 4)
+        for y in range(414, 512, 16):
+            for x in range(-142, -66, 12):
+                p.poly([(x, y), (x + 8, y + 3), (x, y + 6)], "sand_dk")
+
+    def head(p):
+        _hair_back(p, length=1.2)
+        _face(p, beard_len=0.6, skin=skin)
+        p.smooth([(-50, 72), (-34, 28), (12, 20), (42, 52), (44, 84)], "hair", 6)
+        p.rect(-52, 58, 96, 12, acc)
+        if tool == "basket":
+            p.ellipse(-4, 6, 92, 30, "ochre_dk")
+            p.ellipse(-4, -14, 84, 34, "ochre")
+            for x in range(-70, 70, 22):
+                p.line([(x, -40), (x + 6, 20)], "ochre_dk", 4)
+
+    parts = [PartSpec("body", body, pivot=(0, 600), z=2),
+             PartSpec("head", head, pivot=(0, 210), parent="body", z=3, tile_mul=0.65),
+             PartSpec("arm", arm, pivot=(-2, 262), parent="body", z=5)] + _legs(robe if robe != "bone" else "sand",
+                                                                                 shoe="umber")
+    for prt in parts:
+        if prt.name.startswith(("thigh", "shin")):
+            prt.draw = (lambda f, s=skin: (lambda p: _skin_leg(p, f, s)))(prt.draw)
+    if tool == "stylus":
+        parts.append(PartSpec("tablet", tablet, pivot=(-100, 460), parent="body", z=4, tile_mul=0.6))
+    return Figure(ctx, f"townsman{variant}{tool or ''}", parts, k, tile, haze, haze_amt)
+
+
+def _skin_leg(p, f, skin):
+    """Bare legs below the tunic: recolour by drawing the leg shape in skin tone."""
+    from ..painter import Painter  # noqa: F401 (documentation of intent)
+    f.__call__(_Recolor(p, skin))
+
+
+class _Recolor:
+    """Painter proxy that paints every primitive in one colour except 'umber' shoes."""
+
+    def __init__(self, p, col):
+        self.p, self.col = p, col
+
+    def __getattr__(self, name):
+        fn = getattr(self.p, name)
+
+        def wrap(*a, **kw):
+            a = list(a)
+            for i, v in enumerate(a):
+                if isinstance(v, str) and v != "umber":
+                    a[i] = self.col
+            return fn(*a, **kw)
+        return wrap
+
+
+def babylonian_guard(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0):
+    """Babylonian wall guard: conical helmet, scale-pattern tunic, round shield, spear."""
+    tun = ["terracotta", "sand", "ochre"][variant % 3]
+
+    def body(p):
+        p.rect(-22, 150, 44, 110, "skin")
+        p.smooth([(-46, 244), (-64, 330), (-58, 480), (-74, 820), (76, 820), (64, 480), (60, 300), (46, 244)], tun, 6)
+        for y in range(280, 800, 28):
+            for x in range(-52, 60, 26):
+                p.ellipse(x + (13 if (y // 28) % 2 else 0), y, 10, 7, mix_dark(tun) if tun != "sand" else "sand_dk")
+        p.rect(-60, 470, 124, 18, "umber")
+        p.circle(70, 470, 120, "umber")
+        p.circle(70, 470, 104, "lapis_dk" if variant % 2 else "brick")
+        p.circle(70, 470, 30, "gold")
+        p.rect(-22, 820, 22, 150, "skin")
+        p.ellipse(-30, 985, 28, 12, "umber")
+
+    def arm(p):
+        p.smooth([(-28, 252), (24, 252), (22, 420), (-10, 460), (-74, 482), (-78, 450), (-18, 412)], tun, 6)
+        p.ellipse(-88, 466, 18, 15, "skin")
+
+    def spear(p):
+        p.line([(-90, -180), (-90, 990)], "umber", 10)
+        p.poly([(-90, -250), (-102, -190), (-90, -170), (-78, -190)], "stone")
+
+    def head(p):
+        _hair_back(p, length=1.0)
+        _face(p, beard_len=0.8)
+        p.poly([(-54, 74), (-40, 20), (-6, -60), (30, 20), (46, 74)], "stone")
+        p.rect(-56, 62, 104, 14, "gold")
+
+    parts = [PartSpec("body", body, pivot=(0, 990), z=1),
+             PartSpec("head", head, pivot=(0, 210), parent="body", z=3, tile_mul=0.62),
+             PartSpec("arm", arm, pivot=(-2, 262), parent="body", z=5),
+             PartSpec("spear", spear, pivot=(-90, 466), parent="arm", z=4)]
+    return Figure(ctx, f"babguard{variant}", parts, k, tile, haze, haze_amt)
+
+
+def horse(ctx, k, tile=6.0, variant=0, rider=True, pack=False, haze=None, haze_amt=0.0):
+    """Horse (or pack donkey) in profile facing left, with four swinging legs, a neck
+    that nods, a swishing tail and an optional Persian rider with a spear."""
+    coat, mane = [("umber", "black"), ("sand_dk", "umber"), ("bone", "stone_dk"), ("brick", "black")][variant % 4]
+    if pack:
+        coat, mane = "stone", "stone_dk"
+
+    def leg(x, top, col):
+        def f(p):
+            p.smooth([(x - 26, top), (x + 26, top), (x + 16, 900), (x - 14, 900)], col, 4)
+            p.poly([(x - 20, 900), (x + 18, 900), (x + 22, 1000), (x - 26, 1000)], "black")
+        return f
+
+    def body(p):
+        p.smooth([(-300, 520), (-200, 470), (100, 470), (280, 500), (320, 580), (260, 660), (-220, 670), (-310, 610)],
+                 coat, 8)
+        if pack:
+            p.smooth([(-140, 420), (60, 420), (80, 600), (-160, 600)], "ochre", 5)
+            for x in range(-140, 70, 30):
+                p.line([(x, 430), (x + 6, 590)], "ochre_dk", 4)
+            p.line([(-150, 470), (70, 470)], "umber", 6)
+        elif rider:
+            p.poly([(-140, 470), (100, 470), (90, 540), (-130, 540)], "crimson")
+            p.poly([(-140, 530), (100, 530), (96, 548), (-136, 548)], "gold")
+
+    def neck(p):
+        if pack:  # donkey: shorter neck, long ears
+            p.smooth([(-250, 560), (-330, 440), (-420, 430), (-450, 480), (-360, 540), (-280, 620)], coat, 6)
+            p.poly([(-350, 440), (-340, 330), (-320, 440)], coat)
+            p.poly([(-330, 440), (-300, 336), (-300, 446)], coat)
+        else:
+            p.smooth([(-230, 560), (-320, 380), (-390, 300), (-470, 320), (-480, 370), (-400, 420), (-300, 620)],
+                     coat, 6)
+            p.smooth([(-300, 380), (-250, 470), (-210, 520), (-260, 420), (-330, 330)], mane, 4)
+            p.poly([(-380, 310), (-370, 260), (-350, 305)], coat)
+        p.circle(-420 if not pack else -400, 350 if not pack else 470, 8, "black")
+
+    def tail(p):
+        p.smooth([(290, 530), (360, 560), (390, 700), (360, 820), (330, 700), (300, 600)], mane, 6)
+
+    parts = [
+        PartSpec("leg_hb", leg(200, 600, mix_dark(coat) if coat in ("sand", "ochre", "lapis") else coat), pivot=(200, 620), parent="body", z=0),
+        PartSpec("leg_fb", leg(-200, 600, coat), pivot=(-200, 620), parent="body", z=0),
+        PartSpec("tail", tail, pivot=(295, 540), parent="body", z=0.5,
+                 deform=dict(amp=14, wl=300, speed=0.9, axis="y", anchor=0.0, power=1.2)),
+        PartSpec("body", body, pivot=(0, 600), z=1),
+        PartSpec("neck", neck, pivot=(-240, 560), parent="body", z=2),
+        PartSpec("leg_hf", leg(250, 610, coat), pivot=(250, 630), parent="body", z=3),
+        PartSpec("leg_ff", leg(-250, 610, coat), pivot=(-250, 630), parent="body", z=3),
+    ]
+    if rider and not pack:
+        def r_body(p):
+            p.smooth([(-50, 220), (50, 220), (60, 470), (-60, 470)], "terracotta" if variant % 2 else "lapis", 5)
+            p.smooth([(-40, 440), (40, 440), (30, 650), (-30, 650)], "ochre", 4)  # leg along the flank
+            p.poly([(-60, 640), (30, 640), (32, 670), (-70, 670)], "umber")
+
+        def r_head(p):
+            p.push()
+            p.translate(0, 30)
+            p.scale(0.8)
+            _hood_back(p, "sand")
+            _face(p, beard="umber", curls="hair_lt", beard_len=0.5, ear=False)
+            _hood(p, "sand", "umber")
+            p.pop()
+
+        def r_arm(p):
+            p.smooth([(-30, 240), (24, 240), (10, 360), (-90, 360), (-90, 330), (-10, 320)], "terracotta" if variant % 2 else "lapis", 5)
+            p.ellipse(-100, 345, 16, 14, "skin")
+            p.line([(-300, 250), (200, 420)], "umber", 9)
+            p.poly([(-300, 250), (-350, 228), (-296, 238)], "stone")
+        parts += [PartSpec("rider", r_body, pivot=(0, 470), parent="body", z=2.5),
+                  PartSpec("rhead", r_head, pivot=(0, 230), parent="rider", z=2.7, tile_mul=0.62),
+                  PartSpec("rarm", r_arm, pivot=(0, 250), parent="rider", z=2.8)]
+    return Figure(ctx, f"horse{variant}{'p' if pack else ''}{'r' if rider else ''}", parts, k, tile, haze, haze_amt)
+
+
+def banner_pole(ctx, k, tile=6.0, variant=0, haze=None, haze_amt=0.0):
+    """Free-standing camp standard: pole, golden eagle finial and a waving cloth."""
+    col = ["crimson", "lapis", "terracotta"][variant % 3]
+
+    def pole(p):
+        p.line([(0, 0), (0, 1000)], "umber", 12)
+        p.poly([(0, -60), (-90, -100), (-60, -30), (-12, -12), (12, -12), (60, -30), (90, -100)], "gold")
+        p.circle(0, -70, 18, "gold_lt")
+
+    def cloth(p):
+        p.poly([(4, 40), (300, 50), (320, 250), (4, 240)], col)
+        p.poly([(4, 40), (300, 50), (302, 74), (4, 64)], "gold")
+        p.circle(150, 150, 36, "gold")
+        for x in range(16, 320, 26):
+            p.line([(x, 240), (x + 2, 270)], "gold", 6)
+
+    parts = [PartSpec("pole", pole, pivot=(0, 1000), z=0),
+             PartSpec("banner", cloth, pivot=(0, 140), parent="pole", z=1,
+                      deform=dict(amp=24, wl=240, speed=0.8, axis="x", anchor=0.0, power=1.1))]
+    return Figure(ctx, f"bannerpole{variant}", parts, k, tile, haze, haze_amt)

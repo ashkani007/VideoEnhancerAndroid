@@ -56,14 +56,17 @@ def run(path, cfg, out_prefix, expect_w, expect_h):
     diffs = np.abs(np.diff(frames, axis=0)).mean(axis=(1, 2))
     trans = [tr["at"] for tr in cfg.get("transitions", [])]
     # intentional changes (transitions, opening fade-in, closing fade) are not flicker
+    allow = cfg.get("qc_allow_motion", [])
+
     def intentional(ts):
-        return any(abs(ts - t) <= 0.6 for t in trans) or ts < 0.5 or ts > cfg["duration"] - 0.7
+        return (any(abs(ts - t) <= 0.6 for t in trans) or ts < 0.5 or ts > cfg["duration"] - 0.7
+                or any(a <= ts <= b for a, b, *_ in allow))
     steady = [i for i in range(len(diffs)) if not intentional((i + 1) / fps)]
     sd = diffs[steady] if steady else diffs
     med = float(np.median(sd))
     spikes = [round((i + 1) / fps, 2) for i in steady if diffs[i] > max(6.0, med * 5)]
     means = frames.mean(axis=(1, 2))
-    black = [round(i / fps, 2) for i, m in enumerate(means) if m < 12 and i / fps > 0.5]
+    black = [round(i / fps, 2) for i, m in enumerate(means) if m < 12 and 0.5 < i / fps < cfg["duration"] - 0.5]
     lufs, peak = loudness(path) if a else (None, None)
     checks = {
         "resolution": (int(v["width"]), int(v["height"])) == (expect_w, expect_h),

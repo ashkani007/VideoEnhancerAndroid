@@ -136,6 +136,54 @@ def sfx(kind, spec, rng, D):
             out[a:b] = _bp(x, fc * 0.7, fc * 1.4)[a:b]
         out *= (np.sin(np.pi * tt) ** 2).astype(np.float32)
         return np.stack([out, out[::-1] * 0.6 + out * 0.4], 1) * 0.6, s
+    if kind == "fire":
+        n = int(L * SR)
+        x = np.stack([noise_bed(L, rng, 80, 700, 1.3, 0.5), noise_bed(L, rng, 80, 700, 1.7, 0.5, 1)], 1) * 0.5
+        for _ in range(int(L * 9)):  # crackles
+            c = int(rng.uniform(0, max(1, n - 800)))
+            m = int(rng.uniform(80, 500))
+            x[c:c + m] += (_bp(rng.normal(0, 1, m).astype(np.float32), 1500, 6000) * np.exp(-np.linspace(0, 6, m)))[:, None] * rng.uniform(0.3, 0.9)
+        return x * _env(n, 0.3, 0.4)[:, None], s
+    if kind == "flutter":
+        n = int(L * SR)
+        tt = np.arange(n) / SR
+        m = (0.5 + 0.5 * np.sin(2 * np.pi * 5.5 * tt) * np.sin(2 * np.pi * 0.7 * tt)) ** 2
+        x = _bp(rng.normal(0, 1, n).astype(np.float32), 300, 2400) * m.astype(np.float32) * 0.5
+        return np.stack([x, x[::-1]], 1) * _env(n, 0.4, 0.4)[:, None], s
+    if kind == "hooves":
+        n = int(L * SR)
+        x = np.zeros((n, 2), np.float32)
+        t = 0.0
+        while t < L:
+            for k in range(3):
+                _place(x, footstep(rng) * 0.8, t + k * 0.09 + rng.normal(0, 0.01), rng.uniform(0.3, 0.6), rng.uniform(-0.5, 0.5))
+            t += 0.6
+        return x * _env(n, 0.3, 0.4)[:, None], s
+    if kind in ("taps", "stylus"):
+        n = int(L * SR)
+        x = np.zeros((n, 2), np.float32)
+        per = spec.get("period", 0.9)
+        t = spec.get("offset", 0.0)
+        while t < L:
+            m = int((0.07 if kind == "taps" else 0.12) * SR)
+            tt = np.arange(m) / SR
+            if kind == "taps":
+                hit = (np.sin(2 * np.pi * 1900 * tt) * 0.5 + _bp(rng.normal(0, 1, m).astype(np.float32), 800, 5000)) * np.exp(-tt * 70)
+            else:
+                hit = _bp(rng.normal(0, 1, m).astype(np.float32), 2500, 9000) * np.sin(np.pi * tt / tt[-1]) * 0.6
+            _place(x, hit.astype(np.float32), t, 0.8, -0.2)
+            t += per
+        return x, s
+    if kind == "clink":
+        n = int(L * SR)
+        x = np.zeros((n, 2), np.float32)
+        for _ in range(spec.get("count", 20)):
+            m = int(0.25 * SR)
+            tt = np.arange(m) / SR
+            f = rng.uniform(2200, 4200)
+            hit = (np.sin(2 * np.pi * f * tt) + 0.5 * np.sin(2 * np.pi * f * 1.51 * tt)) * np.exp(-tt * rng.uniform(18, 30))
+            _place(x, hit.astype(np.float32), rng.uniform(0, L - 0.25), rng.uniform(0.2, 0.6), rng.uniform(-0.8, 0.8))
+        return x, s
     if kind == "chime":
         n = int(2.5 * SR)
         t = np.arange(n) / SR
@@ -163,10 +211,18 @@ def score(cfg, D):
         if t0 < D:
             f = f0 * 2 * 2 ** (mode[deg] / 12)
             _place(out, ney(f, dur, rng), t0, 0.16, 0.15)
-    # soft hand-drum pulse under scenes 2-3 (adds momentum without drama)
-    for t in np.arange(5.0, 15.0, 1.1):
+    # soft hand-drum pulse under the campaign section (momentum without drama)
+    for t in np.arange(m.get("drum_from", 5.0), m.get("drum_to", 15.0), 1.1):
         _place(out, frame_drum(rng, low=True), t, 0.09)
-    return out
+    return out * m.get("gain", 1.0) / 0.5 if "gain" in m else out
+
+
+def read_audio(path):
+    """Any format FFmpeg reads (mp3, wav, m4a) -> float32 stereo at SR. Content untouched."""
+    import subprocess
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"],
+                         capture_output=True, check=True).stdout
+    return np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
 
 
 def read_wav(path):
@@ -190,11 +246,18 @@ def write_wav(path, x):
         w.writeframes((x * 32767).astype(np.int16).tobytes())
 
 
+def _rms_db(x):
+    return 20 * np.log10(np.sqrt(np.mean(np.square(x))) + 1e-9)
+
+
 def build_mix(ep_dir, cfg, out_path):
+    """Stem-levelled mix. The narration is the reference and is never edited (no cuts,
+    no time-stretch, only one overall gain). Music and SFX are levelled relative to it:
+    the bed sits `bed_under_voice_db` below the voice while words are spoken and rises
+    to `bed_in_pauses_db` below it in pauses, with smooth 150 ms ramps."""
     D = cfg["duration"]
     acfg = cfg.get("audio", {})
     n = int(D * SR)
-    mix = np.zeros((n, 2), np.float32)
     music = score(acfg, D)[:n]
     rng = np.random.default_rng(99)
     fx_bus = np.zeros((n, 2), np.float32)
@@ -204,18 +267,28 @@ def build_mix(ep_dir, cfg, out_path):
         _place(fx_bus, x[:, 1], t0, spec.get("gain", 0.5), 0.3)
     narr_path = os.path.join(ep_dir, acfg.get("narration_file", "audio/narration.wav"))
     has_voice = os.path.exists(narr_path)
-    duck = np.ones(n, np.float32)
+    bed = music * acfg.get("music_level", 1.0) + fx_bus * acfg.get("sfx_level", 0.8)
+    mix = np.zeros((n, 2), np.float32)
     if has_voice:
-        v = read_wav(narr_path)[:n]
-        env = np.abs(v).mean(1)
-        env = _lp(env, 4.0, 1)
-        duck = (1 - 0.55 * np.clip(env / (env.max() + 1e-6) * 4, 0, 1)).astype(np.float32)
-        mix[: len(v)] += v * 1.0
-    mix += music * duck[:, None] * 0.9 + fx_bus * (0.75 if has_voice else 1.0)
-    fade = _env(n, 0.3, 0.8)
-    mix *= fade[:, None]
+        v = read_audio(narr_path)[:n]
+        voice = np.zeros((n, 2), np.float32)
+        voice[: len(v)] = v
+        env = np.abs(voice).mean(1)
+        speaking = _lp(env, 6.0, 1) > (0.08 * np.percentile(env, 99))
+        vref = _rms_db(voice[speaking])
+        bref = _rms_db(bed[np.any(bed != 0, axis=1)]) if np.any(bed) else -120
+        under = acfg.get("bed_under_voice_db", 20.0)
+        pause = acfg.get("bed_in_pauses_db", 11.0)
+        target = np.where(speaking, vref - under, vref - pause).astype(np.float32)
+        k = int(0.15 * SR)
+        target = np.convolve(target, np.ones(k, np.float32) / k, mode="same")
+        gain_db = target - bref
+        mix += voice + bed * (10 ** (gain_db / 20))[:, None]
+    else:
+        mix += bed
+    mix *= _env(n, 0.05, 0.6)[:, None]
     peak = np.abs(mix).max()
-    if peak > 0:
-        mix *= 0.89 / peak
+    if peak > 0.97:
+        mix *= 0.97 / peak
     write_wav(out_path, mix)
     return has_voice

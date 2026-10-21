@@ -40,8 +40,18 @@ _SOLO = None
 
 
 def _init(ep_dir, quality, burn, only, solo=None):
-    global _EP, _SOLO
+    global _SOLO
     _SOLO = solo
+    try:
+        _init_inner(ep_dir, quality, burn, only)
+    except Exception:
+        import traceback
+        traceback.print_exc()
+        os._exit(3)  # fail loudly instead of an endless pool respawn
+
+
+def _init_inner(ep_dir, quality, burn, only):
+    global _EP
     from .episode import Episode, load_config, make_ctx
     _EP = Episode(ep_dir, make_ctx(load_config(ep_dir), quality), burn_subtitles=burn, only_scenes=only)
 

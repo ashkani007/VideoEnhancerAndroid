@@ -116,6 +116,22 @@ def subtitle(ctx, text, start, end, y=1300, size=64):
     return Overlay(Image.alpha_composite(plate, _with_shadow(img, 5 * s, 0.6, (0, int(2 * s)))), start, end, 0.15)
 
 
+def caption(ctx, text, start, end, y=1300, size=60):
+    """Mobile caption without a box: ivory text, firm dark outline and a soft shadow."""
+    s = ctx.pxpd
+    img, d = _canvas(ctx.W, ctx.H)
+    font = _font("sub", int(size * s))
+    lines = text.split("\n")
+    lh = size * 1.22 * s
+    cx = (SAFE["left"] + SAFE["right"]) / 2 * s
+    y = min(max(y, SAFE["top"] + 80), SAFE["bottom"] - 60)
+    y0 = y * s - lh * len(lines) / 2
+    for i, ln in enumerate(lines):
+        _draw_line(d, cx, y0 + i * lh, ln, font, (250, 245, 232, 255), stroke=max(2, int(4.2 * s)),
+                   stroke_fill=(16, 11, 8, 245))
+    return Overlay(_with_shadow(img, 9 * s, 0.85, (0, int(3 * s))), start, end, 0.12)
+
+
 def ornament(d, cx, y, half, s, col):
     d.line([(cx - half * s, y), (cx - 18 * s, y)], fill=col, width=max(1, int(2.5 * s)))
     d.line([(cx + 18 * s, y), (cx + half * s, y)], fill=col, width=max(1, int(2.5 * s)))
@@ -138,12 +154,14 @@ def title(ctx, text, sub, start, end, y=250, size=84):
     return Overlay(_with_shadow(img, 10 * s, 0.85, (0, int(3 * s))), start, end, 0.45)
 
 
-def note(ctx, text, start, end, y=205, size=30):
+def note(ctx, text, start, end, y=205, size=30, x=None, kind="note"):
     s = ctx.pxpd
     img, d = _canvas(ctx.W, ctx.H)
-    f = _font("note", int(size * s))
-    _draw_line(d, ctx.W / 2, y * s, text, f, _rgba("ivory", 215), stroke=max(1, int(1.5 * s)),
-               stroke_fill=_rgba("black", 160))
+    f = _font("note" if kind == "note" else "title", int(size * s))
+    cx = (x if x is not None else 540) * s
+    _draw_line(d, cx, y * s, text, f, _rgba("ivory" if kind == "note" else "gold_lt", 225),
+               spacing=0 if kind == "note" else size * 0.12 * s, stroke=max(1, int(2.0 * s)),
+               stroke_fill=_rgba("black", 200))
     return Overlay(_with_shadow(img, 5 * s, 0.6), start, end, 0.4)
 
 
@@ -152,7 +170,10 @@ def from_spec(ctx, spec):
     if k in ("title", "endcard"):
         return title(ctx, spec["text"], spec.get("sub"), spec["start"], spec["end"], spec.get("y", 250),
                      spec.get("size", 84 if k == "title" else 70))
-    return note(ctx, spec["text"], spec["start"], spec["end"], spec.get("y", 205))
+    if k == "maplabel":
+        return note(ctx, spec["text"], spec["start"], spec["end"], spec.get("y", 205), spec.get("size", 40),
+                    spec.get("x"), kind="label")
+    return note(ctx, spec["text"], spec["start"], spec["end"], spec.get("y", 205), spec.get("size", 30), spec.get("x"))
 
 
 def write_srt(cues, path):
