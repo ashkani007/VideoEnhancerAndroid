@@ -136,3 +136,44 @@ def react(t, seed=0.0, kind="look"):
         p["body"] = (p["body"][0], 0, -10 * max(0.0, math.sin(t * 1.7 + seed)))
         p["head"] = (h[0] - 5, 0, h[2])
     return p
+
+
+LEG_LEN = 425.0      # hip (y=575) to sole (y=1000) in figure units
+STANCE = 0.6         # fraction of the cycle a foot is on the ground
+
+
+def planted_speed(k, period=1.1, swing=20.0):
+    """Ground speed (design units/s) at which a stance foot stays fixed for figure scale k."""
+    return k * 2 * LEG_LEN * math.sin(math.radians(swing)) / (STANCE * period)
+
+
+def walk_planted(t, period=1.1, seed=0.0, swing=20.0, arm=10.0, lean=3.0):
+    """Ground-locked walk (facing -x). Stance: the thigh sweeps LINEARLY from +swing to
+    -swing with a straight knee, so (with the body moving at planted_speed) the foot does
+    not slide. Swing: eased return with knee flexion. The hip drops by L(1-cos theta) of the
+    stance leg, which keeps the planted foot on the ground and produces a natural bob."""
+    u0 = (t / period + seed / (2 * math.pi)) % 1.0
+
+    def leg(u):
+        if u < STANCE:
+            th = swing - 2 * swing * (u / STANCE)
+            return th, 0.0, True
+        v = (u - STANCE) / (1 - STANCE)
+        e = v * v * (3 - 2 * v)
+        return -swing + 2 * swing * e, -45 * math.sin(math.pi * v), False
+    tf, kf, sf = leg(u0)
+    tb, kb, sb = leg((u0 + 0.5) % 1.0)
+    drops = [LEG_LEN * (1 - math.cos(math.radians(th))) for th, st in ((tf, sf), (tb, sb)) if st]
+    drop = max(drops) if drops else 0.0
+    ph = 2 * math.pi * u0
+    return {
+        "thigh_f": (tf, 0, 0), "shin_f": (kf, 0, 0),
+        "thigh_b": (tb, 0, 0), "shin_b": (kb, 0, 0),
+        "body": (lean + 0.8 * math.sin(2 * ph), 0, drop),
+        "head": (1.5 * math.sin(2 * ph + 0.6), 0, 2.0 * math.sin(2 * ph)),
+        "arm": (-arm * math.sin(ph), 0, 0),
+        "hand": (2.5 * math.sin(ph + 0.4), 0, 0),
+        "spear": (arm * 0.7 * math.sin(ph) + 1.5 * math.sin(2 * ph + 0.9), 0, 0),
+        "shield": (2.0 * math.sin(2 * ph + 1.2), 0, 3 * math.sin(2 * ph + 0.8)),
+        "_wind": 1.0, "_phase": seed * 0.3,
+    }

@@ -1,0 +1,127 @@
+{
+ "channel": "great_history_makers_en",
+ "updated": "2026-10-21",
+ "episodes": [
+  {
+   "id": "ep01",
+   "topic": "Cyrus the Great - The Conquest of Babylon (539 BCE)",
+   "versions": [
+    {
+     "v": "V1",
+     "dir": "episodes/ep01_cyrus_babylon",
+     "date": "2026-10-20",
+     "format": "720x1280 24fps 20s",
+     "shots": 4,
+     "decisions": [
+      "procedural vector art + contour-following tessellation",
+      "cut-out rigs",
+      "synth score/SFX",
+      "estimated subtitle timing"
+     ],
+     "outcome": "style approved; animation judged too much like moving stills"
+    },
+    {
+     "v": "V2 sample",
+     "dir": "episodes/ep01_cyrus_babylon (scene 2)",
+     "date": "2026-10-20",
+     "format": "720x1280 24fps 5s",
+     "decisions": [
+      "walk cycle fix",
+      "rigid-tile banners",
+      "boxed captions in sky"
+     ],
+     "outcome": "accepted as direction"
+    },
+    {
+     "v": "1b draft",
+     "dir": "episodes/ep01b_cyrus_babylon_short",
+     "date": "2026-10-21",
+     "format": "720x1280 30fps 56.3s",
+     "shots": 19,
+     "decisions": [
+      "client ElevenLabs narration (55.07s) unchanged",
+      "PocketSphinx forced alignment",
+      "voice-referenced mix"
+     ],
+     "outcome": "superseded by V3 (too pale, captions too high)"
+    },
+    {
+     "v": "V3",
+     "dir": "episodes/ep01c_cyrus_v3",
+     "date": "2026-10-21",
+     "format": "1080x1920 30fps 56.3s H.264 13Mbps",
+     "shots": 18,
+     "decisions": [
+      "V3 palette",
+      "CinematicGrade",
+      "weight-transfer walk",
+      "fixed captions y=1410"
+     ],
+     "metrics": {
+      "mean_saturation": 0.604,
+      "lufs": -14.7,
+      "narration_offset_ms": 0.0,
+      "near_duplicate_pairs": 0
+     },
+     "outcome": "delivered"
+    },
+    {
+     "v": "V4 branded",
+     "dir": "output/ep01d_cyrus_v4_branded",
+     "date": "2026-10-21",
+     "decisions": [
+      "original logo extracted",
+      "watermark 155px 60%",
+      "3s end signature"
+     ],
+     "outcome": "delivered; pending client review"
+    }
+   ],
+   "baseline_scores_V3V4": {
+    "depth": 4,
+    "mosaic": 8,
+    "animation": 6,
+    "cinematography": 6,
+    "color_light": 7,
+    "variety": 8,
+    "history": 8,
+    "sync": 9,
+    "subtitles": 8,
+    "engagement": 6
+   },
+   "open_issues": [
+    "client to confirm words 'king' and 'The famous'",
+    "V3 closing title duplicates 'GREAT HISTORY MAKERS' under the V4 end logo"
+   ]
+  }
+ ],
+ "experiments": [
+  {
+   "id": "ab_2p5d",
+   "date": "2026-10-21",
+   "shot": "Gate entry (V3 shot 8)",
+   "status": "awaiting client approval",
+   "files": "output/experiments/ab_2p5d/",
+   "scores": {
+    "A": {
+     "depth": 3,
+     "animation": 6,
+     "cinematography": 5,
+     "color_light": 7
+    },
+    "B": {
+     "depth": 7,
+     "animation": 7,
+     "cinematography": 7,
+     "color_light": 8
+    }
+   },
+   "notes": "B figures smaller/fewer than A; foreground sparse; cast shadows subtle at 720p"
+  }
+ ],
+ "next_episode_goals": [
+  "stronger depth and dimensionality (2.5D rules if approved)",
+  "believable grounded character movement",
+  "better lighting and camera motion"
+ ]
+}

@@ -3,7 +3,7 @@ import zlib
 
 import numpy as np
 
-from .compositor import composite, rigid_tile_wave, wave_deform
+from .compositor import composite, composite_rgba, composite_shadow, composite_shadow_group, rigid_tile_wave, wave_deform
 from .geom import S, T, about
 from .painter import Painter
 from .tessellate import MosaicSprite, render_tiles, tessellate, tint
@@ -26,7 +26,7 @@ def stable_seed(name):
 
 def make_sprite(ctx, draw, rect, tile, name, unit_scale=1.0, haze=None, haze_amt=0.0,
                 keep_tiles=False, rows=2, variation=0.07, pad=0.0, grout_frac=0.15, jitter=0.28,
-                outline=None, outline_w=2.4, key_color=None, clip=None):
+                outline=None, outline_w=2.4, key_color=None, clip=None, volume=None):
     """Paint `draw(painter)` in unit-space `rect`, crop and tessellate it.
 
     tile: tesserae size in design units. unit_scale: design units per drawing unit
@@ -73,7 +73,7 @@ def make_sprite(ctx, draw, rect, tile, name, unit_scale=1.0, haze=None, haze_amt
         arr = tint(arr, haze, haze_amt)
     pm, tiles = tessellate(arr, tile * ctx.ppu, seed=stable_seed(name), rows=rows,
                            variation=variation, keep_tiles=keep_tiles, grout_frac=grout_frac,
-                           jitter=jitter)
+                           jitter=jitter, volume=volume)
     return MosaicSprite(pm, x0 + cx0 / ppu, y0 + cy0 / ppu, ppu, tiles)
 
 
@@ -136,14 +136,32 @@ class PartSpec:
         self.z, self.tile_mul, self.deform, self.variation = z, tile_mul, deform, variation
 
 
+FIGURE_VOLUME = {"value": None}
+
+
+class volume_shading:
+    """with volume_shading(dict(light=(-0.6, -0.8))): figures built inside get 2.5D form shading."""
+
+    def __init__(self, vol):
+        self.vol = vol
+
+    def __enter__(self):
+        self.prev = FIGURE_VOLUME["value"]
+        FIGURE_VOLUME["value"] = self.vol
+
+    def __exit__(self, *a):
+        FIGURE_VOLUME["value"] = self.prev
+
+
 class Figure:
     """Cut-out puppet: every body part is its own tessellated sprite drawn in a shared
     figure coordinate system (height ~1000 units, feet at y=1000, facing -x)."""
 
     BOUNDS = (-650, -520, 1300, 1720)
 
-    def __init__(self, ctx, name, parts, k, tile, haze=None, haze_amt=0.0):
+    def __init__(self, ctx, name, parts, k, tile, haze=None, haze_amt=0.0, volume=None):
         self.name, self.k = name, k
+        volume = volume or FIGURE_VOLUME["value"]
         self.parts = sorted(parts, key=lambda p: p.z)
         self.by_name = {p.name: p for p in parts}
         self.sprites = {}
@@ -152,7 +170,7 @@ class Figure:
             self.sprites[p.name] = make_sprite(
                 ctx, p.draw, self.BOUNDS, tile * p.tile_mul, f"{name}:{p.name}", unit_scale=k,
                 haze=haze, haze_amt=haze_amt, variation=p.variation, pad=pad, outline="outline",
-                keep_tiles=bool(p.deform),
+                keep_tiles=bool(p.deform), volume=volume,
                 rows=2 if tile * p.tile_mul * ctx.ppu > 3 else 1)
 
     def emit_at(self, root, pose, t):
@@ -196,16 +214,48 @@ class FigureItem:
     """Places a Figure in a layer. pose_fn(t) -> {part: (deg, dx, dy)};
     motion_fn(t) -> (dx, dy) in layer units (walking, bobbing)."""
 
-    def __init__(self, figure, x, y, flip=False, pose_fn=None, motion_fn=None, scale=1.0):
+    def __init__(self, figure, x, y, flip=False, pose_fn=None, motion_fn=None, scale=1.0, shadow=None):
         self.figure, self.x, self.y, self.flip = figure, x, y, flip
         self.pose_fn, self.motion_fn, self.scale = pose_fn, motion_fn, scale
+        self.shadow = shadow  # dict(shx, sy, cast, contact, blur) -> grounded 2.5D shadows
 
     def emit(self, t):
         mx, my = self.motion_fn(t) if self.motion_fn else (0.0, 0.0)
         k = self.figure.k * self.scale
-        root = T(self.x + mx, self.y + my) @ S(-k if self.flip else k, k) @ T(0, -1000)  # (x, y) = feet
+        fx, fy = self.x + mx, self.y + my
+        root = T(fx, fy) @ S(-k if self.flip else k, k) @ T(0, -1000)  # (x, y) = feet on the ground
         pose = self.pose_fn(t) if self.pose_fn else {}
-        return self.figure.emit_at(root, pose, t)
+        parts = self.figure.emit_at(root, pose, t)
+        if not self.shadow:
+            return parts
+        sh = self.shadow
+        out = []
+        if sh.get("contact", 0.5):
+            spr = contact_sprite()
+            w = 210 * k * sh.get("width", 1.0)
+            out.append(([(spr, T(fx - w / 2, fy - w * 0.09) @ S(w / spr.shape[1], w * 0.18 / spr.shape[0]))],
+                        np.eye(3), sh.get("contact", 0.5), "shadowgroup", sh.get("contact_blur", 3.0) * k))
+        if sh.get("cast", 0.4):
+            shx, sy = sh.get("shx", 0.55), sh.get("sy", 0.22)
+            P = np.array([[1, -shx, shx * fy], [0, sy, (1 - sy) * fy], [0, 0, 1.0]])
+            out.append(([(img, P @ M) for img, M, _ in parts], np.eye(3), sh.get("cast", 0.4) * pose.get("_opacity", 1.0),
+                        "shadowgroup", sh.get("blur", 2.0)))
+        return out + parts
+
+
+_CONTACT = {}
+
+
+def contact_sprite():
+    """Soft elliptical contact shadow (premultiplied RGBA, alpha only matters)."""
+    if "s" not in _CONTACT:
+        h, w = 48, 128
+        yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+        a = np.exp(-(((xx - w / 2) / (w * 0.32)) ** 2 + ((yy - h / 2) / (h * 0.3)) ** 2) * 1.4)
+        img = np.zeros((h, w, 4), np.uint8)
+        img[..., 3] = (a * 255).astype(np.uint8)
+        _CONTACT["s"] = img
+    return _CONTACT["s"]
 
 
 class FnItem:
@@ -217,8 +267,18 @@ class FnItem:
 
 
 class Layer:
-    def __init__(self, parallax, items, name=""):
-        self.p, self.items, self.name = parallax, items, name
+    """blur: None, a number or fn(t) -> Gaussian sigma in design units (depth of field /
+    rack focus). A blurred layer is rendered to its own RGBA buffer first."""
+
+    def __init__(self, parallax, items, name="", blur=None):
+        self.p, self.items, self.name, self.blur = parallax, items, name, blur
+
+
+def layer_matrix(ctx, cam, p):
+    """Design-unit -> pixel matrix for a layer with parallax p (0 = infinitely far)."""
+    z, ox, oy = cam.get("zoom", 1.0), cam.get("ox", 0.0), cam.get("oy", 0.0)
+    zl = 1.0 + (z - 1.0) * p
+    return S(ctx.pxpd) @ about(DESIGN_W / 2, DESIGN_H / 2, S(zl)) @ T(-ox * p, -oy * p)
 
 
 class Scene:
@@ -236,12 +296,30 @@ class Scene:
         z, ox, oy = cam.get("zoom", 1.0), cam.get("ox", 0.0), cam.get("oy", 0.0)
         cx, cy = DESIGN_W / 2, DESIGN_H / 2
         for layer in self.layers:
-            zl = 1.0 + (z - 1.0) * layer.p
-            L = S(ctx.pxpd) @ about(cx, cy, S(zl)) @ T(-ox * layer.p, -oy * layer.p)
+            L = layer_matrix(ctx, cam, layer.p)
+            sig = layer.blur(t) if callable(layer.blur) else (layer.blur or 0.0)
+            target = frame
+            if sig * ctx.pxpd > 0.4:
+                target = np.zeros((ctx.H, ctx.W, 4), np.float32)
             for item in layer.items:
-                for img, M, op in item.emit(t):
-                    if op > 0.003:
+                for e in item.emit(t):
+                    img, M, op = e[0], e[1], e[2]
+                    if op <= 0.003:
+                        continue
+                    if len(e) > 3 and e[3] == "shadowgroup":
+                        composite_shadow_group(frame, [(im, L @ m) for im, m in img], op, e[4] * ctx.pxpd)
+                        continue
+                    if len(e) > 3 and e[3] == "shadow":
+                        composite_shadow(frame, img, L @ M, op, e[4] * ctx.pxpd if len(e) > 4 else 2.0)
+                    elif target is frame:
                         composite(frame, img, L @ M, op)
+                    else:
+                        composite_rgba(target, img, L @ M, op)
+            if target is not frame:
+                import cv2
+                bl = cv2.GaussianBlur(target, (0, 0), sig * ctx.pxpd)
+                frame *= 1 - bl[..., 3:4]
+                frame += bl[..., :3]
         for fx in self.fx:
             fx(frame, t, ctx, cam)
         return frame

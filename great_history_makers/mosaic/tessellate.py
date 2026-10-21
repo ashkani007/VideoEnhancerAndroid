@@ -96,13 +96,14 @@ def _cache_key(rgba, params):
 
 
 def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitter=0.28,
-               grout_color="grout", keep_tiles=False, cache=True, light=(-0.7, -0.7)):
+               grout_color="grout", keep_tiles=False, cache=True, light=(-0.7, -0.7), volume=None):
     """rgba: HxWx4 uint8 flat art. tile: tile size in *pixels*.
 
     Returns (premult_uint8, tiles_or_None).
     """
     params = dict(tile=round(tile, 3), seed=seed, grout=grout_frac, var=variation, rows=rows,
-                  jit=jitter, gc=str(grout_color), keep=keep_tiles, light=light, v=4)
+                  jit=jitter, gc=str(grout_color), keep=keep_tiles, light=light, v=4,
+                  vol=repr(sorted(volume.items())) if volume else None)
     path = None
     if cache:
         os.makedirs(CACHE_DIR, exist_ok=True)
@@ -114,7 +115,7 @@ def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitt
             except Exception:
                 os.remove(path)
                 return tessellate(rgba, tile, seed, grout_frac, variation, rows, jitter, grout_color, keep_tiles,
-                                  cache, light)
+                                  cache, light, volume)
             tiles = None
             if keep_tiles:
                 tiles = {k[2:]: z[k] for k in z.files if k.startswith("t_")}
@@ -167,6 +168,8 @@ def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitt
     odd = rng.random(ntiles) < 0.03
     lum[odd] *= rng.uniform(0.85, 1.12, (odd.sum(), 1))
     tcol = np.clip(base * (lum + chroma), 0, 255)
+    if volume:
+        tcol = np.clip(tcol * _volume_factor(alpha, edge, labels, ntiles, tid, xs, ys, area, volume), 0, 255)
 
     # --- grout between tiles ---
     g = max(1, int(round(grout_frac * tile)))
@@ -215,6 +218,42 @@ def tessellate(rgba, tile, seed=0, grout_frac=0.15, variation=0.07, rows=2, jitt
         np.savez_compressed(tmp, premult=premult, **extra)
         os.replace(tmp, path)  # atomic: parallel workers never see a half-written file
     return premult, tiles
+
+
+def _volume_factor(alpha, edge, labels, ntiles, tid, xs, ys, area, vol):
+    """2.5D form shading, mosaic-style: every tessera keeps ONE flat stone colour, but that
+    colour is chosen from a lit volume (a rounded 'inflated' height field of the part
+    silhouette), so gradations run across rows of tiles exactly as in opus vermiculatum.
+
+    vol: light=(lx, ly) screen direction the light comes FROM (e.g. (-0.6, -0.8) = upper
+    left), strength, ambient, warm/cool tints, crease (darkening along internal colour edges)."""
+    lx, ly = vol.get("light", (-0.6, -0.8))
+    a8 = alpha.astype(np.uint8)
+    d = cv2.distanceTransform(a8, cv2.DIST_L2, 5)
+    R = max(2.0, float(d.max()) * vol.get("roundness", 0.9))
+    u = np.clip(d / R, 0, 1)
+    h = np.sqrt(np.clip(1 - (1 - u) ** 2, 0, 1)) * R
+    h = cv2.GaussianBlur(h, (0, 0), max(1.0, R * 0.25))
+    gx = cv2.Sobel(h, cv2.CV_32F, 1, 0, ksize=3) / 8.0
+    gy = cv2.Sobel(h, cv2.CV_32F, 0, 1, ksize=3) / 8.0
+    nz = np.ones_like(gx)
+    nrm = np.sqrt(gx * gx + gy * gy + nz)
+    L = np.array([-lx, -ly, 0.9], np.float32)  # vector pointing toward the light
+    L = L / np.linalg.norm(L)
+    # image y grows downward; surface normal = (-dh/dx, -dh/dy, 1)
+    diff = np.clip((-gx * L[0] - gy * L[1] + nz * L[2]) / nrm, 0, 1)
+    amb = vol.get("ambient", 0.55)
+    s = vol.get("strength", 0.6)
+    shade = (amb + s * diff) / (amb + s * L[2])
+    if vol.get("crease", 0.12):
+        de = cv2.distanceTransform((~edge).astype(np.uint8), cv2.DIST_L2, 3)
+        shade *= 1 - vol.get("crease", 0.12) * np.exp(-de / max(1.0, R * 0.08))
+    ts = np.bincount(tid, weights=shade[ys, xs], minlength=ntiles) / area
+    warm = np.array(vol.get("warm", (1.05, 1.0, 0.93)), np.float32)
+    cool = np.array(vol.get("cool", (0.9, 0.95, 1.08)), np.float32)
+    k = np.clip((ts - 1.0) * 3, -1, 1)[:, None]
+    tint = np.where(k > 0, 1 + k * (warm - 1), 1 - k * (cool - 1))
+    return ts[:, None] * tint
 
 
 def render_tiles(tiles, colors):

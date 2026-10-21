@@ -25,6 +25,59 @@ def composite(frame, premult, M, opacity=1.0):
     roi += f[..., :3]
 
 
+def _warp_roi(premult, M, W, H):
+    h, w = premult.shape[:2]
+    corners = np.array([[0, 0, 1], [w, 0, 1], [0, h, 1], [w, h, 1]], float) @ M.T
+    x0 = max(0, int(np.floor(corners[:, 0].min())) - 1)
+    y0 = max(0, int(np.floor(corners[:, 1].min())) - 1)
+    x1 = min(W, int(np.ceil(corners[:, 0].max())) + 1)
+    y1 = min(H, int(np.ceil(corners[:, 1].max())) + 1)
+    if x1 <= x0 or y1 <= y0:
+        return None
+    A = M.copy()
+    A[0, 2] -= x0
+    A[1, 2] -= y0
+    out = cv2.warpAffine(premult, A[:2], (x1 - x0, y1 - y0), flags=cv2.INTER_LINEAR,
+                         borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+    return out, x0, y0, x1, y1
+
+
+def composite_rgba(buf, premult, M, opacity=1.0):
+    """Premultiplied over into an RGBA float buffer (used for layers that get blurred)."""
+    H, W = buf.shape[:2]
+    r = _warp_roi(premult, M, W, H)
+    if r is None:
+        return
+    warped, x0, y0, x1, y1 = r
+    f = warped.astype(np.float32) * (opacity / 255.0)
+    roi = buf[y0:y1, x0:x1]
+    roi *= 1.0 - f[..., 3:4]
+    roi += f
+
+
+def composite_shadow(frame, premult, M, opacity, blur_px=2.0, tint=(0.62, 0.66, 0.8), pad=12):
+    """Darken the frame by the (blurred) alpha of a sprite: cast/contact shadows.
+    tint is the colour light falls to inside the shadow (cool sky fill)."""
+    H, W = frame.shape[:2]
+    h, w = premult.shape[:2]
+    A = M.copy()
+    r = _warp_roi(premult[..., 3:4].repeat(4, axis=2) if premult.shape[2] == 4 else premult, A, W, H)
+    if r is None:
+        return
+    warped, x0, y0, x1, y1 = r
+    a = warped[..., 3].astype(np.float32) / 255.0 * opacity
+    if blur_px > 0.3:
+        x0p, y0p = max(0, x0 - pad), max(0, y0 - pad)
+        x1p, y1p = min(W, x1 + pad), min(H, y1 + pad)
+        big = np.zeros((y1p - y0p, x1p - x0p), np.float32)
+        big[y0 - y0p:y0 - y0p + a.shape[0], x0 - x0p:x0 - x0p + a.shape[1]] = a
+        a = cv2.GaussianBlur(big, (0, 0), blur_px)
+        x0, y0, x1, y1 = x0p, y0p, x1p, y1p
+    tint = np.array(tint, np.float32)
+    roi = frame[y0:y1, x0:x1]
+    roi *= 1 - a[..., None] * (1 - tint)
+
+
 def wave_deform(premult, t, amp, wavelength, speed=1.0, axis="y", phase=0.0, power=1.4,
                 anchor=0.0, secondary=0.35):
     """Gentle cloth motion. axis='y': cloth hangs downward from anchor row (fraction of
@@ -89,3 +142,30 @@ def rigid_tile_wave(premult, tiles, t, amp, wavelength, speed=1.0, axis="y", pha
     gap = ok & (lab[sy, sx] != L)
     out[gap] = (62, 54, 46, 255)
     return out
+
+
+def composite_shadow_group(frame, parts, opacity, blur_px=2.0, tint=(0.6, 0.65, 0.8)):
+    """One cast shadow for a whole figure: part alphas are max-combined first, so
+    overlapping limbs do not double-darken; then blurred and applied once."""
+    H, W = frame.shape[:2]
+    boxes, warped = [], []
+    for img, M in parts:
+        r = _warp_roi(img, M, W, H)
+        if r is not None:
+            warped.append(r)
+    if not warped:
+        return
+    pad = int(blur_px * 3) + 2
+    x0 = max(0, min(r[1] for r in warped) - pad)
+    y0 = max(0, min(r[2] for r in warped) - pad)
+    x1 = min(W, max(r[3] for r in warped) + pad)
+    y1 = min(H, max(r[4] for r in warped) + pad)
+    acc = np.zeros((y1 - y0, x1 - x0), np.float32)
+    for w_, a0, b0, a1, b1 in warped:
+        sub = acc[b0 - y0:b1 - y0, a0 - x0:a1 - x0]
+        np.maximum(sub, w_[..., 3].astype(np.float32) / 255.0, out=sub)
+    if blur_px > 0.3:
+        acc = cv2.GaussianBlur(acc, (0, 0), blur_px)
+    acc *= opacity
+    roi = frame[y0:y1, x0:x1]
+    roi *= 1 - acc[..., None] * (1 - np.array(tint, np.float32))
