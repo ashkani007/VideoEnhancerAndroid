@@ -43,7 +43,8 @@ py produce.py episodes/<id> --quality final --workers 3
 py produce.py episodes/<id> --still 12.5
 py tools/brand.py master.mp4 audio_src.mp4 out.mp4 endcard.png
 py tools/shot_sheet.py episodes/<id> video.mp4 sheet.png
-py experiments/ab_2p5d/render_ab.py                 # style A/B
+py experiments/ab_2p5d/render_ab.py                 # style A/B (A vs B)
+py experiments/ab_2p5d/render_c.py                  # Version C + B/C comparison + metrics
 ```
 
 ## Environment gotchas (verified)

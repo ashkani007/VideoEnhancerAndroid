@@ -1,6 +1,6 @@
 {
  "channel": "great_history_makers_en",
- "updated": "2026-10-21",
+ "updated": "2026-10-22",
  "episodes": [
   {
    "id": "ep01",
@@ -117,6 +117,101 @@
     }
    },
    "notes": "B figures smaller/fewer than A; foreground sparse; cast shadows subtle at 720p"
+  },
+  {
+   "id": "ab_2p5d_C",
+   "date": "2026-10-22",
+   "shot": "Gate entry, lateral tracking",
+   "status": "awaiting client review",
+   "files": "output/experiments/ab_2p5d/AB_C_*",
+   "code": "experiments/ab_2p5d/scene_c.py, mosaic/rig3d.py",
+   "params": {
+    "rig": "soldier_v3 15 parts",
+    "sculpt": {
+     "light": [
+      -0.6,
+      -0.8
+     ],
+     "strength": 1.2,
+     "ambient": 0.3,
+     "bands": 5
+    },
+    "gait": {
+     "period": [
+      1.02,
+      1.18
+     ],
+     "stride": [
+      400,
+      450
+     ],
+     "lift": [
+      26,
+      36
+     ],
+     "arm": [
+      10,
+      16
+     ],
+     "lean": [
+      2.5,
+      4.5
+     ],
+     "stance": 0.6
+    },
+    "k_ref": 0.17,
+    "ranks_q": [
+     1.76,
+     2.48
+    ],
+    "camera": "truck ox 150->-150, zoom 1.0",
+    "grade": {
+     "sat": 1.27,
+     "exposure": 1.06
+    }
+   },
+   "metrics": {
+    "parallax_px_per_frame": {
+     "sky": 0.048,
+     "gate": 0.265,
+     "near_ground": 1.416
+    },
+    "saturation": {
+     "B": 0.629,
+     "C": 0.595
+    },
+    "luma": {
+     "B": 89.0,
+     "C": 89.9
+    },
+    "frozen_frames": 0,
+    "stance_ankle_drift_units": 0.0
+   },
+   "scores": {
+    "B": {
+     "depth": 7,
+     "animation": 7,
+     "volume": 4,
+     "cinematography": 7,
+     "color_light": 8,
+     "mosaic": 8,
+     "engagement": 6
+    },
+    "C": {
+     "depth": 8,
+     "animation": 8,
+     "volume": 7,
+     "cinematography": 7,
+     "color_light": 7,
+     "mosaic": 8,
+     "engagement": 7
+    }
+   },
+   "regressions": [
+    "saturation -5% vs B",
+    "pillar hides right gate tower first 1.5 s",
+    "rack focus dropped"
+   ]
   }
  ],
  "next_episode_goals": [

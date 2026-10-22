@@ -33,3 +33,15 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 ## Process
 - Render a single shot (`--scene N` or `--still`) before a full render. Inspect crops at 1:1, not just thumbnails.
 - Build the episode once in the parent before forking workers. Write cache files atomically.
+
+## 2026-10-22: experiment C (volume, IK gait, tracking)
+- **Banded sculpting beats continuous per-tile shading for volume.** Quantising each part's lit volume into 5 bands
+  *before* tessellation makes tile rows follow the form. It reads as sculpted mosaic at 1:1, while continuous shading (B) was subtle.
+- **Self-shadows (offset, blurred silhouettes of front parts) are the cheapest way to get joint occlusion** and
+  limb-over-body depth. Parameters: offset (7, 9)·k units, blur 3·k, strength 0.45.
+- **Foot planting needs two conditions:** (a) body speed = stride/period × scale with a linear stance sweep,
+  verified numerically at 0.00 drift; and (b) each rank placed at the exact centre of a ground depth slice,
+  otherwise the camera truck makes feet slip against the paving.
+- **Stride and lift must be scaled to leg length:** stride 500 / lift 70 read as goose-stepping; 400–450 / 26–36 read naturally.
+- **Measuring parallax by phase correlation per region** gives objective depth evidence (B −0.39 vs C 1.42 px/frame on the near ground).
+- **Cool shadow tints lower measured saturation** (−5 %), even when exposure is matched; check the saturation of every new shadow layer.

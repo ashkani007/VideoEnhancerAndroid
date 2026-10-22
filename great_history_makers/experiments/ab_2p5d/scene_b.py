@@ -31,6 +31,9 @@ SHADOW = dict(cast=0.42, contact=0.55, shx=0.6, sy=0.24, blur=2.0)
 GATE_HALF, OPEN_HALF, GATE_H, OPEN_H, TOWER_H, Q_T = 300, 115, 620, 430, 720, 1.1
 
 
+GROUND_BANDS = ((1300, 1420), (1420, 1560), (1560, 1740), (1740, 2050))  # depth slices (screen y)
+
+
 def P(X, Y, q):
     return G.at_height(X, Y, q)
 
@@ -166,7 +169,7 @@ def build(ctx, dur=5.0):
         p.poly([G.project(-300, 1.12), G.project(-300, 3.2), G.project(-30, 3.0), G.project(-90, 1.12)],
                mix("sand", "blue_deep", 0.3))
     bands = []
-    for y0, y1 in ((1300, 1420), (1420, 1560), (1560, 1740), (1740, 2050)):
+    for y0, y1 in GROUND_BANDS:
         # slices overlap by 30 units so differential parallax never opens a seam
         spr = make_sprite(ctx, ground, (-600, 1300, 2300, 760), BG, f"ab_ground{y0}b",
                           clip=(-600, y0 - 30 if y0 > 1300 else y0, 1700, y1))

@@ -69,6 +69,10 @@ def make_sprite(ctx, draw, rect, tile, name, unit_scale=1.0, haze=None, haze_amt
         ring = (cv2.dilate(a8, k) > 0) & (a8 == 0)
         arr = arr.copy()
         arr[ring] = P[outline] + (255,)
+    if volume and volume.get("mode") == "bands":
+        from .rig3d import sculpt_bands
+        arr = sculpt_bands(arr, volume)
+        volume = None
     if haze:
         arr = tint(arr, haze, haze_amt)
     pm, tiles = tessellate(arr, tile * ctx.ppu, seed=stable_seed(name), rows=rows,
@@ -305,6 +309,9 @@ class Scene:
                 for e in item.emit(t):
                     img, M, op = e[0], e[1], e[2]
                     if op <= 0.003:
+                        continue
+                    if len(e) > 3 and e[3] == "draw":
+                        e[0](frame, ctx, cam)
                         continue
                     if len(e) > 3 and e[3] == "shadowgroup":
                         composite_shadow_group(frame, [(im, L @ m) for im, m in img], op, e[4] * ctx.pxpd)

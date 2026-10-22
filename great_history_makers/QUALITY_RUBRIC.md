@@ -41,3 +41,14 @@ defects · **9** = professional; would hold up next to strong channels in the ni
 | Colour and lighting | 7 | **8** | B: one sun, warm and cool faces, ambient occlusion |
 | Mosaic consistency | 8 | 8 | Tiles intact in both; B adds shade gradations across tiles |
 | Engagement potential | 6 | 6 | B is more cinematic, but its figures are smaller and fewer than A's crowded column; foreground still sparse |
+
+## Experiment score: B vs C (2026-10-22). See output/experiments/ab_2p5d/AB_C_Improvement_Report.md
+| Category | B | C | Evidence |
+|---|---|---|---|
+| Visual depth | 7 | 8 | Parallax sky/gate/near = 0.05/0.27/1.42 px/frame (B: −0.01/−0.08/−0.39) |
+| Character animation | 7 | 8 | IK heel-to-toe gait; stance ankle drift 0.00; per-soldier variation |
+| Character volume | 4 | 7 | 5-band sculpting, self-shadows, shield rim |
+| Cinematography | 7 | 7 | Tracking shot + occluder, but the pillar hides the gate early; no rack focus |
+| Colour and lighting | 8 | 7 | Saturation 0.629 → 0.595; luma equal |
+| Mosaic consistency | 8 | 8 | Tiles intact |
+| Engagement potential | 6 | 7 | Three ranks plus a crowd, constant motion |

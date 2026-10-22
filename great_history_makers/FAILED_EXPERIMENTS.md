@@ -18,3 +18,6 @@
 | 10-21 | 2.5D | Lions drawn on a receding wall by squashing x | Read as yellow smears | Foreshortened rosettes and simplified frieze bodies |
 | 10-21 | 2.5D | Volume shading strength 0.75 | Too subtle at phone size | 1.25 / ambient 0.28 |
 | 10-21 | 2.5D | Ground sliced by depth with no overlap | Black seams under parallax | 30-unit overlap |
+| 10-22 | 2.5D C | Gait stride 500 / foot lift 70 | Exaggerated, goose-step look | Stride 400–450, lift 26–36 |
+| 10-22 | 2.5D C | Shadow tint (0.58, 0.64, 0.82) on many figures | Scene saturation −5 % vs B | Compensating grade; next: warmer tint |
+| 10-22 | 2.5D C | Foreground pillar starting near centre | Covered the gate (the subject) | Start at right third; still too early |

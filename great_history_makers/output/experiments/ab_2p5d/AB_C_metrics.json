@@ -1,0 +1,28 @@
+{
+ "B": {
+  "region_dx_px_per_frame": {
+   "sky (far)": -0.01,
+   "gate (mid-far)": -0.076,
+   "near ground (near)": -0.389,
+   "fg pillar zone (right)": -0.044
+  },
+  "frame_diff_mean": 9.823,
+  "frame_diff_min": 3.426,
+  "frame_diff_max": 12.92,
+  "frozen_frames": 0,
+  "mean_saturation": 0.629
+ },
+ "C": {
+  "region_dx_px_per_frame": {
+   "sky (far)": 0.048,
+   "gate (mid-far)": 0.265,
+   "near ground (near)": 1.416,
+   "fg pillar zone (right)": 0.352
+  },
+  "frame_diff_mean": 15.241,
+  "frame_diff_min": 4.019,
+  "frame_diff_max": 19.756,
+  "frozen_frames": 0,
+  "mean_saturation": 0.595
+ }
+}
