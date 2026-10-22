@@ -1,0 +1,70 @@
+{
+ "walkers": [
+  {
+   "name": "R1 (from right)",
+   "heading_first_visible_deg": 82.8,
+   "heading_last_visible_deg": -0.0,
+   "max_body_vs_travel_error_deg": 0.82,
+   "head_lead_range_deg": [
+    -20.5,
+    2.1
+   ],
+   "max_planted_ankle_drift_world_units_per_frame": 0.0,
+   "passes_gate_plane_at_s": 5.2,
+   "fully_in_passage_darkness_at_s": 6.53
+  },
+  {
+   "name": "L1 (from left)",
+   "heading_first_visible_deg": -87.5,
+   "heading_last_visible_deg": -0.0,
+   "max_body_vs_travel_error_deg": 1.2,
+   "head_lead_range_deg": [
+    -1.1,
+    25.1
+   ],
+   "max_planted_ankle_drift_world_units_per_frame": 0.0,
+   "passes_gate_plane_at_s": 4.73,
+   "fully_in_passage_darkness_at_s": 6.1
+  },
+  {
+   "name": "R2 (from right)",
+   "heading_first_visible_deg": 89.6,
+   "heading_last_visible_deg": -0.0,
+   "max_body_vs_travel_error_deg": 0.83,
+   "head_lead_range_deg": [
+    -20.5,
+    2.1
+   ],
+   "max_planted_ankle_drift_world_units_per_frame": 0.0,
+   "passes_gate_plane_at_s": 7.77,
+   "fully_in_passage_darkness_at_s": null
+  },
+  {
+   "name": "L2 (from left)",
+   "heading_first_visible_deg": -90.0,
+   "heading_last_visible_deg": -0.0,
+   "max_body_vs_travel_error_deg": 2.16,
+   "head_lead_range_deg": [
+    -1.1,
+    25.6
+   ],
+   "max_planted_ankle_drift_world_units_per_frame": 0.0,
+   "passes_gate_plane_at_s": 7.8,
+   "fully_in_passage_darkness_at_s": null
+  }
+ ],
+ "C": {
+  "frame_diff_min": 3.887,
+  "frame_diff_max": 16.031,
+  "frozen_frames": 0,
+  "saturation": 0.595,
+  "luma": 90.0
+ },
+ "D": {
+  "frame_diff_min": 0.19,
+  "frame_diff_max": 5.769,
+  "frozen_frames": 0,
+  "saturation": 0.582,
+  "luma": 94.4
+ }
+}

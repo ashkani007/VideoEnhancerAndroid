@@ -21,3 +21,5 @@
 | 10-22 | 2.5D C | Gait stride 500 / foot lift 70 | Exaggerated, goose-step look | Stride 400–450, lift 26–36 |
 | 10-22 | 2.5D C | Shadow tint (0.58, 0.64, 0.82) on many figures | Scene saturation −5 % vs B | Compensating grade; next: warmer tint |
 | 10-22 | 2.5D C | Foreground pillar starting near centre | Covered the gate (the subject) | Start at right third; still too early |
+| 10-22 | 2.5D C | Fixed-profile soldiers translated along a route curving into the gate | Bodies did not turn; slid into depth (client rejected) | `turnrig`: path-tangent yaw, 9-view turnaround, 3D joints, world-planted feet |
+| 10-22 | 2.5D D | Metric: heading at s < 0 | atan2(0,0) gave 0° for walkers not yet on the path | Measure only on visible frames |

@@ -45,3 +45,23 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 - **Stride and lift must be scaled to leg length:** stride 500 / lift 70 read as goose-stepping; 400–450 / 26–36 read naturally.
 - **Measuring parallax by phase correlation per region** gives objective depth evidence (B −0.39 vs C 1.42 px/frame on the near ground).
 - **Cool shadow tints lower measured saturation** (−5 %), even when exposure is matched; check the saturation of every new shadow layer.
+
+## 2026-10-22: experiment D. FAILURE in C: orientation disconnected from the path (client feedback)
+- **What went wrong:** C's soldiers were fixed-profile sprites translated along routes. The column turning into the gate
+  kept facing sideways and slid into depth. Client: "movement and body orientation are disconnected from their walking paths".
+- **Rule (apply to every future shot with moving figures):**
+  1. Define each figure's route as a *world-space* curve on the ground (`turnrig.Path`), never as screen translation.
+  2. Hip yaw = path tangent. Torso leads ~28 units and head ~70 units along the path (capped ±35° / ±50°),
+     so the head turns first.
+  3. Any figure whose heading changes by more than ~20° needs a multi-view rig (`turnrig.TurnSoldierAssets`:
+     9 views 0–90°, mirrored); never rotate a flat sprite.
+  4. Put joints in 3D and project them through the scene camera (`Ground.at_height`), so size and foot placement follow the
+     road's perspective automatically.
+  5. Plant feet in world space (fixed per stance, IK legs). Verify drift numerically (D: 0.0).
+  6. Entering a doorway or tunnel: draw behind the front plane, clip by the opening outline at the figure's own depth,
+     darken by location. Never fade out before the threshold.
+  7. Verify with metrics: |body yaw − travel direction| (D ≤ 2.2°), head lead, gate-plane crossing time,
+     a frame strip every 0.5 s and 1:1 crops at the threshold.
+- **Timing:** a natural approach, turn and entry at about 1 m/s needs about 6.5 s. Extend test clips rather than speeding up the walk.
+- **Trade-off found:** stepped ground slices limit camera motion when figures travel in depth (feet drift against the paving).
+  A strong truck needs a per-pixel ground projection.
