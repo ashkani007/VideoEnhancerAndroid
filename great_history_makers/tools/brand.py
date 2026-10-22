@@ -50,15 +50,15 @@ def over(frame, layer_pm, x, y, op):
 
 
 def handle_layer():
-    img = Image.new("RGBA", (W, 140), (0, 0, 0, 0))
+    img = Image.new("RGBA", (W, int(140 * SC)), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     path = find_font("sub")
-    f = ImageFont.truetype(path, 46) if path else ImageFont.load_default()
-    sp = 2.5
+    f = ImageFont.truetype(path, int(46 * SC)) if path else ImageFont.load_default()
+    sp = 2.5 * SC
     widths = [d.textlength(ch, font=f) for ch in HANDLE]
     x = W / 2 - (sum(widths) + sp * (len(HANDLE) - 1)) / 2
     for ch, w in zip(HANDLE, widths):
-        d.text((x, 40), ch, font=f, fill=(246, 232, 196, 255), stroke_width=2, stroke_fill=(20, 14, 10, 230))
+        d.text((x, 40 * SC), ch, font=f, fill=(246, 232, 196, 255), stroke_width=2, stroke_fill=(20, 14, 10, 230))
         x += w + sp
     a = img.split()[3].filter(ImageFilter.GaussianBlur(6)).point(lambda v: int(v * 0.8))
     sh = Image.new("RGBA", img.size, (10, 7, 5, 0))
@@ -71,7 +71,22 @@ def smooth(x):
     return x * x * (3 - 2 * x)
 
 
-def main(master, audio_src, out, endcard_png, bitrate="12.8M"):
+SC = 1.0
+
+
+def _setup(master):
+    """Read the master's size; scale every brand dimension from the 1080x1920 spec."""
+    global W, H, SC, WM_W, WM_X, WM_Y, END_W, END_CY
+    out = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                          "-of", "csv=p=0", master], capture_output=True, text=True).stdout.strip().split(",")
+    W, H = int(out[0]), int(out[1])
+    SC = W / 1080.0
+    WM_W, WM_X, WM_Y = int(round(155 * SC)), int(round(55 * SC)), int(round(100 * SC))
+    END_W, END_CY = int(round(760 * SC / 2) * 2), int(round(840 * SC))
+
+
+def main(master, audio_src, out, endcard_png, bitrate=None):
+    _setup(master)
     logo = cv2.cvtColor(cv2.imread(LOGO, cv2.IMREAD_UNCHANGED), cv2.COLOR_BGRA2RGBA)
     wm = premul(scaled(logo, WM_W))
     hd = handle_layer()
@@ -80,7 +95,7 @@ def main(master, audio_src, out, endcard_png, bitrate="12.8M"):
     n = int(round(dur * FPS))
     t_end = dur - END_LEN
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    shade = np.exp(-(((xx - W / 2) / 520) ** 2 + ((yy - END_CY - 60) / 470) ** 2) * 1.6)[..., None]
+    shade = np.exp(-(((xx - W / 2) / (520 * SC)) ** 2 + ((yy - END_CY - 60 * SC) / (470 * SC)) ** 2) * 1.6)[..., None]
     dec = subprocess.Popen(["ffmpeg", "-v", "error", "-i", master, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
                            stdout=subprocess.PIPE)
     raw_out = out + ".video.mkv"
@@ -105,13 +120,14 @@ def main(master, audio_src, out, endcard_png, bitrate="12.8M"):
             L = cache[wpx]
             over(f, L, (W - L.shape[1]) // 2, END_CY - L.shape[0] // 2, p)
             ph = smooth((t - t_end - 0.6) / 0.8)
-            over(f, hd, 0, END_CY + int(END_W * 0.642 / 2) + 30, ph)
+            over(f, hd, 0, END_CY + int(END_W * 0.642 / 2) + int(30 * SC), ph)
         if abs(t - (dur - 0.8)) < 0.5 / FPS:
             cv2.imwrite(endcard_png, cv2.cvtColor((np.clip(f, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
         enc.stdin.write((np.clip(f, 0, 1) * 255 + 0.5).astype(np.uint8).tobytes())
     enc.stdin.close()
     enc.wait()
     dec.wait()
+    bitrate = bitrate or ("12.8M" if W >= 1080 else "6M")
     log = out + ".2pass"
     common = ["-c:v", "libx264", "-preset", "slow", "-b:v", bitrate, "-maxrate", "20M", "-bufsize", "30M",
               "-tune", "animation", "-profile:v", "high", "-pix_fmt", "yuv420p", "-passlogfile", log]

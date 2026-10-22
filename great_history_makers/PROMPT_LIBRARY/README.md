@@ -19,3 +19,13 @@ This pipeline is procedural: scenes are code. "Prompts" here are therefore of tw
 | **Lateral tracking shot with depth slices (C)** | `experiments/ab_2p5d/scene_c.py` | Truck with no zoom; ranks on slice centres; blurred foreground occluder; measured parallax |
 | **Path-following turning walkers (D)** | `mosaic/turnrig.py` (`Path`, `TurnSoldierAssets`, `TurnWalker`, `TurnDraw`) | World paths, head-led yaw, 9-view turnaround, 3D joints through the scene camera, planted feet, tunnel clip + depth lighting |
 | **Entering a gate / doorway (D)** | `experiments/ab_2p5d/scene_d.py` (`passage_clip`, `light`) | Draw behind the front plane, clip by the opening at the figure's depth, darken with depth; no fake fades |
+
+## Recipe: new period costume for turnrig (from Episode 02)
+1. Subclass `NapoCostume` (or write a class with the same attributes): `front`, `torso_rect`, `torso(p, th)`, `head(p, th)`,
+   optional `shield`, `pack`, `weapon`, `flag_kind`, `tubes = {"thigh": (col, None), "shin": (col, boot_col), "uarm": ..., "farm": (col, cuff)}`, `arm_mode`.
+2. Draw each part as a function of view angle θ (0 = front, 90 = profile, 180 = back); hats must change width with θ.
+3. `TurnSoldierAssets(ctx, k_ref, costume=MyCostume())` and walk it with `TurnWalker` on a world `Path` (or `idle=True`).
+4. Check a turnaround with `tools/character_sheet.py` before using it in shots.
+
+## Recipe: shot skeleton with shotkit
+`c = cam(dur, z=..., ox=..., oy=...)` → build layers → `TurnDraw(ground, walkers, c, ...)` → `finish(scene, look="warm"|"cold"|"night"|"sea"|"map"|"interior", fade_out=(secs, amount))`.

@@ -51,8 +51,8 @@ class Episode:
                 self.overlays.append(text.note(ctx, name, ml["start"], ml["end"], y, 30, x, kind="label"))
         self.cues = self.subtitle_cues()
         if burn_subtitles:
-            style = self.cfg.get("captions", {}).get("style", "plate")
-            size = self.cfg.get("captions", {}).get("size", 60)
+            style = self.cfg.get("captions", {}).get("style", self.cfg.get("subtitle_style", "plate"))
+            size = self.cfg.get("captions", {}).get("size", self.cfg.get("subtitle_size", 60))
             for c in self.cues:
                 if style == "outline":
                     self.overlays.append(text.caption(ctx, c["text"], c["start"], c["end"], c.get("y", 1300), size))

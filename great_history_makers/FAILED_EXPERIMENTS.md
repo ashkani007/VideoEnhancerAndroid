@@ -23,3 +23,9 @@
 | 10-22 | 2.5D C | Foreground pillar starting near centre | Covered the gate (the subject) | Start at right third; still too early |
 | 10-22 | 2.5D C | Fixed-profile soldiers translated along a route curving into the gate | Bodies did not turn; slid into depth (client rejected) | `turnrig`: path-tangent yaw, 9-view turnaround, 3D joints, world-planted feet |
 | 10-22 | 2.5D D | Metric: heading at s < 0 | atan2(0,0) gave 0° for walkers not yet on the path | Measure only on visible frames |
+| 10-22 | ep02 | Passing the `cam` factory to TurnDraw instead of a camera function | `'function' object has no attribute 'get'` | Build `c = cam(...)` once, pass `c` to both TurnDraw and Scene |
+| 10-22 | ep02 | Fixed-width bicorne on all views | Hat looked like a wide plate in front view | Width follows view angle (46 + 92·\|cos θ\|) |
+| 10-22 | ep02 | Head sprite rect (-160,-260,320,460) | Tall bearskins clipped at the top | Rect (-200,-300,400,560) |
+| 10-22 | ep02 | Napoleon placed behind the plan table at map height | Hidden by the table | Larger figure (k 1.25) standing higher, table in the foreground |
+| 10-22 | ep02 | Return walk ending low in frame | Face crossed the caption band | Path ends at q 1.92; still crosses the band mid-walk; needs a higher path |
+| 10-22 | ep02 | Writing deliverables before creating `output/<id>/deliverables` | FileNotFoundError | Create the directory first (`mkdir -p`) |

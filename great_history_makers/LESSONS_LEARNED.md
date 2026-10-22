@@ -65,3 +65,19 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 - **Timing:** a natural approach, turn and entry at about 1 m/s needs about 6.5 s. Extend test clips rather than speeding up the walk.
 - **Trade-off found:** stepped ground slices limit camera motion when figures travel in depth (feet drift against the paving).
   A strong truck needs a per-pixel ground projection.
+
+## 2026-10-22: Episode 02 (Napoleon) preview
+- **Costume system generalises turnrig:** `TurnSoldierAssets(..., costume=...)` draws any uniform from a costume object
+  (torso/head/hat per view angle, `tubes` for limb colours, optional weapon/pack/flag). One rig file now drives line
+  infantry, Old Guard, redcoats, the winter retreat and Napoleon himself (`mosaic/library/napoleonic.py`).
+- **Front views (0–180°, 17 views) are needed** as soon as figures walk *toward* camera (s12) or turn away from it (s11).
+  Napoleon's hat must change silhouette with view angle (bicorne width 46 + 92·|cos θ|); a fixed hat sprite looks pasted on.
+- **Shared shot helpers (`mosaic/shotkit.py`)** made 17 distinct shots feasible in one pass: `cam()` keyframe camera, smoke `puffs`,
+  muzzle `burst`/`flash`, per-tile flame/water colour animation, `ground_slices`, and `finish()` looks per chapter.
+- **Plan a palette arc per chapter** (warm imperial, fire red, cold winter, steel battle, sunset exile) instead of one grade;
+  it raised variety without breaking the house style.
+- **Silhouettes against fire:** darken figures to ×0.22 instead of drawing new art; reads as backlit and keeps tiles.
+- **Caption band check must include moving figures over time**, not only the mid-shot frame: s12's walker entered the band at
+  about 40 s although the end-of-path position was safe.
+- **Without narration, estimated captions are a stop-gap only.** Mark `subtitles_status` PROVISIONAL in episode.json and the QA report,
+  and re-align once audio exists.

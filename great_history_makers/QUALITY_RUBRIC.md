@@ -52,3 +52,17 @@ defects · **9** = professional; would hold up next to strong channels in the ni
 | Colour and lighting | 8 | 7 | Saturation 0.629 → 0.595; luma equal |
 | Mosaic consistency | 8 | 8 | Tiles intact |
 | Engagement potential | 6 | 7 | Three ranks plus a crowd, constant motion |
+
+## Episode 02 Napoleon, 720p preview (2026-10-22, narration pending). See output/ep02_napoleon/deliverables/Napoleon_Episode02_QA_Report.md
+| Category | Ep01 V3/V4 | Ep02 preview | Evidence |
+|---|---|---|---|
+| Visual depth | 4 | 6 | Pinhole ground planes with vanishing points, depth-scaled figures, cast shadows; maps and the Arc still frontal |
+| Mosaic consistency | 8 | 8 | Tiles everywhere; rigid-tile flags and sails |
+| Character animation | 6 | 7 | turnrig walkers with planted feet and path yaw; front/rear turns; discrete 11.25° views |
+| Cinematography | 6 | 7 | One camera intent per shot; rack focus s05 |
+| Colour and lighting | 7 | 8 | Chapter palette arc; saturation 0.591; worst clip 0.37 % |
+| Scene variety | 8 | 9 | 17 shots, 0 near-duplicates |
+| Historical accuracy | 8 | 8 | HISTORY.md covers all 16 lines; labels on screen |
+| Narration sync | 9 | n/a | No audio yet |
+| Subtitle quality | 8 | 5 (provisional) | Estimated timing; s12 face crosses the band at about 40 s |
+| Engagement potential | 6 | 7 | Hook in the first second; changes every 2–5 s |

@@ -142,13 +142,15 @@ def draw_boot(p, th):
     p.poly([(-ln - 4, 24), (28, 24), (28, 36), (-ln - 4, 36)], "black")
 
 
-def draw_tube(p, length, w0, w1, col, boot=False, hand=False, dark=None):
+def draw_tube(p, length, w0, w1, col, boot=False, hand=False, dark=None, boot_col="umber", cuff=None):
     p.smooth([(-w0, -6), (w0, -6), (w1, length * 0.5), (w1 * 0.9, length + 4), (-w1 * 0.9, length + 4),
               (-w1, length * 0.5)], col, 5)
     if dark:
         p.line([(-w0 * 0.2, 10), (-w1 * 0.2, length - 10)], dark, 5)
     if boot:
-        p.smooth([(-w1 - 2, length - 60), (w1 + 2, length - 60), (w1 + 3, length + 6), (-w1 - 3, length + 6)], "umber", 3)
+        p.smooth([(-w1 - 2, length - 60), (w1 + 2, length - 60), (w1 + 3, length + 6), (-w1 - 3, length + 6)], boot_col, 3)
+    if cuff:
+        p.rect(-w1 - 2, length - 36, 2 * w1 + 4, 26, cuff)
     if hand:
         p.ellipse(0, length, 20, 16, "skin")
         p.ellipse(-10, length - 6, 9, 8, "skin")
@@ -163,37 +165,96 @@ def draw_spear(p):
 
 
 # =================================================================== asset set
+class PersianCostume:
+    """Episode-1 costume (default) - wraps the original drawing functions."""
+    front = False
+    arm_mode = "weapon"
+    torso_rect = (-140, -420, 280, 660)
+
+    def __init__(self, variant=0):
+        self.tun, self.tun_dk, self.trous, self.hood = TUNICS[variant % len(TUNICS)]
+        self.far_t = mix_dark(self.trous) if self.trous in ("lapis", "terracotta", "sand", "ochre") else self.trous
+        self.name = f"persian{variant}"
+        self.tubes = dict(thigh_n=(self.trous, None), thigh_f=(self.far_t, None), shin_n=(self.trous, True),
+                          shin_f=(self.far_t, True), uarm_n=(self.tun, self.tun_dk), uarm_f=(self.tun_dk, None),
+                          farm_n=(self.tun, None), farm_f=(self.tun_dk, None))
+
+    def torso(self, p, th):
+        draw_torso(p, th, self.tun, self.tun_dk, self.hood)
+
+    def head(self, p, th):
+        draw_head(p, th, self.hood)
+
+    def shield(self, p, th):
+        draw_shield(p, th)
+
+    def pack(self, p, th):
+        draw_quiver(p, th)
+
+    def boot(self, p, th):
+        draw_boot(p, th)
+
+    def weapon(self, p):
+        draw_spear(p)
+
+    flag = None
+
+
+def _views(front):
+    return [i * 11.25 for i in range(17 if front else 9)]
+
+
 class TurnSoldierAssets:
-    """All view/mip sprites for one tunic variant."""
+    """All view/mip sprites for one costume. costume: PersianCostume (default) or any object with
+    torso/head/boot(p, th), optional shield/pack(p, th), weapon(p), flag(p, th), tubes dict and front flag."""
 
     MIPS = (1.6, 1.15, 0.8)
 
-    def __init__(self, ctx, k_ref, variant=0, tile=5.0):
+    def __init__(self, ctx, k_ref, variant=0, tile=5.0, costume=None, mips=None):
         self.k_ref = k_ref
-        tun, tun_dk, trous, hood = TUNICS[variant % len(TUNICS)]
-        far_t = mix_dark(trous) if trous in ("lapis", "terracotta", "sand", "ochre") else trous
+        self.costume = cs = costume or PersianCostume(variant)
+        self.MIPS = tuple(mips or self.MIPS)
+        self.views = _views(cs.front)
         self.sets = {}
+        tag = cs.name
         for q in self.MIPS:
             k = k_ref * q
-            mk = lambda draw, rect, name, mul=1.0: make_sprite(ctx, draw, rect, tile * mul, f"tr{variant}_{name}_{q}",
-                                                                unit_scale=k, volume=SCULPT, outline="outline")
-            d = {"torso": {}, "head": {}, "shield": {}, "quiver": {}, "boot": {}}
-            for th in VIEWS:
-                d["torso"][th] = mk(lambda p, th=th: draw_torso(p, th, tun, tun_dk, hood), (-140, -420, 280, 660), f"torso{th}")
-                d["head"][th] = mk(lambda p, th=th: draw_head(p, th, hood), (-110, -40, 220, 300), f"head{th}", 0.62)
-                d["shield"][th] = mk(lambda p, th=th: draw_shield(p, th), (-130, -280, 260, 560), f"shield{th}")
-                d["quiver"][th] = mk(lambda p, th=th: draw_quiver(p, th), (-60, -210, 140, 400), f"quiver{th}")
-                d["boot"][th] = mk(lambda p, th=th: draw_boot(p, th), (-120, -40, 170, 90), f"boot{th}")
+            mk = lambda draw, rect, name, mul=1.0, keep=False: make_sprite(
+                ctx, draw, rect, tile * mul, f"tr_{tag}_{name}_{q}", unit_scale=k, volume=SCULPT, outline="outline",
+                keep_tiles=keep)
+            d = {"torso": {}, "head": {}, "shield": {}, "quiver": {}, "boot": {}, "flag": {}}
+            for th in self.views:
+                d["torso"][th] = mk(lambda p, th=th: cs.torso(p, th), cs.torso_rect, f"torso{th}")
+                d["head"][th] = mk(lambda p, th=th: cs.head(p, th), (-200, -300, 400, 560), f"head{th}", 0.62)
+                if getattr(cs, "shield", None):
+                    d["shield"][th] = mk(lambda p, th=th: cs.shield(p, th), (-130, -280, 260, 560), f"shield{th}")
+                if getattr(cs, "pack", None):
+                    d["quiver"][th] = mk(lambda p, th=th: cs.pack(p, th), (-110, -230, 220, 440), f"pack{th}")
+                d["boot"][th] = mk(lambda p, th=th: cs.boot(p, th), (-130, -50, 190, 100), f"boot{th}")
+            if getattr(cs, "flag", None):
+                for th in (0, 45, 90, 135, 180):
+                    d["flag"][th] = mk(lambda p, th=th: cs.flag(p, th), (-20, -20, 480, 380), f"flag{th}", 1.0, True)
+            T_ = cs.tubes
             for lf in (1.0, 0.86, 0.72):
-                d[("thigh_n", lf)] = mk(lambda p, lf=lf: draw_tube(p, L1 * lf, 34, 26, trous), (-60, -30, 120, 280), f"thn{lf}")
-                d[("thigh_f", lf)] = mk(lambda p, lf=lf: draw_tube(p, L1 * lf, 34, 26, far_t), (-60, -30, 120, 280), f"thf{lf}")
-                d[("shin_n", lf)] = mk(lambda p, lf=lf: draw_tube(p, L2 * lf, 25, 19, trous, boot=True), (-50, -30, 100, 260), f"shn{lf}")
-                d[("shin_f", lf)] = mk(lambda p, lf=lf: draw_tube(p, L2 * lf, 25, 19, far_t, boot=True), (-50, -30, 100, 260), f"shf{lf}")
-                d[("uarm_n", lf)] = mk(lambda p, lf=lf: draw_tube(p, UA * lf, 28, 22, tun, dark=tun_dk), (-50, -30, 100, 240), f"uan{lf}")
-                d[("uarm_f", lf)] = mk(lambda p, lf=lf: draw_tube(p, UA * lf, 28, 22, tun_dk), (-50, -30, 100, 240), f"uaf{lf}")
-                d[("farm_n", lf)] = mk(lambda p, lf=lf: draw_tube(p, FA * lf, 21, 16, tun, hand=True), (-50, -30, 100, 230), f"fan{lf}")
-                d[("farm_f", lf)] = mk(lambda p, lf=lf: draw_tube(p, FA * lf, 21, 16, tun_dk, hand=True), (-50, -30, 100, 230), f"faf{lf}")
-            d["spear"] = mk(draw_spear, (-40, -1260, 80, 1610), "spear")
+                for key, base, w0, w1, rect in (("thigh", L1, 34, 26, (-60, -30, 120, 280)), ("shin", L2, 25, 19, (-50, -30, 100, 260)),
+                                                ("uarm", UA, 28, 22, (-50, -30, 100, 240)), ("farm", FA, 21, 16, (-50, -30, 100, 230))):
+                    for side_ in ("n", "f"):
+                        col, extra = T_[f"{key}_{side_}"]
+                        kw = {}
+                        if key == "shin":
+                            kw["boot"] = bool(extra)
+                            if isinstance(extra, str):
+                                kw["boot_col"] = extra
+                        elif key == "farm":
+                            kw["hand"] = True
+                            if extra:
+                                kw["cuff"] = extra
+                        elif extra:
+                            kw["dark"] = extra
+                        d[(f"{key}_{side_}", lf)] = mk(lambda p, lf=lf, base=base, w0=w0, w1=w1, col=col, kw=kw:
+                                                       draw_tube(p, base * lf, w0, w1, col, **kw), rect, f"{key}{side_}{lf}")
+            if getattr(cs, "weapon", None):
+                d["spear"] = mk(cs.weapon, (-60, -1300, 120, 1700), "weapon")
             self.sets[q] = d
 
     def level(self, q):
@@ -223,8 +284,11 @@ class Path:
 # =================================================================== walker
 class TurnWalker:
     def __init__(self, assets, path, s0, period=1.0, stride=600.0, lift=30.0, arm=14.0, side=1, seed=0.0,
-                 head_lead=70.0, torso_lead=28.0):
+                 head_lead=70.0, torso_lead=28.0, lean=3.0, idle=False, head_fn=None, arm_fn=None, wind=1.0):
         self.A, self.path, self.s0 = assets, path, s0
+        self.lean0, self.idle, self.head_fn, self.arm_fn, self.wind = lean, idle, head_fn, arm_fn, wind
+        if idle:
+            stride = 0.0
         self.period, self.stride, self.lift, self.arm, self.side, self.ph = period, stride, lift, arm, side, seed
         self.v = assets.k_ref * stride / period                            # world units / s
         self.head_lead, self.torso_lead = head_lead, torso_lead
@@ -255,6 +319,9 @@ class TurnWalker:
         """World ankle (X, Z, height), pitch (deg), lift height, stance flag."""
         off = 0.0 if leg == "n" else 0.5
         b = -HIP_B if leg == "n" else HIP_B                    # near leg on the spear (left) side
+        if self.idle:                                          # standing: both feet planted, slight stagger
+            X, Z, _ = self.world(0.0, 18.0 if leg == "n" else -14.0, b * 1.15, 0.0, self.psi_hip(0.0))
+            return (X, Z, self.kr * ANK_C), 0.0, 0.0, True
         u = (self.u_at(t) + off) % 1.0
         st = 0.6
         cyc0 = t - u * self.period                             # time of this cycle's heel strike
@@ -286,6 +353,8 @@ class TurnWalker:
         s = self.s_at(t)
         psi_t = psi + max(-35, min(35, self.path.heading(s + self.torso_lead) - psi))
         psi_h = psi + max(-50, min(50, self.path.heading(s + self.head_lead) - psi))
+        if self.head_fn:
+            psi_h += self.head_fn(t)
         feet = {}
         for leg in ("n", "f"):
             (X, Z, Y), pitch, up, stance = self.foot(t, leg)
@@ -306,13 +375,18 @@ class TurnWalker:
             al = math.acos(max(-1, min(1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))))
             ka, kc = L1 * math.sin(phi + al), hip_c - L1 * math.cos(phi + al)
             legs[leg] = dict(hip=(0, hb, hip_c), knee=(ka, (hb + b) / 2, kc), ankle=(a, b, c), pitch=pitch, up=up)
-        sw = math.cos(ph - 0.3)
-        lean = 3.0 + 0.8 * math.sin(2 * ph)
+        sw = math.cos(ph - 0.3) if not self.idle else 0.15 * math.sin(t * 1.3 + self.ph * 6)
+        lean = self.lean0 + (0.8 * math.sin(2 * ph) if not self.idle else 0.6 * math.sin(t * 0.9 + self.ph * 5))
         dc = hip_c - HIP_C
         sh_c = SH_C + dc
         arms = {}
         # near (spear) arm: forearm raised forward holding the shaft; far (shield) arm swings
-        for arm, b0, al, fl in (("n", -SH_B, 14 - 0.35 * self.arm * sw, 72), ("f", SH_B, self.arm * sw, 18 + 8 * max(0, -sw))):
+        mode = getattr(self.A.costume, "arm_mode", "weapon")
+        arm_specs = [("n", -SH_B, 14 - 0.35 * self.arm * sw, 72) if mode == "weapon" else ("n", -SH_B, -self.arm * sw, 14 + 8 * max(0, sw)),
+                     ("f", SH_B, self.arm * sw, 18 + 8 * max(0, -sw))]
+        if self.arm_fn:
+            arm_specs = self.arm_fn(t, arm_specs)
+        for arm, b0, al, fl in arm_specs:
             sh = (math.sin(math.radians(lean)) * 60, b0, sh_c)
             e = (sh[0] + UA * math.sin(math.radians(al)), b0 * 1.08, sh_c - UA * math.cos(math.radians(al)))
             w = (e[0] + FA * math.sin(math.radians(al + fl)), b0 * 1.1, e[2] - FA * math.cos(math.radians(al + fl)))
@@ -367,9 +441,14 @@ class TurnDraw:
         ppu_root = w.kr * ctx.pxpd                               # px per fig unit at q = 1
         items = []                                               # (order, name, premult, M, drop)
 
+        views = A.views
+        vmax = views[-1]
+
         def view(psi):
-            th = min(90.0, max(0.0, abs(psi) if side * psi >= 0 else 0.0))
-            return min(VIEWS, key=lambda v: abs(v - th))
+            ap = abs(psi)
+            th = ap if side * psi >= 0 else (0.0 if ap < 90 else 180.0)
+            th = min(vmax, max(0.0, th))
+            return min(views, key=lambda v: abs(v - th))
 
         def place(spr, x, y, q, ang=0.0, sy=1.0):
             sc = ppu_root * q / (ctx.ppu * w.kr * lvl) * ctx.ppu * w.kr * lvl  # = px per fig unit
@@ -417,25 +496,27 @@ class TurnDraw:
                       @ S(ppu_root * qt * (-1 if side < 0 else 1), ppu_root * qt) @ ts.pixel_to_unit(), True, Zt))
         # quiver on the back
         xq, yq, qq, Zq = P((-58, 12, pose["hip_c"] + 180), psi_t)
-        qv = sp["quiver"][th_t]
+        qv = sp["quiver"].get(th_t)
         q_order = 4 if th_t > 50 else 6
-        items.append((q_order, "quiver", qv.premult, T(xq, yq) @ R(-12 * math.sin(math.radians(th_t)) * side)
-                      @ S(ppu_root * qq * (-1 if side < 0 else 1), ppu_root * qq) @ qv.pixel_to_unit(), False, Zq))
+        if qv is not None:
+            items.append((q_order, "quiver", qv.premult, T(xq, yq) @ R(-12 * math.sin(math.radians(th_t)) * side)
+                          @ S(ppu_root * qq * (-1 if side < 0 else 1), ppu_root * qq) @ qv.pixel_to_unit(), False, Zq))
         # arms + shield + spear
         for arm in ("f", "n"):
             Ar = Am[arm]
-            is_near = (arm == "n") == near_is_left
+            z_sh = w.world(t, Ar["sh"][0], Ar["sh"][1], Ar["sh"][2], psi_t)[1]
+            is_near = (z_sh - Zt) < 30 * w.kr          # arms at the sides (front/rear views) stay in front
             o = 7 if is_near else 3
             k = "_n" if is_near else "_f"
             limb("uarm" + k, Ar["sh"], Ar["el"], psi_t, o)
             limb("farm" + k, Ar["el"], Ar["wr"], psi_t, o + 0.1)
-            if arm == "f":
+            if arm == "f" and sp["shield"]:
                 xs, ys, qs, Zs = P((Ar["el"][0] + 10, SH_B * 1.5, pose["hip_c"] + 150), psi_t)
                 shs = sp["shield"][th_t]
                 items.append((o - 0.5 if not is_near else o + 0.2, "shield", shs.premult,
                               T(xs, ys) @ S(ppu_root * qs * (-1 if side < 0 else 1), ppu_root * qs) @ shs.pixel_to_unit(),
                               False, Zs))
-            else:
+            elif arm == "n" and "spear" in sp:
                 xh, yh, qh, _ = P(Ar["wr"], psi_t)
                 top = (Ar["wr"][0] + 60, Ar["wr"][1], Ar["wr"][2] + 900)
                 xtp, ytp, _, _ = P(top, psi_t)
@@ -443,9 +524,21 @@ class TurnDraw:
                 spr = sp["spear"]
                 items.append((o + 0.05, "spear", spr.premult,
                               T(xh, yh) @ R(ang) @ S(ppu_root * qh, ppu_root * qh) @ spr.pixel_to_unit(), True, 0))
+                if sp["flag"]:
+                    from .compositor import rigid_tile_wave
+                    fth = min((0, 45, 90, 135, 180), key=lambda v: abs(v - view(psi_t)))
+                    fs = sp["flag"][fth]
+                    tip = (Ar["wr"][0] + 60 * 1.05, Ar["wr"][1], Ar["wr"][2] + 900 * 1.02)
+                    xf, yf, qf, _ = P(tip, psi_t)
+                    pm = rigid_tile_wave(fs.premult, fs.tiles, t + w.ph * 3, 14 * fs.ppu * w.wind, 200 * fs.ppu, 0.8, "x",
+                                         0.0, 1.1, 0.0)
+                    items.append((o + 0.04, "flag", pm, T(xf, yf) @ R(ang)
+                                  @ S(ppu_root * qf * (-1 if side < 0 else 1), ppu_root * qf) @ fs.pixel_to_unit(), True, 0))
         # head (leads the turn)
         xh, yh, qh, _ = P((math.sin(math.radians(pose["lean"])) * 80, 0, NECK_C + pose["dc"]), psi_h)
         hs = sp["head"][view(psi_h)]
+        if 135 <= view(psi_h) and view(psi_t) >= 135:   # facing the camera: head must not hide behind the torso
+            pass
         items.append((9, "head", hs.premult, T(xh, yh) @ S(ppu_root * qh * (-1 if side < 0 else 1), ppu_root * qh)
                       @ T(0, -210 * ctx.ppu * w.kr * lvl / ctx.ppu / w.kr / lvl) @ hs.pixel_to_unit(), True, 0))
         items.sort(key=lambda it: it[0])

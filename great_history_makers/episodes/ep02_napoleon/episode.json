@@ -1,0 +1,1041 @@
+{
+ "series": "Great History Makers",
+ "episode": 2,
+ "title": "Napoleon",
+ "subtitle": "From Emperor to Exile",
+ "language": "en",
+ "fps": 30,
+ "duration": 63.0,
+ "scenes_module": "scenes.py",
+ "scenes": [
+  {
+   "id": "01_artillery",
+   "start": 0.0,
+   "duration": 3.011,
+   "beat": "Toulon 1793: young artillery officer Bonaparte directs a firing battery"
+  },
+  {
+   "id": "02_advance",
+   "start": 3.011,
+   "duration": 2.733,
+   "beat": "Line infantry columns advance under their eagles"
+  },
+  {
+   "id": "03_coronation",
+   "start": 5.744,
+   "duration": 4.827,
+   "beat": "Notre-Dame, 2 Dec 1804: Napoleon raises the crown; Pius VII seated"
+  },
+  {
+   "id": "04_map",
+   "start": 10.571,
+   "duration": 4.469,
+   "beat": "The French Empire and dependent states c. 1811 (tile reveal, battles)"
+  },
+  {
+   "id": "05_plan",
+   "start": 15.04,
+   "duration": 2.294,
+   "beat": "Napoleon over a campaign map by candlelight (1812)"
+  },
+  {
+   "id": "06_march",
+   "start": 17.334,
+   "duration": 4.469,
+   "beat": "The Grande Armee marches east along a long road"
+  },
+  {
+   "id": "07_moscow",
+   "start": 21.803,
+   "duration": 2.384,
+   "beat": "Before Moscow: Napoleon and soldiers on the hills, Kremlin skyline"
+  },
+  {
+   "id": "08_fire",
+   "start": 24.187,
+   "duration": 2.084,
+   "beat": "Moscow burning at night; soldiers in silhouette"
+  },
+  {
+   "id": "09_retreat",
+   "start": 26.271,
+   "duration": 6.046,
+   "beat": "The retreat: trudging column, snowfall, abandoned gun, crows"
+  },
+  {
+   "id": "10_coalition",
+   "start": 32.317,
+   "duration": 1.936,
+   "beat": "Standards of the Sixth Coalition converge; arrows on France"
+  },
+  {
+   "id": "11_farewell",
+   "start": 34.253,
+   "duration": 4.11,
+   "beat": "Fontainebleau 1814: Napoleon leaves the Old Guard for a carriage"
+  },
+  {
+   "id": "12_return",
+   "start": 38.363,
+   "duration": 3.752,
+   "beat": "Golfe-Juan 1815: Napoleon walks up the beach with his Guard"
+  },
+  {
+   "id": "13_waterloo",
+   "start": 42.115,
+   "duration": 3.011,
+   "beat": "Waterloo: French column, Allied line volleys, cuirassiers"
+  },
+  {
+   "id": "14_ship",
+   "start": 45.126,
+   "duration": 4.827,
+   "beat": "HMS Northumberland approaches Saint Helena"
+  },
+  {
+   "id": "15_exile",
+   "start": 49.953,
+   "duration": 2.676,
+   "beat": "Longwood: the older Napoleon alone above the sea at sunset"
+  },
+  {
+   "id": "16_legacy",
+   "start": 52.63,
+   "duration": 3.752,
+   "beat": "Arc de Triomphe with the tricolour (legacy)"
+  },
+  {
+   "id": "17_end",
+   "start": 56.381,
+   "duration": 6.619,
+   "beat": "Bicorne and sword on a rock above the Atlantic at dusk"
+  }
+ ],
+ "transitions": [
+  {
+   "at": 3.011,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 5.744,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 10.571,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 15.04,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 17.334,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 21.803,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 24.187,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 26.271,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 32.317,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 34.253,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 38.363,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 42.115,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 45.126,
+   "type": "mosaic",
+   "duration": 0.5,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 49.953,
+   "type": "dissolve",
+   "duration": 0.6,
+   "direction": [
+    1,
+    0.3
+   ]
+  },
+  {
+   "at": 52.63,
+   "type": "dissolve",
+   "duration": 0.2,
+   "direction": [
+    -1,
+    0.25
+   ]
+  },
+  {
+   "at": 56.381,
+   "type": "dissolve",
+   "duration": 0.6,
+   "direction": [
+    1,
+    0.3
+   ]
+  }
+ ],
+ "subtitles": [
+  {
+   "start": 0.35,
+   "end": 2.62,
+   "text": "He rose from an artillery officer",
+   "y": 1410
+  },
+  {
+   "start": 2.62,
+   "end": 5.64,
+   "text": "to become the most feared\nruler in Europe.",
+   "y": 1410
+  },
+  {
+   "start": 5.89,
+   "end": 7.72,
+   "text": "Napoleon Bonaparte crowned himself",
+   "y": 1410
+  },
+  {
+   "start": 7.72,
+   "end": 10.47,
+   "text": "Emperor of the French\nin 1804.",
+   "y": 1410
+  },
+  {
+   "start": 10.72,
+   "end": 12.64,
+   "text": "His armies won\nextraordinary victories,",
+   "y": 1410
+  },
+  {
+   "start": 12.64,
+   "end": 14.94,
+   "text": "and his empire\nreshaped the continent.",
+   "y": 1410
+  },
+  {
+   "start": 15.19,
+   "end": 17.23,
+   "text": "But Napoleon wanted more.",
+   "y": 1410
+  },
+  {
+   "start": 17.48,
+   "end": 19.59,
+   "text": "In 1812, he invaded Russia",
+   "y": 1410
+  },
+  {
+   "start": 19.59,
+   "end": 21.7,
+   "text": "with a vast\nmultinational army.",
+   "y": 1410
+  },
+  {
+   "start": 21.95,
+   "end": 23.1,
+   "text": "He reached Moscow,",
+   "y": 1410
+  },
+  {
+   "start": 23.1,
+   "end": 26.17,
+   "text": "only to find much of the city\nburning.",
+   "y": 1410
+  },
+  {
+   "start": 26.42,
+   "end": 28.47,
+   "text": "Then came the retreat.",
+   "y": 1410
+  },
+  {
+   "start": 28.72,
+   "end": 29.88,
+   "text": "Hunger, disease, exhaustion,",
+   "y": 1410
+  },
+  {
+   "start": 29.88,
+   "end": 32.22,
+   "text": "and bitter cold\ndevastated his forces.",
+   "y": 1410
+  },
+  {
+   "start": 32.47,
+   "end": 34.15,
+   "text": "His enemies united.",
+   "y": 1410
+  },
+  {
+   "start": 34.4,
+   "end": 36.12,
+   "text": "In 1814, Napoleon abdicated",
+   "y": 1410
+  },
+  {
+   "start": 36.12,
+   "end": 38.26,
+   "text": "and was exiled to Elba.",
+   "y": 1410
+  },
+  {
+   "start": 38.51,
+   "end": 40.46,
+   "text": "He returned the following year",
+   "y": 1410
+  },
+  {
+   "start": 40.46,
+   "end": 42.01,
+   "text": "for one final gamble.",
+   "y": 1410
+  },
+  {
+   "start": 42.26,
+   "end": 45.03,
+   "text": "At Waterloo,\nhis army was defeated.",
+   "y": 1410
+  },
+  {
+   "start": 45.28,
+   "end": 49.09,
+   "text": "This time, exile meant\na remote island in the Atlantic:",
+   "y": 1410
+  },
+  {
+   "start": 49.09,
+   "end": 49.85,
+   "text": "Saint Helena.",
+   "y": 1410
+  },
+  {
+   "start": 50.1,
+   "end": 52.53,
+   "text": "Napoleon died there\nin 1821.",
+   "y": 1410
+  },
+  {
+   "start": 52.78,
+   "end": 54.72,
+   "text": "He conquered kingdoms,\nchanged Europe,",
+   "y": 1410
+  },
+  {
+   "start": 54.72,
+   "end": 56.28,
+   "text": "and became a legend.",
+   "y": 1410
+  },
+  {
+   "start": 56.53,
+   "end": 58.45,
+   "text": "But he could not conquer",
+   "y": 1410
+  },
+  {
+   "start": 58.45,
+   "end": 60.75,
+   "text": "the consequences\nof his own ambition.",
+   "y": 1410
+  }
+ ],
+ "subtitle_style": "outline",
+ "subtitle_size": 60,
+ "subtitles_status": "PROVISIONAL - estimated from word counts; narration audio pending approval. Re-time with tools/align_narration.py once the ElevenLabs file exists.",
+ "titles": [
+  {
+   "start": 0.1,
+   "end": 2.5,
+   "kind": "title",
+   "text": "NAPOLEON",
+   "sub": "FROM EMPEROR TO EXILE",
+   "y": 300,
+   "size": 100
+  },
+  {
+   "start": 2.6,
+   "end": 2.81,
+   "kind": "note",
+   "text": "Siege of Toulon · 1793",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 5.99,
+   "end": 10.37,
+   "kind": "note",
+   "text": "Notre-Dame · 2 December 1804",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 10.82,
+   "end": 14.84,
+   "kind": "note",
+   "text": "The French Empire, c. 1811 · approximate",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 22.05,
+   "end": 23.99,
+   "kind": "note",
+   "text": "Moscow · September 1812",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 26.52,
+   "end": 32.12,
+   "kind": "note",
+   "text": "The retreat · October–December 1812",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 32.57,
+   "end": 34.05,
+   "kind": "note",
+   "text": "The Sixth Coalition · 1813",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 34.5,
+   "end": 38.16,
+   "kind": "note",
+   "text": "Fontainebleau · April 1814",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 38.61,
+   "end": 41.91,
+   "kind": "note",
+   "text": "Golfe-Juan · 1 March 1815",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 42.37,
+   "end": 44.93,
+   "kind": "note",
+   "text": "Waterloo · 18 June 1815",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 45.38,
+   "end": 49.75,
+   "kind": "note",
+   "text": "Saint Helena · South Atlantic, October 1815",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 50.2,
+   "end": 52.43,
+   "kind": "note",
+   "text": "Longwood, Saint Helena · 1815–1821",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 52.88,
+   "end": 56.18,
+   "kind": "note",
+   "text": "Arc de Triomphe · completed 1836",
+   "y": 260,
+   "size": 34
+  },
+  {
+   "start": 11.57,
+   "end": 14.84,
+   "kind": "maplabel",
+   "text": "PARIS",
+   "x": 314,
+   "y": 861,
+   "size": 30
+  },
+  {
+   "start": 11.77,
+   "end": 14.84,
+   "kind": "maplabel",
+   "text": "AUSTERLITZ 1805",
+   "x": 587,
+   "y": 854,
+   "size": 30
+  },
+  {
+   "start": 12.27,
+   "end": 14.84,
+   "kind": "maplabel",
+   "text": "JENA 1806",
+   "x": 489,
+   "y": 808,
+   "size": 30
+  },
+  {
+   "start": 12.77,
+   "end": 14.84,
+   "kind": "maplabel",
+   "text": "FRIEDLAND 1807",
+   "x": 668,
+   "y": 717,
+   "size": 30
+  },
+  {
+   "start": 13.27,
+   "end": 14.84,
+   "kind": "maplabel",
+   "text": "WAGRAM 1809",
+   "x": 584,
+   "y": 876,
+   "size": 30
+  },
+  {
+   "start": 33.32,
+   "end": 34.15,
+   "kind": "maplabel",
+   "text": "RUSSIA",
+   "x": 150,
+   "y": 1860,
+   "size": 32
+  },
+  {
+   "start": 33.32,
+   "end": 34.15,
+   "kind": "maplabel",
+   "text": "PRUSSIA",
+   "x": 930,
+   "y": 1820,
+   "size": 32
+  },
+  {
+   "start": 33.32,
+   "end": 34.15,
+   "kind": "maplabel",
+   "text": "AUSTRIA",
+   "x": 330,
+   "y": 1680,
+   "size": 32
+  },
+  {
+   "start": 33.32,
+   "end": 34.15,
+   "kind": "maplabel",
+   "text": "BRITAIN",
+   "x": 750,
+   "y": 1660,
+   "size": 32
+  },
+  {
+   "start": 33.32,
+   "end": 34.15,
+   "kind": "maplabel",
+   "text": "SWEDEN",
+   "x": 540,
+   "y": 1760,
+   "size": 32
+  },
+  {
+   "start": 15.24,
+   "end": 17.13,
+   "kind": "note",
+   "text": "Artistic reconstruction",
+   "y": 260,
+   "size": 34
+  }
+ ],
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "music": {
+   "root_hz": 146.83,
+   "mode": "minor",
+   "seed": 21,
+   "gain": 0.32,
+   "drum_from": 3.0,
+   "drum_to": 7.0,
+   "melody": [
+    [
+     0.4,
+     4,
+     1.6
+    ],
+    [
+     2.2,
+     5,
+     1.0
+    ],
+    [
+     3.4,
+     4,
+     1.2
+    ],
+    [
+     4.8,
+     7,
+     2.0
+    ],
+    [
+     7.2,
+     4,
+     1.4
+    ],
+    [
+     8.8,
+     5,
+     1.2
+    ],
+    [
+     10.2,
+     7,
+     2.6
+    ],
+    [
+     13.4,
+     5,
+     1.2
+    ],
+    [
+     14.8,
+     4,
+     1.4
+    ],
+    [
+     16.6,
+     7,
+     2.2
+    ],
+    [
+     19.6,
+     4,
+     1.6
+    ],
+    [
+     21.4,
+     3,
+     1.4
+    ],
+    [
+     23.2,
+     2,
+     2.2
+    ],
+    [
+     26.4,
+     1,
+     1.6
+    ],
+    [
+     28.4,
+     0,
+     3.0
+    ],
+    [
+     32.0,
+     2,
+     1.4
+    ],
+    [
+     33.8,
+     3,
+     1.8
+    ],
+    [
+     36.4,
+     4,
+     2.4
+    ],
+    [
+     39.6,
+     5,
+     1.4
+    ],
+    [
+     41.2,
+     7,
+     2.0
+    ],
+    [
+     44.0,
+     4,
+     1.0
+    ],
+    [
+     45.2,
+     3,
+     1.4
+    ],
+    [
+     47.6,
+     2,
+     2.4
+    ],
+    [
+     50.6,
+     1,
+     2.0
+    ],
+    [
+     53.4,
+     0,
+     3.4
+    ],
+    [
+     57.4,
+     2,
+     1.6
+    ],
+    [
+     59.2,
+     4,
+     1.6
+    ],
+    [
+     61.0,
+     0,
+     2.0
+    ]
+   ]
+  },
+  "sfx": [
+   {
+    "type": "wind",
+    "start": 0,
+    "end": 3.011,
+    "gain": 0.2
+   },
+   {
+    "type": "cannon",
+    "start": 0.55,
+    "gain": 0.9
+   },
+   {
+    "type": "march",
+    "start": 3.011,
+    "end": 5.744,
+    "gain": 0.45,
+    "period": 1.0
+   },
+   {
+    "type": "drum",
+    "start": 3.011,
+    "end": 5.744,
+    "gain": 0.5,
+    "period": 0.5
+   },
+   {
+    "type": "flutter",
+    "start": 3.011,
+    "end": 5.744,
+    "gain": 0.2
+   },
+   {
+    "type": "bell",
+    "start": 5.744,
+    "end": 10.571,
+    "gain": 0.35,
+    "period": 1.7
+   },
+   {
+    "type": "crowd",
+    "start": 5.744,
+    "end": 10.571,
+    "gain": 0.2
+   },
+   {
+    "type": "whoosh",
+    "start": 10.171,
+    "gain": 0.2
+   },
+   {
+    "type": "cannon",
+    "start": 11.770999999999999,
+    "gain": 0.25,
+    "dist": 0.5
+   },
+   {
+    "type": "cannon",
+    "start": 12.771,
+    "gain": 0.2,
+    "dist": 0.5
+   },
+   {
+    "type": "fire",
+    "start": 15.04,
+    "end": 17.334,
+    "gain": 0.2
+   },
+   {
+    "type": "march",
+    "start": 17.334,
+    "end": 21.803,
+    "gain": 0.5,
+    "period": 1.0
+   },
+   {
+    "type": "drum",
+    "start": 17.334,
+    "end": 21.803,
+    "gain": 0.35,
+    "period": 0.5
+   },
+   {
+    "type": "wind",
+    "start": 17.334,
+    "end": 21.803,
+    "gain": 0.15
+   },
+   {
+    "type": "wind",
+    "start": 21.803,
+    "end": 24.187,
+    "gain": 0.25
+   },
+   {
+    "type": "bell",
+    "start": 22.103,
+    "end": 24.187,
+    "gain": 0.15,
+    "period": 2.2
+   },
+   {
+    "type": "fire",
+    "start": 24.187,
+    "end": 26.271,
+    "gain": 0.6
+   },
+   {
+    "type": "wind",
+    "start": 26.271,
+    "end": 32.317,
+    "gain": 0.6
+   },
+   {
+    "type": "march",
+    "start": 26.271,
+    "end": 32.317,
+    "gain": 0.2,
+    "period": 1.38
+   },
+   {
+    "type": "flutter",
+    "start": 32.317,
+    "end": 34.253,
+    "gain": 0.35
+   },
+   {
+    "type": "drum",
+    "start": 32.317,
+    "end": 34.253,
+    "gain": 0.3,
+    "period": 0.45
+   },
+   {
+    "type": "wind",
+    "start": 34.253,
+    "end": 38.363,
+    "gain": 0.2
+   },
+   {
+    "type": "hooves",
+    "start": 36.863,
+    "end": 38.363,
+    "gain": 0.15
+   },
+   {
+    "type": "water",
+    "start": 38.363,
+    "end": 42.115,
+    "gain": 0.5
+   },
+   {
+    "type": "flutter",
+    "start": 38.363,
+    "end": 42.115,
+    "gain": 0.2
+   },
+   {
+    "type": "volley",
+    "start": 42.415,
+    "end": 44.315000000000005,
+    "gain": 0.45,
+    "count": 28
+   },
+   {
+    "type": "cannon",
+    "start": 42.315000000000005,
+    "gain": 0.6
+   },
+   {
+    "type": "cannon",
+    "start": 43.715,
+    "gain": 0.5
+   },
+   {
+    "type": "hooves",
+    "start": 42.115,
+    "end": 45.126000000000005,
+    "gain": 0.35
+   },
+   {
+    "type": "march",
+    "start": 42.115,
+    "end": 45.126000000000005,
+    "gain": 0.3,
+    "period": 0.95
+   },
+   {
+    "type": "water",
+    "start": 45.126,
+    "end": 49.952999999999996,
+    "gain": 0.5
+   },
+   {
+    "type": "wind",
+    "start": 45.126,
+    "end": 49.952999999999996,
+    "gain": 0.4
+   },
+   {
+    "type": "flutter",
+    "start": 45.126,
+    "end": 49.952999999999996,
+    "gain": 0.2
+   },
+   {
+    "type": "water",
+    "start": 49.953,
+    "end": 52.629000000000005,
+    "gain": 0.35
+   },
+   {
+    "type": "wind",
+    "start": 49.953,
+    "end": 52.629000000000005,
+    "gain": 0.45
+   },
+   {
+    "type": "flutter",
+    "start": 52.63,
+    "end": 56.382000000000005,
+    "gain": 0.25
+   },
+   {
+    "type": "wind",
+    "start": 52.63,
+    "end": 56.382000000000005,
+    "gain": 0.15
+   },
+   {
+    "type": "water",
+    "start": 56.381,
+    "end": 63.0,
+    "gain": 0.35
+   },
+   {
+    "type": "chime",
+    "start": 60.0,
+    "gain": 0.3
+   }
+  ],
+  "loudness_lufs": -14
+ },
+ "qc_allow_motion": [
+  [
+   0.4,
+   1.2,
+   "cannon flash and recoil"
+  ]
+ ],
+ "narration_estimate": {
+  "chars": 838,
+  "words": 137,
+  "estimated_seconds": "59-64",
+  "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+  "voice_name": "Max - eLearning, Documentary, Friendly"
+ }
+}

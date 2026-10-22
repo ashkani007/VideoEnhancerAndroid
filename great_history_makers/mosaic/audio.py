@@ -11,7 +11,8 @@ import numpy as np
 from scipy import signal
 
 SR = 48000
-MODES = {"hijaz": [0, 1, 4, 5, 7, 8, 10, 12], "phrygian": [0, 1, 3, 5, 7, 8, 10, 12]}
+MODES = {"hijaz": [0, 1, 4, 5, 7, 8, 10, 12], "phrygian": [0, 1, 3, 5, 7, 8, 10, 12],
+         "minor": [0, 2, 3, 5, 7, 8, 10, 12], "dorian": [0, 2, 3, 5, 7, 9, 10, 12]}
 
 
 def _env(n, a, r):
@@ -183,6 +184,54 @@ def sfx(kind, spec, rng, D):
             f = rng.uniform(2200, 4200)
             hit = (np.sin(2 * np.pi * f * tt) + 0.5 * np.sin(2 * np.pi * f * 1.51 * tt)) * np.exp(-tt * rng.uniform(18, 30))
             _place(x, hit.astype(np.float32), rng.uniform(0, L - 0.25), rng.uniform(0.2, 0.6), rng.uniform(-0.8, 0.8))
+        return x, s
+    if kind == "cannon":                       # distant field gun: low thump, rumble tail
+        n = int(2.6 * SR)
+        tt = np.arange(n) / SR
+        boom = np.sin(2 * np.pi * np.cumsum(40 + 50 * np.exp(-tt * 9)) / SR) * np.exp(-tt * 3.2)
+        rum = _lp(rng.normal(0, 1, n).astype(np.float32), 260) * np.exp(-tt * 1.4) * 2.2
+        crack = _bp(rng.normal(0, 1, n).astype(np.float32), 800, 4000) * np.exp(-tt * 40) * 0.6
+        x = (boom + rum + crack).astype(np.float32) * spec.get("dist", 1.0)
+        return np.stack([x, x * 0.9], 1), s
+    if kind == "volley":                       # ragged musket volley
+        n = int(max(1.2, L) * SR)
+        x = np.zeros((n, 2), np.float32)
+        for _ in range(spec.get("count", 24)):
+            m = int(0.35 * SR)
+            tt = np.arange(m) / SR
+            shot = (_bp(rng.normal(0, 1, m).astype(np.float32), 300, 3000) * np.exp(-tt * 18)
+                    + np.sin(2 * np.pi * 90 * tt) * np.exp(-tt * 20) * 0.5)
+            _place(x, shot.astype(np.float32), rng.uniform(0, max(0.1, L - 0.4)), rng.uniform(0.2, 0.6), rng.uniform(-0.8, 0.8))
+        return x, s
+    if kind == "bell":                         # cathedral bell strokes
+        n = int(L * SR)
+        x = np.zeros((n, 2), np.float32)
+        t = 0.0
+        while t < L:
+            m = int(3.5 * SR)
+            tt = np.arange(m) / SR
+            b = sum(np.sin(2 * np.pi * f * tt) * np.exp(-tt * d) * g
+                    for f, d, g in [(196, 0.8, 0.6), (392, 1.1, 0.35), (467, 1.4, 0.3), (588, 1.8, 0.2), (784, 2.4, 0.12)])
+            _place(x, b.astype(np.float32), t, 0.6, -0.2)
+            t += spec.get("period", 1.6)
+        return x, s
+    if kind == "drum":                         # military side drum (march rhythm)
+        n = int(L * SR)
+        x = np.zeros((n, 2), np.float32)
+        per = spec.get("period", 0.5)
+        t = 0.0
+        k = 0
+        while t < L:
+            m = int(0.18 * SR)
+            tt = np.arange(m) / SR
+            hit = (_bp(rng.normal(0, 1, m).astype(np.float32), 1500, 7000) * np.exp(-tt * 30)
+                   + np.sin(2 * np.pi * 190 * tt) * np.exp(-tt * 35) * 0.6).astype(np.float32)
+            _place(x, hit, t, 0.7 if k % 4 == 0 else 0.45, 0.1)
+            if k % 4 == 3:
+                _place(x, hit * 0.6, t + per / 3, 0.4, 0.1)
+                _place(x, hit * 0.6, t + 2 * per / 3, 0.4, 0.1)
+            t += per
+            k += 1
         return x, s
     if kind == "chime":
         n = int(2.5 * SR)

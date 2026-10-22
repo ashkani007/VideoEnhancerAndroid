@@ -93,6 +93,57 @@
     "client to confirm words 'king' and 'The famous'",
     "V3 closing title duplicates 'GREAT HISTORY MAKERS' under the V4 end logo"
    ]
+  },
+  {
+   "id": "ep02",
+   "topic": "Napoleon - From Emperor to Exile (1793-1821)",
+   "goals": [
+    "carry 2.5D ground planes and turnrig walkers into a full episode (approved direction from experiments C/D, applied per shot)",
+    "multi-view character rig for the protagonist (front and rear turns, view-dependent hat)",
+    "chapter palette arc while keeping one mosaic style"
+   ],
+   "versions": [
+    {
+     "v": "Preview",
+     "dir": "episodes/ep02_napoleon",
+     "date": "2026-10-22",
+     "format": "720x1280 30fps 63s",
+     "shots": 17,
+     "decisions": [
+      "approved 16-line script unchanged",
+      "ElevenLabs voice Gfpl8Yo74Is0W6cPUWWT pending credit approval",
+      "costume system in mosaic/library/napoleonic.py",
+      "shotkit helpers",
+      "provisional estimated captions"
+     ],
+     "metrics": {
+      "mean_saturation": 0.591,
+      "lufs_music_only": -14.8,
+      "near_duplicate_pairs": 0,
+      "max_clip_pct": 0.37
+     },
+     "outcome": "awaiting client approval"
+    }
+   ],
+   "scores_preview": {
+    "depth": 6,
+    "mosaic": 8,
+    "animation": 7,
+    "cinematography": 7,
+    "color_light": 8,
+    "variety": 9,
+    "history": 8,
+    "sync": null,
+    "subtitles": 5,
+    "engagement": 7
+   },
+   "open_issues": [
+    "narration not generated (needs approval)",
+    "captions must be forced-aligned after narration",
+    "s12 Napoleon's head crosses the caption band at ~40s",
+    "narration may run 59-64s vs 55-60s target",
+    "YouTube handle not verified"
+   ]
   }
  ],
  "experiments": [
