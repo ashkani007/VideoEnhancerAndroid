@@ -85,7 +85,7 @@ def _setup(master):
     END_W, END_CY = int(round(760 * SC / 2) * 2), int(round(840 * SC))
 
 
-def main(master, audio_src, out, endcard_png, bitrate=None):
+def main(master, audio_src, out, endcard_png, bitrate=None, endcard=True):
     _setup(master)
     logo = cv2.cvtColor(cv2.imread(LOGO, cv2.IMREAD_UNCHANGED), cv2.COLOR_BGRA2RGBA)
     wm = premul(scaled(logo, WM_W))
@@ -93,7 +93,7 @@ def main(master, audio_src, out, endcard_png, bitrate=None):
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
                                 master], capture_output=True, text=True).stdout)
     n = int(round(dur * FPS))
-    t_end = dur - END_LEN
+    t_end = dur - END_LEN if endcard else float("inf")   # --no-endcard: watermark only (short tests)
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
     shade = np.exp(-(((xx - W / 2) / (520 * SC)) ** 2 + ((yy - END_CY - 60 * SC) / (470 * SC)) ** 2) * 1.6)[..., None]
     dec = subprocess.Popen(["ffmpeg", "-v", "error", "-i", master, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
@@ -142,4 +142,5 @@ def main(master, audio_src, out, endcard_png, bitrate=None):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:5])
+    args = [x for x in sys.argv[1:] if x != "--no-endcard"]
+    main(*args[:4], endcard="--no-endcard" not in sys.argv)

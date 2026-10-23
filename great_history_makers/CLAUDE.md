@@ -41,6 +41,12 @@ narration pauses, limited character motion (blink, head turn, gesture, breathe) 
 The exact v2 look (including whether a mosaic filter is kept) still needs client approval.
 Variable cost target < €0.50 per video: measure it, log credits in `autopilot/LEDGER.json`.
 
+## v3 visual identity PROPOSAL (client brief 2026-10-23, awaiting review)
+"Cinematic Living Illustration": painterly, character-driven, every shot a narrative action, believable acting
+(eyes lead, head follows, face sets), cinematic shot grammar and motivated light. No mosaic, stained glass,
+paper-cut puppets, zoom-and-pan slideshows or permanent infographics. See `ghm3/VISUAL_IDENTITY.md` and
+`ghm3/POC_EVALUATION.md`. Do not produce full episodes in v3 until the client approves the proof of concept.
+
 ## Episode loop (follow every time)
 1. **Review:** read the memory files and list the strongest techniques and the open weaknesses.
 2. **Goals:** pick 2–3 concrete improvements. Write them into `EPISODE_HISTORY.json` before producing.
@@ -59,7 +65,8 @@ py tools/brand.py master.mp4 audio_src.mp4 out.mp4 endcard.png
 py tools/shot_sheet.py episodes/<id> video.mp4 sheet.png
 py tools/tts_elevenlabs.py episodes/<id> [--confirm]  # narration via API (dry run without --confirm)
 py -m ghm2.render <v2 episode dir> [--final|--still T]  # v2 illustration pipeline (540x960 preview / 1080x1920)
-py tools/verify_delivery.py video.mp4 <episode dir>  # narration sync, captions, logo (v1 and v2)
+py tools/verify_delivery.py video.mp4 <episode dir> [--no-endcard]  # narration sync, captions, logo (v1-v3)
+py -m ghm3.render_poc [--final]                     # v3 Cinematic Living Illustration proof of concept
 py tools/character_sheet.py out.png                 # character turnaround sheet (rig views + profiles)
 py experiments/ab_2p5d/render_ab.py                 # style A/B (A vs B)
 py experiments/ab_2p5d/render_c.py                  # Version C + B/C comparison + metrics

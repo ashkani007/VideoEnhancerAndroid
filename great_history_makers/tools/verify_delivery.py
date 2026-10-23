@@ -112,7 +112,7 @@ def logo_gray(width):
     return cv2.cvtColor(L[..., :3], cv2.COLOR_BGR2GRAY), L[..., 3] > 200
 
 
-def check_logo(video, W, H, dur):
+def check_logo(video, W, H, dur, endcard=True):
     sc = W / 1080
     wm_w, x, y = int(round(155 * sc)), int(round(55 * sc)), int(round(100 * sc))
     g, m = logo_gray(wm_w)
@@ -133,7 +133,8 @@ def check_logo(video, W, H, dur):
     res = dict(watermark_ncc_min=round(min(scores), 3), watermark_ncc_mean=round(float(np.mean(scores)), 3),
                offposition_ncc_max=round(max(base), 3), endcard_ncc=round(end_best, 3))
     res["ok"] = res["watermark_ncc_min"] > 0.5 and res["watermark_ncc_min"] > res["offposition_ncc_max"] + 0.2 \
-        and res["endcard_ncc"] > 0.8
+        and (res["endcard_ncc"] > 0.8 or not endcard)
+    res["endcard_required"] = endcard
     return res
 
 
@@ -142,8 +143,10 @@ def main():
     ap.add_argument("video")
     ap.add_argument("episode")
     ap.add_argument("--report")
+    ap.add_argument("--no-endcard", action="store_true", help="short tests branded with the watermark only")
     a = ap.parse_args()
-    name = "episode.json" if os.path.exists(os.path.join(a.episode, "episode.json")) else "storyboard.json"  # v1 / v2
+    name = next(n for n in ("episode.json", "storyboard.json", "poc.json")                 # v1 / v2 / v3 test
+                if os.path.exists(os.path.join(a.episode, n)))
     cfg = json.load(open(os.path.join(a.episode, name), encoding="utf-8"))
     cc = cfg["captions"]
     tr = open(os.path.join(a.episode, cc["transcript"]), encoding="utf-8").read().strip()
@@ -172,7 +175,7 @@ def main():
     rep["captions"]["wording_matches_transcript"] = " ".join(c["text"].replace("\n", " ") for c in cues).split() == tr.split()
     rep["captions"]["ok"] = rep["captions"]["ok"] and rep["captions"]["wording_matches_transcript"] \
         and rep["captions"]["cue_start_vs_first_word_max_ms"] <= 10
-    rep["logo"] = check_logo(a.video, W, H, dur)
+    rep["logo"] = check_logo(a.video, W, H, dur, not a.no_endcard)
     rep["passed"] = all(rep[k]["ok"] for k in ("container", "narration", "captions", "logo"))
     rep["caption_rows"] = rows
     print(json.dumps({k: v for k, v in rep.items() if k != "caption_rows"}, indent=1))

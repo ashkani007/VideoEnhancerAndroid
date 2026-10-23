@@ -1,0 +1,152 @@
+{
+ "title": "Cinematic Living Illustration PoC: Napoleon 1796",
+ "fps": 30,
+ "duration": 12.6,
+ "shots": [
+  {
+   "id": "A_candle_decision",
+   "start": 0.0,
+   "end": 5.6
+  },
+  {
+   "id": "B_ridge_dawn",
+   "start": 5.6,
+   "end": 12.6
+  }
+ ],
+ "transitions": [
+  {
+   "at": 5.6,
+   "type": "smoke",
+   "dur": 0.7
+  }
+ ],
+ "captions": {
+  "transcript": "audio/transcript.txt",
+  "words": "audio/words_aligned.json",
+  "groups": [
+   "But Napoleon wanted more."
+  ],
+  "y": 1410,
+  "size": 60
+ },
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "loudness_lufs": -14,
+  "music": {
+   "root_hz": 130.81,
+   "mode": "minor",
+   "seed": 7,
+   "gain": 0.3,
+   "drum_from": 5.6,
+   "drum_to": 12.4,
+   "melody": [
+    [
+     0.3,
+     0,
+     2.4
+    ],
+    [
+     2.4,
+     3,
+     1.6
+    ],
+    [
+     4.2,
+     2,
+     1.4
+    ],
+    [
+     5.7,
+     4,
+     1.6
+    ],
+    [
+     7.4,
+     5,
+     1.2
+    ],
+    [
+     8.8,
+     7,
+     2.2
+    ],
+    [
+     11.2,
+     4,
+     1.4
+    ]
+   ]
+  },
+  "sfx": [
+   {
+    "type": "fire",
+    "start": 0,
+    "end": 5.7,
+    "gain": 0.16
+   },
+   {
+    "type": "drum",
+    "start": 2.3,
+    "end": 3.4,
+    "gain": 0.25,
+    "period": 0.55
+   },
+   {
+    "type": "whoosh",
+    "start": 5.3,
+    "gain": 0.25
+   },
+   {
+    "type": "wind",
+    "start": 5.6,
+    "end": 12.6,
+    "gain": 0.22
+   },
+   {
+    "type": "march",
+    "start": 5.8,
+    "end": 12.6,
+    "gain": 0.3,
+    "period": 0.5
+   },
+   {
+    "type": "flutter",
+    "start": 5.8,
+    "end": 12.6,
+    "gain": 0.18
+   },
+   {
+    "type": "cannon",
+    "start": 6.2,
+    "gain": 0.35,
+    "dist": 0.8
+   },
+   {
+    "type": "cannon",
+    "start": 7.4,
+    "gain": 0.3,
+    "dist": 0.85
+   },
+   {
+    "type": "cannon",
+    "start": 9.1,
+    "gain": 0.4,
+    "dist": 0.75
+   },
+   {
+    "type": "cannon",
+    "start": 10.6,
+    "gain": 0.35,
+    "dist": 0.8
+   }
+  ]
+ },
+ "qc_allow_motion": [
+  [
+   5.2,
+   6.0,
+   "smoke transition"
+  ]
+ ]
+}

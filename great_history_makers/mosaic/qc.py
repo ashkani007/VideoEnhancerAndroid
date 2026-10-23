@@ -25,7 +25,8 @@ def contact_sheet(path, out_png, times, cols=4, w=270):
     import cv2
     tiles = []
     h = int(w * 16 / 9)
-    for t in times:
+    dur = float(probe(path)["format"]["duration"])
+    for t in [x for x in times if x < dur - 0.05]:      # short clips: skip sample times past the end
         cmd = [ffmpeg_bin(), "-v", "error", "-ss", f"{t:.3f}", "-i", path, "-frames:v", "1", "-vf", f"scale={w}:{h}",
                "-f", "rawvideo", "-pix_fmt", "bgr24", "-"]
         raw = subprocess.run(cmd, capture_output=True, check=True).stdout

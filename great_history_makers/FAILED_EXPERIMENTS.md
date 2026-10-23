@@ -32,3 +32,7 @@
 | 10-23 | 2.5D/turnrig production model | Full procedural 2.5D episodes (Ep02) | Too expensive per episode; client stopped it | v2: illustration plates + puppet warps + mograph |
 | 10-23 | v2 PoC | Storyboard iterated europe_land() dict keys | `proj() missing lat` | Use `.values()`; geodata now in ghm2/data |
 | 10-23 | v2 PoC | Austerlitz and Wagram labels at default offsets | Labels overlapped (battles 90 km apart) | Per-arrow label offsets |
+| 10-23 | v2 look | Plates + pan/zoom + infographic maps (v2 PoC) | Client: "mosaic-style educational slideshow" | v3 Cinematic Living Illustration proposal |
+| 10-23 | v3 PoC | cv2 thickness multiplied by 4 with shift=2 | All strokes 4x too thick | Thickness in real pixels |
+| 10-23 | v3 PoC | Hair strands between random outline points; back-hair strands drawn after the face | Strands across the face, hair looked transparent | Flow-following strands clipped to the hair shape, correct layer order |
+| 10-23 | v3 PoC | Gaussian-blurred noise scrolled with BORDER_WRAP | Vertical seams in smoke | FFT circular blur (tileable) |

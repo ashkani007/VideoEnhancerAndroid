@@ -107,3 +107,15 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 - **Plates need overscale headroom:** a global 1.06 overscale plus per-layer offset clamping lets parallax and pushes
   run without exposing plate edges.
 - **Keep geodata out of storyboards:** maps reference shared files in `ghm2/data/`.
+
+## 2026-10-23: v3 "Cinematic Living Illustration" proof of concept
+- **OpenCV line thickness is not affected by `shift`.** Sub-pixel coordinates (shift=2, coords x4) must keep the
+  thickness in real pixels; multiplying it by 4 made every stroke 4x too heavy (black-blob eyes, thick brows).
+- **Scrolling noise must be tileable.** Blur noise circularly (FFT Gaussian) before BORDER_WRAP scrolling, or smoke shows seams.
+- **Hair strands must follow the flow and be clipped to the hair shape**, drawn in the right layer (back hair before the face).
+- **Acting reads through the eyes first:** eyes lowered to the map -> lift on the key word, brows knit, jaw sets,
+  catchlight appears. Even with a simple face this is the beat viewers read.
+- **Silhouettes against a low sun** (rim light, haze, smoke) carry wide shots cheaply and look cinematic; detailed
+  faces do not, so keep wides for consequence and close-ups for emotion.
+- **Procedural painting has a quality ceiling:** code-built faces read as mannequins. Premium character art needs
+  illustrated (AI or painted) layers rigged with Live2D-style deformers. The cloud container cannot generate images.

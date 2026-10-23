@@ -17,3 +17,7 @@ output/v2/**/*_final_1080x1920.mp4
 output/v2/**/*_mix.wav
 output/v2/**/still_*.png
 output/v2/**/*_contact.png
+output/v3/**/*_final_1080x1920.mp4
+output/v3/**/*_mix.wav
+output/v3/**/*.mkv
+output/v3/**/*2pass*
