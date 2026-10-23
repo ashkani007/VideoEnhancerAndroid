@@ -1,0 +1,140 @@
+{
+ "file": "/home/user/VideoEnhancerAndroid/great_history_makers/output/_autopilot_selftest/selftest_cyrus_preview_720x1280_branded.mp4",
+ "container": {
+  "width": 720,
+  "height": 1280,
+  "fps": "30/1",
+  "video": "h264",
+  "audio": "aac",
+  "sample_rate": "48000",
+  "duration": 57.33,
+  "ok": true
+ },
+ "narration": {
+  "corr": 0.977,
+  "offset_ms": 0.0,
+  "speech_rms_dbfs": -14.3,
+  "pause_rms_dbfs": -24.8,
+  "ok": true
+ },
+ "captions": {
+  "cues": 20,
+  "cues_with_text": 20,
+  "median_on": 0.0389,
+  "median_in_pauses": 0.0038,
+  "pauses_checked": 8,
+  "ok": true,
+  "cue_start_vs_first_word_max_ms": 0.0,
+  "wording_matches_transcript": true
+ },
+ "logo": {
+  "watermark_ncc_min": 0.885,
+  "watermark_ncc_mean": 0.954,
+  "offposition_ncc_max": 0.08,
+  "endcard_ncc": 0.997,
+  "ok": true
+ },
+ "passed": true,
+ "caption_rows": [
+  {
+   "start": 0.0,
+   "end": 2.31,
+   "score": 0.0139
+  },
+  {
+   "start": 2.34,
+   "end": 5.45,
+   "score": 0.0419
+  },
+  {
+   "start": 5.52,
+   "end": 8.2,
+   "score": 0.0592
+  },
+  {
+   "start": 8.65,
+   "end": 10.82,
+   "score": 0.0305
+  },
+  {
+   "start": 10.87,
+   "end": 13.41,
+   "score": 0.0349
+  },
+  {
+   "start": 14.11,
+   "end": 16.35,
+   "score": 0.064
+  },
+  {
+   "start": 16.38,
+   "end": 19.48,
+   "score": 0.0404
+  },
+  {
+   "start": 20.12,
+   "end": 21.56,
+   "score": 0.0357
+  },
+  {
+   "start": 21.59,
+   "end": 24.32,
+   "score": 0.0657
+  },
+  {
+   "start": 24.45,
+   "end": 27.62,
+   "score": 0.0413
+  },
+  {
+   "start": 28.2,
+   "end": 31.48,
+   "score": 0.0471
+  },
+  {
+   "start": 31.51,
+   "end": 33.68,
+   "score": 0.0337
+  },
+  {
+   "start": 33.71,
+   "end": 35.48,
+   "score": 0.0278
+  },
+  {
+   "start": 35.95,
+   "end": 38.27,
+   "score": 0.0301
+  },
+  {
+   "start": 38.34,
+   "end": 41.36,
+   "score": 0.0448
+  },
+  {
+   "start": 42.0,
+   "end": 45.49,
+   "score": 0.0455
+  },
+  {
+   "start": 45.77,
+   "end": 48.09,
+   "score": 0.0708
+  },
+  {
+   "start": 48.12,
+   "end": 50.66,
+   "score": 0.0375
+  },
+  {
+   "start": 50.69,
+   "end": 52.76,
+   "score": 0.024
+  },
+  {
+   "start": 52.83,
+   "end": 55.34,
+   "score": 0.0334
+  }
+ ]
+}

@@ -90,3 +90,10 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   from the estimated line spans to the aligned line spans. One script kept all 17 shots on their lines.
 - **Alignment check:** PocketSphinx line starts matched ffmpeg silencedetect within 0.03 s; years need spoken forms in
   `captions.SPOKEN` and the align transcript ("eighteen oh four").
+
+## 2026-10-23: autopilot pipeline and self-test
+- **Transitions belong to cuts.** When cuts are re-derived (word indices, re-alignment), move every transition with its cut.
+- **A QC flag must stop the run** until the frames are inspected; fast intentional camera moves can sit right at the flicker threshold.
+- **Verify with negative controls.** The delivery verifier is trusted only because it fails on unbranded, silent, offset, audio-less and caption-less copies.
+- **Number readings vary by voice.** Let the aligner pick among candidate spoken forms (wrong forms do not align); never hand-guess.
+- **Use the video stream duration** for frame sampling; muxed audio can be longer than the picture.

@@ -1,0 +1,32 @@
+{
+  "file": "output/_autopilot_selftest/selftest_cyrus_preview_720x1280.mp4",
+  "width": 720,
+  "height": 1280,
+  "fps": 30.0,
+  "duration": 57.333333,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "bitrate_kbps": 18982,
+  "mean_frame_diff": 1.445,
+  "max_frame_diff": 7.232,
+  "flicker_spikes_s": [
+    10.07
+  ],
+  "black_frames_s": [],
+  "loudness_lufs": -14.7,
+  "true_peak_dbfs": -1.4,
+  "checks": {
+    "resolution": true,
+    "codec_h264": true,
+    "pix_fmt_yuv420p": true,
+    "fps": true,
+    "duration": true,
+    "has_audio": true,
+    "no_flicker_spikes": false,
+    "no_black_frames": true
+  },
+  "passed": false,
+  "encoder": "libx264",
+  "narration": true,
+  "render_seconds": 408
+}

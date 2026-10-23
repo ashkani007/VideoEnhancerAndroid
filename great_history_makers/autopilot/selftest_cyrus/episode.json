@@ -137,17 +137,17 @@
  ],
  "transitions": [
   {
-   "at": 2.25,
+   "at": 2.18,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 5.3,
+   "at": 5.335,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 8.25,
+   "at": 8.275,
    "type": "mosaic",
    "duration": 0.5,
    "direction": [
@@ -156,22 +156,22 @@
    ]
   },
   {
-   "at": 10.7,
+   "at": 10.695,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 13.6,
+   "at": 13.61,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 17.8,
+   "at": 17.83,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 19.6,
+   "at": 19.65,
    "type": "mosaic",
    "duration": 0.5,
    "direction": [
@@ -180,17 +180,17 @@
    ]
   },
   {
-   "at": 21.7,
+   "at": 21.72,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 24.3,
+   "at": 24.235,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 26.28,
+   "at": 26.26,
    "type": "dissolve",
    "duration": 0.18
   },
@@ -205,17 +205,17 @@
    "duration": 0.18
   },
   {
-   "at": 35.55,
+   "at": 35.565,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 38.15,
+   "at": 38.155,
    "type": "dissolve",
    "duration": 0.18
   },
   {
-   "at": 41.5,
+   "at": 41.53,
    "type": "mosaic",
    "duration": 0.5,
    "direction": [
@@ -224,7 +224,7 @@
    ]
   },
   {
-   "at": 45.45,
+   "at": 45.48,
    "type": "mosaic",
    "duration": 0.5,
    "direction": [
@@ -233,7 +233,7 @@
    ]
   },
   {
-   "at": 52.65,
+   "at": 52.645,
    "type": "dissolve",
    "duration": 0.6
   }

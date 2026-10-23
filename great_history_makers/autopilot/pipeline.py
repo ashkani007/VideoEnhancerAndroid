@@ -214,6 +214,12 @@ def timeline(ep, a, tail=2.3):
         end = cuts[k + 1] if k + 1 < len(cuts) else dur
         sc = dict(old.get(s["id"], {}), id=s["id"], start=cuts[k], duration=round(end - cuts[k], 3))
         scenes.append(sc)
+    # transitions belong to cuts: move each one with the cut it sat on
+    moved = {round(old[s["id"]]["start"], 3): s["start"] for s in scenes if s["id"] in old and "start" in old[s["id"]]}
+    for tr in c.get("transitions", []):
+        near = min(moved, key=lambda t0: abs(t0 - tr["at"]), default=None)
+        if near is not None and abs(near - tr["at"]) <= 0.3:
+            tr["at"] = moved[near]
     c["scenes"], c["duration"] = scenes, dur
     save_cfg(ep, c)
     print(json.dumps([(s["id"], s["start"], s["duration"]) for s in scenes]))
@@ -234,6 +240,10 @@ def render(ep, a):
     if a.final:
         cmd += ["--quality", "final", "--workers", "3"]
     subprocess.run(cmd, check=True)
+    q = json.load(open(master[:-4] + "_qc.json"))
+    if not q["passed"]:
+        failed = [k for k, v in q["checks"].items() if not v]
+        sys.exit(f"QC flagged {failed} (flicker at {q.get('flicker_spikes_s')}); inspect those frames before branding")
     return master
 
 

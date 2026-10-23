@@ -31,7 +31,7 @@ IVORY = np.array([242, 230, 200], np.float32)
 
 def probe(path):
     out = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
-                          "stream=codec_type,codec_name,width,height,r_frame_rate,sample_rate,channels:format=duration",
+                          "stream=codec_type,codec_name,width,height,r_frame_rate,sample_rate,channels,duration:format=duration",
                           "-of", "json", path], capture_output=True, text=True).stdout
     return json.loads(out)
 
@@ -152,7 +152,8 @@ def main():
     p = probe(a.video)
     vs = [s for s in p["streams"] if s["codec_type"] == "video"][0]
     au = [s for s in p["streams"] if s["codec_type"] == "audio"]
-    W, H, dur = vs["width"], vs["height"], float(p["format"]["duration"])
+    W, H = vs["width"], vs["height"]
+    dur = float(vs.get("duration") or p["format"]["duration"])     # video length (audio may run longer)
     rep = dict(file=os.path.abspath(a.video),
                container=dict(width=W, height=H, fps=vs["r_frame_rate"], video=vs["codec_name"],
                               audio=au[0]["codec_name"] if au else None,
