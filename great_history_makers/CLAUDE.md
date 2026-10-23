@@ -18,6 +18,12 @@ Episodes live in `episodes/<id>/`: `episode.json` (timeline, captions, audio cue
 - **Format:** 1080×1920, 30 fps, H.264 High yuv420p, AAC 48 kHz. Upload encode about 13 Mbps 2-pass (under 100 MB for git).
 - **Narration:** the client's voice file is never regenerated, edited or time-stretched. Only one overall gain is allowed.
   Paid generation (ElevenLabs, Runway, Kling, Artlist and so on) needs explicit approval every time.
+- **Generated narration (ElevenLabs):** send the approved `NARRATION.txt` unchanged with the approved voice
+  (`episode.json` → `tts.voice_id`; Ep02: `Gfpl8Yo74Is0W6cPUWWT`, Max). Price it first (estimate / dry run), then
+  generate once, then put the chosen take at `audio/narration.mp3`, align it, and re-time shots, titles and SFX to the real lines.
+  Once chosen, that take is treated like a client file: no edits or time-stretch. Use the ElevenLabs connector when the session has it;
+  otherwise `tools/tts_elevenlabs.py`, which reads the key only from the `ELEVENLABS_API_KEY` environment variable.
+  Never put an API key in code, chat, git or logs.
 - **Subtitles:** timing comes from forced alignment of the real audio (`tools/align_narration.py`). Never estimate it.
   Wording must match the narration exactly. One lower-middle position (y = 1410/1920), at most two lines,
   ivory text with an outline, no box. Never in the top of the frame; keep faces out of the caption band.
@@ -43,6 +49,7 @@ py produce.py episodes/<id> --quality final --workers 3
 py produce.py episodes/<id> --still 12.5
 py tools/brand.py master.mp4 audio_src.mp4 out.mp4 endcard.png
 py tools/shot_sheet.py episodes/<id> video.mp4 sheet.png
+py tools/tts_elevenlabs.py episodes/<id> [--confirm]  # narration via API (dry run without --confirm)
 py tools/character_sheet.py out.png                 # character turnaround sheet (rig views + profiles)
 py experiments/ab_2p5d/render_ab.py                 # style A/B (A vs B)
 py experiments/ab_2p5d/render_c.py                  # Version C + B/C comparison + metrics

@@ -1,0 +1,847 @@
+[
+{
+"word": "he",
+"start": 0.0,
+"end": 0.17
+},
+{
+"word": "rose",
+"start": 0.17,
+"end": 0.54
+},
+{
+"word": "from",
+"start": 0.54,
+"end": 0.71
+},
+{
+"word": "an(2)",
+"start": 0.71,
+"end": 0.8
+},
+{
+"word": "artillery",
+"start": 0.8,
+"end": 1.39
+},
+{
+"word": "officer",
+"start": 1.39,
+"end": 1.93
+},
+{
+"word": "to(2)",
+"start": 1.93,
+"end": 2.11
+},
+{
+"word": "become",
+"start": 2.11,
+"end": 2.46
+},
+{
+"word": "the",
+"start": 2.46,
+"end": 2.53
+},
+{
+"word": "most",
+"start": 2.53,
+"end": 2.86
+},
+{
+"word": "feared",
+"start": 2.86,
+"end": 3.43
+},
+{
+"word": "ruler",
+"start": 3.43,
+"end": 3.88
+},
+{
+"word": "in",
+"start": 3.88,
+"end": 4.04
+},
+{
+"word": "europe",
+"start": 4.04,
+"end": 4.57
+},
+{
+"word": "<sil>",
+"start": 4.57,
+"end": 5.1
+},
+{
+"word": "napoleon",
+"start": 5.1,
+"end": 5.67
+},
+{
+"word": "bonaparte",
+"start": 5.67,
+"end": 6.28
+},
+{
+"word": "crowned",
+"start": 6.28,
+"end": 6.63
+},
+{
+"word": "himself",
+"start": 6.63,
+"end": 7.14
+},
+{
+"word": "<sil>",
+"start": 7.14,
+"end": 7.26
+},
+{
+"word": "emperor",
+"start": 7.26,
+"end": 7.76
+},
+{
+"word": "of",
+"start": 7.76,
+"end": 7.86
+},
+{
+"word": "the",
+"start": 7.86,
+"end": 7.96
+},
+{
+"word": "french",
+"start": 7.96,
+"end": 8.5
+},
+{
+"word": "in",
+"start": 8.5,
+"end": 8.73
+},
+{
+"word": "<sil>",
+"start": 8.73,
+"end": 8.8
+},
+{
+"word": "eighteen",
+"start": 8.8,
+"end": 9.21
+},
+{
+"word": "oh",
+"start": 9.21,
+"end": 9.31
+},
+{
+"word": "four",
+"start": 9.31,
+"end": 9.79
+},
+{
+"word": "<sil>",
+"start": 9.79,
+"end": 10.4
+},
+{
+"word": "his",
+"start": 10.4,
+"end": 10.56
+},
+{
+"word": "armies",
+"start": 10.56,
+"end": 11.01
+},
+{
+"word": "won",
+"start": 11.01,
+"end": 11.2
+},
+{
+"word": "extraordinary(2)",
+"start": 11.2,
+"end": 12.11
+},
+{
+"word": "victories",
+"start": 12.11,
+"end": 12.73
+},
+{
+"word": "<sil>",
+"start": 12.73,
+"end": 12.97
+},
+{
+"word": "and(2)",
+"start": 12.97,
+"end": 13.1
+},
+{
+"word": "his",
+"start": 13.1,
+"end": 13.29
+},
+{
+"word": "empire",
+"start": 13.29,
+"end": 13.84
+},
+{
+"word": "reshaped",
+"start": 13.84,
+"end": 14.57
+},
+{
+"word": "the",
+"start": 14.57,
+"end": 14.64
+},
+{
+"word": "continent",
+"start": 14.64,
+"end": 15.25
+},
+{
+"word": "<sil>",
+"start": 15.25,
+"end": 15.89
+},
+{
+"word": "but",
+"start": 15.89,
+"end": 16.04
+},
+{
+"word": "napoleon",
+"start": 16.04,
+"end": 16.77
+},
+{
+"word": "wanted",
+"start": 16.77,
+"end": 17.13
+},
+{
+"word": "more",
+"start": 17.13,
+"end": 17.69
+},
+{
+"word": "<sil>",
+"start": 17.69,
+"end": 18.31
+},
+{
+"word": "in",
+"start": 18.31,
+"end": 18.43
+},
+{
+"word": "eighteen",
+"start": 18.43,
+"end": 18.86
+},
+{
+"word": "twelve",
+"start": 18.86,
+"end": 19.44
+},
+{
+"word": "he",
+"start": 19.44,
+"end": 19.62
+},
+{
+"word": "invaded",
+"start": 19.62,
+"end": 20.12
+},
+{
+"word": "russia",
+"start": 20.12,
+"end": 20.54
+},
+{
+"word": "with(2)",
+"start": 20.54,
+"end": 20.72
+},
+{
+"word": "a",
+"start": 20.72,
+"end": 20.79
+},
+{
+"word": "vast",
+"start": 20.79,
+"end": 21.33
+},
+{
+"word": "multinational(2)",
+"start": 21.33,
+"end": 22.27
+},
+{
+"word": "army",
+"start": 22.27,
+"end": 22.74
+},
+{
+"word": "<sil>",
+"start": 22.74,
+"end": 23.32
+},
+{
+"word": "he",
+"start": 23.32,
+"end": 23.43
+},
+{
+"word": "reached",
+"start": 23.43,
+"end": 23.77
+},
+{
+"word": "moscow(2)",
+"start": 23.77,
+"end": 24.39
+},
+{
+"word": "<sil>",
+"start": 24.39,
+"end": 24.64
+},
+{
+"word": "only",
+"start": 24.64,
+"end": 24.88
+},
+{
+"word": "to(3)",
+"start": 24.88,
+"end": 25.0
+},
+{
+"word": "find",
+"start": 25.0,
+"end": 25.37
+},
+{
+"word": "much",
+"start": 25.37,
+"end": 25.71
+},
+{
+"word": "of",
+"start": 25.71,
+"end": 25.79
+},
+{
+"word": "the",
+"start": 25.79,
+"end": 25.89
+},
+{
+"word": "city",
+"start": 25.89,
+"end": 26.2
+},
+{
+"word": "burning",
+"start": 26.2,
+"end": 26.79
+},
+{
+"word": "<sil>",
+"start": 26.79,
+"end": 27.36
+},
+{
+"word": "then",
+"start": 27.36,
+"end": 27.75
+},
+{
+"word": "came",
+"start": 27.75,
+"end": 28.04
+},
+{
+"word": "the",
+"start": 28.04,
+"end": 28.12
+},
+{
+"word": "retreat",
+"start": 28.12,
+"end": 28.73
+},
+{
+"word": "<sil>",
+"start": 28.73,
+"end": 29.31
+},
+{
+"word": "hunger",
+"start": 29.31,
+"end": 30.0
+},
+{
+"word": "disease",
+"start": 30.0,
+"end": 30.87
+},
+{
+"word": "exhaustion",
+"start": 30.87,
+"end": 31.71
+},
+{
+"word": "and(2)",
+"start": 31.71,
+"end": 31.96
+},
+{
+"word": "bitter",
+"start": 31.96,
+"end": 32.38
+},
+{
+"word": "cold",
+"start": 32.38,
+"end": 33.03
+},
+{
+"word": "devastated",
+"start": 33.03,
+"end": 33.7
+},
+{
+"word": "his",
+"start": 33.7,
+"end": 33.88
+},
+{
+"word": "forces",
+"start": 33.88,
+"end": 34.44
+},
+{
+"word": "<sil>",
+"start": 34.44,
+"end": 34.99
+},
+{
+"word": "his",
+"start": 34.99,
+"end": 35.19
+},
+{
+"word": "enemies",
+"start": 35.19,
+"end": 35.69
+},
+{
+"word": "united",
+"start": 35.69,
+"end": 36.24
+},
+{
+"word": "<sil>",
+"start": 36.24,
+"end": 37.32
+},
+{
+"word": "in",
+"start": 37.32,
+"end": 37.41
+},
+{
+"word": "eighteen",
+"start": 37.41,
+"end": 37.85
+},
+{
+"word": "fourteen",
+"start": 37.85,
+"end": 38.55
+},
+{
+"word": "<sil>",
+"start": 38.55,
+"end": 38.69
+},
+{
+"word": "napoleon",
+"start": 38.69,
+"end": 39.26
+},
+{
+"word": "abdicated",
+"start": 39.26,
+"end": 40.11
+},
+{
+"word": "and(2)",
+"start": 40.11,
+"end": 40.26
+},
+{
+"word": "was(2)",
+"start": 40.26,
+"end": 40.45
+},
+{
+"word": "exiled(2)",
+"start": 40.45,
+"end": 41.03
+},
+{
+"word": "to(2)",
+"start": 41.03,
+"end": 41.14
+},
+{
+"word": "elba",
+"start": 41.14,
+"end": 41.63
+},
+{
+"word": "<sil>",
+"start": 41.63,
+"end": 42.25
+},
+{
+"word": "he",
+"start": 42.25,
+"end": 42.35
+},
+{
+"word": "returned",
+"start": 42.35,
+"end": 42.85
+},
+{
+"word": "the",
+"start": 42.85,
+"end": 42.93
+},
+{
+"word": "following",
+"start": 42.93,
+"end": 43.45
+},
+{
+"word": "year",
+"start": 43.45,
+"end": 43.71
+},
+{
+"word": "for(3)",
+"start": 43.71,
+"end": 43.98
+},
+{
+"word": "one",
+"start": 43.98,
+"end": 44.33
+},
+{
+"word": "final",
+"start": 44.33,
+"end": 44.83
+},
+{
+"word": "gamble",
+"start": 44.83,
+"end": 45.35
+},
+{
+"word": "<sil>",
+"start": 45.35,
+"end": 45.96
+},
+{
+"word": "at",
+"start": 45.96,
+"end": 46.08
+},
+{
+"word": "waterloo",
+"start": 46.08,
+"end": 46.7
+},
+{
+"word": "<sil>",
+"start": 46.7,
+"end": 46.89
+},
+{
+"word": "his",
+"start": 46.89,
+"end": 47.11
+},
+{
+"word": "army",
+"start": 47.11,
+"end": 47.48
+},
+{
+"word": "was(2)",
+"start": 47.48,
+"end": 47.72
+},
+{
+"word": "defeated",
+"start": 47.72,
+"end": 48.27
+},
+{
+"word": "<sil>",
+"start": 48.27,
+"end": 48.49
+},
+{
+"word": "<sil>",
+"start": 48.49,
+"end": 49.04
+},
+{
+"word": "this",
+"start": 49.04,
+"end": 49.29
+},
+{
+"word": "time",
+"start": 49.29,
+"end": 49.65
+},
+{
+"word": "<sil>",
+"start": 49.65,
+"end": 49.88
+},
+{
+"word": "exile(2)",
+"start": 49.88,
+"end": 50.4
+},
+{
+"word": "meant",
+"start": 50.4,
+"end": 50.68
+},
+{
+"word": "a",
+"start": 50.68,
+"end": 50.72
+},
+{
+"word": "remote",
+"start": 50.72,
+"end": 51.19
+},
+{
+"word": "island",
+"start": 51.19,
+"end": 51.6
+},
+{
+"word": "in",
+"start": 51.6,
+"end": 51.7
+},
+{
+"word": "the(2)",
+"start": 51.7,
+"end": 51.82
+},
+{
+"word": "atlantic",
+"start": 51.82,
+"end": 52.4
+},
+{
+"word": "<sil>",
+"start": 52.4,
+"end": 52.73
+},
+{
+"word": "saint",
+"start": 52.73,
+"end": 53.05
+},
+{
+"word": "helena",
+"start": 53.05,
+"end": 53.53
+},
+{
+"word": "<sil>",
+"start": 53.53,
+"end": 54.23
+},
+{
+"word": "napoleon",
+"start": 54.23,
+"end": 54.81
+},
+{
+"word": "died",
+"start": 54.81,
+"end": 55.14
+},
+{
+"word": "there",
+"start": 55.14,
+"end": 55.54
+},
+{
+"word": "in",
+"start": 55.54,
+"end": 55.67
+},
+{
+"word": "eighteen",
+"start": 55.67,
+"end": 56.16
+},
+{
+"word": "twenty(2)",
+"start": 56.16,
+"end": 56.43
+},
+{
+"word": "one",
+"start": 56.43,
+"end": 56.77
+},
+{
+"word": "<sil>",
+"start": 56.77,
+"end": 57.69
+},
+{
+"word": "he",
+"start": 57.69,
+"end": 57.81
+},
+{
+"word": "conquered",
+"start": 57.81,
+"end": 58.3
+},
+{
+"word": "kingdoms",
+"start": 58.3,
+"end": 59.01
+},
+{
+"word": "<sil>",
+"start": 59.01,
+"end": 59.17
+},
+{
+"word": "changed",
+"start": 59.17,
+"end": 59.64
+},
+{
+"word": "europe",
+"start": 59.64,
+"end": 60.05
+},
+{
+"word": "and(2)",
+"start": 60.05,
+"end": 60.46
+},
+{
+"word": "became",
+"start": 60.46,
+"end": 60.99
+},
+{
+"word": "a",
+"start": 60.99,
+"end": 61.05
+},
+{
+"word": "legend",
+"start": 61.05,
+"end": 61.76
+},
+{
+"word": "<sil>",
+"start": 61.76,
+"end": 62.33
+},
+{
+"word": "but",
+"start": 62.33,
+"end": 62.47
+},
+{
+"word": "he",
+"start": 62.47,
+"end": 62.56
+},
+{
+"word": "could",
+"start": 62.56,
+"end": 62.72
+},
+{
+"word": "not",
+"start": 62.72,
+"end": 63.0
+},
+{
+"word": "conquer",
+"start": 63.0,
+"end": 63.43
+},
+{
+"word": "the",
+"start": 63.43,
+"end": 63.54
+},
+{
+"word": "consequences",
+"start": 63.54,
+"end": 64.5
+},
+{
+"word": "of",
+"start": 64.5,
+"end": 64.64
+},
+{
+"word": "his",
+"start": 64.64,
+"end": 64.85
+},
+{
+"word": "own",
+"start": 64.85,
+"end": 65.17
+},
+{
+"word": "ambition",
+"start": 65.17,
+"end": 65.86
+},
+{
+"word": "<sil>",
+"start": 65.86,
+"end": 65.99
+}
+]

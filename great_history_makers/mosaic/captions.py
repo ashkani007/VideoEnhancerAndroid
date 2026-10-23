@@ -8,7 +8,9 @@ overlapping the next cue)."""
 import json
 import re
 
-SPOKEN = {"539": ["five", "thirty", "nine"], "BCE": ["b", "c", "e"], "twenty-five": ["twenty", "five"]}
+SPOKEN = {"539": ["five", "thirty", "nine"], "BCE": ["b", "c", "e"], "twenty-five": ["twenty", "five"],
+          "1804": ["eighteen", "oh", "four"], "1812": ["eighteen", "twelve"], "1814": ["eighteen", "fourteen"],
+          "1821": ["eighteen", "twenty", "one"]}
 
 
 def _norm(tok):

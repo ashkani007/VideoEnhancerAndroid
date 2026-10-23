@@ -16,7 +16,7 @@ import subprocess
 import sys
 import tempfile
 
-EXTRA_PRON = {"opis": "OW P IH S", "marduk": "M AA R D UH K", "citys": "S IH T IY Z"}
+EXTRA_PRON = {"opis": "OW P IH S", "marduk": "M AA R D UH K", "citys": "S IH T IY Z", "elba": "EH L B AH"}
 
 
 def main(audio, text_path, out_path):

@@ -12,7 +12,7 @@ Sources: D. Chandler, The Campaigns of Napoleon; A. Zamoyski, 1812: Napoleon's F
 
 Artistic note: an artistic reconstruction in the style of ancient mosaics. The mosaic style is a modern creative treatment, not a claim that these events were recorded in mosaics. Scenes, faces, maps and uniforms are simplified and interpretive. The Arc de Triomphe (completed 1836) appears as a symbol of legacy.
 
-Narration: ElevenLabs voice. Music and sound effects: original, created for this video.
+Narration: AI voice generated with ElevenLabs (voice "Max"). Music and sound effects: original, created for this video.
 
 Series: Great History Makers, Episode 2
 
