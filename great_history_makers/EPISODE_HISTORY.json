@@ -380,6 +380,30 @@
     "variable_cost_eur": 0.0
    },
    "outcome": "awaiting client review"
+  },
+  {
+   "id": "v3_poc_living_illustration",
+   "date": "2026-10-23",
+   "dir": "ghm3/poc_napoleon",
+   "format": "1080x1920 30fps 12.6s, 2 connected shots",
+   "decisions": [
+    "client brief: Cinematic Living Illustration",
+    "procedural painterly renderer + Live2D-style head rig (no image generator available)",
+    "approved voice reused (no credits)"
+   ],
+   "scores": {
+    "emotion": 4,
+    "motion": 5,
+    "consistency": 5,
+    "storytelling": 6
+   },
+   "metrics": {
+    "render_s_final": 836,
+    "verify": "passed (watermark only)",
+    "narration_offset_ms": 0.0,
+    "variable_cost_eur": 0.0
+   },
+   "outcome": "awaiting client review; recommended AI-illustrated key art test next"
   }
  ],
  "next_episode_goals": [

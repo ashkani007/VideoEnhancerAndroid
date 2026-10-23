@@ -1,0 +1,27 @@
+{
+  "file": "output/v3/poc_napoleon/ghm3_poc_preview_540x960.mp4",
+  "width": 540,
+  "height": 960,
+  "fps": 30.0,
+  "duration": 12.6,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "bitrate_kbps": 1168,
+  "mean_frame_diff": 0.675,
+  "max_frame_diff": 5.007,
+  "flicker_spikes_s": [],
+  "black_frames_s": [],
+  "loudness_lufs": -17.9,
+  "true_peak_dbfs": -1.5,
+  "checks": {
+    "resolution": true,
+    "codec_h264": true,
+    "pix_fmt_yuv420p": true,
+    "fps": true,
+    "duration": true,
+    "has_audio": true,
+    "no_flicker_spikes": true,
+    "no_black_frames": true
+  },
+  "passed": true
+}

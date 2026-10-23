@@ -1,0 +1,46 @@
+{
+ "file": "/home/user/VideoEnhancerAndroid/great_history_makers/output/v3/poc_napoleon/GHM_v3_LivingIllustration_POC_1080x1920.mp4",
+ "container": {
+  "width": 1080,
+  "height": 1920,
+  "fps": "30/1",
+  "video": "h264",
+  "audio": "aac",
+  "sample_rate": "48000",
+  "duration": 12.6,
+  "ok": true
+ },
+ "narration": {
+  "corr": 0.856,
+  "offset_ms": 0.0,
+  "speech_rms_dbfs": -12.4,
+  "pause_rms_dbfs": -18.1,
+  "ok": true
+ },
+ "captions": {
+  "cues": 1,
+  "cues_with_text": 1,
+  "median_on": 0.0256,
+  "median_in_pauses": 0.0,
+  "pauses_checked": 1,
+  "ok": true,
+  "cue_start_vs_first_word_max_ms": 0.0,
+  "wording_matches_transcript": true
+ },
+ "logo": {
+  "watermark_ncc_min": 0.999,
+  "watermark_ncc_mean": 0.999,
+  "offposition_ncc_max": 0.022,
+  "endcard_ncc": 0.03,
+  "ok": true,
+  "endcard_required": false
+ },
+ "passed": true,
+ "caption_rows": [
+  {
+   "start": 1.39,
+   "end": 3.49,
+   "score": 0.0256
+  }
+ ]
+}
