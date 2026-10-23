@@ -1,0 +1,11 @@
+{
+ "active": false,
+ "note": "Standing ElevenLabs budget for daily runs. Stays inactive until the client authorises it; the daily run must stop when active is false.",
+ "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+ "model_id": "eleven_v4",
+ "takes_per_video": 1,
+ "max_credits_per_video": 900,
+ "max_credits_per_month": 25000,
+ "approved_by": null,
+ "approved_on": null
+}

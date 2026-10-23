@@ -7,6 +7,7 @@ starts at its first word and ends at its last word (+ a short hold, never
 overlapping the next cue)."""
 import json
 import re
+import unicodedata
 
 SPOKEN = {"539": ["five", "thirty", "nine"], "BCE": ["b", "c", "e"], "twenty-five": ["twenty", "five"],
           "1804": ["eighteen", "oh", "four"], "1812": ["eighteen", "twelve"], "1814": ["eighteen", "fourteen"],
@@ -17,12 +18,19 @@ def _norm(tok):
     return re.sub(r"\(\d+\)$", "", tok.lower())
 
 
-def map_words(transcript, aligned):
+def fold(s):
+    """ASCII-fold accents (Rhône -> Rhone) so display words match dictionary tokens."""
+    return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+
+
+def map_words(transcript, aligned, extra=None):
+    """extra: per-episode spoken forms {"218": ["two", "eighteen"]} that override SPOKEN."""
+    table = dict(SPOKEN, **(extra or {}))
     spoken = [w for w in aligned if w["word"] not in ("<sil>", "<s>", "</s>")]
     out, i = [], 0
     for disp in transcript.split():
         core = re.sub(r"[^\w'-]", "", disp)
-        toks = SPOKEN.get(core) or [core.lower().replace("'", "")]
+        toks = table.get(core) or [t for t in fold(core).lower().replace("'", "").split("-") if t]
         n = len(toks)
         seg = spoken[i:i + n]
         got = [_norm(s["word"]) for s in seg]
@@ -83,12 +91,12 @@ def build(transcript_path, aligned_path):
     return group(map_words(transcript, aligned))
 
 
-def build_groups(groups, transcript_path, aligned_path, hold=0.3):
+def build_groups(groups, transcript_path, aligned_path, hold=0.3, spoken=None):
     """Editorial phrase groups ("line one / line two"); timing comes only from the words."""
     with open(transcript_path, encoding="utf-8") as f:
         transcript = f.read().strip()
     with open(aligned_path) as f:
-        words = map_words(transcript, json.load(f))
+        words = map_words(transcript, json.load(f), spoken)
     cues, i = [], 0
     for g in groups:
         lines = [ln.strip() for ln in g.split("/")]

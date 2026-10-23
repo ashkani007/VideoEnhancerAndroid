@@ -1,0 +1,26 @@
+{
+ "series": "Great History Makers",
+ "episode": "ep05_genghis",
+ "fps": 30,
+ "tts": {
+  "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+  "model_id": "eleven_v4"
+ },
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "loudness_lufs": -14
+ },
+ "captions": {
+  "style": "outline",
+  "size": 60,
+  "pron": {
+   "khwarazmian": "K W AA R AE Z M IY AH N",
+   "khwarazmian(2)": "K AA R AH Z M IY AH N",
+   "temujin": "T EH M UW JH IH N",
+   "temujin(2)": "T EH M Y UW JH IH N"
+  }
+ },
+ "status": "script_pending_approval",
+ "title": "GENGHIS KHAN",
+ "subtitle": "FROM OUTCAST TO EMPIRE"
+}

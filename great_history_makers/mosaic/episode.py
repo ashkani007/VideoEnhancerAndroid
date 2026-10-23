@@ -67,7 +67,7 @@ class Episode:
             return self.cfg.get("subtitles", [])
         from . import captions
         cues = captions.build_groups(cc["groups"], os.path.join(self.dir, cc["transcript"]),
-                                     os.path.join(self.dir, cc["words"]))
+                                     os.path.join(self.dir, cc["words"]), spoken=cc.get("spoken"))
         for c in cues:
             shot = self.timeline[self._scene_index(c["start"] + 0.05)]
             c["y"] = shot.get("cap_y", 1300)

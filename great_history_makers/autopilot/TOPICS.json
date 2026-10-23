@@ -1,0 +1,50 @@
+{
+ "batch": "2026-W44",
+ "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+ "model_id": "eleven_v4",
+ "status": "pending_client_approval",
+ "queue": [
+  {
+   "id": "ep03_hannibal",
+   "title": "Hannibal: Across The Alps",
+   "dir": "autopilot/batches/2026-W44/ep03_hannibal",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep04_cleopatra",
+   "title": "Cleopatra: The Last Pharaoh",
+   "dir": "autopilot/batches/2026-W44/ep04_cleopatra",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep05_genghis",
+   "title": "Genghis Khan: From Outcast To Empire",
+   "dir": "autopilot/batches/2026-W44/ep05_genghis",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep06_joan",
+   "title": "Joan Of Arc: The Maid Of Orléans",
+   "dir": "autopilot/batches/2026-W44/ep06_joan",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep07_ashoka",
+   "title": "Ashoka: The Conqueror Who Repented",
+   "dir": "autopilot/batches/2026-W44/ep07_ashoka",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep08_mansa_musa",
+   "title": "Mansa Musa: The Golden Pilgrimage",
+   "dir": "autopilot/batches/2026-W44/ep08_mansa_musa",
+   "status": "script_pending_approval"
+  },
+  {
+   "id": "ep09_armada",
+   "title": "The Armada: Spain Against England",
+   "dir": "autopilot/batches/2026-W44/ep09_armada",
+   "status": "script_pending_approval"
+  }
+ ]
+}

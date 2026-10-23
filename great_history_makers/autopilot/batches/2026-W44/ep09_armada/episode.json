@@ -1,0 +1,25 @@
+{
+ "series": "Great History Makers",
+ "episode": "ep09_armada",
+ "fps": 30,
+ "tts": {
+  "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+  "model_id": "eleven_v4"
+ },
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "loudness_lufs": -14
+ },
+ "captions": {
+  "style": "outline",
+  "size": 60,
+  "pron": {
+   "fireships": "F AY ER SH IH P S",
+   "gravelines": "G R AE V L IY N",
+   "gravelines(2)": "G R AE V AH L AY N Z"
+  }
+ },
+ "status": "script_pending_approval",
+ "title": "THE ARMADA",
+ "subtitle": "SPAIN AGAINST ENGLAND"
+}

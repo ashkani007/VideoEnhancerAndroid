@@ -1,0 +1,712 @@
+[
+{
+"word": "in",
+"start": 0.0,
+"end": 0.2
+},
+{
+"word": "five",
+"start": 0.2,
+"end": 0.54
+},
+{
+"word": "thirty",
+"start": 0.54,
+"end": 0.85
+},
+{
+"word": "nine",
+"start": 0.85,
+"end": 1.21
+},
+{
+"word": "b",
+"start": 1.21,
+"end": 1.4
+},
+{
+"word": "c",
+"start": 1.4,
+"end": 1.74
+},
+{
+"word": "e",
+"start": 1.74,
+"end": 2.02
+},
+{
+"word": "<sil>",
+"start": 2.02,
+"end": 2.34
+},
+{
+"word": "cyrus",
+"start": 2.34,
+"end": 2.82
+},
+{
+"word": "the",
+"start": 2.82,
+"end": 2.92
+},
+{
+"word": "great",
+"start": 2.92,
+"end": 3.31
+},
+{
+"word": "turned",
+"start": 3.31,
+"end": 3.64
+},
+{
+"word": "his",
+"start": 3.64,
+"end": 3.82
+},
+{
+"word": "attention",
+"start": 3.82,
+"end": 4.32
+},
+{
+"word": "to(3)",
+"start": 4.32,
+"end": 4.43
+},
+{
+"word": "babylon",
+"start": 4.43,
+"end": 5.15
+},
+{
+"word": "<sil>",
+"start": 5.15,
+"end": 5.52
+},
+{
+"word": "one",
+"start": 5.52,
+"end": 5.64
+},
+{
+"word": "of",
+"start": 5.64,
+"end": 5.72
+},
+{
+"word": "the(2)",
+"start": 5.72,
+"end": 5.89
+},
+{
+"word": "ancient(2)",
+"start": 5.89,
+"end": 6.27
+},
+{
+"word": "worlds",
+"start": 6.27,
+"end": 6.73
+},
+{
+"word": "greatest",
+"start": 6.73,
+"end": 7.38
+},
+{
+"word": "cities",
+"start": 7.38,
+"end": 7.9
+},
+{
+"word": "<sil>",
+"start": 7.9,
+"end": 8.65
+},
+{
+"word": "after",
+"start": 8.65,
+"end": 8.92
+},
+{
+"word": "the",
+"start": 8.92,
+"end": 9.03
+},
+{
+"word": "persian",
+"start": 9.03,
+"end": 9.46
+},
+{
+"word": "victory",
+"start": 9.46,
+"end": 9.91
+},
+{
+"word": "at",
+"start": 9.91,
+"end": 10.04
+},
+{
+"word": "opis",
+"start": 10.04,
+"end": 10.52
+},
+{
+"word": "<sil>",
+"start": 10.52,
+"end": 10.87
+},
+{
+"word": "babylon",
+"start": 10.87,
+"end": 11.51
+},
+{
+"word": "came",
+"start": 11.51,
+"end": 11.82
+},
+{
+"word": "under",
+"start": 11.82,
+"end": 12.04
+},
+{
+"word": "persian",
+"start": 12.04,
+"end": 12.51
+},
+{
+"word": "control",
+"start": 12.51,
+"end": 13.11
+},
+{
+"word": "<sil>",
+"start": 13.11,
+"end": 13.58
+},
+{
+"word": "<sil>",
+"start": 13.58,
+"end": 14.11
+},
+{
+"word": "ancient(2)",
+"start": 14.11,
+"end": 14.44
+},
+{
+"word": "accounts",
+"start": 14.44,
+"end": 14.93
+},
+{
+"word": "describe",
+"start": 14.93,
+"end": 15.44
+},
+{
+"word": "the",
+"start": 15.44,
+"end": 15.53
+},
+{
+"word": "citys",
+"start": 15.53,
+"end": 15.89
+},
+{
+"word": "capture",
+"start": 15.89,
+"end": 16.38
+},
+{
+"word": "with(2)",
+"start": 16.38,
+"end": 16.67
+},
+{
+"word": "little",
+"start": 16.67,
+"end": 16.96
+},
+{
+"word": "resistance",
+"start": 16.96,
+"end": 17.72
+},
+{
+"word": "<sil>",
+"start": 17.72,
+"end": 17.94
+},
+{
+"word": "though",
+"start": 17.94,
+"end": 18.18
+},
+{
+"word": "details(2)",
+"start": 18.18,
+"end": 18.75
+},
+{
+"word": "differ",
+"start": 18.75,
+"end": 19.18
+},
+{
+"word": "<sil>",
+"start": 19.18,
+"end": 20.12
+},
+{
+"word": "cyrus",
+"start": 20.12,
+"end": 20.6
+},
+{
+"word": "entered",
+"start": 20.6,
+"end": 20.96
+},
+{
+"word": "babylon",
+"start": 20.96,
+"end": 21.59
+},
+{
+"word": "and(2)",
+"start": 21.59,
+"end": 21.78
+},
+{
+"word": "presented(2)",
+"start": 21.78,
+"end": 22.23
+},
+{
+"word": "himself",
+"start": 22.23,
+"end": 22.77
+},
+{
+"word": "as",
+"start": 22.77,
+"end": 22.99
+},
+{
+"word": "a",
+"start": 22.99,
+"end": 23.03
+},
+{
+"word": "legitimate",
+"start": 23.03,
+"end": 23.65
+},
+{
+"word": "king",
+"start": 23.65,
+"end": 24.02
+},
+{
+"word": "<sil>",
+"start": 24.02,
+"end": 24.45
+},
+{
+"word": "honoring",
+"start": 24.45,
+"end": 24.85
+},
+{
+"word": "local",
+"start": 24.85,
+"end": 25.21
+},
+{
+"word": "traditions",
+"start": 25.21,
+"end": 25.94
+},
+{
+"word": "and(2)",
+"start": 25.94,
+"end": 26.32
+},
+{
+"word": "the",
+"start": 26.32,
+"end": 26.44
+},
+{
+"word": "god",
+"start": 26.44,
+"end": 26.75
+},
+{
+"word": "marduk",
+"start": 26.75,
+"end": 27.32
+},
+{
+"word": "<sil>",
+"start": 27.32,
+"end": 27.68
+},
+{
+"word": "<sil>",
+"start": 27.68,
+"end": 28.2
+},
+{
+"word": "the",
+"start": 28.2,
+"end": 28.29
+},
+{
+"word": "famous",
+"start": 28.29,
+"end": 28.81
+},
+{
+"word": "cyrus",
+"start": 28.81,
+"end": 29.31
+},
+{
+"word": "cylinder",
+"start": 29.31,
+"end": 29.83
+},
+{
+"word": "records(3)",
+"start": 29.83,
+"end": 30.41
+},
+{
+"word": "his",
+"start": 30.41,
+"end": 30.57
+},
+{
+"word": "royal",
+"start": 30.57,
+"end": 30.92
+},
+{
+"word": "claims",
+"start": 30.92,
+"end": 31.51
+},
+{
+"word": "and(2)",
+"start": 31.51,
+"end": 31.76
+},
+{
+"word": "his",
+"start": 31.76,
+"end": 31.94
+},
+{
+"word": "restoration",
+"start": 31.94,
+"end": 32.69
+},
+{
+"word": "of",
+"start": 32.69,
+"end": 32.81
+},
+{
+"word": "religious",
+"start": 32.81,
+"end": 33.25
+},
+{
+"word": "sites",
+"start": 33.25,
+"end": 33.71
+},
+{
+"word": "and(2)",
+"start": 33.71,
+"end": 33.96
+},
+{
+"word": "displaced",
+"start": 33.96,
+"end": 34.5
+},
+{
+"word": "communities",
+"start": 34.5,
+"end": 35.18
+},
+{
+"word": "<sil>",
+"start": 35.18,
+"end": 35.95
+},
+{
+"word": "it",
+"start": 35.95,
+"end": 36.05
+},
+{
+"word": "is",
+"start": 36.05,
+"end": 36.28
+},
+{
+"word": "an",
+"start": 36.28,
+"end": 36.39
+},
+{
+"word": "extraordinary(2)",
+"start": 36.39,
+"end": 37.33
+},
+{
+"word": "artifact",
+"start": 37.33,
+"end": 37.97
+},
+{
+"word": "<sil>",
+"start": 37.97,
+"end": 38.34
+},
+{
+"word": "but",
+"start": 38.34,
+"end": 38.57
+},
+{
+"word": "not",
+"start": 38.57,
+"end": 38.9
+},
+{
+"word": "a",
+"start": 38.9,
+"end": 38.97
+},
+{
+"word": "modern",
+"start": 38.97,
+"end": 39.43
+},
+{
+"word": "declaration",
+"start": 39.43,
+"end": 40.12
+},
+{
+"word": "of",
+"start": 40.12,
+"end": 40.23
+},
+{
+"word": "human",
+"start": 40.23,
+"end": 40.56
+},
+{
+"word": "rights",
+"start": 40.56,
+"end": 41.06
+},
+{
+"word": "<sil>",
+"start": 41.06,
+"end": 42.0
+},
+{
+"word": "babylon",
+"start": 42.0,
+"end": 42.56
+},
+{
+"word": "became",
+"start": 42.56,
+"end": 42.94
+},
+{
+"word": "part",
+"start": 42.94,
+"end": 43.3
+},
+{
+"word": "of",
+"start": 43.3,
+"end": 43.44
+},
+{
+"word": "a",
+"start": 43.44,
+"end": 43.52
+},
+{
+"word": "vast",
+"start": 43.52,
+"end": 44.12
+},
+{
+"word": "persian",
+"start": 44.12,
+"end": 44.57
+},
+{
+"word": "empire",
+"start": 44.57,
+"end": 45.19
+},
+{
+"word": "<sil>",
+"start": 45.19,
+"end": 45.77
+},
+{
+"word": "more",
+"start": 45.77,
+"end": 45.92
+},
+{
+"word": "than(2)",
+"start": 45.92,
+"end": 46.09
+},
+{
+"word": "twenty",
+"start": 46.09,
+"end": 46.49
+},
+{
+"word": "five",
+"start": 46.49,
+"end": 46.82
+},
+{
+"word": "centuries",
+"start": 46.82,
+"end": 47.41
+},
+{
+"word": "later",
+"start": 47.41,
+"end": 47.8
+},
+{
+"word": "<sil>",
+"start": 47.8,
+"end": 48.12
+},
+{
+"word": "the",
+"start": 48.12,
+"end": 48.2
+},
+{
+"word": "story",
+"start": 48.2,
+"end": 48.63
+},
+{
+"word": "of",
+"start": 48.63,
+"end": 48.72
+},
+{
+"word": "cyrus",
+"start": 48.72,
+"end": 49.3
+},
+{
+"word": "still",
+"start": 49.3,
+"end": 49.7
+},
+{
+"word": "raises",
+"start": 49.7,
+"end": 50.07
+},
+{
+"word": "questions",
+"start": 50.07,
+"end": 50.69
+},
+{
+"word": "about",
+"start": 50.69,
+"end": 50.97
+},
+{
+"word": "power",
+"start": 50.97,
+"end": 51.46
+},
+{
+"word": "<sil>",
+"start": 51.46,
+"end": 51.76
+},
+{
+"word": "conquest",
+"start": 51.76,
+"end": 52.46
+},
+{
+"word": "<sil>",
+"start": 52.46,
+"end": 52.83
+},
+{
+"word": "and(2)",
+"start": 52.83,
+"end": 52.97
+},
+{
+"word": "how",
+"start": 52.97,
+"end": 53.23
+},
+{
+"word": "rulers",
+"start": 53.23,
+"end": 53.77
+},
+{
+"word": "wish",
+"start": 53.77,
+"end": 54.09
+},
+{
+"word": "to(2)",
+"start": 54.09,
+"end": 54.18
+},
+{
+"word": "be",
+"start": 54.18,
+"end": 54.32
+},
+{
+"word": "remembered",
+"start": 54.32,
+"end": 55.04
+},
+{
+"word": "</s>",
+"start": 55.03,
+"end": 55.04
+}
+]

@@ -69,7 +69,8 @@ def main():
     if cfg.get("captions"):
         from mosaic import captions
         cc = cfg["captions"]
-        cues = captions.build_groups(cc["groups"], os.path.join(ep, cc["transcript"]), os.path.join(ep, cc["words"]))
+        cues = captions.build_groups(cc["groups"], os.path.join(ep, cc["transcript"]), os.path.join(ep, cc["words"]),
+                                     spoken=cc.get("spoken"))
     text.write_srt(cues, os.path.join(out_dir, f"{name}.en.srt"))
     if a.frames is None:
         rep = qc.run(final, cfg, os.path.join(out_dir, tag), ctx.W, ctx.H)

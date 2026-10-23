@@ -1,0 +1,26 @@
+{
+ "series": "Great History Makers",
+ "episode": "ep08_mansa_musa",
+ "fps": 30,
+ "tts": {
+  "voice_id": "Gfpl8Yo74Is0W6cPUWWT",
+  "model_id": "eleven_v4"
+ },
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "loudness_lufs": -14
+ },
+ "captions": {
+  "style": "outline",
+  "size": 60,
+  "pron": {
+   "djinguereber": "JH IH NG G ER EH B ER",
+   "djinguereber(2)": "JH IH NG G EH R EY B ER",
+   "mansa": "M AA N S AH",
+   "umari": "UW M AA R IY"
+  }
+ },
+ "status": "script_pending_approval",
+ "title": "MANSA MUSA",
+ "subtitle": "THE GOLDEN PILGRIMAGE"
+}

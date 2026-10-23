@@ -11,3 +11,5 @@ output/**/*2pass*
 output/ep02_napoleon/ep02_napoleon_preview_720x1280.mp4
 .env
 *.env
+output/_autopilot_selftest/*.mp4
+output/_autopilot_selftest/*.wav
