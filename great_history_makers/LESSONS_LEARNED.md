@@ -81,3 +81,12 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   about 40 s although the end-of-path position was safe.
 - **Without narration, estimated captions are a stop-gap only.** Mark `subtitles_status` PROVISIONAL in episode.json and the QA report,
   and re-align once audio exists.
+
+## 2026-10-23: Episode 02 narration (ElevenLabs, approved)
+- **Price first, then generate once:** `estimate_only` gave 1,676 credits for two takes (838 characters each) before spending.
+- **Text length estimates run short for this voice:** 838 characters / 137 words took 66.0–67.1 s with eleven_v4 Max
+  (about 2.1 words/s including ~0.7 s line pauses), not the 59–64 s estimated. Budget about 125 words for a 60 s Short with this voice.
+- **Re-timing without re-editing:** map every timed field (scene starts, transitions, titles, SFX, melody notes) piecewise-linearly
+  from the estimated line spans to the aligned line spans. One script kept all 17 shots on their lines.
+- **Alignment check:** PocketSphinx line starts matched ffmpeg silencedetect within 0.03 s; years need spoken forms in
+  `captions.SPOKEN` and the align transcript ("eighteen oh four").

@@ -1,15 +1,16 @@
 # Napoleon, From Emperor to Exile: QA report (Episode 02, 720×1280 preview)
 
-**Status:** PREVIEW, awaiting client approval. **No narration audio yet** (ElevenLabs generation needs approval),
-so the preview carries the original score and SFX only, and **the subtitle timing is provisional (estimated)**.
-The 1080×1920 final will be rendered only after approval and after the narration is generated and forced-aligned.
+**Status:** PREVIEW v2 (with narration), awaiting client approval before the 1080×1920 final.
+**Narration:** ElevenLabs, voice Max (`Gfpl8Yo74Is0W6cPUWWT`), model eleven_v4, approved script sent unchanged.
+Two takes were generated (838 credits each, 1,676 in total, about $0.34); take 2 (66.0 s) is used and take 1 (67.1 s) is kept as an alternate.
+**Captions** come from PocketSphinx forced alignment of that audio; the shots, titles, SFX and score were re-timed to the real lines.
 
 ## Technical check (ffprobe + produce.py QC)
 | Item | Result |
 |---|---|
-| File | `Napoleon_Episode02_Preview_720x1280.mp4`, 48.8 MB |
-| Video | H.264 High, 720×1280, 30 fps, yuv420p, 1890 frames, 63.0 s, about 6.0 Mbps |
-| Audio | AAC LC 48 kHz, score + SFX only (−14.8 LUFS, true peak −1.4 dBFS) |
+| File | `Napoleon_Episode02_Preview_720x1280.mp4`, 52.9 MB |
+| Video | H.264 High, 720×1280, 30 fps, yuv420p, 2046 frames, 68.2 s |
+| Audio | AAC LC 48 kHz; narration + original score + SFX (−15.0 LUFS, true peak −1.4 dBFS). Narration offset in the final file 0.0 ms, correlation 0.973 with the source take |
 | QC | PASSED: no flicker spikes, no black frames; mean frame difference 0.93 (no frozen stretches) |
 | Branding | Original gold emblem upper-left (scaled 155 px at 1080, 60 %), 3 s end signature with @great_history_makers_en |
 | Colour | Mean saturation 0.591 (mid-shot frames); worst-shot clipping 0.37 % (bright fire and sky tiles) |
@@ -25,17 +26,16 @@ The 1080×1920 final will be rendered only after approval and after the narratio
 | Colour and lighting | 7 | **8** | Planned palette arc: warm imperial, then fire red, cold winter, steel Waterloo, sunset exile. One sun per scene, depth lighting |
 | Scene variety | 8 | **9** | 17 compositions, 0 near-duplicates; every line has its own picture |
 | Historical accuracy | 8 | 8 | `HISTORY.md` maps all 16 lines to sources (established, propaganda, disputed, reconstruction). On-screen date notes; "Artistic reconstruction" label; the Arc (completed 1836) labelled as a legacy symbol. Uniforms and maps simplified |
-| Narration sync | 9 | **n/a (pending)** | No audio yet. Cuts sit on *estimated* line boundaries and must be re-cut to the real voice |
-| Subtitle quality | 8 | **5 (provisional)** | Exact approved wording, at most two lines, ivory text with an outline, no box, fixed y = 1410. Timing is ESTIMATED (breaks the house rule until alignment). Defect: s12 at about 40 s, the caption crosses Napoleon's small figure at head height |
+| Narration sync | 9 | **9** | Offset 0.0 ms, correlation 0.973; aligned line starts match ffmpeg silence detection within 0.03 s; shot cuts sit on the real line pauses |
+| Subtitle quality | 8 | **8** | 27 cues timed from forced alignment; exact approved wording; at most two lines; ivory text with an outline, no box, fixed y = 1410. The caption crosses the small figures' bodies in s12 (faces stay just above the band) |
 | Engagement potential | 6 | **7** | Title and cannon shot inside the first second; picture changes every 2–5 s; strong fire/winter contrast; dusk bicorne ending into the end card |
 
-**Overall:** gains in depth, animation, cinematography, colour and variety. Sync and subtitle quality cannot be
-scored fairly until the narration exists.
+**Overall:** gains in depth, animation, cinematography, colour and variety; sync and subtitles hold the Episode 01 level. Main regression: length (68 s vs 56 s).
 
 ## Known weaknesses and regressions (honest list)
-1. **Subtitle timing is estimated**, not aligned (no audio). This will be fixed with `tools/align_narration.py` after narration.
-2. **Narration length is estimated at 59–64 s** (838 characters, 137 words). It may exceed the 55–60 s target by a few seconds; I would not cut the approved script without asking.
-3. **s12 caption over a face:** Napoleon's head passes through the caption band around 40 s. Fix for the final: end his path higher (q ≈ 1.75) or start the caption lower in the shot.
+1. **Length 68.2 s** (narration 66.0 s): over the 55–60 s target. It is still a valid Short (YouTube allows up to 3 min). Shortening needs either a script cut (client decision) or a different model/voice setting; the narration is not time-stretched.
+2. **Words not checked by ear:** the alignment fits cleanly and every line pause is where expected, but a pronunciation check (Bonaparte, Elba, Saint Helena, the years) needs your listen.
+3. **s12:** the caption crosses the bodies of the small figures on the beach; faces stay just above the band.
 4. **Small figures** in s02, s06, s09 and s13: faces are a few tiles wide at phone size; Napoleon is only clearly readable in s01, s03, s05, s11, s15.
 5. **Maps are simplified** (s04, s10): approximate borders c. 1811; on-screen labels are small (30–32 px at 1080).
 6. **Discrete turn views** (11.25° steps) can show a slight snap during fast turns.
@@ -48,7 +48,6 @@ scored fairly until the narration exists.
 The same costume system drives every shot.
 
 ## Not done (needs approval)
-- ElevenLabs narration, voice `Gfpl8Yo74Is0W6cPUWWT` ("Max"), the exact approved 16-line script, about 838 characters per take.
 - The final 1080×1920 render and branding.
 - Publishing to YouTube.
 - Channel handle: I used @great_history_makers_en (from the provided Instagram screenshot). I could not verify the YouTube handle from this environment; please confirm.

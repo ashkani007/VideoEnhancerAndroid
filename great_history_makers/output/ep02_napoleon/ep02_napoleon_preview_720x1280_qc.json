@@ -3,15 +3,15 @@
   "width": 720,
   "height": 1280,
   "fps": 30.0,
-  "duration": 63.0,
+  "duration": 68.2,
   "video_codec": "h264",
   "audio_codec": "aac",
-  "bitrate_kbps": 15688,
-  "mean_frame_diff": 0.929,
-  "max_frame_diff": 4.776,
+  "bitrate_kbps": 15785,
+  "mean_frame_diff": 0.839,
+  "max_frame_diff": 4.749,
   "flicker_spikes_s": [],
   "black_frames_s": [],
-  "loudness_lufs": -14.8,
+  "loudness_lufs": -15.0,
   "true_peak_dbfs": -1.4,
   "checks": {
     "resolution": true,
@@ -25,6 +25,6 @@
   },
   "passed": true,
   "encoder": "libx264",
-  "narration": false,
-  "render_seconds": 374
+  "narration": true,
+  "render_seconds": 400
 }

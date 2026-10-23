@@ -63,6 +63,6 @@ defects · **9** = professional; would hold up next to strong channels in the ni
 | Colour and lighting | 7 | 8 | Chapter palette arc; saturation 0.591; worst clip 0.37 % |
 | Scene variety | 8 | 9 | 17 shots, 0 near-duplicates |
 | Historical accuracy | 8 | 8 | HISTORY.md covers all 16 lines; labels on screen |
-| Narration sync | 9 | n/a | No audio yet |
-| Subtitle quality | 8 | 5 (provisional) | Estimated timing; s12 face crosses the band at about 40 s |
+| Narration sync | 9 | 9 | Preview v2: offset 0.0 ms, corr 0.973 |
+| Subtitle quality | 8 | 8 | Preview v2: forced-aligned cues; faces above the band |
 | Engagement potential | 6 | 7 | Hook in the first second; changes every 2–5 s |

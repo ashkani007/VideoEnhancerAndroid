@@ -123,6 +123,24 @@
       "max_clip_pct": 0.37
      },
      "outcome": "awaiting client approval"
+    },
+    {
+     "v": "Preview v2",
+     "date": "2026-10-23",
+     "format": "720x1280 30fps 68.2s",
+     "shots": 17,
+     "decisions": [
+      "ElevenLabs eleven_v4, voice Gfpl8Yo74Is0W6cPUWWT, 2 takes (1676 credits), take 2 used",
+      "forced-aligned captions",
+      "timeline re-timed piecewise to real line spans"
+     ],
+     "metrics": {
+      "narration_offset_ms": 0.0,
+      "narration_corr": 0.973,
+      "lufs": -15.0,
+      "narration_s": 66.04
+     },
+     "outcome": "awaiting client approval"
     }
    ],
    "scores_preview": {
@@ -133,16 +151,15 @@
     "color_light": 8,
     "variety": 9,
     "history": 8,
-    "sync": null,
-    "subtitles": 5,
+    "sync": 9,
+    "subtitles": 8,
     "engagement": 7
    },
    "open_issues": [
-    "narration not generated (needs approval)",
-    "captions must be forced-aligned after narration",
-    "s12 Napoleon's head crosses the caption band at ~40s",
-    "narration may run 59-64s vs 55-60s target",
-    "YouTube handle not verified"
+    "length 68.2s exceeds 55-60s target (script cut needs client)",
+    "client to listen-check pronunciation",
+    "YouTube handle not verified",
+    "final 1080x1920 after approval"
    ]
   }
  ],
