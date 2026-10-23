@@ -33,6 +33,14 @@ Episodes live in `episodes/<id>/`: `episode.json` (timeline, captions, audio cue
   Never re-skin a previous episode. Nothing is published without human approval.
 - **Style changes:** never roll out an unapproved style change across an episode. Test it first as an A/B on one shot.
 
+## v2 direction (client decision 2026-10-23)
+New episodes use **illustration plates + limited 2D animation + motion graphics** (`ghm2/`, see
+`ghm2/MIGRATION_PLAN.md`). Do not build new 2.5D rigs or per-shot procedural scenes; the v1 engine stays in the
+repo for reference and for Episode 01/02. 8–12 compositions per 60 s, one motivated camera move each, cuts in
+narration pauses, limited character motion (blink, head turn, gesture, breathe) only where it serves the story.
+The exact v2 look (including whether a mosaic filter is kept) still needs client approval.
+Variable cost target < €0.50 per video: measure it, log credits in `autopilot/LEDGER.json`.
+
 ## Episode loop (follow every time)
 1. **Review:** read the memory files and list the strongest techniques and the open weaknesses.
 2. **Goals:** pick 2–3 concrete improvements. Write them into `EPISODE_HISTORY.json` before producing.
@@ -50,6 +58,8 @@ py produce.py episodes/<id> --still 12.5
 py tools/brand.py master.mp4 audio_src.mp4 out.mp4 endcard.png
 py tools/shot_sheet.py episodes/<id> video.mp4 sheet.png
 py tools/tts_elevenlabs.py episodes/<id> [--confirm]  # narration via API (dry run without --confirm)
+py -m ghm2.render <v2 episode dir> [--final|--still T]  # v2 illustration pipeline (540x960 preview / 1080x1920)
+py tools/verify_delivery.py video.mp4 <episode dir>  # narration sync, captions, logo (v1 and v2)
 py tools/character_sheet.py out.png                 # character turnaround sheet (rig views + profiles)
 py experiments/ab_2p5d/render_ab.py                 # style A/B (A vs B)
 py experiments/ab_2p5d/render_c.py                  # Version C + B/C comparison + metrics

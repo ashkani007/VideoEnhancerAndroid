@@ -360,6 +360,26 @@
     "gentler camera",
     "view changes in 11.25-degree steps"
    ]
+  },
+  {
+   "id": "v2_poc_napoleon",
+   "date": "2026-10-23",
+   "dir": "ghm2/poc_napoleon",
+   "format": "1080x1920 30fps 20s, 4 compositions",
+   "decisions": [
+    "client-directed v2: plates + limited 2D animation + motion graphics",
+    "plates exported from Ep02 as stand-ins for AI illustrations",
+    "Ep02 narration lines 1-4 reused (no new credits)"
+   ],
+   "metrics": {
+    "render_s_preview_540": 74,
+    "render_s_final_1080": 405,
+    "brand_s": 145,
+    "verify": "passed",
+    "narration_offset_ms": 0.0,
+    "variable_cost_eur": 0.0
+   },
+   "outcome": "awaiting client review"
   }
  ],
  "next_episode_goals": [

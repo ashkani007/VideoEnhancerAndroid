@@ -29,3 +29,6 @@
 | 10-22 | ep02 | Napoleon placed behind the plan table at map height | Hidden by the table | Larger figure (k 1.25) standing higher, table in the foreground |
 | 10-22 | ep02 | Return walk ending low in frame | Face crossed the caption band | Path ends at q 1.92; still crosses the band mid-walk; needs a higher path |
 | 10-22 | ep02 | Writing deliverables before creating `output/<id>/deliverables` | FileNotFoundError | Create the directory first (`mkdir -p`) |
+| 10-23 | 2.5D/turnrig production model | Full procedural 2.5D episodes (Ep02) | Too expensive per episode; client stopped it | v2: illustration plates + puppet warps + mograph |
+| 10-23 | v2 PoC | Storyboard iterated europe_land() dict keys | `proj() missing lat` | Use `.values()`; geodata now in ghm2/data |
+| 10-23 | v2 PoC | Austerlitz and Wagram labels at default offsets | Labels overlapped (battles 90 km apart) | Per-arrow label offsets |

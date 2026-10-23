@@ -1,0 +1,841 @@
+{
+ "title": "Napoleon v2 proof of concept (15-20 s)",
+ "fps": 30,
+ "duration": 20.0,
+ "note": "Illustration plates are stand-ins exported from Episode 02 (export_plates.py). In production they come from the illustration stage.",
+ "comps": [
+  {
+   "id": "c1_toulon",
+   "start": 0.0,
+   "end": 4.83,
+   "look": "warm",
+   "layers": [
+    {
+     "png": "plates/toulon_bg.png",
+     "depth": 0.45
+    },
+    {
+     "png": "plates/toulon_napoleon.png",
+     "depth": 1.0,
+     "rigs": [
+      {
+       "type": "blink",
+       "eye": [
+        990,
+        1411,
+        16,
+        10
+       ],
+       "times": [
+        1.45,
+        3.7
+       ]
+      },
+      {
+       "type": "turn",
+       "center": [
+        1030,
+        1420
+       ],
+       "radius": [
+        120,
+        150
+       ],
+       "pivot": [
+        1035,
+        1545
+       ],
+       "deg": [
+        [
+         0.6,
+         0
+        ],
+        [
+         1.4,
+         -1.5
+        ],
+        [
+         2.6,
+         2.2
+        ],
+        [
+         4.2,
+         1.6
+        ]
+       ]
+      },
+      {
+       "type": "breathe",
+       "center": [
+        1025,
+        1760
+       ],
+       "radius": [
+        130,
+        190
+       ],
+       "pivot": [
+        1025,
+        1900
+       ],
+       "amp": 2.0,
+       "period": 3.4
+      }
+     ]
+    },
+    {
+     "png": "plates/toulon_fg.png",
+     "depth": 1.35,
+     "blur": 3.0
+    }
+   ],
+   "camera": {
+    "from": {
+     "zoom": 1.0,
+     "x": 560,
+     "y": 980
+    },
+    "to": {
+     "zoom": 1.07,
+     "x": 700,
+     "y": 1040
+    }
+   },
+   "overlays": [
+    {
+     "type": "particles",
+     "n": 70,
+     "kind": "dust",
+     "region": [
+      0,
+      0.35,
+      1,
+      1
+     ],
+     "color": [
+      255,
+      214,
+      150
+     ],
+     "strength": 0.45,
+     "seed": 1
+    },
+    {
+     "type": "flicker",
+     "pos": [
+      260,
+      1030
+     ],
+     "radius": 520,
+     "color": [
+      255,
+      196,
+      120
+     ],
+     "strength": 0.18,
+     "depth": 0.45
+    }
+   ]
+  },
+  {
+   "id": "c2_coronation",
+   "start": 4.83,
+   "end": 10.1,
+   "look": "regal",
+   "layers": [
+    {
+     "png": "plates/coronation_bg.png",
+     "depth": 1.0
+    }
+   ],
+   "camera": {
+    "from": {
+     "zoom": 1.0,
+     "x": 540,
+     "y": 1060
+    },
+    "to": {
+     "zoom": 1.08,
+     "x": 500,
+     "y": 1010
+    }
+   },
+   "overlays": [
+    {
+     "type": "godrays",
+     "src": [
+      528,
+      360
+     ],
+     "strength": 0.22,
+     "spread": 30,
+     "depth": 1.0
+    },
+    {
+     "type": "particles",
+     "n": 55,
+     "kind": "gold",
+     "region": [
+      0.1,
+      0.2,
+      0.9,
+      0.85
+     ],
+     "color": [
+      255,
+      220,
+      140
+     ],
+     "size": [
+      2,
+      4
+     ],
+     "strength": 0.8,
+     "seed": 2
+    }
+   ]
+  },
+  {
+   "id": "c3_map",
+   "start": 10.1,
+   "end": 15.57,
+   "kind": "map",
+   "look": "map",
+   "camera": {
+    "from": {
+     "zoom": 1.0,
+     "x": 560,
+     "y": 860
+    },
+    "to": {
+     "zoom": 1.12,
+     "x": 600,
+     "y": 840
+    }
+   },
+   "map": {
+    "land": "europe_simplified",
+    "places": [
+     {
+      "name": "PARIS",
+      "lonlat": [
+       2.35,
+       48.86
+      ],
+      "start": 10.25,
+      "offset": [
+       -10,
+       32
+      ]
+     }
+    ],
+    "arrows": [
+     {
+      "from": [
+       2.35,
+       48.86
+      ],
+      "to": [
+       16.76,
+       49.13
+      ],
+      "start": 10.45,
+      "dur": 0.5,
+      "label": "AUSTERLITZ 1805",
+      "bend": 0.12,
+      "label_offset": [
+       78,
+       -30
+      ]
+     },
+     {
+      "from": [
+       2.35,
+       48.86
+      ],
+      "to": [
+       11.59,
+       50.93
+      ],
+      "start": 11.0,
+      "dur": 0.5,
+      "label": "JENA 1806",
+      "bend": -0.15,
+      "label_offset": [
+       -46,
+       -34
+      ]
+     },
+     {
+      "from": [
+       2.35,
+       48.86
+      ],
+      "to": [
+       21.0,
+       54.45
+      ],
+      "start": 11.55,
+      "dur": 0.55,
+      "label": "FRIEDLAND 1807",
+      "bend": -0.12,
+      "label_offset": [
+       0,
+       -36
+      ]
+     },
+     {
+      "from": [
+       2.35,
+       48.86
+      ],
+      "to": [
+       16.56,
+       48.3
+      ],
+      "start": 12.1,
+      "dur": 0.5,
+      "label": "WAGRAM 1809",
+      "bend": 0.28,
+      "label_offset": [
+       -20,
+       40
+      ]
+     }
+    ],
+    "regions": [
+     {
+      "poly": "napoleonic_regions:french_empire_1811",
+      "color": [
+       36,
+       66,
+       150
+      ],
+      "alpha": 0.82,
+      "start": 12.95,
+      "dur": 1.3,
+      "origin": [
+       2.35,
+       48.86
+      ],
+      "border": [
+       236,
+       196,
+       104
+      ]
+     },
+     {
+      "poly": "napoleonic_regions:french_allies_1811",
+      "color": [
+       96,
+       128,
+       196
+      ],
+      "alpha": 0.55,
+      "start": 13.55,
+      "dur": 1.4,
+      "origin": [
+       2.35,
+       48.86
+      ]
+     }
+    ]
+   },
+   "overlays": [
+    {
+     "type": "particles",
+     "n": 30,
+     "kind": "dust",
+     "color": [
+      220,
+      230,
+      255
+     ],
+     "strength": 0.25,
+     "seed": 3,
+     "depth": 0.2
+    }
+   ]
+  },
+  {
+   "id": "c4_plan",
+   "start": 15.57,
+   "end": 20.0,
+   "look": "interior",
+   "bg": [
+    14,
+    20,
+    16
+   ],
+   "layers": [
+    {
+     "png": "plates/plan_bg.png",
+     "depth": 0.5
+    },
+    {
+     "png": "plates/plan_napoleon.png",
+     "depth": 1.0,
+     "rigs": [
+      {
+       "type": "blink",
+       "eye": [
+        746,
+        1212,
+        22,
+        14
+       ],
+       "times": [
+        16.25,
+        18.9
+       ]
+      },
+      {
+       "type": "turn",
+       "center": [
+        800,
+        1200
+       ],
+       "radius": [
+        150,
+        175
+       ],
+       "pivot": [
+        805,
+        1350
+       ],
+       "deg": [
+        [
+         16.5,
+         0
+        ],
+        [
+         17.4,
+         3.5
+        ],
+        [
+         19.5,
+         3.0
+        ]
+       ]
+      },
+      {
+       "type": "gesture",
+       "center": [
+        520,
+        1575
+       ],
+       "radius": [
+        120,
+        80
+       ],
+       "pivot": [
+        700,
+        1540
+       ],
+       "dx": [
+        [
+         15.6,
+         0
+        ],
+        [
+         16.6,
+         -16
+        ],
+        [
+         17.6,
+         -10
+        ]
+       ],
+       "deg": [
+        [
+         15.6,
+         0
+        ],
+        [
+         16.8,
+         -1.5
+        ]
+       ]
+      },
+      {
+       "type": "breathe",
+       "center": [
+        830,
+        1520
+       ],
+       "radius": [
+        180,
+        160
+       ],
+       "pivot": [
+        830,
+        1700
+       ],
+       "amp": 1.6,
+       "period": 3.8
+      }
+     ]
+    },
+    {
+     "png": "plates/plan_fg.png",
+     "depth": 1.3,
+     "blur": 3.0
+    }
+   ],
+   "camera": {
+    "from": {
+     "zoom": 1.0,
+     "x": 560,
+     "y": 1020
+    },
+    "to": {
+     "zoom": 1.1,
+     "x": 650,
+     "y": 990
+    }
+   },
+   "overlays": [
+    {
+     "type": "flicker",
+     "pos": [
+      955,
+      1366
+     ],
+     "radius": 560,
+     "color": [
+      255,
+      170,
+      90
+     ],
+     "strength": 0.4,
+     "depth": 1.3
+    },
+    {
+     "type": "particles",
+     "n": 45,
+     "kind": "dust",
+     "region": [
+      0.35,
+      0.3,
+      1,
+      0.9
+     ],
+     "color": [
+      255,
+      200,
+      140
+     ],
+     "strength": 0.35,
+     "seed": 5
+    }
+   ]
+  }
+ ],
+ "transitions": [
+  {
+   "at": 4.83,
+   "type": "flash",
+   "dur": 0.5
+  },
+  {
+   "at": 10.1,
+   "type": "whip",
+   "dur": 0.4
+  },
+  {
+   "at": 15.57,
+   "type": "dissolve",
+   "dur": 0.5
+  }
+ ],
+ "graphics": [
+  {
+   "type": "title",
+   "text": "NAPOLEON",
+   "sub": "FROM EMPEROR TO EXILE",
+   "start": 0.1,
+   "end": 2.45,
+   "y": 300,
+   "size": 100
+  },
+  {
+   "type": "text",
+   "text": "TOULON  \u00b7  1793",
+   "start": 2.6,
+   "end": 4.75,
+   "y": 300,
+   "size": 40,
+   "kind": "sub",
+   "tracking": 0.14,
+   "anim": "wipe",
+   "color": [
+    246,
+    236,
+    212
+   ],
+   "stroke": 2
+  },
+  {
+   "type": "text",
+   "text": "EMPEROR OF THE FRENCH",
+   "start": 7.26,
+   "end": 10.0,
+   "y": 600,
+   "size": 46,
+   "kind": "sub",
+   "tracking": 0.12,
+   "anim": "wipe",
+   "color": [
+    246,
+    236,
+    212
+   ],
+   "stroke": 2
+  },
+  {
+   "type": "text",
+   "text": "1804",
+   "start": 8.8,
+   "end": 10.0,
+   "y": 720,
+   "size": 150,
+   "kind": "title",
+   "anim": "stamp",
+   "color": [
+    236,
+    196,
+    104
+   ],
+   "stroke": 3,
+   "glow": [
+    255,
+    190,
+    90
+   ]
+  },
+  {
+   "type": "text",
+   "text": "THE NAPOLEONIC WARS",
+   "start": 10.3,
+   "end": 15.5,
+   "y": 290,
+   "size": 40,
+   "kind": "sub",
+   "tracking": 0.14,
+   "anim": "wipe",
+   "color": [
+    246,
+    236,
+    212
+   ],
+   "stroke": 2
+  },
+  {
+   "type": "timeline",
+   "y": 380,
+   "years": [
+    1805,
+    1812
+   ],
+   "start": 10.35,
+   "end": 15.5,
+   "marks": [
+    {
+     "year": 1805,
+     "t": 10.95
+    },
+    {
+     "year": 1806,
+     "t": 11.5
+    },
+    {
+     "year": 1807,
+     "t": 12.1
+    },
+    {
+     "year": 1809,
+     "t": 12.6
+    }
+   ]
+  },
+  {
+   "type": "text",
+   "text": "FRENCH EMPIRE AND ALLIES  \u00b7  c. 1811",
+   "start": 13.6,
+   "end": 15.5,
+   "y": 1250,
+   "size": 30,
+   "kind": "note",
+   "anim": "fade",
+   "color": [
+    246,
+    236,
+    212
+   ],
+   "stroke": 1
+  },
+  {
+   "type": "text",
+   "text": "Artistic reconstruction",
+   "start": 15.8,
+   "end": 17.0,
+   "y": 300,
+   "size": 28,
+   "kind": "note",
+   "anim": "fade",
+   "color": [
+    246,
+    236,
+    212
+   ],
+   "stroke": 1
+  }
+ ],
+ "captions": {
+  "transcript": "audio/transcript.txt",
+  "words": "audio/words_aligned.json",
+  "y": 1410,
+  "size": 60,
+  "style": "outline",
+  "groups": [
+   "He rose from an artillery officer",
+   "to become the most feared / ruler in Europe.",
+   "Napoleon Bonaparte crowned himself",
+   "Emperor of the French / in 1804.",
+   "His armies won / extraordinary victories,",
+   "and his empire / reshaped the continent.",
+   "But Napoleon wanted more."
+  ]
+ },
+ "audio": {
+  "narration_file": "audio/narration.mp3",
+  "loudness_lufs": -14,
+  "music": {
+   "root_hz": 146.83,
+   "mode": "minor",
+   "seed": 21,
+   "gain": 0.3,
+   "drum_from": 10.1,
+   "drum_to": 15.5,
+   "melody": [
+    [
+     0.4,
+     4,
+     1.6
+    ],
+    [
+     2.2,
+     5,
+     1.0
+    ],
+    [
+     3.4,
+     4,
+     1.2
+    ],
+    [
+     5.0,
+     7,
+     2.0
+    ],
+    [
+     7.2,
+     4,
+     1.4
+    ],
+    [
+     8.8,
+     7,
+     1.2
+    ],
+    [
+     10.3,
+     5,
+     1.0
+    ],
+    [
+     11.4,
+     4,
+     1.0
+    ],
+    [
+     12.5,
+     7,
+     1.4
+    ],
+    [
+     14.0,
+     5,
+     1.2
+    ],
+    [
+     15.8,
+     2,
+     2.0
+    ],
+    [
+     17.6,
+     0,
+     2.4
+    ]
+   ]
+  },
+  "sfx": [
+   {
+    "type": "wind",
+    "start": 0,
+    "end": 4.8,
+    "gain": 0.18
+   },
+   {
+    "type": "cannon",
+    "start": 1.2,
+    "gain": 0.35,
+    "dist": 0.7
+   },
+   {
+    "type": "whoosh",
+    "start": 4.6,
+    "gain": 0.2
+   },
+   {
+    "type": "bell",
+    "start": 4.9,
+    "end": 10.0,
+    "gain": 0.28,
+    "period": 1.7
+   },
+   {
+    "type": "crowd",
+    "start": 4.9,
+    "end": 10.0,
+    "gain": 0.14
+   },
+   {
+    "type": "whoosh",
+    "start": 9.9,
+    "gain": 0.3
+   },
+   {
+    "type": "drum",
+    "start": 10.1,
+    "end": 15.5,
+    "gain": 0.32,
+    "period": 0.5
+   },
+   {
+    "type": "fire",
+    "start": 15.6,
+    "end": 20.0,
+    "gain": 0.14
+   }
+  ]
+ },
+ "qc_allow_motion": [
+  [
+   9.85,
+   10.35,
+   "whip transition"
+  ]
+ ]
+}

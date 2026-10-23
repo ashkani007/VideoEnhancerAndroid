@@ -143,12 +143,13 @@ def main():
     ap.add_argument("episode")
     ap.add_argument("--report")
     a = ap.parse_args()
-    cfg = json.load(open(os.path.join(a.episode, "episode.json"), encoding="utf-8"))
+    name = "episode.json" if os.path.exists(os.path.join(a.episode, "episode.json")) else "storyboard.json"  # v1 / v2
+    cfg = json.load(open(os.path.join(a.episode, name), encoding="utf-8"))
     cc = cfg["captions"]
     tr = open(os.path.join(a.episode, cc["transcript"]), encoding="utf-8").read().strip()
     wpath = os.path.join(a.episode, cc["words"])
-    words = captions.map_words(tr, json.load(open(wpath)))
-    cues = captions.build_groups(cc["groups"], os.path.join(a.episode, cc["transcript"]), wpath)
+    words = captions.map_words(tr, json.load(open(wpath)), cc.get("spoken"))
+    cues = captions.build_groups(cc["groups"], os.path.join(a.episode, cc["transcript"]), wpath, spoken=cc.get("spoken"))
     p = probe(a.video)
     vs = [s for s in p["streams"] if s["codec_type"] == "video"][0]
     au = [s for s in p["streams"] if s["codec_type"] == "audio"]

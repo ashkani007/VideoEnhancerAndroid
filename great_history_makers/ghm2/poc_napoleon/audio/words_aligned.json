@@ -1,0 +1,242 @@
+[
+{
+"word": "he",
+"start": 0.0,
+"end": 0.17
+},
+{
+"word": "rose",
+"start": 0.17,
+"end": 0.54
+},
+{
+"word": "from",
+"start": 0.54,
+"end": 0.71
+},
+{
+"word": "an(2)",
+"start": 0.71,
+"end": 0.8
+},
+{
+"word": "artillery",
+"start": 0.8,
+"end": 1.39
+},
+{
+"word": "officer",
+"start": 1.39,
+"end": 1.93
+},
+{
+"word": "to(2)",
+"start": 1.93,
+"end": 2.11
+},
+{
+"word": "become",
+"start": 2.11,
+"end": 2.46
+},
+{
+"word": "the",
+"start": 2.46,
+"end": 2.53
+},
+{
+"word": "most",
+"start": 2.53,
+"end": 2.86
+},
+{
+"word": "feared",
+"start": 2.86,
+"end": 3.43
+},
+{
+"word": "ruler",
+"start": 3.43,
+"end": 3.88
+},
+{
+"word": "in",
+"start": 3.88,
+"end": 4.04
+},
+{
+"word": "europe",
+"start": 4.04,
+"end": 4.57
+},
+{
+"word": "<sil>",
+"start": 4.57,
+"end": 5.1
+},
+{
+"word": "napoleon",
+"start": 5.1,
+"end": 5.67
+},
+{
+"word": "bonaparte",
+"start": 5.67,
+"end": 6.28
+},
+{
+"word": "crowned",
+"start": 6.28,
+"end": 6.63
+},
+{
+"word": "himself",
+"start": 6.63,
+"end": 7.14
+},
+{
+"word": "<sil>",
+"start": 7.14,
+"end": 7.26
+},
+{
+"word": "emperor",
+"start": 7.26,
+"end": 7.76
+},
+{
+"word": "of",
+"start": 7.76,
+"end": 7.86
+},
+{
+"word": "the",
+"start": 7.86,
+"end": 7.96
+},
+{
+"word": "french",
+"start": 7.96,
+"end": 8.5
+},
+{
+"word": "in",
+"start": 8.5,
+"end": 8.73
+},
+{
+"word": "<sil>",
+"start": 8.73,
+"end": 8.8
+},
+{
+"word": "eighteen",
+"start": 8.8,
+"end": 9.21
+},
+{
+"word": "oh",
+"start": 9.21,
+"end": 9.31
+},
+{
+"word": "four",
+"start": 9.31,
+"end": 9.79
+},
+{
+"word": "<sil>",
+"start": 9.79,
+"end": 10.4
+},
+{
+"word": "his",
+"start": 10.4,
+"end": 10.56
+},
+{
+"word": "armies",
+"start": 10.56,
+"end": 11.01
+},
+{
+"word": "won",
+"start": 11.01,
+"end": 11.2
+},
+{
+"word": "extraordinary(2)",
+"start": 11.2,
+"end": 12.11
+},
+{
+"word": "victories",
+"start": 12.11,
+"end": 12.73
+},
+{
+"word": "<sil>",
+"start": 12.73,
+"end": 12.97
+},
+{
+"word": "and(2)",
+"start": 12.97,
+"end": 13.1
+},
+{
+"word": "his",
+"start": 13.1,
+"end": 13.29
+},
+{
+"word": "empire",
+"start": 13.29,
+"end": 13.84
+},
+{
+"word": "reshaped",
+"start": 13.84,
+"end": 14.57
+},
+{
+"word": "the",
+"start": 14.57,
+"end": 14.64
+},
+{
+"word": "continent",
+"start": 14.64,
+"end": 15.25
+},
+{
+"word": "<sil>",
+"start": 15.25,
+"end": 15.89
+},
+{
+"word": "but",
+"start": 15.89,
+"end": 16.04
+},
+{
+"word": "napoleon",
+"start": 16.04,
+"end": 16.77
+},
+{
+"word": "wanted",
+"start": 16.77,
+"end": 17.13
+},
+{
+"word": "more",
+"start": 17.13,
+"end": 17.69
+},
+{
+"word": "<sil>",
+"start": 17.69,
+"end": 18.31
+}
+]

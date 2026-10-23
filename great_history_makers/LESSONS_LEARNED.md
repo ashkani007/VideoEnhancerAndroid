@@ -97,3 +97,13 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 - **Verify with negative controls.** The delivery verifier is trusted only because it fails on unbranded, silent, offset, audio-less and caption-less copies.
 - **Number readings vary by voice.** Let the aligner pick among candidate spoken forms (wrong forms do not align); never hand-guess.
 - **Use the video stream duration** for frame sampling; muxed audio can be longer than the picture.
+
+## 2026-10-23: direction change to v2 (client decision)
+- **Per-shot procedural art does not scale commercially:** ~1,100 lines of scene code per episode plus many review rounds.
+  v2 treats illustrations as data and spends effort on a reusable renderer instead.
+- **Limited animation on a single image works without rigging:** soft-region displacement warps (inverse-mapped with
+  cv2.remap) give head turns and gestures of 2–4° with no tearing; blinks are painted eyelids in sampled skin colour.
+  Order matters: blink first, then warp, so the eyelid moves with the head.
+- **Plates need overscale headroom:** a global 1.06 overscale plus per-layer offset clamping lets parallax and pushes
+  run without exposing plate edges.
+- **Keep geodata out of storyboards:** maps reference shared files in `ghm2/data/`.

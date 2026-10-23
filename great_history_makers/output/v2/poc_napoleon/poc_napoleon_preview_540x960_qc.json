@@ -1,0 +1,30 @@
+{
+  "file": "/home/user/VideoEnhancerAndroid/great_history_makers/output/v2/poc_napoleon/poc_napoleon_preview_540x960.mp4",
+  "width": 540,
+  "height": 960,
+  "fps": 30.0,
+  "duration": 20.0,
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "bitrate_kbps": 4949,
+  "mean_frame_diff": 1.309,
+  "max_frame_diff": 3.103,
+  "flicker_spikes_s": [],
+  "black_frames_s": [],
+  "loudness_lufs": -15.2,
+  "true_peak_dbfs": -1.5,
+  "checks": {
+    "resolution": true,
+    "codec_h264": true,
+    "pix_fmt_yuv420p": true,
+    "fps": true,
+    "duration": true,
+    "has_audio": true,
+    "no_flicker_spikes": true,
+    "no_black_frames": true
+  },
+  "passed": true,
+  "encoder": "libx264",
+  "narration": true,
+  "render_seconds": 74
+}

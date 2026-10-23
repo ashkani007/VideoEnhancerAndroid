@@ -13,3 +13,7 @@ output/ep02_napoleon/ep02_napoleon_preview_720x1280.mp4
 *.env
 output/_autopilot_selftest/*.mp4
 output/_autopilot_selftest/*.wav
+output/v2/**/*_final_1080x1920.mp4
+output/v2/**/*_mix.wav
+output/v2/**/still_*.png
+output/v2/**/*_contact.png
