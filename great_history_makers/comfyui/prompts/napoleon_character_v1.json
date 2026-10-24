@@ -1,0 +1,20 @@
+{
+ "name": "napoleon_character_v1",
+ "notes": "First character test in the style of assets/references/napoleon_style_reference_01.png. Generate 8 candidates, pick the best, send it back for review.",
+ "width": 768,
+ "height": 1344,
+ "steps": 30,
+ "cfg": 6.0,
+ "seeds": [
+  101,
+  202,
+  303,
+  404,
+  505,
+  606,
+  707,
+  808
+ ],
+ "positive": "original character illustration, Napoleon Bonaparte around 1800, age 30, three-quarter view facing right, chest-up portrait, determined restrained expression with a hint of tension, heavy brows, grey-blue eyes with a single catchlight, strong jaw, straight nose, dark slightly wavy hair under a black bicorne hat with a tricolour cockade, dark navy general's coat with scarlet high collar and red piping, gold fringed epaulettes, white waistcoat, golden hour sunlight from the right, warm orange rim light on face and collar, cool navy shadows, painterly editorial illustration, gouache style flat colour masses, hard-edged shadow shapes, subtle paper texture, cinematic poster composition, hazy apricot and slate-blue sky, soft atmospheric depth, high detail face",
+ "negative": "photo, photorealistic, 3d render, cgi, flat vector, cartoon, chibi, anime, thick outlines, mosaic, stained glass, extra fingers, deformed hands, distorted face, asymmetrical eyes, blurry, lowres, jpeg artifacts, text, letters, signature, watermark, logo, frame"
+}

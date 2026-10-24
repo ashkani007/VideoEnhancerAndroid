@@ -21,3 +21,4 @@ output/v3/**/*_final_1080x1920.mp4
 output/v3/**/*_mix.wav
 output/v3/**/*.mkv
 output/v3/**/*2pass*
+comfyui/candidates/
