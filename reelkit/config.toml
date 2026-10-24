@@ -1,0 +1,47 @@
+# ReelKit configuration. Override location with REELKIT_CONFIG,
+# workspace with REELKIT_WORKSPACE.
+
+[paths]
+workspace = "~/reelkit_media"
+
+[discovery]
+# Only these licenses are eligible for automatic reuse.
+allowed_licenses = ["CC0", "PD", "CC-BY", "CC-BY-SA"]
+min_source_height_preview = 240
+min_source_height_final = 1080   # final 1440x2560 refuses lower-res sources
+providers = ["curated_open_movies", "internet_archive", "wikimedia_commons", "youtube_cc"]
+
+[voice]
+engine = "kokoro"                      # local, free, ~1.3x realtime on CPU
+model = "kokoro-v1.0.int8.onnx"
+voices = "voices-v1.0.bin"
+voice = "am_onyx"
+speed = 1.0
+model_url = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/"
+
+[edit]
+min_shot = 1.1          # seconds
+max_shot = 3.6
+reframe = "hybrid"      # hybrid | crop | fit
+source_audio_db = -21   # original (licensed) soundtrack bed under narration
+duck_db = -9            # extra ducking while narrator speaks
+
+[render.preview]
+width = 480
+height = 854
+crf = 26
+fps = 24
+
+[render.final]
+width = 1440
+height = 2560
+crf = 19
+fps = 24
+
+[llm]
+# Optional. With ANTHROPIC_API_KEY set, discovery ranking, shot captioning and
+# script drafting run unattended through the API. Without it, ReelKit writes
+# prompt files and expects the JSON answers to be dropped next to them
+# (that is how the agent-driven production test was run).
+model = "claude-opus-5-5"          # set e.g. "claude-haiku-5-5" to cut cost per Short
+script_model = "claude-opus-5-5"

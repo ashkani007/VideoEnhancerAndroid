@@ -1,0 +1,326 @@
+{
+  "query": "short film twist ending",
+  "providers": {
+    "curated_open_movies": {
+      "status": "ok",
+      "count": 13
+    },
+    "internet_archive": {
+      "status": "unavailable",
+      "error": "ProxyError: HTTPSConnectionPool(host='archive.org', port=443): Max retries exceeded with url: /advancedsearch.php?q=%28short+film+twist+ending%29+AND+mediatype%3Amovies+AND+%28licenseurl%3A%2Acreativecommons.org%2Flicenses%2Fby%2F%2A+OR+licenseurl%3A%2Apublicdomain%2A%29&fl%5B%5D=identifier&fl%5B%5D"
+    },
+    "wikimedia_commons": {
+      "status": "unavailable",
+      "error": "ProxyError: HTTPSConnectionPool(host='commons.wikimedia.org', port=443): Max retries exceeded with url: /w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrsearch=short+film+twist+ending+filetype%3Avideo&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cextmetadata (Caused by ProxyEr"
+    },
+    "youtube_cc": {
+      "status": "unavailable",
+      "error": "ModuleNotFoundError: No module named 'yt_dlp'"
+    }
+  },
+  "rubric": {
+    "hook": "Can the first 3 seconds pose an irresistible question? (0-5)",
+    "conflict": "Mystery, suspense, a surprising decision or emotional conflict (0-5)",
+    "visual": "Is the story told clearly in pictures, readable after a 9:16 crop? (0-5)",
+    "payoff": "A satisfying reveal / twist / ending that fits in 60 s (0-5)",
+    "fit_60s": "Can the arc be compressed to 45-60 s without lying about it? (0-5)"
+  },
+  "candidates": [
+    {
+      "title": "Sintel (2010, Blender Foundation, dir. Colin Levy)",
+      "provider": "curated_open_movies",
+      "url": "https://durian.blender.org/",
+      "license": "CC-BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "year": 2010,
+      "duration_s": 888,
+      "max_height": 1080,
+      "download_urls": [
+        "https://raw.githubusercontent.com/andreasbotsikas/DemoVideos/master/sintel.mp4",
+        "https://archive.org/details/Sintel"
+      ],
+      "synopsis": "A lone girl rescues and raises a wounded baby dragon, Scales, until an adult dragon snatches it. She searches for years, finally reaches a dragon's lair, and kills the adult dragon that hesitated to kill her, then sees its wing scar: it was Scales, grown up. Her reflection shows she has grown up too. Scales' baby follows her as she leaves.",
+      "scores": {
+        "hook": 5,
+        "conflict": 5,
+        "visual": 5,
+        "payoff": 5,
+        "fit_60s": 4
+      },
+      "notes": "Footage-verified in this run (277 shots analysed). Official 1080p/4K masters exist; the copy reachable from the restricted test network is a 512x292 re-encode (CC-BY permits redistribution). Credit: (c) copyright Blender Foundation | durian.blender.org. Logos/trademarks excluded from licence.",
+      "reachable_here": true,
+      "total": 24
+    },
+    {
+      "title": "Night of the Living Dead (1968, dir. George A. Romero)",
+      "provider": "curated_open_movies",
+      "url": "https://archive.org/details/night_of_the_living_dead",
+      "license": "PD (US)",
+      "license_url": "https://www.loc.gov/item/2021604373/",
+      "year": 1968,
+      "duration_s": 5760,
+      "max_height": 480,
+      "download_urls": [],
+      "synopsis": "Strangers barricade themselves in a farmhouse against the walking dead. Ben survives the night, only to be shot by the rescue posse who mistake him for a ghoul.",
+      "scores": {
+        "hook": 5,
+        "conflict": 5,
+        "visual": 4,
+        "payoff": 5,
+        "fit_60s": 4
+      },
+      "notes": "US public domain because the original prints carried no copyright notice. Use an original-print scan: later restorations/colourisations may carry their own copyright. Not reachable from the test network (archive.org blocked).",
+      "reachable_here": false,
+      "total": 23
+    },
+    {
+      "title": "Sprite Fright (2021, Blender Studio, dir. Matthew Luhn)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/sprite-fright/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2021,
+      "duration_s": 630,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "Horror-comedy: rowdy teenagers on a forest outing run afoul of tiny mushroom sprites.",
+      "scores": {
+        "hook": 4,
+        "conflict": 4,
+        "visual": 5,
+        "payoff": 4,
+        "fit_60s": 4
+      },
+      "notes": "Licence from Blender Studio's general CC-BY policy; per-film licensing tab not verified in this run. Not reachable from the test network.",
+      "reachable_here": false,
+      "total": 21
+    },
+    {
+      "title": "Cosmos Laundromat: First Cycle (2015, Blender Institute)",
+      "provider": "curated_open_movies",
+      "url": "https://gooseberry.blender.org/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2015,
+      "duration_s": 730,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "On a desolate island, a suicidal sheep named Franck meets a quirky salesman who offers him the gift of a lifetime.",
+      "scores": {
+        "hook": 5,
+        "conflict": 4,
+        "visual": 5,
+        "payoff": 3,
+        "fit_60s": 4
+      },
+      "notes": "Sources disagree (CC-BY 4.0 in press coverage, CC-BY-SA 4.0 in a xiph mirror README); both are eligible but SA would bind the Short. Ending is a pilot cliffhanger.",
+      "reachable_here": false,
+      "total": 21
+    },
+    {
+      "title": "Charge (2022, Blender Studio)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/charge/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2022,
+      "duration_s": 240,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "Short action film set in an energy-starved dystopia (synopsis not verified in this run).",
+      "scores": {
+        "hook": 3,
+        "conflict": 4,
+        "visual": 4,
+        "payoff": 3,
+        "fit_60s": 4
+      },
+      "notes": "Licence from Blender Studio's general policy; not verified per film.",
+      "reachable_here": false,
+      "total": 18
+    },
+    {
+      "title": "Caminandes 3: Llamigos (2016, Blender Institute)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/caminandes-3/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2016,
+      "duration_s": 150,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "Koro the llama meets Oti, a pesky penguin, in the Patagonian winter.",
+      "scores": {
+        "hook": 3,
+        "conflict": 2,
+        "visual": 5,
+        "payoff": 3,
+        "fit_60s": 5
+      },
+      "notes": "Comedy, little narrative tension.",
+      "reachable_here": false,
+      "total": 18
+    },
+    {
+      "title": "Tears of Steel (2012, Blender Foundation)",
+      "provider": "curated_open_movies",
+      "url": "https://mango.blender.org/",
+      "license": "CC-BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "year": 2012,
+      "duration_s": 734,
+      "max_height": 2160,
+      "download_urls": [
+        "https://raw.githubusercontent.com/andreasbotsikas/DemoVideos/master/tears_of_steel.mp4"
+      ],
+      "synopsis": "Warriors and scientists gather in Amsterdam's Oude Kerk to restage a moment from the past, a breakup, in a desperate attempt to save the world from destructive robots.",
+      "scores": {
+        "hook": 3,
+        "conflict": 4,
+        "visual": 4,
+        "payoff": 3,
+        "fit_60s": 3
+      },
+      "notes": "Reachable here at 512x292 only.",
+      "reachable_here": true,
+      "total": 17
+    },
+    {
+      "title": "Spring (2019, Blender Animation Studio, dir. Andy Goralczyk)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/spring/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2019,
+      "duration_s": 464,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "A shepherd girl and her dog face ancient spirits in order to continue the cycle of life.",
+      "scores": {
+        "hook": 3,
+        "conflict": 3,
+        "visual": 5,
+        "payoff": 3,
+        "fit_60s": 3
+      },
+      "notes": "Licence not verified per film.",
+      "reachable_here": false,
+      "total": 17
+    },
+    {
+      "title": "Agent 327: Operation Barbershop (2017, Blender Animation Studio)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/agent-327/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2017,
+      "duration_s": 231,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "Agent 327 follows a clue to a shady barbershop in Amsterdam.",
+      "scores": {
+        "hook": 3,
+        "conflict": 3,
+        "visual": 5,
+        "payoff": 2,
+        "fit_60s": 4
+      },
+      "notes": "A teaser for an unmade feature: no real ending.",
+      "reachable_here": false,
+      "total": 17
+    },
+    {
+      "title": "Big Buck Bunny (2008, Blender Foundation)",
+      "provider": "curated_open_movies",
+      "url": "https://peach.blender.org/",
+      "license": "CC-BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "year": 2008,
+      "duration_s": 596,
+      "max_height": 2160,
+      "download_urls": [
+        "https://raw.githubusercontent.com/andreasbotsikas/DemoVideos/master/big_buck_bunny.mp4"
+      ],
+      "synopsis": "A gentle giant rabbit takes comic revenge on three rodents who bully the forest's creatures.",
+      "scores": {
+        "hook": 3,
+        "conflict": 2,
+        "visual": 5,
+        "payoff": 3,
+        "fit_60s": 4
+      },
+      "notes": "Overexposed on YouTube; low emotional stakes.",
+      "reachable_here": true,
+      "total": 17
+    },
+    {
+      "title": "Glass Half (2015, Blender Institute)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/glass-half/",
+      "license": "CC-BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "year": 2015,
+      "duration_s": 190,
+      "max_height": 1080,
+      "download_urls": [],
+      "synopsis": "Two art lovers in a gallery argue over what counts as art.",
+      "scores": {
+        "hook": 2,
+        "conflict": 2,
+        "visual": 4,
+        "payoff": 3,
+        "fit_60s": 5
+      },
+      "notes": "Licence verified on studio.blender.org licensing page (per search).",
+      "reachable_here": false,
+      "total": 16
+    },
+    {
+      "title": "Coffee Run (2020, Blender Studio)",
+      "provider": "curated_open_movies",
+      "url": "https://studio.blender.org/films/coffee-run/",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "year": 2020,
+      "duration_s": 184,
+      "max_height": 2160,
+      "download_urls": [],
+      "synopsis": "Fuelled by caffeine, a young woman runs through the bittersweet memories of her past relationship.",
+      "scores": {
+        "hook": 2,
+        "conflict": 2,
+        "visual": 4,
+        "payoff": 2,
+        "fit_60s": 5
+      },
+      "notes": "Licence verified on studio.blender.org licensing page (per search).",
+      "reachable_here": false,
+      "total": 15
+    },
+    {
+      "title": "Elephants Dream (2006, Blender Foundation)",
+      "provider": "curated_open_movies",
+      "url": "https://orange.blender.org/",
+      "license": "CC-BY 2.5",
+      "license_url": "https://creativecommons.org/licenses/by/2.5/",
+      "year": 2006,
+      "duration_s": 654,
+      "max_height": 1080,
+      "download_urls": [
+        "https://raw.githubusercontent.com/andreasbotsikas/DemoVideos/master/elephants_dream.mp4"
+      ],
+      "synopsis": "Emo and Proog wander a strange mechanical world; surreal and deliberately ambiguous.",
+      "scores": {
+        "hook": 2,
+        "conflict": 2,
+        "visual": 3,
+        "payoff": 1,
+        "fit_60s": 2
+      },
+      "notes": "Too abstract to retell faithfully in 60 s.",
+      "reachable_here": true,
+      "total": 10
+    }
+  ],
+  "rejected_for_license": []
+}

@@ -1,0 +1,87 @@
+{
+  "status": "warn",
+  "duration": 58.333333,
+  "checks": [
+    {
+      "check": "duration 45-60 s",
+      "status": "pass",
+      "detail": "58.33 s"
+    },
+    {
+      "check": "resolution",
+      "status": "pass",
+      "detail": "480x854"
+    },
+    {
+      "check": "hook line lands inside 3 s",
+      "status": "pass",
+      "detail": "first line ends at 2.41 s"
+    },
+    {
+      "check": "beat 'hook' timing",
+      "status": "pass",
+      "detail": "0.1-4.2 s (target 0-3 s)"
+    },
+    {
+      "check": "beat 'setup' timing",
+      "status": "pass",
+      "detail": "4.7-14.0 s (target 3-15 s)"
+    },
+    {
+      "check": "beat 'rising' timing",
+      "status": "pass",
+      "detail": "14.4-37.7 s (target 15-40 s)"
+    },
+    {
+      "check": "beat 'climax' timing",
+      "status": "pass",
+      "detail": "38.1-49.9 s (target 40-55 s)"
+    },
+    {
+      "check": "beat 'ending' timing",
+      "status": "warn",
+      "detail": "50.3-56.1 s (target 55-60 s)"
+    },
+    {
+      "check": "narration pace 2.2-3.3 words/s",
+      "status": "pass",
+      "detail": "159 words, 3.20 words/s"
+    },
+    {
+      "check": "shot lengths",
+      "status": "pass",
+      "detail": "41 cuts, min 0.51 s, max 2.56 s, mean 1.42 s"
+    },
+    {
+      "check": "no clip runs past its source cut",
+      "status": "pass",
+      "detail": "none"
+    },
+    {
+      "check": "no repeated footage",
+      "status": "pass",
+      "detail": "none"
+    },
+    {
+      "check": "no black gaps",
+      "status": "pass",
+      "detail": "none"
+    },
+    {
+      "check": "loudness ~ -14 LUFS",
+      "status": "pass",
+      "detail": "{'integrated_lufs': -15.1, 'true_peak_dbfs': -1.2}"
+    },
+    {
+      "check": "source resolution",
+      "status": "pass",
+      "detail": "source 512x292, foreground upscale x1.64"
+    },
+    {
+      "check": "licence + credit recorded",
+      "status": "pass",
+      "detail": "CC BY 3.0"
+    }
+  ],
+  "encoder": "libx264"
+}
