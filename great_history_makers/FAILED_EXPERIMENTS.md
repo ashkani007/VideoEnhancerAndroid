@@ -36,3 +36,7 @@
 | 10-23 | v3 PoC | cv2 thickness multiplied by 4 with shift=2 | All strokes 4x too thick | Thickness in real pixels |
 | 10-23 | v3 PoC | Hair strands between random outline points; back-hair strands drawn after the face | Strands across the face, hair looked transparent | Flow-following strands clipped to the hair shape, correct layer order |
 | 10-23 | v3 PoC | Gaussian-blurred noise scrolled with BORDER_WRAP | Vertical seams in smoke | FFT circular blur (tileable) |
+
+## 2026-10-24: subtle 2.5D character acting on the approved illustration
+Gaze drift, brow set, 1.3° head turn and wind ripples (Napoleon_Animation_Test) were technically clean but judged too
+subtle to matter on mobile. Not pursued further; character motion is now limited to a single visible blink in a close-up.

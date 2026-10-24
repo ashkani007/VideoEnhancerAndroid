@@ -1,6 +1,6 @@
 {
  "channel": "great_history_makers_en",
- "updated": "2026-10-22",
+ "updated": "2026-10-24",
  "episodes": [
   {
    "id": "ep01",
@@ -432,6 +432,36 @@
     "consistency": 8
    },
    "outcome": "awaiting client review; reference video still needed"
+  },
+  {
+   "id": "napoleon_animation_test",
+   "date": "2026-10-24",
+   "dir": "GreatHistoryMakers/Napoleon_Animation_Test",
+   "format": "1080x1920 30fps 5s, one shot from the approved illustration",
+   "decisions": [
+    "2.5D local warps + painted blink, GrabCut layers, parallax push"
+   ],
+   "metrics": {
+    "paid_api_usd": 0
+   },
+   "outcome": "client: style, colours, composition strong and to be preserved; character motion too subtle on mobile; no more complex character animation or image-to-video"
+  },
+  {
+   "id": "napoleon_20s_poc",
+   "date": "2026-10-24",
+   "dir": "GreatHistoryMakers/Napoleon_20s_POC",
+   "format": "720x1280 30fps 20s preview, 4 compositions, procedural music/SFX, no narration",
+   "decisions": [
+    "storytelling via scene variety, motion graphics and editing; character motion limited to one blink",
+    "wide / portrait reframe / animated campaign map / battlefield reframe from the one approved illustration",
+    "transitions: whip-zoom, painted ink wipe, push into map star + flash, fade"
+   ],
+   "metrics": {
+    "render_s_720p": 172,
+    "paid_api_usd": 0,
+    "median_frame_diff": 3.37
+   },
+   "outcome": "awaiting client review; new illustrations per topic need ComfyUI candidates from the client's RTX 4060"
   }
  ],
  "next_episode_goals": [

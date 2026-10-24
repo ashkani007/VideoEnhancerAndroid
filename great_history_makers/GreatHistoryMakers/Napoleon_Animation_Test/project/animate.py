@@ -119,7 +119,8 @@ def blink_amount(t, t0=0.92, dur=0.2):
 
 
 # ------------------------------------------------------------------------------------------- layers
-def background(t):
+def background(t, flag_gain=1.0, bob_gain=1.0):
+    """flag_gain / bob_gain scale the flag wave and marching bob (1.0 = the delivered test)."""
     bg = PLATE.copy()
     # clouds drift (upper sky moves more)
     dx = (3.0 * t / DUR) * SKY * (1.2 - YY / 700)
@@ -132,6 +133,7 @@ def background(t):
     # flags: travelling wave pinned at the pole
     for mask, pole, length, amp, freq, k in ((FLAG_BIG, 772, 112, 4.2, 1.25, 68), (FLAG_A, 518, 48, 2.2, 1.45, 40),
                                              (FLAG_B, 571, 75, 2.6, 1.35, 52)):
+        amp *= flag_gain
         u = np.clip((XX - pole) / length, 0, 1)
         wv = np.sin(2 * math.pi * ((XX - pole) / k - freq * t))
         w = mask * np.maximum(CLOTH, 0.25) * u
@@ -139,8 +141,8 @@ def background(t):
                   (pole - 4, 940, pole + length + 12, 1110))
     # soldiers: staggered marching bob (about one step every 0.55 s), rider bobs more slowly
     step = np.sin(2 * math.pi * (1.8 * t) + XX / 36.0 * 2.3 + 0.7 * np.sin(XX / 13.0))
-    bg = warp(bg, np.zeros_like(XX), 1.3 * SOLDIERS * step, (530, 1040, W, 1345))
-    bg = warp(bg, np.zeros_like(XX), 0.9 * RIDER * np.sin(2 * math.pi * 0.9 * t), (620, 1040, 805, 1305))
+    bg = warp(bg, np.zeros_like(XX), 1.3 * bob_gain * SOLDIERS * step, (530, 1040, W, 1345))
+    bg = warp(bg, np.zeros_like(XX), 0.9 * bob_gain * RIDER * np.sin(2 * math.pi * 0.9 * t), (620, 1040, 805, 1305))
     # drifting battlefield smoke: two stylized layers (flat, posterized edges like the illustration)
     s1 = np.roll(N1, int(14 * t), axis=1)
     s2 = np.roll(N2, int(26 * t), axis=1)

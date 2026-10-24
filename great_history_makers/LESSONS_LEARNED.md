@@ -130,3 +130,19 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   back-easing overshoot -> hold with breathing and a blink; springs on coat tails and epaulette fringe.
 - **Measure "not a slideshow":** compare frame difference in a character region against a static background region.
 - **Render speed:** 12 s at 1080x1920 rendered in 39 s on 3 CPU workers.
+
+## 2026-10-24: Napoleon image-to-animation test → 20 s storytelling POC
+- **Client verdict on subtle character motion:** a few-pixel gaze/brow/head change is invisible on a phone. Do not invest
+  in complex character animation; engagement comes from scene changes, motion graphics and editing.
+- **One illustration can carry several compositions** when reframed hard (wide 1.0-1.2x, portrait 2-2.9x, battlefield 2.2-2.5x)
+  with parallax relative to each shot's base zoom (`zb = z0 + (z - z0) * 0.55`), never relative to 1.0.
+- **A blink only reads in a close-up:** at about 2.8x the eye is ~60 px wide on a 720 px frame; a 0.30 s blink with a
+  short hold is clearly visible. At the wide framing it is lost.
+- **Maps for vertical video:** show 9 units wide so coasts frame the route (too tight = an empty parchment); follow the
+  arrow with a Hermite camera spline; labels in screen space (constant size) pinned to projected map points;
+  progressively drawn arrows with travelling dashes read as movement.
+- **Date tickers must not crossfade:** the old date leaves before the new one rises, or the two overlap into mush.
+- **Smoke shapes:** thresholded smooth noise in front of the lens reads as bokeh "bubbles" and single soft discs read as
+  balloons; use stretched veils for foreground haze and clusters of round billows with a lit top and shaded
+  underside for cannon puffs (matches the painted style).
+- **Text-edit scripts:** a failing `assert` in a batch edit aborts the whole batch; check the output before rendering.
