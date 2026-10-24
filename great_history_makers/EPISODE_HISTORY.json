@@ -404,6 +404,34 @@
     "variable_cost_eur": 0.0
    },
    "outcome": "awaiting client review; recommended AI-illustrated key art test next"
+  },
+  {
+   "id": "napoleon_2d_editorial_poc",
+   "date": "2026-10-24",
+   "dir": "GreatHistoryMakers/Napoleon_POC",
+   "format": "1080x1920 30fps 12s, 3 scenes, no narration",
+   "decisions": [
+    "skia-python vector cut-out rig with IK",
+    "editorial flat 2D style (reference video not received)"
+   ],
+   "metrics": {
+    "render_s_final": 39,
+    "render_s_preview": 14,
+    "paid_api_usd": 0,
+    "scene2_char_vs_static_region_diff": [
+     3.48,
+     0.0
+    ]
+   },
+   "scores": {
+    "appeal": 7,
+    "expression": 6.5,
+    "motion": 6,
+    "background": 6,
+    "cinematography": 6.5,
+    "consistency": 8
+   },
+   "outcome": "awaiting client review; reference video still needed"
   }
  ],
  "next_episode_goals": [

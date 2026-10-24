@@ -119,3 +119,14 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   faces do not, so keep wides for consequence and close-ups for emotion.
 - **Procedural painting has a quality ceiling:** code-built faces read as mannequins. Premium character art needs
   illustrated (AI or painted) layers rigged with Live2D-style deformers. The cloud container cannot generate images.
+
+## 2026-10-24: Napoleon 2D editorial animation POC (Skia cut-out rig)
+- **A vector cut-out rig beats painted procedural characters for appeal:** clean geometric shapes, one cel-shadow tone carved
+  with path booleans away from the key light, and a thin lit rim give a professional editorial look at very low cost.
+- **Skia readback order:** request `kRGBA_8888_ColorType` explicitly; the native N32 order is BGRA (red and blue swapped).
+- **Use IK for contact poses:** a two-link IK solver puts the hand exactly on the map; split the draw order (body ->
+  table -> near arm) so the hand stays visible on top of props.
+- **Acting recipe that reads:** eyes lead, head follows with a small anticipation dip, gesture = wind-up -> thrust with
+  back-easing overshoot -> hold with breathing and a blink; springs on coat tails and epaulette fringe.
+- **Measure "not a slideshow":** compare frame difference in a character region against a static background region.
+- **Render speed:** 12 s at 1080x1920 rendered in 39 s on 3 CPU workers.
