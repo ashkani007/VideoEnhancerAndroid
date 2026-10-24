@@ -1,0 +1,7 @@
+{
+ "frames": 150,
+ "mean_diff": 1.012,
+ "max_diff": 4.008,
+ "max_change_between_consecutive_diffs": 0.306,
+ "note": "camera push 3.4-5.0 s raises whole-frame difference smoothly; no single-frame spikes"
+}
