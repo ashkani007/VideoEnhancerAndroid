@@ -22,3 +22,8 @@ output/v3/**/*_mix.wav
 output/v3/**/*.mkv
 output/v3/**/*2pass*
 comfyui/candidates/
+**/output/still_*.png
+**/*_picture.mp4
+**/*_music_sfx.wav
+**/*_mix.wav
+GreatHistoryMakers/Napoleon_20s_POC/ghm4_port/output/*.mp4

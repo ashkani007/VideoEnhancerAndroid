@@ -146,3 +146,16 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   balloons; use stretched veils for foreground haze and clusters of round billows with a lit top and shaded
   underside for cannon puffs (matches the painted style).
 - **Text-edit scripts:** a failing `assert` in a batch edit aborts the whole batch; check the output before rendering.
+
+## 2026-10-25: v4 approved; local illustration loop and data-driven renderer
+- **Client approved the Napoleon_20s_POC direction** (scene variety, motion graphics, limited character motion).
+- **The cloud container and the PC exchange work through git:** jobs are validated data, the worker only talks to
+  127.0.0.1 ComfyUI and GitHub, nothing listens on the PC. The repository was found to be **public**: check visibility
+  before pushing generated images or unpublished previews.
+- **Titles and captions compete for the same band:** the approved POC titles sit at design y 900–990, exactly where
+  narration captions go (1410/1920). In narrated episodes titles move up; `ghm4.narrate check` flags collisions.
+- **Plates at the resolution each shot needs:** working resolution = cover scale × max zoom × 1.15, so 4K plates stay fast.
+- **GrabCut mattes need a loose outline plus an optional certain core;** marking the eroded outline as certain made
+  the matte swallow the background (IoU 0.79 vs the hand matte once fixed).
+- **Port before you extend:** re-expressing the approved POC as a storyboard (`Napoleon_20s_POC/ghm4_port`) proved the
+  new engine reproduces the approved frames before any new content depended on it.

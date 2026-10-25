@@ -33,7 +33,18 @@ Episodes live in `episodes/<id>/`: `episode.json` (timeline, captions, audio cue
   Never re-skin a previous episode. Nothing is published without human approval.
 - **Style changes:** never roll out an unapproved style change across an episode. Test it first as an A/B on one shot.
 
-## v2 direction (client decision 2026-10-23)
+## v4 direction: APPROVED by the client 2026-10-25 (use for all new episodes)
+The look of `GreatHistoryMakers/Napoleon_20s_POC`: a new illustration for each narrative beat, motion graphics
+(animated maps with moving arrows, cinematic typography, transitions), sound design, and **limited** character motion
+(a visible blink in close-ups; flags, smoke, marching ranks, clouds). No complex character animation, no paid
+image-to-video. Pipeline: `ghm4/` (see `ghm4/README.md`). Illustrations come from ComfyUI on the client's RTX 4060
+through the git job queue (`jobs/README.md`, `comfyui/SETUP_WINDOWS_RTX4060.md`); prompts are built from
+`comfyui/bible/` (style + characters). The cloud container cannot generate images itself: never substitute
+code-drawn characters for missing illustrations. Narrated episodes: titles stay out of the caption band (design y 900–990).
+Daily scheduling and publishing stay off until the client authorises them. The GitHub repository is public: remind the
+client to make it private before pushing generated images.
+
+## v2 direction (client decision 2026-10-23, superseded by v4 for new work)
 New episodes use **illustration plates + limited 2D animation + motion graphics** (`ghm2/`, see
 `ghm2/MIGRATION_PLAN.md`). Do not build new 2.5D rigs or per-shot procedural scenes; the v1 engine stays in the
 repo for reference and for Episode 01/02. 8–12 compositions per 60 s, one motivated camera move each, cuts in
@@ -41,7 +52,7 @@ narration pauses, limited character motion (blink, head turn, gesture, breathe) 
 The exact v2 look (including whether a mosaic filter is kept) still needs client approval.
 Variable cost target < €0.50 per video: measure it, log credits in `autopilot/LEDGER.json`.
 
-## v3 visual identity PROPOSAL (client brief 2026-10-23, awaiting review)
+## v3 visual identity PROPOSAL (client brief 2026-10-23, superseded by v4)
 "Cinematic Living Illustration": painterly, character-driven, every shot a narrative action, believable acting
 (eyes lead, head follows, face sets), cinematic shot grammar and motivated light. No mosaic, stained glass,
 paper-cut puppets, zoom-and-pan slideshows or permanent infographics. See `ghm3/VISUAL_IDENTITY.md` and
@@ -71,6 +82,11 @@ py tools/character_sheet.py out.png                 # character turnaround sheet
 py experiments/ab_2p5d/render_ab.py                 # style A/B (A vs B)
 py experiments/ab_2p5d/render_c.py                  # Version C + B/C comparison + metrics
 py experiments/ab_2p5d/render_d.py                  # Version D (turning gate entry) + C/D comparison + metrics
+py -m ghm4.illustrate job jobs/specs/<id>.json      # illustration job for the local ComfyUI worker (then: status / pick / place)
+py comfyui/worker/test_worker.py                     # worker plumbing test (mock ComfyUI + temp git remote)
+py -m ghm4.render <storyboard.json> [--final|--still T|--sheet]   # v4 picture render (+ music/SFX preview)
+py -m ghm4.narrate <storyboard.json> check|align|retime|finish <picture.mp4>   # v4 narration + captions stage
+py -m ghm4.plate_tool overlay|mask <plate.png> <plate.json>      # check plate metadata / auto foreground matte
 ```
 
 ## Environment gotchas (verified)

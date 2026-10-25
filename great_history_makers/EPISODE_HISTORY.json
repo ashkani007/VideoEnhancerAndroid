@@ -1,6 +1,6 @@
 {
  "channel": "great_history_makers_en",
- "updated": "2026-10-24",
+ "updated": "2026-10-25",
  "episodes": [
   {
    "id": "ep01",
@@ -461,7 +461,22 @@
     "paid_api_usd": 0,
     "median_frame_diff": 3.37
    },
-   "outcome": "awaiting client review; new illustrations per topic need ComfyUI candidates from the client's RTX 4060"
+   "outcome": "APPROVED by the client 2026-10-25 as the visual direction (v4)"
+  },
+  {
+   "id": "ghm4_pipeline",
+   "date": "2026-10-25",
+   "dir": "ghm4 + comfyui + jobs",
+   "decisions": [
+    "SDXL base + IP-Adapter Plus style transfer (8 GB), 768x1344 + 1.5x hires, 2x RealESRGAN plates",
+    "git job queue + local worker (no inbound ports)",
+    "storyboard-driven renderer; separate narration/caption stage"
+   ],
+   "metrics": {
+    "port_render_s_720p_20s": 119,
+    "paid_api_usd": 0
+   },
+   "outcome": "napoleon_test3_v1 queued; waiting for the client's PC to run it"
   }
  ],
  "next_episode_goals": [
