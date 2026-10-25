@@ -15,8 +15,10 @@ providers = ["curated_open_movies", "internet_archive", "wikimedia_commons", "yo
 engine = "kokoro"                      # local, free, ~1.3x realtime on CPU
 model = "kokoro-v1.0.int8.onnx"
 voices = "voices-v1.0.bin"
-voice = "am_onyx"
-speed = 1.0
+voice = "af_heart"                     # locked narrator identity for all new Shorts
+speed = 0.88
+# delivery: slower, weightier reads for the climax and ending
+beat_speed = { hook = 1.0, setup = 1.0, rising = 1.03, climax = 0.93, ending = 0.88 }
 model_url = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/"
 
 [edit]
@@ -29,14 +31,21 @@ duck_db = -9            # extra ducking while narrator speaks
 [render.preview]
 width = 480
 height = 854
-crf = 26
+crf = 24
 fps = 24
+max_upscale = 2.2      # never enlarge the source more than this (detail over size)
 
 [render.final]
 width = 1440
 height = 2560
 crf = 19
 fps = 24
+max_upscale = 2.0
+
+[music]
+engine = "compose"      # ReelKit's own score (no licence, no cost)
+gap_db = -7             # score level vs. narration between lines
+under_voice_db = -17    # score level vs. narration while the narrator speaks
 
 [llm]
 # Optional. With ANTHROPIC_API_KEY set, discovery ranking, shot captioning and

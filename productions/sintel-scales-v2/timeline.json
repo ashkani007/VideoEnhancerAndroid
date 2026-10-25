@@ -1,0 +1,4907 @@
+{
+  "source_duration": 888.000726,
+  "total": 58.983,
+  "render": {
+    "encoder": "libx264",
+    "gpu": false,
+    "width": 480,
+    "height": 854,
+    "fps": 24
+  },
+  "audio": {
+    "mode": "score",
+    "cues": [
+      {
+        "mood": "mystery",
+        "start": 0.0,
+        "end": 3.745,
+        "line": "She spent years hunting this dragon."
+      },
+      {
+        "mood": "tender",
+        "start": 3.745,
+        "end": 11.803,
+        "line": "It started on a rooftop, with a baby dragon and a torn, bleeding wing."
+      },
+      {
+        "mood": "wonder",
+        "start": 11.803,
+        "end": 13.396,
+        "line": "She taught it to fly."
+      },
+      {
+        "mood": "tension",
+        "start": 13.396,
+        "end": 19.965,
+        "line": "Then one evening, a full-grown dragon dropped out of the sky,"
+      },
+      {
+        "mood": "journey",
+        "start": 19.965,
+        "end": 28.433,
+        "line": "She didn't cry for long."
+      },
+      {
+        "mood": "mystery",
+        "start": 28.433,
+        "end": 31.731,
+        "line": "Finally, an old shaman told her where the dragons nest."
+      },
+      {
+        "mood": "dread",
+        "start": 31.731,
+        "end": 34.496,
+        "line": "Inside the cave, she found a baby dragon."
+      },
+      {
+        "mood": "action",
+        "start": 34.496,
+        "end": 39.303,
+        "line": "Then its parent found her."
+      },
+      {
+        "mood": "silence",
+        "start": 39.303,
+        "end": 41.082,
+        "line": "It hesitated."
+      },
+      {
+        "mood": "action",
+        "start": 41.082,
+        "end": 42.392,
+        "line": "She didn't."
+      },
+      {
+        "mood": "dread",
+        "start": 42.392,
+        "end": 44.949,
+        "line": "The blade went in, and the dragon fell."
+      },
+      {
+        "mood": "mystery",
+        "start": 44.949,
+        "end": 48.837,
+        "line": "Then she saw the scar on its wing. The wing she had healed."
+      },
+      {
+        "mood": "grief",
+        "start": 48.837,
+        "end": 58.983,
+        "line": "It was Scales."
+      }
+    ],
+    "hits": [
+      0.1,
+      34.746,
+      41.332,
+      49.087
+    ],
+    "sfx": [
+      {
+        "kind": "whoosh",
+        "t": 13.2
+      },
+      {
+        "kind": "braam",
+        "t": 0.1
+      },
+      {
+        "kind": "braam",
+        "t": 34.746
+      },
+      {
+        "kind": "braam",
+        "t": 41.332
+      },
+      {
+        "kind": "braam",
+        "t": 49.087
+      }
+    ],
+    "gap_db": -7,
+    "under_voice_db": -17,
+    "music_stem": "/home/user/reelkit_media/productions/sintel-scales-v2/mix_preview_music.wav",
+    "bed_db": null,
+    "duck_db": -10
+  },
+  "lines": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "She spent years hunting this dragon.",
+      "wav": "/home/user/reelkit_media/cache/tts/2b1f3866319bcd400cbc.wav",
+      "start": 0.1,
+      "end": 2.006,
+      "words": [
+        {
+          "word": "She",
+          "start": 0.13,
+          "end": 0.388
+        },
+        {
+          "word": "spent",
+          "start": 0.388,
+          "end": 0.646
+        },
+        {
+          "word": "years",
+          "start": 0.646,
+          "end": 0.904
+        },
+        {
+          "word": "hunting",
+          "start": 0.904,
+          "end": 1.323
+        },
+        {
+          "word": "this",
+          "start": 1.323,
+          "end": 1.581
+        },
+        {
+          "word": "dragon.",
+          "start": 1.581,
+          "end": 2.0
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "She should have looked closer.",
+      "wav": "/home/user/reelkit_media/cache/tts/26669a95a54644c6685c.wav",
+      "start": 2.226,
+      "end": 3.545,
+      "words": [
+        {
+          "word": "She",
+          "start": 2.266,
+          "end": 2.469
+        },
+        {
+          "word": "should",
+          "start": 2.469,
+          "end": 2.672
+        },
+        {
+          "word": "have",
+          "start": 2.672,
+          "end": 2.876
+        },
+        {
+          "word": "looked",
+          "start": 2.876,
+          "end": 3.206
+        },
+        {
+          "word": "closer.",
+          "start": 3.206,
+          "end": 3.536
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "beat": "setup",
+      "text": "It started on a rooftop, with a baby dragon and a torn, bleeding wing.",
+      "wav": "/home/user/reelkit_media/cache/tts/3cb8b6d9ac75b08b6641.wav",
+      "start": 3.995,
+      "end": 8.218,
+      "words": [
+        {
+          "word": "It",
+          "start": 4.025,
+          "end": 4.27
+        },
+        {
+          "word": "started",
+          "start": 4.27,
+          "end": 4.667
+        },
+        {
+          "word": "on",
+          "start": 4.667,
+          "end": 4.912
+        },
+        {
+          "word": "a",
+          "start": 4.912,
+          "end": 5.157
+        },
+        {
+          "word": "rooftop,",
+          "start": 5.157,
+          "end": 5.554
+        },
+        {
+          "word": "with",
+          "start": 5.554,
+          "end": 5.799
+        },
+        {
+          "word": "a",
+          "start": 5.799,
+          "end": 6.044
+        },
+        {
+          "word": "baby",
+          "start": 6.044,
+          "end": 6.441
+        },
+        {
+          "word": "dragon",
+          "start": 6.441,
+          "end": 6.839
+        },
+        {
+          "word": "and",
+          "start": 6.839,
+          "end": 7.083
+        },
+        {
+          "word": "a",
+          "start": 7.083,
+          "end": 7.328
+        },
+        {
+          "word": "torn,",
+          "start": 7.328,
+          "end": 7.573
+        },
+        {
+          "word": "bleeding",
+          "start": 7.573,
+          "end": 7.97
+        },
+        {
+          "word": "wing.",
+          "start": 7.97,
+          "end": 8.215
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "beat": "setup",
+      "text": "She carried it home, bandaged the wound, and named it Scales.",
+      "wav": "/home/user/reelkit_media/cache/tts/47a0c464c8dd5d2ca3b5.wav",
+      "start": 8.438,
+      "end": 11.833,
+      "words": [
+        {
+          "word": "She",
+          "start": 8.468,
+          "end": 8.706
+        },
+        {
+          "word": "carried",
+          "start": 8.706,
+          "end": 9.092
+        },
+        {
+          "word": "it",
+          "start": 9.092,
+          "end": 9.33
+        },
+        {
+          "word": "home,",
+          "start": 9.33,
+          "end": 9.568
+        },
+        {
+          "word": "bandaged",
+          "start": 9.568,
+          "end": 10.103
+        },
+        {
+          "word": "the",
+          "start": 10.103,
+          "end": 10.341
+        },
+        {
+          "word": "wound,",
+          "start": 10.341,
+          "end": 10.579
+        },
+        {
+          "word": "and",
+          "start": 10.579,
+          "end": 10.817
+        },
+        {
+          "word": "named",
+          "start": 10.817,
+          "end": 11.204
+        },
+        {
+          "word": "it",
+          "start": 11.204,
+          "end": 11.441
+        },
+        {
+          "word": "Scales.",
+          "start": 11.441,
+          "end": 11.828
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "beat": "setup",
+      "text": "She taught it to fly.",
+      "wav": "/home/user/reelkit_media/cache/tts/dedb05186f9672bb5358.wav",
+      "start": 12.053,
+      "end": 13.246,
+      "words": [
+        {
+          "word": "She",
+          "start": 12.093,
+          "end": 12.323
+        },
+        {
+          "word": "taught",
+          "start": 12.323,
+          "end": 12.553
+        },
+        {
+          "word": "it",
+          "start": 12.553,
+          "end": 12.783
+        },
+        {
+          "word": "to",
+          "start": 12.783,
+          "end": 13.013
+        },
+        {
+          "word": "fly.",
+          "start": 13.013,
+          "end": 13.243
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "beat": "rising",
+      "text": "Then one evening, a full-grown dragon dropped out of the sky,",
+      "wav": "/home/user/reelkit_media/cache/tts/9818ad89fb437d6c082c.wav",
+      "start": 13.646,
+      "end": 17.207,
+      "words": [
+        {
+          "word": "Then",
+          "start": 13.676,
+          "end": 13.885
+        },
+        {
+          "word": "one",
+          "start": 13.885,
+          "end": 14.095
+        },
+        {
+          "word": "evening,",
+          "start": 14.095,
+          "end": 14.566
+        },
+        {
+          "word": "a",
+          "start": 14.956,
+          "end": 15.184
+        },
+        {
+          "word": "full-grown",
+          "start": 15.184,
+          "end": 15.554
+        },
+        {
+          "word": "dragon",
+          "start": 15.554,
+          "end": 15.924
+        },
+        {
+          "word": "dropped",
+          "start": 15.924,
+          "end": 16.295
+        },
+        {
+          "word": "out",
+          "start": 16.295,
+          "end": 16.522
+        },
+        {
+          "word": "of",
+          "start": 16.522,
+          "end": 16.75
+        },
+        {
+          "word": "the",
+          "start": 16.75,
+          "end": 16.978
+        },
+        {
+          "word": "sky,",
+          "start": 16.978,
+          "end": 17.206
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "beat": "rising",
+      "text": "snatched Scales in its claws, and was gone.",
+      "wav": "/home/user/reelkit_media/cache/tts/643a8e3de7ee7fd9d6e4.wav",
+      "start": 17.427,
+      "end": 19.865,
+      "words": [
+        {
+          "word": "snatched",
+          "start": 17.467,
+          "end": 17.854
+        },
+        {
+          "word": "Scales",
+          "start": 17.854,
+          "end": 18.242
+        },
+        {
+          "word": "in",
+          "start": 18.242,
+          "end": 18.48
+        },
+        {
+          "word": "its",
+          "start": 18.48,
+          "end": 18.719
+        },
+        {
+          "word": "claws,",
+          "start": 18.719,
+          "end": 18.957
+        },
+        {
+          "word": "and",
+          "start": 19.157,
+          "end": 19.39
+        },
+        {
+          "word": "was",
+          "start": 19.39,
+          "end": 19.624
+        },
+        {
+          "word": "gone.",
+          "start": 19.624,
+          "end": 19.857
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "beat": "rising",
+      "text": "She didn't cry for long.",
+      "wav": "/home/user/reelkit_media/cache/tts/3b3bf2de26b91c241135.wav",
+      "start": 20.215,
+      "end": 21.533,
+      "words": [
+        {
+          "word": "She",
+          "start": 20.245,
+          "end": 20.501
+        },
+        {
+          "word": "didn't",
+          "start": 20.501,
+          "end": 20.757
+        },
+        {
+          "word": "cry",
+          "start": 20.757,
+          "end": 21.013
+        },
+        {
+          "word": "for",
+          "start": 21.013,
+          "end": 21.269
+        },
+        {
+          "word": "long.",
+          "start": 21.269,
+          "end": 21.525
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "beat": "rising",
+      "text": "She took a blade and started walking.",
+      "wav": "/home/user/reelkit_media/cache/tts/44bd792401390487b166.wav",
+      "start": 21.753,
+      "end": 23.725,
+      "words": [
+        {
+          "word": "She",
+          "start": 21.783,
+          "end": 22.018
+        },
+        {
+          "word": "took",
+          "start": 22.018,
+          "end": 22.253
+        },
+        {
+          "word": "a",
+          "start": 22.253,
+          "end": 22.488
+        },
+        {
+          "word": "blade",
+          "start": 22.488,
+          "end": 22.724
+        },
+        {
+          "word": "and",
+          "start": 22.724,
+          "end": 22.959
+        },
+        {
+          "word": "started",
+          "start": 22.959,
+          "end": 23.341
+        },
+        {
+          "word": "walking.",
+          "start": 23.341,
+          "end": 23.723
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "beat": "rising",
+      "text": "Through deserts. Through bamboo forests. Through blizzards that nearly buried her.",
+      "wav": "/home/user/reelkit_media/cache/tts/8dc011e94aed4d2325dc.wav",
+      "start": 23.945,
+      "end": 28.463,
+      "words": [
+        {
+          "word": "Through",
+          "start": 23.995,
+          "end": 24.296
+        },
+        {
+          "word": "deserts.",
+          "start": 24.296,
+          "end": 24.785
+        },
+        {
+          "word": "Through",
+          "start": 25.065,
+          "end": 25.352
+        },
+        {
+          "word": "bamboo",
+          "start": 25.352,
+          "end": 25.819
+        },
+        {
+          "word": "forests.",
+          "start": 25.819,
+          "end": 26.285
+        },
+        {
+          "word": "Through",
+          "start": 26.645,
+          "end": 26.875
+        },
+        {
+          "word": "blizzards",
+          "start": 26.875,
+          "end": 27.248
+        },
+        {
+          "word": "that",
+          "start": 27.248,
+          "end": 27.478
+        },
+        {
+          "word": "nearly",
+          "start": 27.478,
+          "end": 27.852
+        },
+        {
+          "word": "buried",
+          "start": 27.852,
+          "end": 28.225
+        },
+        {
+          "word": "her.",
+          "start": 28.225,
+          "end": 28.455
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "beat": "rising",
+      "text": "Finally, an old shaman told her where the dragons nest.",
+      "wav": "/home/user/reelkit_media/cache/tts/af6b287a703744b74641.wav",
+      "start": 28.683,
+      "end": 31.761,
+      "words": [
+        {
+          "word": "Finally,",
+          "start": 28.783,
+          "end": 29.233
+        },
+        {
+          "word": "an",
+          "start": 29.463,
+          "end": 29.686
+        },
+        {
+          "word": "old",
+          "start": 29.686,
+          "end": 29.91
+        },
+        {
+          "word": "shaman",
+          "start": 29.91,
+          "end": 30.273
+        },
+        {
+          "word": "told",
+          "start": 30.273,
+          "end": 30.496
+        },
+        {
+          "word": "her",
+          "start": 30.496,
+          "end": 30.72
+        },
+        {
+          "word": "where",
+          "start": 30.72,
+          "end": 30.943
+        },
+        {
+          "word": "the",
+          "start": 30.943,
+          "end": 31.167
+        },
+        {
+          "word": "dragons",
+          "start": 31.167,
+          "end": 31.53
+        },
+        {
+          "word": "nest.",
+          "start": 31.53,
+          "end": 31.753
+        }
+      ]
+    },
+    {
+      "i": 11,
+      "beat": "rising",
+      "text": "Inside the cave, she found a baby dragon.",
+      "wav": "/home/user/reelkit_media/cache/tts/743e3f20756880c26b5a.wav",
+      "start": 31.981,
+      "end": 34.526,
+      "words": [
+        {
+          "word": "Inside",
+          "start": 32.011,
+          "end": 32.41
+        },
+        {
+          "word": "the",
+          "start": 32.41,
+          "end": 32.655
+        },
+        {
+          "word": "cave,",
+          "start": 32.655,
+          "end": 32.901
+        },
+        {
+          "word": "she",
+          "start": 33.241,
+          "end": 33.446
+        },
+        {
+          "word": "found",
+          "start": 33.446,
+          "end": 33.651
+        },
+        {
+          "word": "a",
+          "start": 33.651,
+          "end": 33.855
+        },
+        {
+          "word": "baby",
+          "start": 33.855,
+          "end": 34.188
+        },
+        {
+          "word": "dragon.",
+          "start": 34.188,
+          "end": 34.521
+        }
+      ]
+    },
+    {
+      "i": 12,
+      "beat": "rising",
+      "text": "Then its parent found her.",
+      "wav": "/home/user/reelkit_media/cache/tts/a8a004c274cd17f47fb6.wav",
+      "start": 34.746,
+      "end": 36.042,
+      "words": [
+        {
+          "word": "Then",
+          "start": 34.776,
+          "end": 35.0
+        },
+        {
+          "word": "its",
+          "start": 35.0,
+          "end": 35.224
+        },
+        {
+          "word": "parent",
+          "start": 35.224,
+          "end": 35.588
+        },
+        {
+          "word": "found",
+          "start": 35.588,
+          "end": 35.812
+        },
+        {
+          "word": "her.",
+          "start": 35.812,
+          "end": 36.036
+        }
+      ]
+    },
+    {
+      "i": 13,
+      "beat": "climax",
+      "text": "It had her pinned. It could have finished her right there.",
+      "wav": "/home/user/reelkit_media/cache/tts/fdb174b158e3873370a2.wav",
+      "start": 36.392,
+      "end": 39.333,
+      "words": [
+        {
+          "word": "It",
+          "start": 36.442,
+          "end": 36.665
+        },
+        {
+          "word": "had",
+          "start": 36.665,
+          "end": 36.887
+        },
+        {
+          "word": "her",
+          "start": 36.887,
+          "end": 37.11
+        },
+        {
+          "word": "pinned.",
+          "start": 37.11,
+          "end": 37.472
+        },
+        {
+          "word": "It",
+          "start": 37.882,
+          "end": 38.058
+        },
+        {
+          "word": "could",
+          "start": 38.058,
+          "end": 38.234
+        },
+        {
+          "word": "have",
+          "start": 38.234,
+          "end": 38.409
+        },
+        {
+          "word": "finished",
+          "start": 38.409,
+          "end": 38.805
+        },
+        {
+          "word": "her",
+          "start": 38.805,
+          "end": 38.98
+        },
+        {
+          "word": "right",
+          "start": 38.98,
+          "end": 39.156
+        },
+        {
+          "word": "there.",
+          "start": 39.156,
+          "end": 39.332
+        }
+      ]
+    },
+    {
+      "i": 14,
+      "beat": "climax",
+      "text": "It hesitated.",
+      "wav": "/home/user/reelkit_media/cache/tts/45d86186a6bc7fa7ecf2.wav",
+      "start": 39.553,
+      "end": 40.732,
+      "words": [
+        {
+          "word": "It",
+          "start": 39.583,
+          "end": 39.877
+        },
+        {
+          "word": "hesitated.",
+          "start": 39.877,
+          "end": 40.723
+        }
+      ]
+    },
+    {
+      "i": 15,
+      "beat": "climax",
+      "text": "She didn't.",
+      "wav": "/home/user/reelkit_media/cache/tts/00fc993eaaf0b0f5a42f.wav",
+      "start": 41.332,
+      "end": 42.142,
+      "words": [
+        {
+          "word": "She",
+          "start": 41.362,
+          "end": 41.752
+        },
+        {
+          "word": "didn't.",
+          "start": 41.752,
+          "end": 42.142
+        }
+      ]
+    },
+    {
+      "i": 16,
+      "beat": "climax",
+      "text": "The blade went in, and the dragon fell.",
+      "wav": "/home/user/reelkit_media/cache/tts/eaae14e09d1ba62cebd0.wav",
+      "start": 42.642,
+      "end": 44.979,
+      "words": [
+        {
+          "word": "The",
+          "start": 42.672,
+          "end": 42.919
+        },
+        {
+          "word": "blade",
+          "start": 42.919,
+          "end": 43.167
+        },
+        {
+          "word": "went",
+          "start": 43.167,
+          "end": 43.415
+        },
+        {
+          "word": "in,",
+          "start": 43.415,
+          "end": 43.662
+        },
+        {
+          "word": "and",
+          "start": 43.922,
+          "end": 44.149
+        },
+        {
+          "word": "the",
+          "start": 44.149,
+          "end": 44.376
+        },
+        {
+          "word": "dragon",
+          "start": 44.376,
+          "end": 44.745
+        },
+        {
+          "word": "fell.",
+          "start": 44.745,
+          "end": 44.972
+        }
+      ]
+    },
+    {
+      "i": 17,
+      "beat": "climax",
+      "text": "Then she saw the scar on its wing. The wing she had healed.",
+      "wav": "/home/user/reelkit_media/cache/tts/773d11053d8943a517c3.wav",
+      "start": 45.199,
+      "end": 48.637,
+      "words": [
+        {
+          "word": "Then",
+          "start": 45.229,
+          "end": 45.43
+        },
+        {
+          "word": "she",
+          "start": 45.43,
+          "end": 45.631
+        },
+        {
+          "word": "saw",
+          "start": 45.631,
+          "end": 45.833
+        },
+        {
+          "word": "the",
+          "start": 45.833,
+          "end": 46.034
+        },
+        {
+          "word": "scar",
+          "start": 46.034,
+          "end": 46.235
+        },
+        {
+          "word": "on",
+          "start": 46.235,
+          "end": 46.436
+        },
+        {
+          "word": "its",
+          "start": 46.436,
+          "end": 46.638
+        },
+        {
+          "word": "wing.",
+          "start": 46.638,
+          "end": 46.839
+        },
+        {
+          "word": "The",
+          "start": 47.299,
+          "end": 47.535
+        },
+        {
+          "word": "wing",
+          "start": 47.535,
+          "end": 47.772
+        },
+        {
+          "word": "she",
+          "start": 47.772,
+          "end": 48.008
+        },
+        {
+          "word": "had",
+          "start": 48.008,
+          "end": 48.245
+        },
+        {
+          "word": "healed.",
+          "start": 48.245,
+          "end": 48.629
+        }
+      ]
+    },
+    {
+      "i": 18,
+      "beat": "ending",
+      "text": "It was Scales.",
+      "wav": "/home/user/reelkit_media/cache/tts/0b2e51668d12d7cec18d.wav",
+      "start": 49.087,
+      "end": 50.23,
+      "words": [
+        {
+          "word": "It",
+          "start": 49.117,
+          "end": 49.423
+        },
+        {
+          "word": "was",
+          "start": 49.423,
+          "end": 49.729
+        },
+        {
+          "word": "Scales.",
+          "start": 49.729,
+          "end": 50.227
+        }
+      ]
+    },
+    {
+      "i": 19,
+      "beat": "ending",
+      "text": "And the face staring back from the pool of blood wasn't a girl's anymore.",
+      "wav": "/home/user/reelkit_media/cache/tts/e377e6dade577125b066.wav",
+      "start": 51.23,
+      "end": 56.133,
+      "words": [
+        {
+          "word": "And",
+          "start": 51.26,
+          "end": 51.567
+        },
+        {
+          "word": "the",
+          "start": 51.567,
+          "end": 51.874
+        },
+        {
+          "word": "face",
+          "start": 51.874,
+          "end": 52.18
+        },
+        {
+          "word": "staring",
+          "start": 52.18,
+          "end": 52.679
+        },
+        {
+          "word": "back",
+          "start": 52.679,
+          "end": 52.986
+        },
+        {
+          "word": "from",
+          "start": 52.986,
+          "end": 53.292
+        },
+        {
+          "word": "the",
+          "start": 53.292,
+          "end": 53.599
+        },
+        {
+          "word": "pool",
+          "start": 53.599,
+          "end": 53.906
+        },
+        {
+          "word": "of",
+          "start": 53.906,
+          "end": 54.213
+        },
+        {
+          "word": "blood",
+          "start": 54.213,
+          "end": 54.519
+        },
+        {
+          "word": "wasn't",
+          "start": 54.519,
+          "end": 54.826
+        },
+        {
+          "word": "a",
+          "start": 54.826,
+          "end": 55.133
+        },
+        {
+          "word": "girl's",
+          "start": 55.133,
+          "end": 55.44
+        },
+        {
+          "word": "anymore.",
+          "start": 55.44,
+          "end": 56.13
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "t0": 0.0,
+      "t1": 1.053,
+      "dur": 1.053,
+      "shot": 245,
+      "src_in": 610.665,
+      "src_out": 611.718,
+      "sentence": 0,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.425,
+      "cx1": 0.432,
+      "push_in": true,
+      "brightness": 28.4,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 610.78,
+            "box": [
+              136.0,
+              0.0,
+              276.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 611.19,
+            "box": [
+              132.0,
+              0.0,
+              284.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 611.6,
+            "box": [
+              39.3,
+              3.1,
+              459.4,
+              287.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                39.3,
+                3.1,
+                459.4,
+                287.6,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 1.053,
+      "t1": 2.106,
+      "dur": 1.053,
+      "shot": 144,
+      "src_in": 347.6,
+      "src_out": 348.653,
+      "sentence": 0,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.456,
+      "cx1": 0.474,
+      "push_in": false,
+      "brightness": 112.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 347.72,
+            "box": [
+              0.0,
+              0.0,
+              443.2,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                90.3,
+                -21.4,
+                325.6,
+                304.0
+              ]
+            ],
+            "objects": [
+              [
+                40.3,
+                2.3,
+                381.5,
+                285.8,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 348.13,
+            "box": [
+              0.0,
+              0.0,
+              459.7,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                90.6,
+                -21.1,
+                336.7,
+                309.5
+              ]
+            ],
+            "objects": [
+              [
+                13.2,
+                3.1,
+                414.1,
+                286.3,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 348.53,
+            "box": [
+              0.0,
+              0.0,
+              465.7,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                87.8,
+                -23.1,
+                339.7,
+                309.5
+              ]
+            ],
+            "objects": [
+              [
+                7.4,
+                1.1,
+                452.9,
+                286.1,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 2.106,
+      "t1": 2.99,
+      "dur": 0.885,
+      "shot": 244,
+      "src_in": 609.417,
+      "src_out": 610.301,
+      "sentence": 1,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.414,
+      "cx1": 0.403,
+      "push_in": true,
+      "brightness": 16.4,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 332,
+        "cx0": 0.3242,
+        "cx1": 0.3242,
+        "fg_h": 422,
+        "upscale": 1.45,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 147,
+        "detections": [
+          {
+            "t": 609.54,
+            "box": [
+              76.0,
+              0.0,
+              260.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 609.86,
+            "box": [
+              17.3,
+              5.4,
+              303.7,
+              285.1
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                17.3,
+                5.4,
+                303.7,
+                285.1,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 610.18,
+            "box": [
+              9.2,
+              3.8,
+              305.2,
+              286.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                9.2,
+                3.8,
+                305.2,
+                286.6,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 2.99,
+      "t1": 3.875,
+      "dur": 0.885,
+      "shot": 249,
+      "src_in": 620.396,
+      "src_out": 621.281,
+      "sentence": 1,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.585,
+      "cx1": 0.585,
+      "push_in": true,
+      "brightness": 29.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 368,
+        "cx0": 0.571,
+        "cx1": 0.571,
+        "fg_h": 380,
+        "upscale": 1.3,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 168,
+        "detections": [
+          {
+            "t": 620.52,
+            "box": [
+              128.4,
+              0.0,
+              450.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                209.0,
+                18.1,
+                370.3,
+                250.9
+              ]
+            ],
+            "objects": [
+              [
+                163.5,
+                1.5,
+                428.3,
+                287.3,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 620.84,
+            "box": [
+              147.3,
+              0.0,
+              449.6,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                222.9,
+                12.3,
+                374.0,
+                246.3
+              ]
+            ],
+            "objects": [
+              [
+                163.9,
+                1.6,
+                448.5,
+                285.6,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 621.16,
+            "box": [
+              143.1,
+              0.0,
+              456.3,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                221.4,
+                5.9,
+                378.0,
+                243.2
+              ]
+            ],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 3.875,
+      "t1": 5.594,
+      "dur": 1.719,
+      "shot": 60,
+      "src_in": 182.274,
+      "src_out": 183.993,
+      "sentence": 2,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.488,
+      "cx1": 0.511,
+      "push_in": false,
+      "brightness": 107.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel_720w_excerpt.mp4",
+        "rend_w": 720,
+        "rend_h": 306,
+        "offset": 88.625,
+        "crop_w": 720,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 204,
+        "upscale": 0.67,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 256,
+        "detections": [
+          {
+            "t": 182.39,
+            "box": [
+              341.2,
+              88.9,
+              495.6,
+              263.4
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                341.2,
+                88.9,
+                495.6,
+                263.4,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 183.13,
+            "box": [
+              185.6,
+              0.0,
+              500.6,
+              306.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 183.87,
+            "box": [
+              380.9,
+              75.1,
+              473.8,
+              218.6
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                404.1,
+                105.8,
+                450.6,
+                157.1
+              ]
+            ],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 5.594,
+      "t1": 6.599,
+      "dur": 1.005,
+      "shot": 62,
+      "src_in": 186.818,
+      "src_out": 187.823,
+      "sentence": 2,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.464,
+      "cx1": 0.458,
+      "push_in": true,
+      "brightness": 111.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel_720w_excerpt.mp4",
+        "rend_w": 720,
+        "rend_h": 306,
+        "offset": 88.625,
+        "crop_w": 366,
+        "cx0": 0.3985,
+        "cx1": 0.3985,
+        "fg_h": 402,
+        "upscale": 1.31,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 157,
+        "detections": [
+          {
+            "t": 186.94,
+            "box": [
+              123.8,
+              0.0,
+              450.0,
+              306.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 187.32,
+            "box": [
+              199.0,
+              6.6,
+              415.4,
+              265.8
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                283.8,
+                62.2,
+                364.6,
+                154.7
+              ]
+            ],
+            "objects": [
+              [
+                199.0,
+                24.5,
+                415.4,
+                198.5,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 187.7,
+            "box": [
+              246.8,
+              3.3,
+              402.7,
+              255.8
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                285.8,
+                57.4,
+                363.7,
+                147.6
+              ]
+            ],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 6.599,
+      "t1": 8.318,
+      "dur": 1.719,
+      "shot": 67,
+      "src_in": 190.003,
+      "src_out": 191.722,
+      "sentence": 2,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.486,
+      "cx1": 0.474,
+      "push_in": true,
+      "brightness": 90.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel_720w_excerpt.mp4",
+        "rend_w": 720,
+        "rend_h": 306,
+        "offset": 88.625,
+        "crop_w": 504,
+        "cx0": 0.4844,
+        "cx1": 0.4844,
+        "fg_h": 292,
+        "upscale": 0.95,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 212,
+        "detections": [
+          {
+            "t": 190.12,
+            "box": [
+              154.3,
+              0.0,
+              568.1,
+              306.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                257.8,
+                13.3,
+                464.7,
+                281.7
+              ]
+            ],
+            "objects": [
+              [
+                64.7,
+                0.5,
+                536.9,
+                305.6,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 190.86,
+            "box": [
+              128.9,
+              0.0,
+              573.4,
+              306.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                240.0,
+                -1.1,
+                462.3,
+                270.5
+              ]
+            ],
+            "objects": [
+              [
+                55.0,
+                0.0,
+                546.4,
+                302.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 191.6,
+            "box": [
+              124.2,
+              0.0,
+              555.7,
+              306.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                232.1,
+                5.5,
+                447.9,
+                271.6
+              ]
+            ],
+            "objects": [
+              [
+                64.0,
+                0.3,
+                529.8,
+                301.6,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 8.318,
+      "t1": 9.523,
+      "dur": 1.205,
+      "shot": 75,
+      "src_in": 207.2,
+      "src_out": 208.405,
+      "sentence": 3,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.512,
+      "cx1": 0.512,
+      "push_in": true,
+      "brightness": 52.9,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel_720w_excerpt.mp4",
+        "rend_w": 720,
+        "rend_h": 306,
+        "offset": 88.625,
+        "crop_w": 218,
+        "cx0": 0.4804,
+        "cx1": 0.4804,
+        "fg_h": 674,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 207.32,
+            "box": [
+              284.7,
+              84.5,
+              405.3,
+              213.2
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                284.7,
+                84.5,
+                405.3,
+                213.2,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 207.8,
+            "box": [
+              284.5,
+              85.2,
+              406.7,
+              216.0
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                284.5,
+                85.2,
+                406.7,
+                216.0,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 208.28,
+            "box": [
+              286.2,
+              86.0,
+              407.3,
+              217.8
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                286.2,
+                86.0,
+                407.3,
+                217.8,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 9.523,
+      "t1": 10.728,
+      "dur": 1.205,
+      "shot": 78,
+      "src_in": 213.261,
+      "src_out": 214.466,
+      "sentence": 3,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.527,
+      "cx1": 0.544,
+      "push_in": false,
+      "brightness": 95.6,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 213.38,
+            "box": [
+              11.6,
+              1.0,
+              512.0,
+              291.1
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                11.6,
+                1.0,
+                512.0,
+                291.1,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 213.86,
+            "box": [
+              31.9,
+              0.0,
+              510.6,
+              288.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                31.9,
+                0.0,
+                510.6,
+                288.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 214.35,
+            "box": [
+              24.1,
+              0.0,
+              273.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                86.5,
+                55.3,
+                211.2,
+                188.0
+              ]
+            ],
+            "objects": [
+              [
+                17.8,
+                1.3,
+                511.1,
+                286.9,
+                "person"
+              ],
+              [
+                89.1,
+                24.8,
+                265.3,
+                218.5,
+                "dog"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 10.728,
+      "t1": 11.933,
+      "dur": 1.205,
+      "shot": 79,
+      "src_in": 216.636,
+      "src_out": 217.841,
+      "sentence": 3,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.477,
+      "cx1": 0.508,
+      "push_in": true,
+      "brightness": 73.2,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 286,
+        "cx0": 0.6656,
+        "cx1": 0.669,
+        "fg_h": 490,
+        "upscale": 1.68,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 113,
+        "detections": [
+          {
+            "t": 216.76,
+            "box": [
+              212.9,
+              0.0,
+              468.7,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                276.8,
+                26.8,
+                404.7,
+                184.7
+              ]
+            ],
+            "objects": [
+              [
+                211.2,
+                1.4,
+                501.7,
+                290.9,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 217.24,
+            "box": [
+              215.7,
+              0.0,
+              465.1,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                278.0,
+                32.5,
+                402.7,
+                189.3
+              ]
+            ],
+            "objects": [
+              [
+                232.6,
+                1.2,
+                501.2,
+                287.4,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 217.72,
+            "box": [
+              219.2,
+              0.0,
+              465.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                280.9,
+                30.3,
+                404.2,
+                185.2
+              ]
+            ],
+            "objects": [
+              [
+                231.7,
+                1.2,
+                502.3,
+                290.6,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 11.933,
+      "t1": 13.526,
+      "dur": 1.593,
+      "shot": 117,
+      "src_in": 309.258,
+      "src_out": 310.851,
+      "sentence": 4,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.504,
+      "cx1": 0.483,
+      "push_in": false,
+      "brightness": 185.5,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 309.38,
+            "box": [
+              41.8,
+              134.0,
+              334.7,
+              205.8
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                273.7,
+                134.0,
+                334.7,
+                186.5,
+                "bird"
+              ],
+              [
+                41.8,
+                174.6,
+                76.4,
+                205.8,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 310.05,
+            "box": [
+              261.2,
+              81.1,
+              330.3,
+              159.8
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                261.2,
+                81.1,
+                330.3,
+                159.8,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 310.73,
+            "box": [
+              224.0,
+              0.0,
+              456.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 13.526,
+      "t1": 14.906,
+      "dur": 1.38,
+      "shot": 124,
+      "src_in": 317.573,
+      "src_out": 318.953,
+      "sentence": 5,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.554,
+      "cx1": 0.574,
+      "push_in": false,
+      "brightness": 111.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 218,
+        "cx0": 0.5826,
+        "cx1": 0.5826,
+        "fg_h": 642,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 317.69,
+            "box": [
+              211.1,
+              14.9,
+              344.1,
+              270.3
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                244.3,
+                69.7,
+                310.8,
+                160.9
+              ]
+            ],
+            "objects": [
+              [
+                146.5,
+                45.0,
+                431.3,
+                286.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 318.26,
+            "box": [
+              206.6,
+              28.1,
+              355.1,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                243.7,
+                88.9,
+                318.0,
+                190.2
+              ]
+            ],
+            "objects": [
+              [
+                193.3,
+                46.2,
+                410.9,
+                288.4,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 318.83,
+            "box": [
+              220.6,
+              0.0,
+              390.0,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                263.0,
+                61.7,
+                347.7,
+                182.6
+              ]
+            ],
+            "objects": [
+              [
+                179.2,
+                18.6,
+                438.6,
+                286.1,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 14.906,
+      "t1": 16.552,
+      "dur": 1.646,
+      "shot": 127,
+      "src_in": 320.573,
+      "src_out": 322.219,
+      "sentence": 5,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.522,
+      "cx1": 0.493,
+      "push_in": false,
+      "brightness": 170.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 398,
+        "cx0": 0.4102,
+        "cx1": 0.5089,
+        "fg_h": 352,
+        "upscale": 1.21,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 182,
+        "detections": [
+          {
+            "t": 320.69,
+            "box": [
+              36.0,
+              0.0,
+              384.0,
+              292.0
+            ],
+            "by": "saliency-scene",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 321.4,
+            "box": [
+              180.0,
+              0.0,
+              376.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 322.1,
+            "box": [
+              184.0,
+              0.0,
+              392.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 16.552,
+      "t1": 17.307,
+      "dur": 0.755,
+      "shot": 128,
+      "src_in": 322.323,
+      "src_out": 323.078,
+      "sentence": 5,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.477,
+      "cx1": 0.484,
+      "push_in": false,
+      "brightness": 117.1,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 218,
+        "cx0": 0.2796,
+        "cx1": 0.2796,
+        "fg_h": 642,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 322.44,
+            "box": [
+              140.5,
+              88.0,
+              157.5,
+              139.9
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                140.5,
+                88.0,
+                157.5,
+                139.9,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 322.7,
+            "box": [
+              130.7,
+              87.7,
+              148.1,
+              141.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                130.7,
+                87.7,
+                148.1,
+                141.6,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 322.96,
+            "box": [
+              128.8,
+              81.7,
+              149.2,
+              148.3
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                128.8,
+                81.7,
+                149.2,
+                148.3,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 17.307,
+      "t1": 18.701,
+      "dur": 1.394,
+      "shot": 134,
+      "src_in": 328.608,
+      "src_out": 330.002,
+      "sentence": 6,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.472,
+      "cx1": 0.433,
+      "push_in": false,
+      "brightness": 145.4,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 328.73,
+            "box": [
+              0.6,
+              2.6,
+              417.4,
+              287.1
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                0.6,
+                196.5,
+                49.3,
+                287.1,
+                "bird"
+              ],
+              [
+                35.9,
+                71.2,
+                417.4,
+                245.3,
+                "dog"
+              ],
+              [
+                110.1,
+                2.6,
+                408.4,
+                123.0,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 329.31,
+            "box": [
+              4.4,
+              45.6,
+              384.1,
+              286.9
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                25.1,
+                45.6,
+                384.1,
+                226.0,
+                "dog"
+              ],
+              [
+                4.4,
+                182.6,
+                69.9,
+                286.9,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 329.88,
+            "box": [
+              51.2,
+              5.4,
+              399.0,
+              205.5
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                51.2,
+                5.4,
+                399.0,
+                205.5,
+                "dog"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 18.701,
+      "t1": 20.095,
+      "dur": 1.394,
+      "shot": 133,
+      "src_in": 326.587,
+      "src_out": 327.981,
+      "sentence": 6,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.473,
+      "cx1": 0.42,
+      "push_in": false,
+      "brightness": 136.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 326.71,
+            "box": [
+              86.3,
+              0.0,
+              300.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                139.8,
+                39.0,
+                247.0,
+                210.2
+              ]
+            ],
+            "objects": [
+              [
+                2.8,
+                5.2,
+                298.2,
+                286.2,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 327.28,
+            "box": [
+              55.2,
+              0.0,
+              324.4,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                122.5,
+                19.7,
+                257.1,
+                212.9
+              ]
+            ],
+            "objects": [
+              [
+                3.5,
+                1.1,
+                327.6,
+                287.5,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 327.86,
+            "box": [
+              3.2,
+              0.0,
+              447.8,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                73.0,
+                26.6,
+                212.6,
+                240.5
+              ]
+            ],
+            "objects": [
+              [
+                1.4,
+                1.9,
+                283.8,
+                287.0,
+                "person"
+              ],
+              [
+                414.1,
+                248.9,
+                447.8,
+                287.8,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 20.095,
+      "t1": 21.633,
+      "dur": 1.538,
+      "shot": 144,
+      "src_in": 345.3,
+      "src_out": 346.838,
+      "sentence": 7,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.449,
+      "cx1": 0.443,
+      "push_in": false,
+      "brightness": 112.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 345.42,
+            "box": [
+              139.4,
+              0.0,
+              430.1,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                212.1,
+                25.0,
+                357.5,
+                234.0
+              ]
+            ],
+            "objects": [
+              [
+                145.0,
+                4.2,
+                468.1,
+                286.1,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 346.07,
+            "box": [
+              76.5,
+              0.0,
+              425.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                163.8,
+                -0.7,
+                338.3,
+                245.1
+              ]
+            ],
+            "objects": [
+              [
+                9.7,
+                1.4,
+                459.4,
+                285.9,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 346.72,
+            "box": [
+              22.1,
+              0.0,
+              419.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                121.6,
+                -18.6,
+                320.5,
+                274.9
+              ]
+            ],
+            "objects": [
+              [
+                39.5,
+                0.4,
+                489.8,
+                287.5,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 21.633,
+      "t1": 23.825,
+      "dur": 2.192,
+      "shot": 147,
+      "src_in": 357.0,
+      "src_out": 359.192,
+      "sentence": 8,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.478,
+      "cx1": 0.479,
+      "push_in": true,
+      "brightness": 52.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 372,
+        "cx0": 0.5838,
+        "cx1": 0.5838,
+        "fg_h": 376,
+        "upscale": 1.29,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 170,
+        "detections": [
+          {
+            "t": 357.12,
+            "box": [
+              148.0,
+              0.0,
+              392.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 358.1,
+            "box": [
+              132.9,
+              0.0,
+              438.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                179.6,
+                71.3,
+                272.9,
+                201.4
+              ]
+            ],
+            "objects": [
+              [
+                1.7,
+                2.7,
+                316.4,
+                279.9,
+                "person"
+              ],
+              [
+                429.7,
+                159.0,
+                438.9,
+                172.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 359.07,
+            "box": [
+              140.7,
+              0.0,
+              464.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                182.9,
+                42.9,
+                267.1,
+                181.8
+              ]
+            ],
+            "objects": [
+              [
+                0.4,
+                3.4,
+                320.6,
+                278.2,
+                "person"
+              ],
+              [
+                443.9,
+                126.6,
+                464.9,
+                156.8,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 23.825,
+      "t1": 25.009,
+      "dur": 1.184,
+      "shot": 152,
+      "src_in": 371.0,
+      "src_out": 372.185,
+      "sentence": 9,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.476,
+      "cx1": 0.473,
+      "push_in": true,
+      "brightness": 185.1,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 322,
+        "cx0": 0.4648,
+        "cx1": 0.4766,
+        "fg_h": 436,
+        "upscale": 1.49,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 140,
+        "detections": [
+          {
+            "t": 371.12,
+            "box": [
+              100.0,
+              0.0,
+              376.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 371.59,
+            "box": [
+              96.0,
+              0.0,
+              376.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 372.06,
+            "box": [
+              104.0,
+              0.0,
+              384.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 25.009,
+      "t1": 26.194,
+      "dur": 1.184,
+      "shot": 153,
+      "src_in": 381.194,
+      "src_out": 382.379,
+      "sentence": 9,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.481,
+      "cx1": 0.489,
+      "push_in": false,
+      "brightness": 103.5,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 344,
+        "cx0": 0.4118,
+        "cx1": 0.4118,
+        "fg_h": 408,
+        "upscale": 1.4,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 154,
+        "detections": [
+          {
+            "t": 381.31,
+            "box": [
+              57.7,
+              124.6,
+              129.3,
+              234.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                57.7,
+                124.6,
+                129.3,
+                234.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 381.79,
+            "box": [
+              116.2,
+              87.4,
+              145.4,
+              141.4
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                123.5,
+                99.0,
+                138.1,
+                118.3
+              ]
+            ],
+            "objects": [
+              [
+                92.0,
+                89.8,
+                170.0,
+                226.8,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 382.26,
+            "box": [
+              116.0,
+              0.0,
+              364.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 26.194,
+      "t1": 27.378,
+      "dur": 1.184,
+      "shot": 158,
+      "src_in": 416.675,
+      "src_out": 417.859,
+      "sentence": 9,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.447,
+      "cx1": 0.501,
+      "push_in": false,
+      "brightness": 176.6,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 304,
+        "cx0": 0.4062,
+        "cx1": 0.4609,
+        "fg_h": 462,
+        "upscale": 1.58,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 127,
+        "detections": [
+          {
+            "t": 416.8,
+            "box": [
+              96.0,
+              0.0,
+              320.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 417.27,
+            "box": [
+              76.4,
+              60.8,
+              271.7,
+              248.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                76.4,
+                60.8,
+                271.7,
+                248.6,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 417.74,
+            "box": [
+              124.0,
+              0.0,
+              348.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 27.378,
+      "t1": 28.563,
+      "dur": 1.184,
+      "shot": 156,
+      "src_in": 400.5,
+      "src_out": 401.685,
+      "sentence": 9,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.409,
+      "cx1": 0.439,
+      "push_in": false,
+      "brightness": 105.2,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 342,
+        "cx0": 0.3441,
+        "cx1": 0.3441,
+        "fg_h": 410,
+        "upscale": 1.4,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 153,
+        "detections": [
+          {
+            "t": 400.62,
+            "box": [
+              23.9,
+              71.1,
+              195.9,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                66.9,
+                129.6,
+                152.9,
+                227.0
+              ]
+            ],
+            "objects": [
+              [
+                33.6,
+                60.4,
+                257.4,
+                285.9,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 401.09,
+            "box": [
+              29.6,
+              18.1,
+              210.4,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                74.8,
+                83.8,
+                165.2,
+                193.4
+              ]
+            ],
+            "objects": [
+              [
+                41.7,
+                23.5,
+                300.6,
+                286.6,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 401.56,
+            "box": [
+              109.6,
+              53.8,
+              328.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                164.3,
+                133.2,
+                273.8,
+                265.5
+              ]
+            ],
+            "objects": [
+              [
+                29.5,
+                71.2,
+                337.1,
+                288.4,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 28.563,
+      "t1": 30.212,
+      "dur": 1.649,
+      "shot": 172,
+      "src_in": 451.695,
+      "src_out": 453.344,
+      "sentence": 10,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.586,
+      "cx1": 0.548,
+      "push_in": true,
+      "brightness": 31.9,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 451.81,
+            "box": [
+              0.1,
+              0.0,
+              512.0,
+              288.8
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                0.1,
+                71.3,
+                117.8,
+                286.0,
+                "person"
+              ],
+              [
+                183.1,
+                0.0,
+                512.0,
+                288.8,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 452.52,
+            "box": [
+              0.0,
+              0.0,
+              509.3,
+              286.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                0.0,
+                70.0,
+                123.1,
+                286.3,
+                "person"
+              ],
+              [
+                142.7,
+                0.0,
+                509.3,
+                286.7,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 453.22,
+            "box": [
+              0.0,
+              0.8,
+              493.6,
+              286.1
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                0.0,
+                69.4,
+                124.2,
+                286.1,
+                "person"
+              ],
+              [
+                145.9,
+                0.8,
+                493.6,
+                285.8,
+                "dog"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 30.212,
+      "t1": 31.861,
+      "dur": 1.649,
+      "shot": 180,
+      "src_in": 470.6,
+      "src_out": 472.249,
+      "sentence": 10,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.48,
+      "cx1": 0.496,
+      "push_in": true,
+      "brightness": 44.2,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 218,
+        "cx0": 0.4805,
+        "cx1": 0.4805,
+        "fg_h": 642,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 470.72,
+            "box": [
+              160.0,
+              0.0,
+              324.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 471.42,
+            "box": [
+              156.0,
+              0.0,
+              328.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 472.13,
+            "box": [
+              152.0,
+              0.0,
+              340.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 31.861,
+      "t1": 33.244,
+      "dur": 1.383,
+      "shot": 183,
+      "src_in": 484.954,
+      "src_out": 486.336,
+      "sentence": 11,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.51,
+      "cx1": 0.51,
+      "push_in": true,
+      "brightness": 28.5,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 218,
+        "cx0": 0.6351,
+        "cx1": 0.6351,
+        "fg_h": 642,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 485.07,
+            "box": [
+              228.6,
+              27.4,
+              421.7,
+              226.9
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                228.6,
+                184.0,
+                240.9,
+                209.4,
+                "person"
+              ],
+              [
+                398.7,
+                172.1,
+                421.7,
+                226.9,
+                "person"
+              ],
+              [
+                367.0,
+                27.4,
+                383.9,
+                66.1,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 485.64,
+            "box": [
+              228.7,
+              27.4,
+              421.7,
+              227.0
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                228.7,
+                183.6,
+                240.5,
+                208.4,
+                "person"
+              ],
+              [
+                254.7,
+                174.8,
+                263.7,
+                192.3,
+                "person"
+              ],
+              [
+                398.7,
+                172.0,
+                421.7,
+                227.0,
+                "person"
+              ],
+              [
+                367.0,
+                27.4,
+                383.8,
+                66.1,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 486.22,
+            "box": [
+              228.6,
+              184.0,
+              240.8,
+              209.5
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                228.6,
+                184.0,
+                240.8,
+                209.5,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 33.244,
+      "t1": 34.626,
+      "dur": 1.383,
+      "shot": 199,
+      "src_in": 536.706,
+      "src_out": 538.088,
+      "sentence": 11,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.579,
+      "cx1": 0.616,
+      "push_in": true,
+      "brightness": 56.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 536.83,
+            "box": [
+              0.5,
+              2.8,
+              213.7,
+              290.4
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                0.5,
+                2.8,
+                213.7,
+                290.4,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 537.4,
+            "box": [
+              256.0,
+              0.0,
+              416.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 537.97,
+            "box": [
+              256.0,
+              0.0,
+              424.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 34.626,
+      "t1": 35.196,
+      "dur": 0.57,
+      "shot": 203,
+      "src_in": 541.55,
+      "src_out": 542.121,
+      "sentence": 12,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.468,
+      "cx1": 0.501,
+      "push_in": false,
+      "brightness": 41.1,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 541.67,
+            "box": [
+              18.8,
+              9.0,
+              276.3,
+              172.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                18.8,
+                9.0,
+                276.3,
+                172.7,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 541.84,
+            "box": [
+              8.0,
+              10.4,
+              402.7,
+              287.9
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                8.0,
+                10.4,
+                274.4,
+                188.3,
+                "dog"
+              ],
+              [
+                287.8,
+                43.4,
+                402.7,
+                287.9,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 542.0,
+            "box": [
+              335.8,
+              60.4,
+              508.7,
+              280.1
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                335.8,
+                60.4,
+                508.7,
+                280.1,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 35.196,
+      "t1": 35.702,
+      "dur": 0.505,
+      "shot": 204,
+      "src_in": 542.583,
+      "src_out": 543.088,
+      "sentence": 12,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.578,
+      "cx1": 0.567,
+      "push_in": false,
+      "brightness": 109.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 542.7,
+            "box": [
+              96.0,
+              0.0,
+              352.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 542.84,
+            "box": [
+              2.6,
+              127.4,
+              263.1,
+              257.0
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                2.6,
+                127.4,
+                263.1,
+                257.0,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 542.97,
+            "box": [
+              1.5,
+              123.8,
+              287.0,
+              252.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                1.5,
+                123.8,
+                287.0,
+                252.6,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 35.702,
+      "t1": 36.272,
+      "dur": 0.57,
+      "shot": 206,
+      "src_in": 544.092,
+      "src_out": 544.662,
+      "sentence": 12,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.361,
+      "cx1": 0.344,
+      "push_in": false,
+      "brightness": 34.8,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 242,
+        "cx0": 0.3281,
+        "cx1": 0.3281,
+        "fg_h": 580,
+        "upscale": 1.98,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 68,
+        "detections": [
+          {
+            "t": 544.21,
+            "box": [
+              96.0,
+              0.0,
+              276.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 544.38,
+            "box": [
+              76.0,
+              0.0,
+              260.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 544.54,
+            "box": [
+              60.0,
+              0.0,
+              252.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 36.272,
+      "t1": 37.853,
+      "dur": 1.58,
+      "shot": 229,
+      "src_in": 583.296,
+      "src_out": 584.877,
+      "sentence": 13,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.558,
+      "cx1": 0.543,
+      "push_in": false,
+      "brightness": 29.6,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 583.42,
+            "box": [
+              244.0,
+              0.0,
+              420.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 584.09,
+            "box": [
+              220.0,
+              0.0,
+              356.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 584.76,
+            "box": [
+              7.6,
+              60.9,
+              443.8,
+              286.6
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                7.6,
+                60.9,
+                443.8,
+                286.6,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 37.853,
+      "t1": 39.433,
+      "dur": 1.58,
+      "shot": 237,
+      "src_in": 595.985,
+      "src_out": 597.565,
+      "sentence": 13,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.419,
+      "cx1": 0.442,
+      "push_in": true,
+      "brightness": 26.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 596.11,
+            "box": [
+              8.7,
+              0.8,
+              411.2,
+              286.8
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                8.7,
+                0.8,
+                411.2,
+                286.8,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 596.78,
+            "box": [
+              4.6,
+              1.1,
+              473.4,
+              288.2
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                4.6,
+                1.1,
+                473.4,
+                288.2,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 597.45,
+            "box": [
+              136.0,
+              0.0,
+              320.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 39.433,
+      "t1": 41.212,
+      "dur": 1.779,
+      "shot": 235,
+      "src_in": 591.364,
+      "src_out": 593.143,
+      "sentence": 14,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.364,
+      "cx1": 0.338,
+      "push_in": false,
+      "brightness": 19.7,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 591.48,
+            "box": [
+              31.0,
+              7.1,
+              499.7,
+              290.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                31.0,
+                7.1,
+                499.7,
+                290.7,
+                "bear"
+              ]
+            ]
+          },
+          {
+            "t": 592.25,
+            "box": [
+              76.0,
+              0.0,
+              236.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 593.02,
+            "box": [
+              84.0,
+              0.0,
+              252.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 41.212,
+      "t1": 42.522,
+      "dur": 1.31,
+      "shot": 243,
+      "src_in": 607.3,
+      "src_out": 608.61,
+      "sentence": 15,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.514,
+      "cx1": 0.5,
+      "push_in": false,
+      "brightness": 24.5,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 230,
+        "cx0": 0.4933,
+        "cx1": 0.4933,
+        "fg_h": 610,
+        "upscale": 2.09,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 53,
+        "detections": [
+          {
+            "t": 607.42,
+            "box": [
+              215.7,
+              46.8,
+              330.8,
+              246.8
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                244.4,
+                89.6,
+                302.0,
+                161.1
+              ]
+            ],
+            "objects": [
+              [
+                227.1,
+                59.0,
+                359.9,
+                285.4,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 607.95,
+            "box": [
+              188.0,
+              0.0,
+              355.0,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                229.8,
+                47.1,
+                313.2,
+                162.9
+              ]
+            ],
+            "objects": [
+              [
+                85.9,
+                20.0,
+                402.6,
+                288.7,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 608.49,
+            "box": [
+              150.1,
+              0.0,
+              318.3,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                192.2,
+                27.3,
+                276.2,
+                151.7
+              ]
+            ],
+            "objects": [
+              [
+                88.1,
+                1.6,
+                389.2,
+                289.3,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 42.522,
+      "t1": 45.079,
+      "dur": 2.557,
+      "shot": 248,
+      "src_in": 617.06,
+      "src_out": 619.617,
+      "sentence": 16,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.51,
+      "cx1": 0.505,
+      "push_in": true,
+      "brightness": 20.4,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 617.18,
+            "box": [
+              368.9,
+              77.9,
+              425.4,
+              216.0
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                368.9,
+                77.9,
+                425.4,
+                216.0,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 618.34,
+            "box": [
+              10.9,
+              30.6,
+              477.3,
+              272.2
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                424.5,
+                80.6,
+                477.3,
+                219.3,
+                "person"
+              ],
+              [
+                10.9,
+                30.6,
+                337.1,
+                272.2,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 619.5,
+            "box": [
+              200.6,
+              94.2,
+              500.5,
+              231.7
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                436.9,
+                94.2,
+                500.5,
+                218.9,
+                "person"
+              ],
+              [
+                200.6,
+                175.0,
+                324.8,
+                231.7,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 45.079,
+      "t1": 47.023,
+      "dur": 1.944,
+      "shot": 250,
+      "src_in": 622.0,
+      "src_out": 623.944,
+      "sentence": 17,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.468,
+      "cx1": 0.459,
+      "push_in": true,
+      "brightness": 19.6,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 386,
+        "cx0": 0.377,
+        "cx1": 0.3867,
+        "fg_h": 364,
+        "upscale": 1.24,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 176,
+        "detections": [
+          {
+            "t": 622.12,
+            "box": [
+              10.9,
+              4.2,
+              291.3,
+              213.3
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                10.9,
+                4.2,
+                291.3,
+                213.3,
+                "elephant"
+              ]
+            ]
+          },
+          {
+            "t": 622.97,
+            "box": [
+              44.0,
+              0.0,
+              356.0,
+              292.0
+            ],
+            "by": "saliency-scene",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 623.82,
+            "box": [
+              44.0,
+              0.0,
+              352.0,
+              292.0
+            ],
+            "by": "saliency-scene",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 47.023,
+      "t1": 48.967,
+      "dur": 1.944,
+      "shot": 247,
+      "src_in": 614.346,
+      "src_out": 616.289,
+      "sentence": 17,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.401,
+      "cx1": 0.43,
+      "push_in": true,
+      "brightness": 25.3,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 322,
+        "cx0": 0.332,
+        "cx1": 0.4062,
+        "fg_h": 436,
+        "upscale": 1.49,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 140,
+        "detections": [
+          {
+            "t": 614.47,
+            "box": [
+              84.0,
+              0.0,
+              256.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 615.32,
+            "box": [
+              76.0,
+              0.0,
+              316.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          },
+          {
+            "t": 616.17,
+            "box": [
+              64.0,
+              0.0,
+              352.0,
+              292.0
+            ],
+            "by": "saliency",
+            "faces": [],
+            "objects": []
+          }
+        ]
+      }
+    },
+    {
+      "t0": 48.967,
+      "t1": 51.11,
+      "dur": 2.143,
+      "shot": 261,
+      "src_in": 663.373,
+      "src_out": 665.516,
+      "sentence": 18,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.465,
+      "cx1": 0.46,
+      "push_in": false,
+      "brightness": 27.2,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 512,
+        "cx0": 0.5,
+        "cx1": 0.5,
+        "fg_h": 274,
+        "upscale": 0.94,
+        "mode": "full-frame",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 221,
+        "detections": [
+          {
+            "t": 663.49,
+            "box": [
+              9.7,
+              6.3,
+              494.7,
+              291.9
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                9.7,
+                6.3,
+                494.7,
+                291.9,
+                "dog"
+              ]
+            ]
+          },
+          {
+            "t": 664.44,
+            "box": [
+              5.3,
+              2.3,
+              493.8,
+              288.2
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                5.3,
+                2.3,
+                493.8,
+                288.2,
+                "bird"
+              ]
+            ]
+          },
+          {
+            "t": 665.4,
+            "box": [
+              13.1,
+              3.7,
+              463.3,
+              261.5
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                13.1,
+                3.7,
+                463.3,
+                261.5,
+                "bird"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 51.11,
+      "t1": 53.746,
+      "dur": 2.637,
+      "shot": 250,
+      "src_in": 631.2,
+      "src_out": 633.837,
+      "sentence": 19,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.496,
+      "cx1": 0.498,
+      "push_in": true,
+      "brightness": 19.6,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 240,
+        "cx0": 0.5594,
+        "cx1": 0.572,
+        "fg_h": 584,
+        "upscale": 2.0,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 66,
+        "detections": [
+          {
+            "t": 631.32,
+            "box": [
+              232.7,
+              89.5,
+              340.1,
+              279.8
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                259.5,
+                130.3,
+                313.2,
+                198.3
+              ]
+            ],
+            "objects": []
+          },
+          {
+            "t": 632.52,
+            "box": [
+              202.2,
+              0.0,
+              386.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                248.3,
+                54.5,
+                340.4,
+                178.9
+              ]
+            ],
+            "objects": [
+              [
+                118.2,
+                15.5,
+                490.1,
+                288.3,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 633.72,
+            "box": [
+              185.3,
+              0.0,
+              400.4,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                239.1,
+                28.9,
+                346.6,
+                173.4
+              ]
+            ],
+            "objects": [
+              [
+                86.6,
+                4.2,
+                452.1,
+                287.5,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 53.746,
+      "t1": 56.383,
+      "dur": 2.637,
+      "shot": 254,
+      "src_in": 642.0,
+      "src_out": 644.636,
+      "sentence": 19,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.494,
+      "cx1": 0.497,
+      "push_in": false,
+      "brightness": 31.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 292,
+        "cx0": 0.6842,
+        "cx1": 0.6842,
+        "fg_h": 480,
+        "upscale": 1.64,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 118,
+        "detections": [
+          {
+            "t": 642.12,
+            "box": [
+              256.3,
+              0.0,
+              480.5,
+              194.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                312.4,
+                -3.3,
+                424.5,
+                86.4
+              ]
+            ],
+            "objects": [
+              [
+                158.0,
+                1.8,
+                512.0,
+                287.5,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 643.32,
+            "box": [
+              258.8,
+              0.0,
+              460.5,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                309.2,
+                29.3,
+                410.1,
+                174.9
+              ]
+            ],
+            "objects": [
+              [
+                248.2,
+                2.2,
+                511.3,
+                287.5,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 644.52,
+            "box": [
+              220.1,
+              0.0,
+              444.4,
+              292.0
+            ],
+            "by": "detections",
+            "faces": [
+              [
+                276.2,
+                27.0,
+                388.3,
+                211.6
+              ]
+            ],
+            "objects": [
+              [
+                196.7,
+                2.9,
+                511.0,
+                285.6,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "t0": 56.383,
+      "t1": 58.983,
+      "dur": 2.6,
+      "shot": 270,
+      "src_in": 690.0,
+      "src_out": 692.6,
+      "sentence": null,
+      "overruns_shot": false,
+      "frame": "hybrid",
+      "cx0": 0.484,
+      "cx1": 0.485,
+      "push_in": true,
+      "brightness": 133.0,
+      "framing": {
+        "rendition": "/home/user/reelkit_media/sources/sintel.mp4",
+        "rend_w": 512,
+        "rend_h": 292,
+        "offset": 0.0,
+        "crop_w": 218,
+        "cx0": 0.7871,
+        "cx1": 0.7871,
+        "fg_h": 642,
+        "upscale": 2.2,
+        "mode": "subject-crop",
+        "face_coverage": 1.0,
+        "subject_coverage": 1.0,
+        "fg_y": 51,
+        "detections": [
+          {
+            "t": 690.12,
+            "box": [
+              373.6,
+              85.8,
+              443.8,
+              218.5
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                373.6,
+                85.8,
+                443.8,
+                218.5,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 691.3,
+            "box": [
+              372.7,
+              86.9,
+              443.6,
+              218.5
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                372.7,
+                86.9,
+                443.6,
+                218.5,
+                "person"
+              ]
+            ]
+          },
+          {
+            "t": 692.48,
+            "box": [
+              372.5,
+              83.8,
+              444.4,
+              218.0
+            ],
+            "by": "detections",
+            "faces": [],
+            "objects": [
+              [
+                372.5,
+                83.8,
+                444.4,
+                218.0,
+                "person"
+              ]
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

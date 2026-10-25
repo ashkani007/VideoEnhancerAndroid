@@ -1,0 +1,374 @@
+{
+ "slug": "sintel-scales-v2",
+ "title": "She hunted this dragon for years",
+ "source": {
+  "file": "sources/sintel.mp4",
+  "sha256": "8a9c1c0ca9c64659e4c05c0d3386ed2b05eca5737873eb3c0b4fe2dc22df8197",
+  "title": "Sintel (2010)",
+  "credit": "Sintel \u00a9 Blender Foundation | durian.blender.org",
+  "license": "CC BY 3.0",
+  "license_url": "https://creativecommons.org/licenses/by/3.0/",
+  "official_url": "https://durian.blender.org/",
+  "fetched_from": "https://raw.githubusercontent.com/andreasbotsikas/DemoVideos/master/sintel.mp4",
+  "credit_short": "Sintel \u00a9 Blender Foundation \u00b7 CC BY 3.0"
+ },
+ "beats": [
+  {
+   "name": "hook",
+   "target": [
+    0,
+    3
+   ]
+  },
+  {
+   "name": "setup",
+   "target": [
+    3,
+    15
+   ]
+  },
+  {
+   "name": "rising",
+   "target": [
+    15,
+    40
+   ]
+  },
+  {
+   "name": "climax",
+   "target": [
+    40,
+    55
+   ]
+  },
+  {
+   "name": "ending",
+   "target": [
+    55,
+    60
+   ]
+  }
+ ],
+ "sentences": [
+  {
+   "beat": "hook",
+   "text": "She spent years hunting this dragon.",
+   "clips": [
+    {
+     "shot": 245
+    },
+    {
+     "shot": 144,
+     "at": 347.6
+    }
+   ],
+   "sfx": "hit",
+   "pause_after": 0.22,
+   "mood": "mystery",
+   "fast": true
+  },
+  {
+   "beat": "hook",
+   "text": "She should have looked closer.",
+   "clips": [
+    {
+     "shot": 244
+    },
+    {
+     "shot": 249
+    }
+   ],
+   "pause_after": 0.45,
+   "mood": "mystery"
+  },
+  {
+   "beat": "setup",
+   "text": "It started on a rooftop, with a baby dragon and a torn, bleeding wing.",
+   "clips": [
+    {
+     "shot": 60
+    },
+    {
+     "shot": 62
+    },
+    {
+     "shot": 67
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "tender"
+  },
+  {
+   "beat": "setup",
+   "text": "She carried it home, bandaged the wound, and named it Scales.",
+   "clips": [
+    {
+     "shot": 75,
+     "at": 207.2
+    },
+    {
+     "shot": 78
+    },
+    {
+     "shot": 79
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "tender"
+  },
+  {
+   "beat": "setup",
+   "text": "She taught it to fly.",
+   "clips": [
+    {
+     "shot": 117
+    },
+    {
+     "shot": 118
+    }
+   ],
+   "pause_after": 0.4,
+   "mood": "wonder"
+  },
+  {
+   "beat": "rising",
+   "text": "Then one evening, a full-grown dragon dropped out of the sky,",
+   "clips": [
+    {
+     "shot": 124
+    },
+    {
+     "shot": 127
+    },
+    {
+     "shot": 128
+    }
+   ],
+   "sfx": "whoosh",
+   "pause_after": 0.22,
+   "mood": "tension"
+  },
+  {
+   "beat": "rising",
+   "text": "snatched Scales in its claws, and was gone.",
+   "clips": [
+    {
+     "shot": 134
+    },
+    {
+     "shot": 133
+    },
+    {
+     "shot": 138
+    }
+   ],
+   "pause_after": 0.35,
+   "mood": "tension"
+  },
+  {
+   "beat": "rising",
+   "text": "She didn't cry for long.",
+   "clips": [
+    {
+     "shot": 144,
+     "at": 345.3
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "journey"
+  },
+  {
+   "beat": "rising",
+   "text": "She took a blade and started walking.",
+   "clips": [
+    {
+     "shot": 145
+    },
+    {
+     "shot": 147,
+     "at": 357.0
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "journey"
+  },
+  {
+   "beat": "rising",
+   "text": "Through deserts. Through bamboo forests. Through blizzards that nearly buried her.",
+   "clips": [
+    {
+     "shot": 152,
+     "at": 371.0
+    },
+    {
+     "shot": 153
+    },
+    {
+     "shot": 158
+    },
+    {
+     "shot": 156,
+     "at": 400.5
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "journey"
+  },
+  {
+   "beat": "rising",
+   "text": "Finally, an old shaman told her where the dragons nest.",
+   "clips": [
+    {
+     "shot": 172
+    },
+    {
+     "shot": 180,
+     "at": 470.6
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "mystery"
+  },
+  {
+   "beat": "rising",
+   "text": "Inside the cave, she found a baby dragon.",
+   "clips": [
+    {
+     "shot": 183
+    },
+    {
+     "shot": 199
+    },
+    {
+     "shot": 200
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "dread"
+  },
+  {
+   "beat": "rising",
+   "text": "Then its parent found her.",
+   "clips": [
+    {
+     "shot": 203
+    },
+    {
+     "shot": 204
+    },
+    {
+     "shot": 206
+    }
+   ],
+   "sfx": "hit",
+   "pause_after": 0.35,
+   "fast": true,
+   "mood": "action"
+  },
+  {
+   "beat": "climax",
+   "text": "It had her pinned. It could have finished her right there.",
+   "clips": [
+    {
+     "shot": 229
+    },
+    {
+     "shot": 237
+    },
+    {
+     "shot": 239
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "action"
+  },
+  {
+   "beat": "climax",
+   "text": "It hesitated.",
+   "clips": [
+    {
+     "shot": 235
+    }
+   ],
+   "pause_after": 0.6,
+   "mood": "silence"
+  },
+  {
+   "beat": "climax",
+   "text": "She didn't.",
+   "clips": [
+    {
+     "shot": 243,
+     "at": 607.3
+    }
+   ],
+   "pause_after": 0.5,
+   "mood": "action",
+   "sfx": "hit"
+  },
+  {
+   "beat": "climax",
+   "text": "The blade went in, and the dragon fell.",
+   "clips": [
+    {
+     "shot": 248
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "dread"
+  },
+  {
+   "beat": "climax",
+   "text": "Then she saw the scar on its wing. The wing she had healed.",
+   "clips": [
+    {
+     "shot": 250,
+     "at": 622.0
+    },
+    {
+     "shot": 247
+    }
+   ],
+   "pause_after": 0.45,
+   "mood": "mystery"
+  },
+  {
+   "beat": "ending",
+   "text": "It was Scales.",
+   "clips": [
+    {
+     "shot": 261
+    }
+   ],
+   "sfx": "hit",
+   "pause_after": 1.0,
+   "mood": "grief"
+  },
+  {
+   "beat": "ending",
+   "text": "And the face staring back from the pool of blood wasn't a girl's anymore.",
+   "clips": [
+    {
+     "shot": 250,
+     "at": 631.2
+    },
+    {
+     "shot": 254,
+     "at": 642.0
+    }
+   ],
+   "pause_after": 0.22,
+   "mood": "grief"
+  }
+ ],
+ "tail": {
+  "clips": [
+   {
+    "shot": 270,
+    "at": 690.0
+   }
+  ],
+  "seconds": 2.6
+ },
+ "pipeline": 2
+}

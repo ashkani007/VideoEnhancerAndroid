@@ -3,6 +3,7 @@
     python -m reelkit discover "dragon short film" --out productions/_discovery
     python -m reelkit acquire <url> --license CC-BY-3.0 --name sintel.mp4
     python -m reelkit analyze sources/sintel.mp4
+    python -m reelkit register-rendition sintel.mp4 Sintel.2010.1080p.mp4 --license "CC BY 3.0" --url <url>
     python -m reelkit produce sintel-scales              # 480p preview + docs + QC
     python -m reelkit approve sintel-scales --note "ok"
     python -m reelkit final sintel-scales --master /path/Sintel.2010.1080p.mp4
@@ -25,6 +26,8 @@ def main() -> None:
     a = sub.add_parser("acquire"); a.add_argument("url"); a.add_argument("--license", required=True)
     a.add_argument("--name", required=True)
     z = sub.add_parser("analyze"); z.add_argument("source"); z.add_argument("--force", action="store_true")
+    g = sub.add_parser("register-rendition"); g.add_argument("master"); g.add_argument("rendition")
+    g.add_argument("--license", required=True); g.add_argument("--url", required=True)
     p = sub.add_parser("produce"); p.add_argument("slug")
     r = sub.add_parser("approve"); r.add_argument("slug"); r.add_argument("--note", default="")
     f = sub.add_parser("final"); f.add_argument("slug"); f.add_argument("--master")
@@ -63,6 +66,10 @@ def main() -> None:
         src = src if src.is_absolute() else cfg.workspace / src
         res = analyze_source(cfg, src, force=args.force)
         print(json.dumps({"shots": len(res["shots"]), "contact_sheets": res["contact_sheets"]}, indent=2))
+    elif args.cmd == "register-rendition":
+        from .renditions import register
+        res = lambda x: Path(x) if Path(x).is_absolute() else cfg.sources_dir / x
+        print(json.dumps(register(cfg, res(args.master), res(args.rendition), args.license, args.url), indent=2))
     elif args.cmd == "produce":
         from .produce import produce
         res = produce(cfg, args.slug)

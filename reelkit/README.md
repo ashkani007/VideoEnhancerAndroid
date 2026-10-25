@@ -3,10 +3,14 @@
 ReelKit turns an openly licensed film into a 45–60 s narrated vertical Short. It finds the film, analyses the footage, writes and voices the narration, edits, reframes, captions and mixes, then runs QC. A human approves the 480p preview before the 1440×2560 render.
 
 ```
-discover ─► acquire ─► analyze ─► write (story.json) ─► voice ─► timeline ─► preview + QC ─► approve ─► final
- cached      licence    cached     LLM or operator       local     saliency     480x854         gate      1440x2560
-             gate       per film                          TTS       reframe                               NVENC
+discover ─► acquire ─► analyze ─► write ─────────► voice ─────► music ─────► edit ──────────► preview+QC ─► approve ─► final
+ cached      licence    cached     story.json:       locked      composed     best copy/clip,  480x854        gate      1440x2560
+             gate +     per film   lines, shots,     narrator,   from moods,  detect faces/                           NVENC, HD
+             renditions            mood per line     per-beat    cue sync,    subjects, crop                          copies only
+                                                     pacing      ducking      or full frame
 ```
+
+Pipeline 2 (`"pipeline": 2` in story.json) adds shot-aware framing, renditions, the composed score and per-beat narration. Stories without it render exactly as pipeline 1, so earlier productions stay reproducible.
 
 | Module | Does | Cost |
 |---|---|---|
@@ -14,8 +18,11 @@ discover ─► acquire ─► analyze ─► write (story.json) ─► voice �
 | `__main__ acquire` | Direct download for file URLs; yt-dlp only when the platform itself reports a CC licence. Never touches DRM. Writes a `.source.json` licence record with sha256. | free |
 | `analyze.py` | One low-res decode pass: shot cuts, brightness, motion, saliency track; keyframes and labelled contact sheets. Cached by file hash, so each film is analysed once for every Short cut from it. | ~30 s CPU per 15-min film |
 | `llm.py` | Optional: Claude reads contact sheets, ranks candidates and drafts `story.json`. Without credentials it writes the prompt next to the expected answer file and waits. | ~$0.10–0.25 per Short on the default model; set `llm.model` lower to cut it |
-| `tts.py` | Kokoro-82M (int8 ONNX, 92 MB, Apache-2.0), local, per-sentence cache, estimated word timings. | free |
+| `tts.py` | Kokoro-82M (int8 ONNX, 92 MB, Apache-2.0), local, per-sentence cache, estimated word timings. Narrator identity is locked in `config.toml` (`af_heart`), with per-beat pacing. Optional upgrade: an ElevenLabs voice at ~873 credits (~$0.17) per 60 s Short, only with approval. | free |
 | `edit.py` | Timeline from narration windows; hybrid 9:16 reframe (saliency-tracked square crop over a blurred fill, slow push-in on static shots, gamma lift on dark shots); ASS captions with active-word highlight; source-audio bed per cut, ducked under the voice; synthesised SFX; −14 LUFS master. | — |
+| `renditions.py` | Registers other authorised copies of a film (a sharper excerpt, the official 1080p/4K). Aligns them to the analysed master by brightness cross-correlation and picks the copy with the most pixels covering each clip. | free |
+| `framing.py` | Per clip, on real frames: YuNet faces → head-and-shoulders, YOLOX people/animals, spectral-residual saliency. Narrowest crop keeping all subjects (+12%), floored at 9:16 and at the upscale limit; full frame for wide action and establishing shots; height never cropped; cached. | ~1 s CPU per clip |
+| `music.py` | Original score from the per-line moods (mystery, tender, wonder, tension, journey, dread, action, silence, grief). Cue changes 0.25 s before the line that motivates them, equal-power crossfades, braams on `sfx: hit`. Ducked 17 dB under the voice and 7 dB under between lines. | free |
 | `qc.py` | Duration, hook timing, beat timing, pace, shot lengths, cut overruns, reused footage, black frames, loudness, source resolution, licence record. | — |
 | `produce.py` | Orchestration, deliverable docs, and the approval gate (final render requires an approval matching the preview's sha256 and a ≥1080p master). | — |
 

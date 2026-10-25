@@ -74,7 +74,7 @@ class Cache:
     def put(self, ns: str, key: str, value: Any) -> Any:
         p = self._path(ns, key)
         p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(json.dumps({"key": key, "value": value}, indent=1))
+        p.write_text(json.dumps({"key": key, "value": value}, indent=1, default=float))
         return value
 
 
@@ -126,7 +126,7 @@ def detect_video_encoder(prefer_gpu: bool = True) -> dict:
 
 def write_json(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False, default=float))
 
 
 def read_json(path: Path) -> Any:

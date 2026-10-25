@@ -3,5 +3,6 @@ pillow>=10
 requests>=2.31
 soundfile>=0.12
 kokoro-onnx>=0.6
+opencv-contrib-python-headless>=4.10   # YuNet/YOLOX/saliency for framing
 yt-dlp>=2025.1.1
 anthropic>=0.60   # optional: unattended writer/ranker

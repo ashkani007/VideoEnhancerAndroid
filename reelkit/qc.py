@@ -25,7 +25,8 @@ def black_frames(path: Path) -> list[tuple[float, float]]:
 
 
 def run_qc(out: Path, story: dict, lines: list[dict], timeline: list[dict], analysis: dict,
-           render_info: dict, profile: str, min_final_height: int) -> dict:
+           render_info: dict, profile: str, min_final_height: int, audio_info: dict | None = None,
+           max_upscale: float = 2.2) -> dict:
     info = ffprobe(out)
     v = next(s for s in info["streams"] if s["codec_type"] == "video")
     dur = float(info["format"]["duration"])
@@ -68,8 +69,52 @@ def run_qc(out: Path, story: dict, lines: list[dict], timeline: list[dict], anal
     check("source resolution", profile == "preview" or analysis["height"] >= min_final_height,
           f"source {analysis['width']}x{analysis['height']}, foreground upscale x{fg_up:.2f}",
           "warn" if profile == "preview" else "fail")
+    if all("framing" in seg for seg in timeline):
+        _framing_checks(check, timeline, lines, render_info, max_upscale)
+    if audio_info and audio_info.get("mode") == "score":
+        starts = {round(ln["start"] - 0.25, 3) for ln in lines} | {0.0}
+        off = [c for c in audio_info["cues"] if min(abs(c["start"] - x) for x in starts) > 0.05]
+        check("music changes land on story lines", not off,
+              f"{len(audio_info['cues'])} cues: " + " → ".join(c["mood"] for c in audio_info["cues"]))
     lic = story["source"].get("license", "")
     check("licence + credit recorded", bool(lic and story["source"].get("credit")), f"{lic}")
     status = "fail" if any(c["status"] == "fail" for c in checks) else (
         "warn" if any(c["status"] == "warn" for c in checks) else "pass")
     return {"status": status, "duration": dur, "checks": checks, "encoder": render_info["encoder"]}
+
+
+def _framing_checks(check, timeline, lines, info, max_upscale) -> None:
+    W, H = info["width"], info["height"]
+    fr = [seg["framing"] for seg in timeline]
+    face = min(f["face_coverage"] for f in fr)
+    subj = min(f["subject_coverage"] for f in fr)
+    check("faces never cut off", face >= 0.98, f"min face coverage {face:.0%}")
+    check("subjects kept in frame", subj >= 0.95, f"min subject coverage {subj:.0%}", "warn")
+    up = max(f["upscale"] for f in fr)
+    check(f"no excessive zoom (≤ ×{max_upscale})", up <= max_upscale + 1e-6, f"max ×{up:.2f}")
+    modes = {}
+    for f in fr:
+        modes[f["mode"]] = modes.get(f["mode"], 0) + 1
+    fill = sum(min(f["fg_h"], H) for f in fr) / (len(fr) * H)
+    check("picture fills the frame", fill >= 0.45, f"picture covers {fill:.0%} of frame height on average; modes {modes}", "warn")
+    # caption block vs. Shorts UI safe area and vs. faces on screen
+    fs = round(H * 0.041)
+    cap_w = min(W, 15 * fs * 0.62)
+    x0, x1 = 0.47 * W - cap_w / 2, 0.47 * W + cap_w / 2
+    y0, y1 = 0.70 * H - fs * 0.7, 0.70 * H + fs * 0.7
+    safe = x0 >= 0.04 * W and x1 <= 0.86 * W and y0 >= 0.15 * H and y1 <= 0.78 * H
+    check("captions inside Shorts safe area", safe,
+          f"caption block x {x0/W:.0%}–{x1/W:.0%}, y {y0/H:.0%}–{y1/H:.0%} (UI-free zone x 4–86%, y 15–78%)")
+    hits = 0
+    for seg in timeline:
+        f = seg["framing"]
+        cw, sw, sh, fh = f["crop_w"], f["rend_w"], f["rend_h"], min(f["fg_h"], H)
+        left = f["cx0"] * sw - cw / 2
+        for d in f["detections"]:
+            for b in d["faces"]:
+                bx0, bx1 = (b[0] - left) * W / cw, (b[2] - left) * W / cw
+                by0, by1 = f.get("fg_y", 0) + b[1] * fh / sh, f.get("fg_y", 0) + b[3] * fh / sh
+                if bx1 > x0 and bx0 < x1 and by1 > y0 and by0 < y1:
+                    hits += 1
+                    break
+    check("captions never cover a face", hits == 0, f"{hits} clip samples with a face under the captions", "warn")

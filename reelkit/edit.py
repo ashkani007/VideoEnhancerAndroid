@@ -23,10 +23,12 @@ GAP = 0.16           # default gap between sentences
 
 def build_voice(cfg: Config, story: dict) -> list[dict]:
     v = Voice(cfg, story.get("voice", {}).get("voice"), story.get("voice", {}).get("speed"))
+    beat_speed = cfg.get("voice.beat_speed", {}) if story.get("pipeline", 1) >= 2 else {}
     t = VOICE_START
     lines = []
     for i, s in enumerate(story["sentences"]):
-        path, audio = v.say(s["text"])
+        speed = s.get("speed") or (v.speed * beat_speed.get(s["beat"], 1.0))
+        path, audio = v.say(s["text"], speed)
         dur = len(audio) / TTS_SR
         words = [w | {"start": round(w["start"] + t, 3), "end": round(w["end"] + t, 3)}
                  for w in word_timings(s["text"], audio)]
@@ -159,20 +161,54 @@ def _segment_filter(seg: dict, W: int, H: int, sw: int, sh: int, fg_aspect: floa
     return f"{bg};{fg};[bg][fg]overlay=0:{max(0, y)},setsar=1,format=yuv420p[v]"
 
 
+def _framed_filter(seg: dict, plan: dict, W: int, H: int, max_up: float) -> str:
+    """Pipeline-2 layout: shot-aware crop (never crops height), complete
+    composition for wide shots, blurred same-shot background, no sharpening."""
+    d = seg["dur"]
+    sw, sh, cw, fh = plan["rend_w"], plan["rend_h"], plan["crop_w"], min(plan["fg_h"], H)
+    bg = (f"[0:v]scale=-2:{H},crop={W}:{H},gblur=sigma={max(10, W // 18)},"
+          f"eq=brightness=-0.16:saturation=0.65,vignette=PI/4.5[bg]")
+    span = sw - cw
+    x_expr = f"max(0,min({span},({plan['cx0']}+({plan['cx1']}-{plan['cx0']})*t/{d:.3f})*{sw}-{cw}/2))"
+    push = seg.get("push_in") and plan["upscale"] * 1.03 <= max_up and plan["mode"] != "full-frame"
+    zoom = (f",scale=w='trunc({W}*(1+0.03*t/{d:.3f})/2)*2':h=-2:eval=frame,crop={W}:{fh}"
+            if push else "")
+    lift = ",eq=gamma=1.22:contrast=1.04" if seg.get("brightness", 99) < 35 else ""
+    fg = f"[0:v]crop={cw}:{sh}:x='{x_expr}':y=0,scale={W}:{fh}:flags=lanczos{zoom}{lift}[fg]"
+    y = 0 if fh >= H - 2 else int(np.clip(H * 0.42 - fh / 2, H * 0.06, H - fh))
+    plan["fg_y"] = y
+    return f"{bg};{fg};[bg][fg]overlay=0:{y},setsar=1,format=yuv420p[v]"
+
+
 def render_video(cfg: Config, src: Path, analysis: dict, timeline: list[dict], out: Path,
-                 profile: str) -> dict:
+                 profile: str, story: dict | None = None) -> dict:
     W, H = cfg.get(f"render.{profile}.width"), cfg.get(f"render.{profile}.height")
     fps = cfg.get(f"render.{profile}.fps")
     enc = detect_video_encoder()
     seg_dir = out.parent / f"segments_{profile}"
     seg_dir.mkdir(parents=True, exist_ok=True)
     sw, sh = analysis["width"], analysis["height"]
+    v2 = (story or {}).get("pipeline", 1) >= 2
+    if v2:
+        from .framing import Detector, plan_clip
+        from .renditions import choose
+        det = Detector(cfg)
+        max_up = cfg.get(f"render.{profile}.max_upscale", 2.2)
     listing = []
     for i, seg in enumerate(timeline):
         p = seg_dir / f"seg_{i:03d}.mp4"
-        flt = _segment_filter(seg, W, H, sw, sh, fg_aspect=1.0)
         nframes = max(1, round(seg["t1"] * fps) - round(seg["t0"] * fps))
-        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{seg['src_in']:.3f}", "-i", str(src),
+        if v2:
+            rend = choose(cfg, src, analysis, seg["src_in"], seg["src_out"])
+            plan = plan_clip(cfg, det, rend, seg["src_in"], seg["src_out"], W, H, max_up,
+                             seg.get("frame") if seg.get("frame") in ("wide", "tight") else None)
+            flt = _framed_filter(seg, plan, W, H, max_up)
+            seg["framing"] = {k: v for k, v in plan.items() if k != "frames"} | {"detections": plan["frames"]}
+            inp, ss = plan["rendition"], seg["src_in"] - plan["offset"]
+        else:
+            flt = _segment_filter(seg, W, H, sw, sh, fg_aspect=1.0)
+            inp, ss = str(src), seg["src_in"]
+        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{ss:.3f}", "-i", inp,
              "-filter_complex", flt, "-map", "[v]", "-r", str(fps), "-frames:v", str(nframes),
              "-an", *enc["args"](12), str(p)])
         listing.append(f"file '{p.name}'")
@@ -208,8 +244,11 @@ def chunk_words(words: list[dict], max_words: int = 3, max_chars: int = 18) -> l
     return chunks
 
 
-def write_ass(lines: list[dict], out: Path, W: int, H: int, credit: str, total: float) -> int:
-    fs = round(H * 0.047)
+def write_ass(lines: list[dict], out: Path, W: int, H: int, credit: str, total: float,
+              safe: bool = False) -> int:
+    # safe=True: smaller type, kept clear of the Shorts UI (right-hand buttons,
+    # bottom title/description band) — centred at 47% x / 70% y
+    fs = round(H * (0.041 if safe else 0.047))
     head = f"""[Script Info]
 ScriptType: v4.00+
 PlayResX: {W}
@@ -226,9 +265,9 @@ Style: Credit,Inter,{round(H * 0.016)},&H50FFFFFF,&H50FFFFFF,&H90000000,&H000000
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
     ev = []
-    cx, cy = W // 2, round(H * 0.73)
+    cx, cy = (round(W * 0.47), round(H * 0.70)) if safe else (W // 2, round(H * 0.73))
     all_words = [w for ln in lines for w in ln["words"]]
-    chunks = [c for ln in lines for c in chunk_words(ln["words"])]
+    chunks = [c for ln in lines for c in chunk_words(ln["words"], max_chars=15 if safe else 18)]
     n_words = 0
     for ci, ch in enumerate(chunks):
         nxt = chunks[ci + 1][0]["start"] if ci + 1 < len(chunks) else ch[-1]["end"] + 0.5
@@ -285,8 +324,85 @@ def _sfx(kind: str) -> np.ndarray:
     return np.stack([x, x], axis=1).astype(np.float32)
 
 
+def music_cues(story: dict, lines: list[dict], total: float) -> tuple[list[dict], list[float]]:
+    """One cue per run of equal moods; each change lands just before the line
+    that motivates it. Lines marked sfx=hit get a low braam on their first word."""
+    cues = []
+    for s, ln in zip(story["sentences"], lines):
+        m = s.get("mood", "tension")
+        start = 0.0 if not cues else round(ln["start"] - 0.25, 3)
+        if cues and cues[-1]["mood"] == m:
+            continue
+        if cues:
+            cues[-1]["end"] = start
+        cues.append({"mood": m, "start": start, "end": total, "line": ln["text"]})
+    hits = [round(ln["start"], 3) for s, ln in zip(story["sentences"], lines) if s.get("sfx") == "hit"]
+    return cues, hits
+
+
+def _duck_env(voice: np.ndarray, n: int, attack: float = 0.06, release: float = 0.45) -> np.ndarray:
+    hop = 480
+    lvl = np.abs(voice[:, 0])
+    env = np.array([lvl[i:i + hop].max() for i in range(0, n, hop)]) > 0.02
+    sm = np.zeros(len(env))
+    a, r = 1 - np.exp(-hop / AR / attack), 1 - np.exp(-hop / AR / release)
+    for i in range(1, len(env)):
+        sm[i] = sm[i - 1] + (a if env[i] > sm[i - 1] else r) * (env[i] - sm[i - 1])
+    return np.repeat(sm, hop)[:n]
+
+
+def mix_score(cfg: Config, timeline: list[dict], lines: list[dict], story: dict,
+              total: float, out: Path) -> dict:
+    from .music import SR as MSR, compose
+
+    assert MSR == AR
+    n = int(total * AR)
+    voice = np.zeros((n, 2), np.float32)
+    for ln in lines:
+        v = _decode(Path(ln["wav"]))
+        s0 = int(ln["start"] * AR)
+        v = v[: max(0, min(len(v), n - s0))]
+        voice[s0:s0 + len(v)] += v
+    speech = voice[np.abs(voice[:, 0]) > 0.01]
+    v_rms_db = 20 * np.log10(np.sqrt((speech ** 2).mean()) + 1e-9)
+
+    cues, hits = music_cues(story, lines, total)
+    score = compose(cues, total, hits)[:n]
+    score = np.pad(score, ((0, n - len(score)), (0, 0)))
+    s_act = score[np.abs(score).max(1) > 1e-4]
+    s_rms_db = 20 * np.log10(np.sqrt((s_act ** 2).mean()) + 1e-9)
+    gap_db, under_db = cfg.get("music.gap_db", -7), cfg.get("music.under_voice_db", -17)
+    duck = _duck_env(voice, n)
+    gain_db = (v_rms_db - s_rms_db) + gap_db + (under_db - gap_db) * duck
+    mix = voice + score * (10 ** (gain_db / 20))[:, None]
+
+    fx_cues = []
+    for s, ln in zip(story["sentences"], lines):
+        if s.get("sfx") == "whoosh":
+            fx = _sfx("whoosh")
+            at = ln["start"] - 0.45
+            s0 = max(0, int(at * AR))
+            fx = fx[: max(0, min(len(fx), n - s0))]
+            mix[s0:s0 + len(fx)] += fx * 10 ** (-16 / 20)
+            fx_cues.append({"kind": "whoosh", "t": round(at, 2)})
+    fo = int(1.2 * AR)
+    mix[-fo:] *= np.linspace(1, 0, fo)[:, None]
+    raw = out.with_suffix(".raw.wav")
+    sf.write(raw, mix, AR, subtype="FLOAT")
+    run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-af",
+         "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", str(AR), str(out)])
+    raw.unlink()
+    stem = out.with_name(out.stem + "_music.wav")
+    sf.write(stem, score * 0.9, AR)
+    return {"mode": "score", "cues": cues, "hits": hits, "sfx": fx_cues + [{"kind": "braam", "t": h} for h in hits],
+            "gap_db": gap_db, "under_voice_db": under_db, "music_stem": str(stem),
+            "bed_db": None, "duck_db": under_db - gap_db}
+
+
 def mix_audio(cfg: Config, src: Path, timeline: list[dict], lines: list[dict], story: dict,
               total: float, out: Path) -> dict:
+    if story.get("pipeline", 1) >= 2:
+        return mix_score(cfg, timeline, lines, story, total, out)
     n = int(total * AR)
     bed = np.zeros((n, 2), np.float32)
     fade = int(0.015 * AR)
