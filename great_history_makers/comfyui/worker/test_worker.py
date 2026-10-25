@@ -178,10 +178,33 @@ def main():
         assert os.path.exists(os.path.join(check, "great_history_makers", "jobs", "results", JOB, "contact_sheet.jpg"))
         assert len(SEEN) == N and SEEN[0]["10"]["inputs"]["image"].startswith("ghm_") and SEEN[0]["15"]["inputs"]["image"].startswith("ghm_")
         print(f"end-to-end: {N} graphs accepted, results pushed to the remote ({m['system']['gpu']}, {m['system']['vram_total_gb']} GB)")
-        out2 = subprocess.run([sys.executable, os.path.join(HERE, "ghm_worker.py"), "--repo", work, "--branch", "testbranch",
+        subprocess.run([sys.executable, os.path.join(HERE, "ghm_worker.py"), "--repo", work, "--branch", "testbranch",
                                "--server", url, "--once"], capture_output=True, text=True)
         assert len(SEEN) == N, "a finished job was run twice"
         print("idempotence: a finished job is not run again")
+        # dedicated private-repository layout: project at the repository root, branch = whatever is checked out
+        remote2, seed2, work2 = (os.path.join(tmp, x) for x in ("remote2.git", "seed2", "work2"))
+        sh("git", "init", "-q", "--bare", "-b", "main", remote2)
+        for rel in ("comfyui/workflows", "assets/references", "jobs/queue"):
+            shutil.copytree(os.path.join(GHM, rel), os.path.join(seed2, rel))
+        sh("git", "init", "-q", "-b", "main", cwd=seed2)
+        sh("git", "add", "-A", cwd=seed2)
+        sh("git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "seed", cwd=seed2)
+        sh("git", "push", "-q", remote2, "main", cwd=seed2)
+        sh("git", "clone", "-q", remote2, work2)
+        SEEN.clear()
+        out3 = subprocess.run([sys.executable, os.path.join(HERE, "ghm_worker.py"), "--repo", work2, "--server", url, "--once"],
+                              capture_output=True, text=True)
+        assert out3.returncode == 0, out3.stderr
+        check2 = os.path.join(tmp, "check2")
+        sh("git", "clone", "-q", remote2, check2)
+        assert os.path.exists(os.path.join(check2, "jobs", "results", JOB, "manifest.json")), "root-layout results not pushed"
+        print("dedicated-repository layout: results pushed to main without any path or branch settings")
+        sh("git", "remote", "set-url", "origin", "https://someone:ghp_ABCDEFGHIJKLMNOPQRSTUVWX1234@github.com/x/y.git", cwd=work2)
+        out4 = subprocess.run([sys.executable, os.path.join(HERE, "ghm_worker.py"), "--repo", work2, "--server", url, "--once"],
+                              capture_output=True, text=True)
+        assert out4.returncode != 0 and "ghp_" not in out4.stdout + out4.stderr and "credentials" in out4.stderr
+        print("credential-bearing remote URL: refused, token not echoed")
     finally:
         srv.shutdown()
         shutil.rmtree(tmp, ignore_errors=True)

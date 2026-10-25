@@ -41,8 +41,11 @@ image-to-video. Pipeline: `ghm4/` (see `ghm4/README.md`). Illustrations come fro
 through the git job queue (`jobs/README.md`, `comfyui/SETUP_WINDOWS_RTX4060.md`); prompts are built from
 `comfyui/bible/` (style + characters). The cloud container cannot generate images itself: never substitute
 code-drawn characters for missing illustrations. Narrated episodes: titles stay out of the caption band (design y 900–990).
-Daily scheduling and publishing stay off until the client authorises them. The GitHub repository is public: remind the
-client to make it private before pushing generated images.
+Daily scheduling and publishing stay off until the client authorises them. The current GitHub repository (LensPrompt)
+is public: the client prefers a NEW dedicated private repository (`tools/export_ghm_repo.sh`), not changing LensPrompt.
+Windows install: only via the reviewed, hash-locked installer and `comfyui/windows/LOCAL_INSTALL_PLAN.md` gates
+(inspect → plan → resolve lock → client approves fingerprint → install). Never run the install, large downloads,
+firewall or scheduled-task changes without that explicit approval. Never ask for or print tokens.
 Client's final direction (2026-10-25): cinematic AI illustrations, a new one at each topic change; simple character
 motion only (blink, subtle hand `sway`, cloth `wind`); maps, timelines, arrows, dates, typography, camera moves,
 transitions, atmosphere, sound. No 2.5D/3D character animation, no paid image-to-video. New episodes are specs in

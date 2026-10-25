@@ -244,7 +244,10 @@ def build_graph(template, r, uploaded):
 # ------------------------------------------------------------------------------------------- ComfyUI client
 class Comfy:
     def __init__(self, server, allow_remote=False):
-        host = urllib.parse.urlparse(server).hostname or ""
+        u = urllib.parse.urlparse(server)
+        if u.scheme not in ("http", "https"):                # urlopen below only ever sees this checked base URL
+            raise SystemExit(f"refusing ComfyUI server {server}: only http(s) URLs are allowed")
+        host = u.hostname or ""
         try:
             loopback = host == "localhost" or ipaddress.ip_address(host).is_loopback
         except ValueError:
@@ -255,17 +258,17 @@ class Comfy:
         self.client = str(uuid.uuid4())
 
     def get(self, path, raw=False, timeout=60):
-        with urllib.request.urlopen(self.server + path, timeout=timeout) as r:
+        with urllib.request.urlopen(self.server + path, timeout=timeout) as r:  # nosec B310 - scheme checked in __init__
             data = r.read()
         return data if raw else json.loads(data)
 
     def post(self, path, payload):
         req = urllib.request.Request(self.server + path, data=json.dumps(payload).encode(), headers={"Content-Type": "application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=60) as r:  # nosec B310 - scheme checked in __init__
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
-            raise JobError(f"ComfyUI rejected the graph: {e.read().decode(errors='replace')[:1500]}")
+            raise JobError(f"ComfyUI rejected the graph: {e.read().decode(errors='replace')[:1500]}") from None
 
     def upload(self, path):
         name = "ghm_" + re.sub(r"[^A-Za-z0-9_.-]", "_", os.path.basename(path))
@@ -279,7 +282,7 @@ class Comfy:
         body.write(f"\r\n--{boundary}--\r\n".encode())
         req = urllib.request.Request(self.server + "/upload/image", data=body.getvalue(),
                                      headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
-        with urllib.request.urlopen(req, timeout=120) as r:
+        with urllib.request.urlopen(req, timeout=120) as r:  # nosec B310 - scheme checked in __init__
             res = json.loads(r.read())
         return f"{res['subfolder']}/{res['name']}" if res.get("subfolder") else res["name"]
 
@@ -390,18 +393,43 @@ def process(job_path, ghm_root, comfy, keep_dir):
     except urllib.error.URLError:
         raise                                                  # ComfyUI not reachable: no manifest, retried next round
     except (JobError, OSError, KeyError, json.JSONDecodeError) as e:
-        manifest["errors"].append(f"{type(e).__name__}: {e}")
-        print(f"  job {jid} failed: {e}", flush=True)
+        manifest["errors"].append(redact(f"{type(e).__name__}: {e}"))
+        print(redact(f"  job {jid} failed: {e}"), flush=True)
     manifest["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
     json.dump(manifest, open(os.path.join(res_dir, "manifest.json"), "w", encoding="utf-8"), indent=1)
     return res_dir, manifest
 
 
 # ------------------------------------------------------------------------------------------- git transport
+SECRET_RE = re.compile(r"(https?://)[^/@\s]+@|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}")
+
+
+def redact(text):
+    """Never let a token or a credential-bearing URL reach the console, a manifest or git history."""
+    return SECRET_RE.sub(lambda m: (m.group(1) + "***@") if m.group(1) else "***", str(text))
+
+
+def find_repo(start):
+    d = os.path.abspath(start)
+    while True:
+        if os.path.isdir(os.path.join(d, ".git")) or os.path.isfile(os.path.join(d, ".git")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise SystemExit("not inside a git repository; pass --repo")
+        d = parent
+
+
+def ghm_root_of(repo):
+    """Old layout: <repo>/great_history_makers; dedicated repository: the repository root itself."""
+    sub = os.path.join(repo, "great_history_makers")
+    return sub if os.path.isdir(os.path.join(sub, "comfyui")) else repo
+
+
 def git(repo, *args, check=True):
     r = subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True)
     if check and r.returncode:
-        raise RuntimeError(f"git {' '.join(args)} failed: {r.stderr.strip()[:800]}")
+        raise RuntimeError(redact(f"git {' '.join(args)} failed: {r.stderr.strip()[:800]}"))
     return r.stdout.strip()
 
 
@@ -465,28 +493,34 @@ def check(comfy):
     if addrs is not None:
         exposed = [a for a in addrs if a not in ("127.0.0.1", "[::1]", "::1")]
         print(f"port 8188 bound to: {addrs or 'nothing'}" + ("  <-- WARNING: reachable from other machines; remove --listen" if exposed else "  (local only: ok)"))
+    argv = comfy.get("/system_stats").get("system", {}).get("argv", [])
+    if argv:                                              # the launch flags ComfyUI itself reports
+        flags = " ".join(argv)
+        risky = [f for f in ("--enable-manager", "--enable-cors-header", "--listen 0.0.0.0", "--multi-user") if f in flags]
+        if "--listen" in argv and argv[argv.index("--listen") + 1:argv.index("--listen") + 2] != ["127.0.0.1"]:
+            risky.append("--listen not 127.0.0.1")
+        print(f"launch flags: {flags}")
+        print("launch flags check: " + ("WARNING " + ", ".join(risky) if risky else "ok (local only)")
+              + ("" if "--offline" in argv else "; note: --offline missing (paid partner nodes enabled)"))
     st = comfy.stats()
     print(json.dumps(st, indent=1))
     if st["vram_total_gb"] and st["vram_total_gb"] < 7.5:
         print("WARNING: less than 8 GB VRAM reported; start ComfyUI with --lowvram")
-    for cls, why in (("IPAdapterAdvanced", "required"), ("IPAdapterModelLoader", "required"), ("UpscaleModelLoader", "required"),
-                     ("UnetLoaderGGUF", "optional FLUX route")):
+    for cls, why in (("IPAdapterAdvanced", "required"), ("IPAdapterModelLoader", "required"), ("UpscaleModelLoader", "required")):
         print(f"node {cls} ({why}): {'ok' if comfy.has_node(cls) else 'MISSING'}")
     for folder, need, why in (("checkpoints", "sd_xl_base_1.0.safetensors", "required"),
                               ("upscale_models", "RealESRGAN_x4plus.pth", "required"),
                               ("ipadapter", "ip-adapter-plus_sdxl_vit-h.safetensors", "required"),
                               ("ipadapter", "ip-adapter-plus-face_sdxl_vit-h.safetensors", "required"),
-                              ("clip_vision", "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors", "required"),
-                              ("unet", "flux1-schnell-Q4_K_S.gguf", "optional FLUX"), ("text_encoders", "t5xxl_fp8_e4m3fn.safetensors", "optional FLUX"),
-                              ("text_encoders", "clip_l.safetensors", "optional FLUX"), ("vae", "ae.safetensors", "optional FLUX")):
+                              ("clip_vision", "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors", "required")):
         have = comfy.models(folder)
         print(f"model {folder}/{need} ({why}): {'ok' if have is not None and need in have else ('unknown' if have is None else 'MISSING')}")
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--repo", default=os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
-    ap.add_argument("--branch", default="ccr-1badfb87-5pxi90")
+    ap.add_argument("--repo", default=None, help="default: the git repository containing this file")
+    ap.add_argument("--branch", default=None, help="default: the branch currently checked out")
     ap.add_argument("--server", default="http://127.0.0.1:8188")
     ap.add_argument("--allow-remote-server", action="store_true", help="only for a ComfyUI on your own LAN/VPN")
     ap.add_argument("--interval", type=int, default=60)
@@ -499,8 +533,14 @@ def main():
     if a.check:
         check(comfy)
         return
-    repo = os.path.abspath(a.repo)
-    ghm_root = os.path.join(repo, "great_history_makers")
+    repo = os.path.abspath(a.repo) if a.repo else find_repo(os.path.dirname(os.path.abspath(__file__)))
+    ghm_root = ghm_root_of(repo)
+    if not a.no_git:
+        remote = git(repo, "remote", "get-url", "origin", check=False)
+        if SECRET_RE.search(remote):
+            raise SystemExit("the git remote URL contains credentials; remove them (git remote set-url origin https://github.com/<owner>/<repo>.git) and sign in through Git Credential Manager")
+        a.branch = a.branch or git(repo, "rev-parse", "--abbrev-ref", "HEAD")
+    a.branch = a.branch or "main"
     keep = a.keep or os.path.join(ghm_root, "comfyui", "candidates")
     print(f"GHM worker: repo {repo}, branch {a.branch}, ComfyUI {a.server}. Ctrl+C to stop.", flush=True)
     while True:
@@ -514,7 +554,7 @@ def main():
                 if not a.no_git:
                     publish(repo, a.branch, res_dir, m["job_id"])
         except (RuntimeError, urllib.error.URLError) as e:
-            print(f"round failed: {e}", flush=True)
+            print(redact(f"round failed: {e}"), flush=True)
         if a.once:
             break
         time.sleep(a.interval)

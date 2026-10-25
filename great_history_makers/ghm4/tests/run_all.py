@@ -167,18 +167,15 @@ def test_transitions():
 def test_narrate():
     from ghm4 import narrate
     sb, d = narrate.load(os.path.join(GHM, "GreatHistoryMakers", "Renderer_Demo", "storyboard.json"))
-    with tempfile.TemporaryDirectory() as tmp:
-        import shutil
-        p = os.path.join(os.path.dirname(DEMO), "_t_storyboard.json")
-        json.dump(sb, open(p, "w"))
-        try:
-            subprocess.run([sys.executable, "-m", "ghm4.narrate", p, "retime"], cwd=GHM, check=True, capture_output=True)
-            timed = json.load(open(p.replace(".json", ".timed.json")))
-        finally:
-            for f in (p, p.replace(".json", ".timed.json")):
-                if os.path.exists(f):
-                    os.remove(f)
-        del shutil
+    p = os.path.join(os.path.dirname(DEMO), "_t_storyboard.json")
+    json.dump(sb, open(p, "w"))
+    try:
+        subprocess.run([sys.executable, "-m", "ghm4.narrate", p, "retime"], cwd=GHM, check=True, capture_output=True)
+        timed = json.load(open(p.replace(".json", ".timed.json")))
+    finally:
+        for f in (p, p.replace(".json", ".timed.json")):
+            if os.path.exists(f):
+                os.remove(f)
     starts = [s["start"] for s in timed["shots"]]
     assert starts == [0.0, 4.95, 10.25, 15.74], starts
     assert timed["duration"] == 18.2

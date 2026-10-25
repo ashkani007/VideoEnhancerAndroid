@@ -33,3 +33,4 @@ GreatHistoryMakers/Renderer_Demo/output/still_*.png
 ghm4/tests/out/*.jpg
 _t_storyboard*.json
 ghm4/tests/out/*.png
+comfyui/worker/local_paths.cmd

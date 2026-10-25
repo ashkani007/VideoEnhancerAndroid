@@ -185,3 +185,14 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   downloads work: pin hashes of pickle files (Real-ESRGAN) by downloading the official asset here; let the Windows
   installer verify Hugging Face files against the LFS SHA-256 the HF API publishes.
 - **Test PowerShell without Windows:** pwsh for Linux (GitHub release) parses the script and can unit-test functions.
+
+## 2026-10-25: installer hardening after the client's independent review
+- **Pin by verifying, not by trusting a tag:** download the release asset, hash it, and diff its sources against the git
+  tag (CRLF-normalised: the Windows build's files differed only by line endings). Patch tags had no Windows asset.
+- **Lock + fingerprint beats runtime hash lookups:** downloads need a SHA-256 in the lock, and `-Install` needs the
+  fingerprint the client approved, so a lock changed after approval is refused.
+- **py7zr cannot read BCJ2 7z archives** (ComfyUI portable); use real 7-Zip (`p7zip-full` in the cloud, 7-Zip on Windows).
+- **Mock Windows APIs in pwsh on Linux** (Get-CimInstance, nvidia-smi, Invoke-RestMethod via global functions) to test
+  installer gates. Mocks need `$global:` scope; `$script:` vars are invisible to a called script.
+- **A sparse checkout of a mixed repository still pulls root files** (the LensPrompt APK zip): another reason for a
+  dedicated Great History Makers repository.

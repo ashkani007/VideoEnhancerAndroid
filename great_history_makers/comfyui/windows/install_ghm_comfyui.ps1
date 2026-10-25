@@ -1,172 +1,243 @@
 <#
-Great History Makers: local ComfyUI installer for Windows 11 + NVIDIA RTX 4060 (8 GB).
+Great History Makers: pinned, verify-everything ComfyUI installer for Windows 11 + NVIDIA RTX 4060 (8 GB).
 
-What it does (nothing else):
-  1. Checks the GPU (nvidia-smi), free disk space, Git and an extractor (7-Zip or Windows tar).
-  2. Downloads the official ComfyUI Windows portable build (GitHub release) into <Root>\ComfyUI_windows_portable.
-  3. Installs three custom nodes from their GitHub repositories: ComfyUI-Manager, ComfyUI_IPAdapter_plus
-     and (only with -WithFlux) ComfyUI-GGUF.
-  4. Downloads the models from their official Hugging Face / GitHub locations and verifies each file against the
-     SHA-256 the host publishes (Hugging Face LFS hash, GitHub asset digest). A mismatch deletes the file and stops.
-  5. Writes run_comfyui_local.bat, which starts ComfyUI bound to 127.0.0.1 only.
-  6. Clones the project branch (sparse: only comfyui/, jobs/, assets/references/) into <Root>\ghm-worker.
+Three modes, so nothing large is downloaded before the plan is approved:
 
-It never opens firewall ports, never installs services or scheduled tasks, and needs no API keys.
-Run from PowerShell:
-  powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1                 # SDXL route (default, ~12 GB of models)
-  powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1 -WithFlux       # + FLUX.1 [schnell] GGUF route (~12 GB more)
+  -Plan        (default)  Read-only. Checks the PC and the lock file, prints what would be downloaded, the disk space
+                          needed and the lock fingerprint. Changes nothing.
+  -ResolveLock            Metadata only. Asks the Hugging Face API for the immutable revision, SHA-256 and size of each
+                          model and writes them into ghm_install.lock.json. Downloads no model. The pinned reference
+                          hash (SDXL) must match or it stops.
+  -Install -ApproveFingerprint <fp>
+                          Installs exactly the approved lock (the fingerprint printed by -Plan). Any file whose SHA-256
+                          is missing or different is deleted and the installer stops before going further.
+
+What -Install does:
+- Extracts the pinned ComfyUI portable release, then checks its version.
+- Checks out one custom node (ComfyUI_IPAdapter_plus) at a pinned commit and verifies the commit.
+- Downloads the models, verifying size and SHA-256 for each.
+- Writes run_comfyui_local.bat (127.0.0.1 only, --offline) and the worker's local_paths.cmd.
+- Optionally clones the project repository (-RepoUrl), sparse.
+
+It never changes firewall rules, never installs services or scheduled tasks, never asks for or prints tokens
+(Git Credential Manager handles GitHub sign-in in its own window), and installs no Python packages.
+
+Examples:
+  powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1 -Root D:\GHM
+  powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1 -Root D:\GHM -ResolveLock
+  powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1 -Root D:\GHM -Install -ApproveFingerprint 1a2b... `
+             -RepoUrl https://github.com/<you>/great-history-makers.git -Branch main
 #>
+[CmdletBinding()]
 param(
-    [string]$Root = "C:\AI",
-    [switch]$WithFlux,
-    [switch]$SkipModels,
-    [string]$Repo = "https://github.com/ashkani007/VideoEnhancerAndroid.git",
-    [string]$Branch = "ccr-1badfb87-5pxi90"
+    [string]$Root = "C:\GHM",
+    [switch]$ResolveLock,
+    [switch]$Install,
+    [string]$ApproveFingerprint = "",
+    [string]$Lock = (Join-Path $PSScriptRoot "ghm_install.lock.json"),
+    [string]$RepoUrl = "",
+    [string]$Branch = "main",
+    [switch]$KeepArchive
 )
+Set-StrictMode -Version 2
 $ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"          # Invoke-WebRequest is much faster without the progress bar
+$ProgressPreference = "SilentlyContinue"
 
-function Step($msg) { Write-Host "`n== $msg" -ForegroundColor Cyan }
-function Fail($msg) { Write-Host "ERROR: $msg" -ForegroundColor Red; exit 1 }
+function Write-Step([string]$msg) { Write-Host "`n== $msg" -ForegroundColor Cyan }
+function Exit-Installer([string]$msg) { Write-Host "STOPPED: $msg" -ForegroundColor Red; exit 1 }
+function Format-GB([double]$bytes) { return ("{0:N1} GB" -f ($bytes / 1GB)) }
 
-# ------------------------------------------------------------------------------------------- 1. checks
-Step "Checking the PC"
-if (-not (Get-Command nvidia-smi -ErrorAction SilentlyContinue)) { Fail "nvidia-smi not found: install the NVIDIA driver first" }
-$gpu = (& nvidia-smi --query-gpu=name,memory.total --format=csv,noheader) -join "; "
-Write-Host "GPU: $gpu"
-$vramMiB = [int]((& nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits) | Select-Object -First 1)
-if ($vramMiB -lt 7500) { Write-Host "WARNING: less than 8 GB VRAM ($vramMiB MiB). Use --lowvram in run_comfyui_local.bat." -ForegroundColor Yellow }
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) { Fail "Git not found: install Git for Windows (https://git-scm.com/download/win)" }
-New-Item -ItemType Directory -Force -Path $Root | Out-Null
-$drive = (Get-Item $Root).PSDrive
-$freeGB = [math]::Round($drive.Free / 1GB, 1)
-$needGB = if ($WithFlux) { 45 } else { 30 }
-Write-Host "Free space on $($drive.Name): $freeGB GB (need about $needGB GB)"
-if ($freeGB -lt $needGB) { Fail "not enough free disk space" }
-$sevenZip = @("$env:ProgramFiles\7-Zip\7z.exe", "${env:ProgramFiles(x86)}\7-Zip\7z.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+function Get-LockFingerprint($l) {
+    # Canonical content (URLs, commits, hashes, sizes, destinations) -> SHA-256; formatting does not matter.
+    $lines = New-Object System.Collections.Generic.List[string]
+    $lines.Add("comfyui|$($l.comfyui.url)|$($l.comfyui.sha256)|$($l.comfyui.size)")
+    foreach ($n in $l.custom_nodes) { $lines.Add("node|$($n.url)|$($n.commit)") }
+    foreach ($m in $l.models) { $lines.Add("model|$(Get-ModelUrl $m)|$($m.sha256)|$($m.size)|$($m.dest)") }
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes(($lines -join "`n"))
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    return (($sha.ComputeHash($bytes) | ForEach-Object { $_.ToString("x2") }) -join "")
+}
 
-function Get-Verified($url, $dest, $sha256) {
-    if (Test-Path $dest) {
-        if ($sha256 -and ((Get-FileHash $dest -Algorithm SHA256).Hash.ToLower() -eq $sha256.ToLower())) {
-            Write-Host "  ok (already present): $(Split-Path $dest -Leaf)"; return
-        }
-        if (-not $sha256) { Write-Host "  present, no published hash: $(Split-Path $dest -Leaf)"; return }
-        Remove-Item $dest
+function Get-ModelUrl($m) {
+    if ($m.PSObject.Properties.Name -contains "url" -and $m.url) { return $m.url }
+    if (-not $m.revision) { return "" }
+    return "https://huggingface.co/$($m.repo)/resolve/$($m.revision)/$($m.path)"
+}
+
+function Test-Sha256([string]$s) { return ($s -match '^[0-9a-f]{64}$') }
+
+function Get-VerifiedFile([string]$url, [string]$dest, [string]$sha256, [long]$size) {
+    if (-not $url -or -not (Test-Sha256 $sha256)) { Exit-Installer "no pinned SHA-256 for $dest (run -ResolveLock and approve the lock first)" }
+    if (Test-Path -LiteralPath $dest) {
+        if ((Get-FileHash -LiteralPath $dest -Algorithm SHA256).Hash.ToLower() -eq $sha256) { Write-Host "  ok, already verified: $dest"; return }
+        Exit-Installer "$dest exists but its SHA-256 does not match the lock (left untouched; move it away and run again)"
     }
-    New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
-    Write-Host "  downloading $(Split-Path $dest -Leaf) ..."
-    & curl.exe -L --fail --retry 3 -o "$dest.part" $url
-    if ($LASTEXITCODE -ne 0) { Fail "download failed: $url" }
-    $got = (Get-FileHash "$dest.part" -Algorithm SHA256).Hash.ToLower()
-    if ($sha256 -and $got -ne $sha256.ToLower()) { Remove-Item "$dest.part"; Fail "SHA-256 mismatch for $url (expected $sha256, got $got)" }
-    Move-Item "$dest.part" $dest -Force
-    Write-Host "  verified sha256 $got" -ForegroundColor Green
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $dest) | Out-Null
+    $part = "$dest.part"
+    if (Test-Path -LiteralPath $part) { Remove-Item -LiteralPath $part -Force }
+    Write-Host "  downloading $(Split-Path -Leaf $dest) ($(Format-GB $size)) ..."
+    & curl.exe --location --fail --retry 3 --proto "=https" --silent --show-error --output $part $url
+    if ($LASTEXITCODE -ne 0) { if (Test-Path -LiteralPath $part) { Remove-Item -LiteralPath $part -Force }; Exit-Installer "download failed: $url" }
+    $got = (Get-Item -LiteralPath $part).Length
+    if ($size -gt 0 -and $got -ne $size) { Remove-Item -LiteralPath $part -Force; Exit-Installer "size mismatch for $url (expected $size, got $got)" }
+    $hash = (Get-FileHash -LiteralPath $part -Algorithm SHA256).Hash.ToLower()
+    if ($hash -ne $sha256) { Remove-Item -LiteralPath $part -Force; Exit-Installer "SHA-256 mismatch for $url (expected $sha256, got $hash)" }
+    Move-Item -LiteralPath $part -Destination $dest
+    Write-Host "  verified $hash" -ForegroundColor Green
 }
 
-function Get-HFHash($repo, $path) {
-    # Hugging Face publishes the SHA-256 of every LFS file in its API (tree listing of the folder)
-    $dir = Split-Path $path -Parent
-    $dir = if ($dir) { $dir.Replace("\", "/") } else { "" }
-    $api = if ($dir) { "https://huggingface.co/api/models/$repo/tree/main/$dir" } else { "https://huggingface.co/api/models/$repo/tree/main" }
-    $entry = (Invoke-RestMethod -Uri $api) | Where-Object { $_.path -eq $path }
-    if (-not $entry -or -not $entry.lfs) { Fail "no published hash for $repo/$path (file moved or access restricted)" }
-    return $entry.lfs.oid
+# ------------------------------------------------------------------------------------------- load + check the lock
+if (-not (Test-Path -LiteralPath $Lock)) { Exit-Installer "lock file not found: $Lock" }
+$L = Get-Content -LiteralPath $Lock -Raw | ConvertFrom-Json
+if ($L.schema -ne 1) { Exit-Installer "unsupported lock schema" }
+if ($RepoUrl -and ($RepoUrl -notmatch '^https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(\.git)?$')) {
+    Exit-Installer "RepoUrl must be a plain https://github.com/<owner>/<repo> URL (never put credentials in a URL)"
 }
-
-# ------------------------------------------------------------------------------------------- 2. ComfyUI portable
+$Root = [System.IO.Path]::GetFullPath($Root)
 $comfyRoot = Join-Path $Root "ComfyUI_windows_portable"
-if (-not (Test-Path (Join-Path $comfyRoot "ComfyUI\main.py"))) {
-    Step "Downloading ComfyUI (official portable build for NVIDIA)"
-    $name = "ComfyUI_windows_portable_nvidia.7z"; $url = "https://github.com/comfyanonymous/ComfyUI/releases/latest/download/$name"
-    $digest = $null; $tag = "latest"
-    try {                                             # the API also gives the release tag and GitHub's SHA-256 digest
-        $rel = Invoke-RestMethod -Uri "https://api.github.com/repos/comfyanonymous/ComfyUI/releases/latest" -Headers @{ "User-Agent" = "ghm-installer" }
-        $asset = $rel.assets | Where-Object { $_.name -match "windows_portable_nvidia" -and $_.name -like "*.7z" } | Select-Object -First 1
-        if ($asset) {
-            $name = $asset.name; $url = $asset.browser_download_url; $tag = $rel.tag_name
-            if ($asset.digest -and $asset.digest -like "sha256:*") { $digest = $asset.digest.Substring(7) }
+
+# ------------------------------------------------------------------------------------------- -ResolveLock (metadata only)
+if ($ResolveLock) {
+    Write-Step "Resolving model revisions and hashes from the Hugging Face API (metadata only, no model download)"
+    foreach ($m in $L.models) {
+        if (-not ($m.PSObject.Properties.Name -contains "repo")) { continue }
+        $rev = (Invoke-RestMethod -Uri "https://huggingface.co/api/models/$($m.repo)/revision/main").sha
+        if ($rev -notmatch '^[0-9a-f]{40}$') { Exit-Installer "could not resolve the revision of $($m.repo)" }
+        $dir = Split-Path -Parent $m.path
+        $treeUrl = "https://huggingface.co/api/models/$($m.repo)/tree/$rev"
+        if ($dir) { $treeUrl = "$treeUrl/" + $dir.Replace("\", "/") }
+        $entry = Invoke-RestMethod -Uri $treeUrl | Where-Object { $_.path -eq $m.path }
+        if (-not $entry -or -not $entry.lfs -or -not (Test-Sha256 $entry.lfs.oid)) { Exit-Installer "no published SHA-256 for $($m.repo)/$($m.path)" }
+        if (($m.PSObject.Properties.Name -contains "sha256_reference") -and $m.sha256_reference -and ($entry.lfs.oid -ne $m.sha256_reference)) {
+            Exit-Installer "$($m.path): Hugging Face reports $($entry.lfs.oid) but the pinned reference is $($m.sha256_reference)"
         }
-    } catch { Write-Host "  GitHub API unavailable; using the direct latest-release link (no digest check)" -ForegroundColor Yellow }
-    $archive = Join-Path $Root $name
-    Get-Verified $url $archive $digest
-    Step "Extracting $name (release $tag)"
-    if ($sevenZip) { & $sevenZip x $archive "-o$Root" -y | Out-Null } else { & tar.exe -xf $archive -C $Root }
-    if (-not (Test-Path (Join-Path $comfyRoot "ComfyUI\main.py"))) { Fail "extraction failed (install 7-Zip from https://www.7-zip.org and run again)" }
-} else { Step "ComfyUI already installed at $comfyRoot" }
-$py = Join-Path $comfyRoot "python_embeded\python.exe"
+        $m.revision = $rev; $m.sha256 = $entry.lfs.oid; $m.size = [long]$entry.lfs.size
+        Write-Host ("  {0,-58} {1}  {2}" -f $m.path, $m.sha256, (Format-GB $m.size))
+    }
+    $L | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $Lock -Encoding UTF8
+    Write-Host "`nLock updated: $Lock"
+    Write-Host "Lock fingerprint: $(Get-LockFingerprint $L)" -ForegroundColor Yellow
+    Write-Host "Review the hashes above, then approve this fingerprint for -Install."
+    exit 0
+}
+
+# ------------------------------------------------------------------------------------------- checks (all modes)
+Write-Step "Checking this PC (read-only)"
+$os = Get-CimInstance Win32_OperatingSystem
+Write-Host "Windows: $($os.Caption) $($os.Version); RAM $(Format-GB ($os.TotalVisibleMemorySize * 1KB)) total, $(Format-GB ($os.FreePhysicalMemory * 1KB)) free"
+if (-not (Get-Command nvidia-smi -ErrorAction SilentlyContinue)) { Exit-Installer "nvidia-smi not found: install the NVIDIA driver first" }
+$gpu = (& nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader) | Select-Object -First 1
+Write-Host "GPU: $gpu"
+$git = Get-Command git -ErrorAction SilentlyContinue
+if (-not $git) { Exit-Installer "Git for Windows not found (https://git-scm.com/download/win)" }
+$sevenZip = @("$env:ProgramFiles\7-Zip\7z.exe", "${env:ProgramFiles(x86)}\7-Zip\7z.exe") | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if (-not $sevenZip) { Exit-Installer "7-Zip not found (https://www.7-zip.org); it is needed to unpack the ComfyUI archive safely" }
+if (Test-Path -LiteralPath $comfyRoot) { Write-Host "Existing ComfyUI found at $comfyRoot (it will be reused only if its version matches the lock)" }
+
+$modelBytes = 0; $missing = @()
+foreach ($m in $L.models) { $modelBytes += [long]$m.size; if (-not (Test-Sha256 $m.sha256)) { $missing += $m.dest } }
+$need = [long]$L.comfyui.size + [long]$L.comfyui.unpacked_bytes + $modelBytes + 3GB
+$probe = $Root; while (-not (Test-Path -LiteralPath $probe)) { $probe = Split-Path -Parent $probe }
+$freeBytes = (Get-PSDrive -Name (Get-Item -LiteralPath $probe).PSDrive.Name).Free
+Write-Host "Disk: need about $(Format-GB $need) (archive $(Format-GB $L.comfyui.size) + ComfyUI $(Format-GB $L.comfyui.unpacked_bytes) + models $(Format-GB $modelBytes) + 3 GB margin); free $(Format-GB $freeBytes)"
+if ($missing.Count -gt 0) { Write-Host "Not yet pinned (run -ResolveLock): $($missing -join ', ')" -ForegroundColor Yellow }
+$fp = Get-LockFingerprint $L
+
+if (-not $Install) {
+    Write-Step "Plan (nothing was changed)"
+    Write-Host "Install root : $Root"
+    Write-Host "ComfyUI      : $($L.comfyui.tag) ($($L.comfyui.commit.Substring(0,12))), sha256 $($L.comfyui.sha256)"
+    foreach ($n in $L.custom_nodes) { Write-Host "Custom node  : $($n.name) @ $($n.commit)" }
+    foreach ($m in $L.models) { Write-Host ("Model        : {0,-55} {1}" -f $m.dest, $(if (Test-Sha256 $m.sha256) { $m.sha256 } else { "NOT PINNED" })) }
+    Write-Host "Launcher     : run_comfyui_local.bat --listen 127.0.0.1 --port 8188 --disable-auto-launch --offline"
+    Write-Host "Firewall, services, scheduled tasks: untouched"
+    Write-Host "Lock fingerprint: $fp" -ForegroundColor Yellow
+    exit 0
+}
+
+# ------------------------------------------------------------------------------------------- -Install
+if ($missing.Count -gt 0) { Exit-Installer "the lock is not fully pinned; run -ResolveLock and approve it first" }
+if ($ApproveFingerprint -ne $fp) { Exit-Installer "fingerprint not approved (expected -ApproveFingerprint $fp)" }
+if ($freeBytes -lt $need) { Exit-Installer "not enough free disk space" }
+New-Item -ItemType Directory -Force -Path $Root | Out-Null
+
+Write-Step "ComfyUI $($L.comfyui.tag)"
+$versionFile = Join-Path $comfyRoot "ComfyUI\comfyui_version.py"
+$want = $L.comfyui.tag.TrimStart("v")
+if (Test-Path -LiteralPath $versionFile) {
+    if ((Get-Content -LiteralPath $versionFile -Raw) -notmatch [regex]::Escape("__version__ = `"$want`"")) {
+        Exit-Installer "$comfyRoot holds a different ComfyUI version; choose another -Root or move it away"
+    }
+    Write-Host "  already installed, version $want"
+} else {
+    $archive = Join-Path $Root "ComfyUI_windows_portable_nvidia_$($L.comfyui.tag).7z"
+    Get-VerifiedFile -url $L.comfyui.url -dest $archive -sha256 $L.comfyui.sha256 -size ([long]$L.comfyui.size)
+    $staging = Join-Path $Root "_staging"
+    if (Test-Path -LiteralPath $staging) { Remove-Item -LiteralPath $staging -Recurse -Force }
+    & $sevenZip x $archive "-o$staging" -y | Out-Null
+    if ($LASTEXITCODE -ne 0) { Exit-Installer "7-Zip could not extract the archive" }
+    $v = Join-Path $staging "ComfyUI_windows_portable\ComfyUI\comfyui_version.py"
+    if (-not (Test-Path -LiteralPath $v) -or ((Get-Content -LiteralPath $v -Raw) -notmatch [regex]::Escape("__version__ = `"$want`""))) {
+        Exit-Installer "the extracted archive is not ComfyUI $want"
+    }
+    Move-Item -LiteralPath (Join-Path $staging "ComfyUI_windows_portable") -Destination $comfyRoot
+    Remove-Item -LiteralPath $staging -Recurse -Force
+    if (-not $KeepArchive) { Remove-Item -LiteralPath $archive -Force }
+}
 $models = Join-Path $comfyRoot "ComfyUI\models"
-$nodes = Join-Path $comfyRoot "ComfyUI\custom_nodes"
+$nodesDir = Join-Path $comfyRoot "ComfyUI\custom_nodes"
 
-# ------------------------------------------------------------------------------------------- 3. custom nodes
-Step "Custom nodes (only these; every custom node runs code on this PC)"
-$wanted = @(@{ name = "ComfyUI-Manager"; url = "https://github.com/Comfy-Org/ComfyUI-Manager.git" },
-            @{ name = "ComfyUI_IPAdapter_plus"; url = "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git" })
-if ($WithFlux) { $wanted += @{ name = "ComfyUI-GGUF"; url = "https://github.com/city96/ComfyUI-GGUF.git" } }
-foreach ($n in $wanted) {
-    $dst = Join-Path $nodes $n.name
-    if (-not (Test-Path $dst)) { & git clone --depth 1 $n.url $dst; if ($LASTEXITCODE -ne 0) { Fail "git clone $($n.url) failed" } }
-    $commit = (& git -C $dst rev-parse --short HEAD)
-    Write-Host "  $($n.name) @ $commit"
-    $req = Join-Path $dst "requirements.txt"
-    if (Test-Path $req) { & $py -s -m pip install -q -r $req }
+Write-Step "Custom nodes (pinned commits; no Python packages are installed)"
+foreach ($n in $L.custom_nodes) {
+    $dst = Join-Path $nodesDir $n.name
+    if (-not (Test-Path -LiteralPath $dst)) {
+        & git init --quiet $dst
+        & git -C $dst fetch --quiet --depth 1 $n.url $n.commit
+        if ($LASTEXITCODE -ne 0) { Exit-Installer "could not fetch $($n.url) at $($n.commit)" }
+        & git -C $dst checkout --quiet FETCH_HEAD
+    }
+    $head = (& git -C $dst rev-parse HEAD).Trim()
+    if ($head -ne $n.commit) { Exit-Installer "$($n.name) is at $head, expected $($n.commit)" }
+    if (Test-Path -LiteralPath (Join-Path $dst "requirements.txt")) { Exit-Installer "$($n.name) now has requirements.txt; review it before installing" }
+    Write-Host "  $($n.name) verified at $head"
 }
 
-# ------------------------------------------------------------------------------------------- 4. models
-if (-not $SkipModels) {
-    Step "Models (official sources, SHA-256 verified)"
-    $hf = @(
-        @{ repo = "stabilityai/stable-diffusion-xl-base-1.0"; path = "sd_xl_base_1.0.safetensors"; dest = "checkpoints\sd_xl_base_1.0.safetensors" },
-        @{ repo = "h94/IP-Adapter"; path = "sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors"; dest = "ipadapter\ip-adapter-plus_sdxl_vit-h.safetensors" },
-        @{ repo = "h94/IP-Adapter"; path = "sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors"; dest = "ipadapter\ip-adapter-plus-face_sdxl_vit-h.safetensors" },
-        @{ repo = "h94/IP-Adapter"; path = "models/image_encoder/model.safetensors"; dest = "clip_vision\CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors" }
-    )
-    if ($WithFlux) {
-        $hf += @(
-            @{ repo = "city96/FLUX.1-schnell-gguf"; path = "flux1-schnell-Q4_K_S.gguf"; dest = "unet\flux1-schnell-Q4_K_S.gguf" },
-            @{ repo = "comfyanonymous/flux_text_encoders"; path = "t5xxl_fp8_e4m3fn.safetensors"; dest = "text_encoders\t5xxl_fp8_e4m3fn.safetensors" },
-            @{ repo = "comfyanonymous/flux_text_encoders"; path = "clip_l.safetensors"; dest = "text_encoders\clip_l.safetensors" },
-            @{ repo = "black-forest-labs/FLUX.1-schnell"; path = "ae.safetensors"; dest = "vae\ae.safetensors" }
-        )
-    }
-    foreach ($m in $hf) {
-        $sha = Get-HFHash $m.repo $m.path
-        Get-Verified "https://huggingface.co/$($m.repo)/resolve/main/$($m.path)" (Join-Path $models $m.dest) $sha
-    }
-    # Real-ESRGAN x4 (BSD-3-Clause), official GitHub release v0.1.0. It is a PyTorch pickle file, so its hash is pinned
-    # (computed from the official release asset on 2026-10-25).
-    Get-Verified "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth" `
-        (Join-Path $models "upscale_models\RealESRGAN_x4plus.pth") "4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1"
+Write-Step "Models (size + SHA-256 verified)"
+foreach ($m in $L.models) {
+    Get-VerifiedFile -url (Get-ModelUrl $m) -dest (Join-Path $models ($m.dest.Replace("/", "\"))) -sha256 $m.sha256 -size ([long]$m.size)
 }
 
-# ------------------------------------------------------------------------------------------- 5. local-only launcher
-Step "Writing run_comfyui_local.bat (binds to 127.0.0.1 only)"
-$bat = @"
-@echo off
-REM Great History Makers: ComfyUI bound to this PC only. Do not add --listen 0.0.0.0, do not port-forward 8188.
-cd /d "%~dp0"
-.\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --listen 127.0.0.1 --port 8188
-pause
-"@
-Set-Content -Path (Join-Path $comfyRoot "run_comfyui_local.bat") -Value $bat -Encoding ASCII
+Write-Step "Launcher (127.0.0.1 only, partner/paid API nodes off, browser not auto-opened)"
+$launcher = @(
+    "@echo off",
+    "REM Great History Makers: ComfyUI reachable from this PC only. Never use --listen 0.0.0.0, never port-forward 8188.",
+    "cd /d `"%~dp0`"",
+    ".\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --listen 127.0.0.1 --port 8188 --disable-auto-launch --offline",
+    "pause"
+)
+Set-Content -LiteralPath (Join-Path $comfyRoot "run_comfyui_local.bat") -Value $launcher -Encoding ASCII
 
-# ------------------------------------------------------------------------------------------- 6. worker copy of the project
-$work = Join-Path $Root "ghm-worker\VideoEnhancerAndroid"
-if (-not (Test-Path (Join-Path $work ".git"))) {
-    Step "Cloning the project branch for the worker (only the folders it needs)"
-    New-Item -ItemType Directory -Force -Path (Split-Path $work) | Out-Null
-    & git clone --filter=blob:none --no-checkout --branch $Branch $Repo $work
-    if ($LASTEXITCODE -ne 0) { Fail "git clone failed (private repository? sign in when Git asks, with your fine-grained token)" }
-    & git -C $work sparse-checkout set --cone great_history_makers/comfyui great_history_makers/jobs great_history_makers/assets/references
-    & git -C $work checkout $Branch
-} else { Step "Worker copy already present at $work"; & git -C $work pull --ff-only }
+if ($RepoUrl) {
+    Write-Step "Project repository (sparse clone for the worker)"
+    $work = Join-Path $Root "worker-repo"
+    if (-not (Test-Path -LiteralPath (Join-Path $work ".git"))) {
+        & git clone --quiet --filter=blob:none --no-checkout --branch $Branch $RepoUrl $work
+        if ($LASTEXITCODE -ne 0) { Exit-Installer "git clone failed (sign in through the Git Credential Manager window if asked)" }
+        $prefix = ""
+        if ((& git -C $work ls-tree -d --name-only HEAD great_history_makers) -eq "great_history_makers") { $prefix = "great_history_makers/" }
+        & git -C $work sparse-checkout set --cone "${prefix}comfyui" "${prefix}jobs" "${prefix}assets/references"
+        & git -C $work checkout --quiet $Branch
+    }
+    $workerDir = Get-ChildItem -LiteralPath $work -Recurse -Directory -Filter worker | Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName "ghm_worker.py") } | Select-Object -First 1
+    if ($workerDir) {
+        Set-Content -LiteralPath (Join-Path $workerDir.FullName "local_paths.cmd") -Encoding ASCII -Value @(
+            "@echo off", "REM written by install_ghm_comfyui.ps1 (machine-specific, not committed)",
+            "set `"GHM_COMFYUI_DIR=$comfyRoot`"")
+        Write-Host "  worker configured: $($workerDir.FullName)\local_paths.cmd"
+    }
+}
 
-Step "Done"
-Write-Host @"
-Next steps:
-  1. Start ComfyUI:    $comfyRoot\run_comfyui_local.bat      (leave the window open)
-     If Windows asks to allow python.exe on networks: click Cancel.
-  2. Check the setup:  $work\great_history_makers\comfyui\worker\check_setup.bat
-     Expected: port 8188 bound to ['127.0.0.1'] (local only: ok), RTX 4060 ~8 GB, required nodes/models ok.
-  3. Run the test job: $work\great_history_makers\comfyui\worker\run_worker_once.bat
-     It generates jobs/queue/napoleon_3scene_test_v1 (8 images) and pushes the results; then tell Claude.
-"@
+Write-Step "Done"
+Write-Host "Start ComfyUI : $comfyRoot\run_comfyui_local.bat"
+Write-Host "Check         : <worker folder>\check_setup.bat   (expects port 8188 on 127.0.0.1 only)"
+Write-Host "Test job      : <worker folder>\run_worker_once.bat"

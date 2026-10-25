@@ -29,7 +29,6 @@ Plate focus/zoom are in plate pixels at the plate meta's ref_width; zoom 1 = the
 import argparse
 import functools
 import json
-import math
 import multiprocessing as mp
 import os
 import subprocess

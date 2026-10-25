@@ -1,0 +1,78 @@
+{
+ "schema": 1,
+ "_about": "Everything the installer may download, pinned. The installer refuses any file whose sha256 is empty or does not match. Hugging Face entries are filled by 'install_ghm_comfyui.ps1 -ResolveLock' on the PC (metadata only, no model download) and must be approved (lock fingerprint) before -Install.",
+ "comfyui": {
+  "tag": "v0.39.0",
+  "commit": "b0b743566f65daafc423b4fea8a2fbda94b3384a",
+  "release_date": "2026-10-05",
+  "url": "https://github.com/comfyanonymous/ComfyUI/releases/download/v0.39.0/ComfyUI_windows_portable_nvidia.7z",
+  "sha256": "3dca347842ed1c6c833105fafb1669284685a3e54df41578d5f94bcc898ae039",
+  "size": 2003629308,
+  "unpacked_bytes": 4410000000,
+  "license": "GPL-3.0 (ComfyUI); bundled Python 3.13 (PSF), PyTorch 2.14.0+cu130 (BSD-3) with NVIDIA CUDA runtime libraries",
+  "verified": "2026-10-25 in the cloud: official release asset downloaded and hashed; ComfyUI sources in the archive identical to git tag v0.39.0 (line endings normalised); --listen defaults to 127.0.0.1; built-in Manager off unless --enable-manager; --offline disables paid partner nodes"
+ },
+ "custom_nodes": [
+  {
+   "name": "ComfyUI_IPAdapter_plus",
+   "url": "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
+   "commit": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+   "commit_date": "2025-04-14",
+   "license": "GPL-3.0",
+   "python_dependencies": "none (no requirements.txt); InsightFace only for FaceID models, which are not used or installed",
+   "reviewed": "2026-10-25: ~3,000 lines of Python, no network calls, no subprocess/eval/exec, imports torch/PIL/ComfyUI only"
+  }
+ ],
+ "models": [
+  {
+   "name": "SDXL base 1.0",
+   "repo": "stabilityai/stable-diffusion-xl-base-1.0",
+   "path": "sd_xl_base_1.0.safetensors",
+   "dest": "checkpoints/sd_xl_base_1.0.safetensors",
+   "revision": "",
+   "sha256": "",
+   "size": 0,
+   "sha256_reference": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+   "license": "CreativeML Open RAIL++-M (commercial use of outputs allowed; use-based restrictions apply)"
+  },
+  {
+   "name": "IP-Adapter Plus SDXL (ViT-H)",
+   "repo": "h94/IP-Adapter",
+   "path": "sdxl_models/ip-adapter-plus_sdxl_vit-h.safetensors",
+   "dest": "ipadapter/ip-adapter-plus_sdxl_vit-h.safetensors",
+   "revision": "",
+   "sha256": "",
+   "size": 0,
+   "license": "Apache-2.0"
+  },
+  {
+   "name": "IP-Adapter Plus-Face SDXL (ViT-H)",
+   "repo": "h94/IP-Adapter",
+   "path": "sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors",
+   "dest": "ipadapter/ip-adapter-plus-face_sdxl_vit-h.safetensors",
+   "revision": "",
+   "sha256": "",
+   "size": 0,
+   "license": "Apache-2.0"
+  },
+  {
+   "name": "CLIP ViT-H/14 image encoder",
+   "repo": "h94/IP-Adapter",
+   "path": "models/image_encoder/model.safetensors",
+   "dest": "clip_vision/CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+   "revision": "",
+   "sha256": "",
+   "size": 0,
+   "license": "MIT (OpenCLIP)"
+  },
+  {
+   "name": "Real-ESRGAN x4plus",
+   "url": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+   "dest": "upscale_models/RealESRGAN_x4plus.pth",
+   "sha256": "4fa0d38905f75ac06eb49a7951b426670021be3018265fd191d2125df9d682f1",
+   "size": 67040989,
+   "license": "BSD-3-Clause",
+   "verified": "2026-10-25 in the cloud: official release asset downloaded and hashed (PyTorch zip/pickle; ComfyUI loads it with torch.load(weights_only=True))"
+  }
+ ]
+}
