@@ -5,12 +5,21 @@ motion graphics, cinematic typography, transitions, sound design, and **limited*
 blink in a close-up; flags, smoke, marching ranks, cloud drift). ghm4 turns that one-off renderer into a data-driven
 pipeline whose illustrations come from local ComfyUI (no paid image or video services).
 
-## Stages
+## Automated path (recommended): `python -m ghm4.episode run episodes_v4/<id>`
+One `episode.json` per video (beats with narration cues, shot types, illustration prompts, map files, text). The
+command runs every step that is possible and stops with the next action: queue the illustration job → (PC worker) →
+pick candidates (`pick --auto` ranks them technically; the contact sheet is still reviewed) → (PC worker: 2× upscale)
+→ plates with automatic metadata from `ghm4/presets.py` (sky line, tricolour flags, smoke band, cannon points,
+marching ranks, cloth wind, matte) → `annotations.json` for eyes/hands of close-ups (`sheet` makes a grid) →
+storyboard timed to the narration → render → narration + captions → verification. Example:
+`episodes_v4/napoleon_3scene_test/`. Costs and timings: `ghm4/COSTS_AND_TIMING.md`. Audit: `ghm4/AUDIT_2026-10-25.md`.
+
+## Stages (manual building blocks)
 | # | Stage | Where it runs | Command / file |
 |---|---|---|---|
 | 1 | Script, history check, storyboard (one composition per beat) | cloud | `NARRATION.txt`, `HISTORY.md`, `storyboard.json` |
 | 2 | Illustration jobs from the storyboard beats | cloud | `jobs/specs/<id>.json` → `python -m ghm4.illustrate job <spec>` |
-| 3 | Generate candidates (SDXL + IP-Adapter style, 9:16, hires 1152×2016) | **your PC** | `comfyui/worker/run_worker.bat` |
+| 3 | Generate candidates (SDXL + style and face IP-Adapters, 9:16, hires 1152×2016; optional FLUX schnell) | **your PC** | `comfyui/worker/run_worker_once.bat` |
 | 4 | Review, pick, 2× upscale (2304×4032), place in the episode | cloud + PC | `ghm4.illustrate pick` / worker / `ghm4.illustrate place` |
 | 5 | Plate metadata: eyes for the blink, flag poles, smoke bands, ranks; automatic matte with QA | cloud | `plates/<shot>.json`, `python -m ghm4.plate_tool overlay`, `python -m ghm4.masks make <plate> <meta>` |
 | 6 | Narration: client voice file, or ElevenLabs only with explicit approval | cloud | `python -m ghm4.narrate <sb> tts [--confirm]` |

@@ -43,6 +43,11 @@ through the git job queue (`jobs/README.md`, `comfyui/SETUP_WINDOWS_RTX4060.md`)
 code-drawn characters for missing illustrations. Narrated episodes: titles stay out of the caption band (design y 900–990).
 Daily scheduling and publishing stay off until the client authorises them. The GitHub repository is public: remind the
 client to make it private before pushing generated images.
+Client's final direction (2026-10-25): cinematic AI illustrations, a new one at each topic change; simple character
+motion only (blink, subtle hand `sway`, cloth `wind`); maps, timelines, arrows, dates, typography, camera moves,
+transitions, atmosphere, sound. No 2.5D/3D character animation, no paid image-to-video. New episodes are specs in
+`episodes_v4/<id>/episode.json`, produced with `python -m ghm4.episode run`. Local generation is NOT confirmed working
+until the client's PC returns a manifest (`jobs/results/<id>/manifest.json`).
 
 ## v2 direction (client decision 2026-10-23, superseded by v4 for new work)
 New episodes use **illustration plates + limited 2D animation + motion graphics** (`ghm2/`, see
@@ -88,7 +93,8 @@ py -m ghm4.render <storyboard.json> [--final|--still T|--sheet]   # v4 picture r
 py -m ghm4.narrate <storyboard.json> check|align|retime|finish <picture.mp4>   # v4 narration + captions stage
 py -m ghm4.plate_tool overlay <plate.png> <plate.json>          # draw plate metadata regions for checking
 py -m ghm4.masks make <plate.png> <plate.json>                  # automatic matte (hybrid) + QA; rejected -> one layer
-py -m ghm4.tests.run_all [--quick|--update-golden]              # v4 regression suite (golden frames, masks, worker...)
+py -m ghm4.tests.run_all [--quick|--update-golden]              # v4 regression suite (golden frames, masks, worker, episode...)
+py -m ghm4.episode run|jobs|status|pick|plates|sheet|storyboard|render episodes_v4/<id>   # automated episode pipeline
 ```
 
 ## Environment gotchas (verified)

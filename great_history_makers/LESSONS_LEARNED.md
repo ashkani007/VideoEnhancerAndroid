@@ -172,3 +172,16 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   hand-made demo never hit. Write the robustness tests before relying on generated plates.
 - **Hand-traced coastlines fail at continent scale;** Natural Earth 1:50m (public domain, via GitHub) is clean.
 - `ref_width` in plate metadata defines the coordinate space; reusing a metadata file for a crop needs new coordinates.
+
+## 2026-10-25: ComfyUI integration and the automated episode pipeline
+- **Golden frames catch "harmless" fixes:** clamping the map camera changed an approved frame. The approved view had
+  quietly reached past the canvas (mirrored padding hidden under the scrims). Fix the data (bounds), not the test,
+  and log every re-bless in `ghm4/tests/golden/CHANGELOG.md`.
+- **Golden-hour light breaks naive colour detectors:** the flag's white was warm (saturation ~115) and its red leaned
+  magenta (hue ~154). Calibrate detectors on the approved art, then exclude the foreground figure (uniforms are tricolour too).
+- **Face consistency without InsightFace:** IP-Adapter Plus-Face (Apache-2.0) with a tight crop of the approved face,
+  chained after the style adapter; weight 0 in shots without the character.
+- **This session's proxy blocks the GitHub API for third-party repos and all of Hugging Face,** but GitHub release
+  downloads work: pin hashes of pickle files (Real-ESRGAN) by downloading the official asset here; let the Windows
+  installer verify Hugging Face files against the LFS SHA-256 the HF API publishes.
+- **Test PowerShell without Windows:** pwsh for Linux (GitHub release) parses the script and can unit-test functions.

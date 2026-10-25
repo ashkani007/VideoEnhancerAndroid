@@ -492,6 +492,21 @@
     "matte_hybrid": "full 0.976/0.000, portrait 0.991/0.000, battlefield fallback"
    },
    "outcome": "awaiting client review; next: ComfyUI on the client's PC"
+  },
+  {
+   "id": "comfyui_integration",
+   "date": "2026-10-25",
+   "dir": "comfyui + ghm4/episode.py + episodes_v4/napoleon_3scene_test",
+   "decisions": [
+    "SDXL base default with style + face IP-Adapters (8 GB), FLUX.1 schnell Q4 GGUF as optional A/B",
+    "automated episode pipeline with presets and automatic flag/sky/smoke metadata",
+    "queued napoleon_3scene_test_v1 (portrait + battlefield, 4 seeds each) replacing the unrun napoleon_test3_v1"
+   ],
+   "metrics": {
+    "tests": "8/8 incl. episode pipeline with stand-ins",
+    "paid_api_usd": 0
+   },
+   "outcome": "blocked on the client's PC: installer + worker run; generation NOT yet tested on the GPU"
   }
  ],
  "next_episode_goals": [

@@ -1,129 +1,139 @@
-# Local AI illustrations: ComfyUI on Windows 11 + RTX 4060 (v2, for the approved ghm4 direction)
+# Local AI illustrations: ComfyUI on Windows 11 + RTX 4060 (v3, automated episode pipeline)
 
 This PC makes the illustrations. The cloud Claude Code session writes the illustration jobs, reviews the results and
 renders the videos. Files and jobs travel through the GitHub repository; nothing on your PC is opened to the internet.
 
 ```
-Claude Code (cloud)                GitHub repo (private!)                Your PC
- writes jobs/queue/<id>.json  ──►  branch ccr-1badfb87-5pxi90  ◄──  ghm_worker.py: git fetch (outbound HTTPS)
- reviews jobs/results/<id>/   ◄──                              ──►  runs ComfyUI on 127.0.0.1:8188, pushes results
- renders with ghm4 (motion graphics, map, text, narration, captions)
+Claude Code (cloud)                 GitHub repo (private!)              Your PC (RTX 4060)
+ python -m ghm4.episode jobs   ──►  jobs/queue/<id>.json        ◄──  run_worker.bat: git fetch (outbound HTTPS only)
+ pick / plates / storyboard    ◄──  jobs/results/<id>/          ──►  ComfyUI on 127.0.0.1:8188, pushes the images
+ render + narration + captions
 ```
 
-Cost: free software and free models; only electricity (about 0.15 kW while generating, roughly €0.01 per batch of 12 images).
-Plan for 1–2 hours of setup and about 30 GB of free SSD space.
+**Status: not yet tested on your PC.** Everything below was prepared and tested in the cloud:
+- the worker against a mock ComfyUI;
+- the installer's PowerShell syntax and its download-and-verify function;
+- the episode pipeline with stand-in images.
+
+The first real run on your PC is the actual test.
 
 ---
 
-## 0. Before anything: make the repository private
-`ashkani007/VideoEnhancerAndroid` is currently **public**. Every job, prompt and generated image pushed through it,
-and the preview videos already committed, can be seen and downloaded by anyone.
-GitHub → the repository → **Settings → General → Danger Zone → Change repository visibility → Private**.
-(Copies made while it was public cannot be recalled.) The worker works the same way with a private repository.
+## Quick path (about 30–60 min, mostly downloads)
 
-## 1. Check the GPU and the VRAM
-1. Install the latest NVIDIA Game Ready or Studio driver (nvidia.com or the NVIDIA App) and reboot.
-2. Open PowerShell and run `nvidia-smi`. It should list **NVIDIA GeForce RTX 4060** with **8188 MiB** (8 GB).
-   A laptop RTX 4060 also has 8 GB. If it shows less, tell me: the workflow then uses `--lowvram` and a smaller hires pass.
-3. The worker re-checks this later (`check_setup.bat`) and writes the GPU name and VRAM into every result manifest,
-   so I can confirm the real VRAM and the real speed from your first batch.
+### Step 0: make the repository private (once)
+`ashkani007/VideoEnhancerAndroid` is **public**: generated images, prompts and the previews would be visible to anyone.
+GitHub → repository → **Settings → General → Danger Zone → Change repository visibility → Private**.
 
-## 2. Install the tools
-1. **Git for Windows**: https://git-scm.com/download/win (defaults are fine; it includes Git Credential Manager).
-2. **7-Zip**: https://www.7-zip.org (to unpack ComfyUI).
-3. **ComfyUI portable**: https://github.com/comfyanonymous/ComfyUI → Releases → download
-   `ComfyUI_windows_portable_nvidia.7z`, extract it to `C:\AI\ComfyUI_windows_portable\`.
-4. Start it with `C:\AI\ComfyUI_windows_portable\run_nvidia_gpu.bat`. The UI opens at http://127.0.0.1:8188.
-   ComfyUI listens only on 127.0.0.1 by default. **Never add `--listen`, never port-forward 8188 and never
-   put ComfyUI behind a public tunnel**: ComfyUI has no login, and its API can write files and run custom nodes.
-5. **Windows Firewall:** if Windows shows "Allow python.exe to communicate on networks?", click **Cancel** (deny).
-   ComfyUI does not need inbound access; the worker only makes outgoing connections to GitHub.
-6. **Verify it is local-only:** in PowerShell run `netstat -an | findstr :8188`. The only listening line must show
-   `127.0.0.1:8188`. If you see `0.0.0.0:8188` or your LAN IP, close ComfyUI and remove `--listen` from the .bat file.
-   (`check_setup.bat` in step 6 runs the same check.)
+### Step 1: prerequisites
+1. **NVIDIA driver**: install the latest Game Ready or Studio driver, then reboot.
+   In PowerShell, `nvidia-smi` must show *NVIDIA GeForce RTX 4060* and about *8188 MiB*.
+2. **Git for Windows**: https://git-scm.com/download/win (defaults; includes Git Credential Manager).
+3. **7-Zip** (recommended): https://www.7-zip.org. Without it the installer tries Windows' built-in `tar`.
+4. **GitHub token for the worker**: GitHub → Settings → Developer settings → Fine-grained tokens → *Only select
+   repositories*: `VideoEnhancerAndroid` → Permissions → **Contents: Read and write** (nothing else) → expiry 90 days.
+   Git asks for it on the first clone or push and stores it in Windows Credential Manager. Never paste it anywhere else.
+5. About **30 GB** free disk (45 GB with the optional FLUX route).
 
-## 3. Download the models (all free, licences allow commercial use)
-Put each file in the folder shown, inside `C:\AI\ComfyUI_windows_portable\ComfyUI\models\`. Create missing folders.
+### Step 2: run the installer
+On GitHub, open `great_history_makers/comfyui/windows/install_ghm_comfyui.ps1` on branch `ccr-1badfb87-5pxi90`, click
+**Download raw file**, then in PowerShell:
+```
+cd <folder with install_ghm_comfyui.ps1>
+powershell -ExecutionPolicy Bypass -File .\install_ghm_comfyui.ps1
+```
+It installs into `C:\AI` (change with `-Root D:\AI`):
+- **Checks:** GPU, disk space, Git.
+- **ComfyUI:** downloads the official portable build from GitHub.
+- **Custom nodes:** installs **only** ComfyUI-Manager and ComfyUI_IPAdapter_plus.
+- **Models:** downloads them and verifies each one's **SHA-256** against the hash Hugging Face publishes. Real-ESRGAN's hash is pinned in the script. A mismatch deletes the file and stops.
+- **Launcher:** writes `C:\AI\ComfyUI_windows_portable\run_comfyui_local.bat`, which binds ComfyUI to **127.0.0.1** only.
+- **Worker copy:** clones the project branch into `C:\AI\ghm-worker\VideoEnhancerAndroid`. It is a sparse checkout with only the folders the worker needs.
 
-| File | Folder | Download | Licence |
-|---|---|---|---|
-| `sd_xl_base_1.0.safetensors` (6.9 GB) | `checkpoints\` | https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0 → Files | CreativeML Open RAIL++-M (commercial use allowed, use restrictions) |
-| `ip-adapter-plus_sdxl_vit-h.safetensors` (0.85 GB) | `ipadapter\` | https://huggingface.co/h94/IP-Adapter → `sdxl_models/` | Apache-2.0 |
-| `CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors` (2.5 GB) | `clip_vision\` | https://huggingface.co/h94/IP-Adapter → `models/image_encoder/model.safetensors`, **renamed** to this name | MIT |
-| `RealESRGAN_x4plus.pth` (64 MB) | `upscale_models\` | https://github.com/xinntao/Real-ESRGAN/releases (v0.1.0 assets) | BSD-3-Clause |
+Optional A/B route: add `-WithFlux` for FLUX.1 [schnell] (adds ComfyUI-GGUF and about 12 GB of models).
 
-Do not use FLUX.1 [dev] (non-commercial licence) or IP-Adapter *FaceID* models (they need InsightFace, which is
-non-commercial). Fine-tuned checkpoints from model sites each have their own licence: check before using one.
+### Step 3: start ComfyUI (local only)
+Double-click `C:\AI\ComfyUI_windows_portable\run_comfyui_local.bat` and leave the window open.
+If Windows asks *"Allow python.exe to communicate on networks?"* click **Cancel**: no inbound access is needed.
 
-## 4. Smoke test in the UI
-Load the default workflow, pick `sd_xl_base_1.0.safetensors`, set the latent to **768 × 1344**, click **Run**.
-An image should appear in well under a minute after the first (slower) model load.
+### Step 4: check the setup
+Double-click `C:\AI\ghm-worker\VideoEnhancerAndroid\great_history_makers\comfyui\worker\check_setup.bat`. Expected:
+```
+port 8188 bound to: ['127.0.0.1']  (local only: ok)
+"gpu": "cuda:0 NVIDIA GeForce RTX 4060 ...", "vram_total_gb": ~8
+node IPAdapterAdvanced (required): ok      node IPAdapterModelLoader (required): ok
+model checkpoints/sd_xl_base_1.0.safetensors (required): ok   ... (optional FLUX lines may say MISSING)
+```
+Send me this output if anything says MISSING or WARNING.
 
-## 5. Install the IP-Adapter nodes (style consistency)
-1. Install **ComfyUI-Manager**: https://github.com/ltdrdata/ComfyUI-Manager (follow its "portable" instructions,
-   or use the Manager that newer ComfyUI builds ship with).
-2. Manager → **Custom Nodes Manager** → search **ComfyUI_IPAdapter_plus** (by cubiq) → Install → restart ComfyUI.
-   (The project is in maintenance mode but works with current ComfyUI. Install only nodes listed here: custom nodes run
-   code on your PC.)
+### Step 5: run the three-scene Napoleon test
+Double-click `...\comfyui\worker\run_worker_once.bat` (one pass over the queue, then it exits).
+- It fetches `jobs/queue/napoleon_3scene_test_v1.json`: **portrait × 4 seeds, battlefield × 4 seeds = 8 images**.
+- It runs the job on ComfyUI and pushes `jobs/results/napoleon_3scene_test_v1/`: candidates, contact sheet, and a manifest with GPU, VRAM and **seconds per image**.
+- Expected time on an RTX 4060: about 30–60 s per image, so 4–8 minutes. This is an estimate; the manifest gives the real figure.
 
-## 6. Set up the worker
-1. Make a separate folder for the worker's copy of the repository (keep it apart from any copy you edit by hand):
-   ```
-   mkdir C:\AI\ghm-worker
-   cd C:\AI\ghm-worker
-   git clone -b ccr-1badfb87-5pxi90 https://github.com/ashkani007/VideoEnhancerAndroid.git
-   ```
-2. **GitHub access for the worker** (it needs to read jobs and push results):
-   - Recommended: a **fine-grained personal access token**: GitHub → Settings → Developer settings → Personal access
-     tokens → Fine-grained → *Only select repositories*: `VideoEnhancerAndroid` → Permissions: **Contents: Read and write**
-     (nothing else) → expiry 90 days. The first `git push` asks for it; Git Credential Manager stores it in Windows.
-   - Never paste the token into the repository, a job file, a chat or a script.
-3. Check everything (ComfyUI must be running):
-   `C:\AI\ghm-worker\VideoEnhancerAndroid\great_history_makers\comfyui\worker\check_setup.bat`
-   Expected: `port 8188 bound to: ['127.0.0.1'] (local only: ok)`, the GPU with about 8 GB, nodes `ok`, models `ok`
-   (or `unknown` on older ComfyUI builds).
+Then tell me it is done. On my side:
+1. `python -m ghm4.episode pick …`: I review the contact sheet and choose one portrait and one battlefield. This also queues a 2× upscale job.
+2. You run `run_worker_once.bat` again (about 1 min).
+3. `python -m ghm4.episode run …`: plates, automatic metadata, matte, eye annotation for the blink, storyboard timed to the narration, then the **720×1280 preview** for your approval.
 
-## 7. Run the first test (three new Napoleon illustrations)
-1. Start ComfyUI (`run_nvidia_gpu.bat`).
-2. Start the worker: double-click `...\great_history_makers\comfyui\worker\run_worker.bat`.
-   It fetches the branch, finds `jobs/queue/napoleon_test3_v1.json` (3 shots × 4 seeds = 12 images), runs them,
-   pushes `jobs/results/napoleon_test3_v1/` (JPEG candidates, contact sheet, manifest with GPU/VRAM/timings) and then
-   keeps polling every 60 s. Close the window (or Ctrl+C) to stop. Nothing is scheduled; it only runs while open.
-   `run_worker.bat --once` processes the queue once and exits.
-3. Tell me when it says `-> done`. I review the contact sheet against the approved look, pick the best, and queue an
-   **upscale job** (2× RealESRGAN → 2304 × 4032 plates) that the worker runs the same way.
-4. Full-quality PNG copies stay on your PC in `great_history_makers\comfyui\candidates\` (not uploaded).
+---
 
-Expected speed on an RTX 4060 (estimate; the manifest records the real numbers): 768 × 1344 base, 30 steps,
-plus the 1.5× hires pass (1152 × 2016) ≈ 30–60 s per image with IP-Adapter, so ≈ 6–12 minutes for the test batch.
+## Models and licences (all free; commercial use of outputs allowed)
+| File | Folder | Source | Licence | Used for |
+|---|---|---|---|---|
+| `sd_xl_base_1.0.safetensors` (6.9 GB) | `checkpoints\` | stabilityai/stable-diffusion-xl-base-1.0 | CreativeML Open RAIL++-M | Default illustration model |
+| `ip-adapter-plus_sdxl_vit-h.safetensors` | `ipadapter\` | h94/IP-Adapter `sdxl_models/` | Apache-2.0 | Approved **style** reference |
+| `ip-adapter-plus-face_sdxl_vit-h.safetensors` | `ipadapter\` | h94/IP-Adapter `sdxl_models/` | Apache-2.0 | Approved **face** reference (no InsightFace) |
+| `CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors` (2.5 GB) | `clip_vision\` | h94/IP-Adapter `models/image_encoder/model.safetensors` (renamed) | MIT | Image encoder for both adapters |
+| `RealESRGAN_x4plus.pth` (64 MB) | `upscale_models\` | xinntao/Real-ESRGAN release v0.1.0 | BSD-3-Clause | 2× plate upscale (pickle file: hash pinned) |
+| *Optional:* `flux1-schnell-Q4_K_S.gguf` (6.8 GB) | `unet\` | city96/FLUX.1-schnell-gguf | Apache-2.0 | A/B for composition and hands |
+| *Optional:* `t5xxl_fp8_e4m3fn.safetensors`, `clip_l.safetensors` | `text_encoders\` | comfyanonymous/flux_text_encoders | Apache-2.0 / MIT | FLUX text encoders |
+| *Optional:* `ae.safetensors` | `vae\` | black-forest-labs/FLUX.1-schnell | Apache-2.0 | FLUX VAE (if Hugging Face asks you to accept terms, do it in the browser once) |
 
-## 8. Character consistency roadmap
-1. **Now:** a fixed character descriptor (`bible/characters/napoleon.json`) + the approved image as an IP-Adapter
-   style reference + seed search; I reject candidates that drift from the approved face and costume.
-2. **After about 20 approved Napoleon images:** train an SDXL character LoRA on this PC with
-   OneTrainer (https://github.com/Nerogar/OneTrainer) or kohya_ss (https://github.com/bmaltais/kohya_ss), using
-   8 GB settings (batch 1, gradient checkpointing, cached latents, Adafactor, rank 16–32). This takes roughly 1–3 hours.
-   Add the file to `models\loras\` and list it in `napoleon.json` → `loras`; every job then uses it automatically.
-3. **Composition control:** the `sdxl_layout_ipadapter` workflow starts from a rough layout image (img2img), so a
-   storyboard can fix where the figure, horizon and empty title space go without ControlNet models.
+Not used, deliberately:
+- **FLUX.1 [dev]:** non-commercial model licence.
+- **IP-Adapter FaceID / InsightFace:** non-commercial.
+- **Paid image or video APIs.**
+
+### Why these models on 8 GB VRAM
+- **SDXL base (default):** UNet about 5 GB in fp16. ComfyUI moves the text encoders and VAE out of VRAM when needed, so 768×1344 plus a 1.5× hires pass fits. Tiled VAE decoding keeps the 1152×2016 decode inside 8 GB. IP-Adapter adds about 1 GB. If VRAM runs out, add `--lowvram` to `run_comfyui_local.bat`. The SDXL ecosystem also gives style and face adapters and, later, cheap LoRA training on this card.
+- **FLUX.1 [schnell] Q4 GGUF (optional):** better prompt following, anatomy and hands. The 4-bit UNet (6.8 GB) fits, and the T5 encoder is offloaded to system RAM. It needs only 4 steps but each step is heavier, so speed is roughly comparable. It has no style or face adapters, so consistency depends on prompts. Use it as an A/B, not as the default.
+
+## Character consistency
+1. **Every prompt uses the same text:** the descriptor (`comfyui/bible/characters/napoleon.json`) and style text (`comfyui/bible/style_ghm_cinematic_v1.json`).
+2. **Two IP-Adapters:**
+   - style: the whole approved illustration, weight 0.6, "style transfer";
+   - face: `assets/references/napoleon_face_ref_01.png`, weight 0.45, active for the first 75 % of the steps.
+
+   The face adapter turns off automatically in shots without Napoleon.
+3. **Four seeds per shot.** I reject candidates whose face or uniform drifts.
+4. **After about 20 approved Napoleon images:** a character LoRA trained on this PC, about 1–3 hours. Use OneTrainer (https://github.com/Nerogar/OneTrainer) or kohya_ss with 8 GB settings: batch 1, gradient checkpointing, cached latents, rank 16–32. Listed in `napoleon.json` → `loras`, it is used automatically.
 
 ## Security checklist (keep it true)
-- [ ] Repository private (step 0); worker token limited to this repository, Contents read/write, with an expiry.
-- [ ] `netstat -an | findstr :8188` shows only `127.0.0.1:8188`; no router port forward; no ngrok/Cloudflare/remote tunnel.
-- [ ] Windows Firewall: no "Allow" rule for the portable `python.exe` (Windows Security → Firewall → Allow an app).
-- [ ] Custom nodes: only ComfyUI-Manager and ComfyUI_IPAdapter_plus. Every extra node runs code with your user rights.
-- [ ] Models only from the sources in step 3; prefer `.safetensors`. `RealESRGAN_x4plus.pth` is a PyTorch pickle file:
-      download it only from the official Real-ESRGAN GitHub release and keep ComfyUI and its bundled PyTorch updated
-      (newer PyTorch versions restrict what a `.pth` file may execute when loaded).
-- [ ] The worker runs only while its window is open; nothing is installed as a service or scheduled task.
-- [ ] Never put API keys or tokens in job files, the repository or chat.
+- [ ] Repository private; worker token limited to this repository, Contents read/write, with an expiry.
+- [ ] `netstat -an | findstr :8188` shows only `127.0.0.1:8188`; no router port forward; no ngrok/Cloudflare tunnel.
+      ComfyUI has no login: anyone who can reach port 8188 can run code on this PC.
+- [ ] Windows Firewall: no "Allow" rule for the portable `python.exe`.
+- [ ] Custom nodes: only ComfyUI-Manager, ComfyUI_IPAdapter_plus (and ComfyUI-GGUF for FLUX).
+- [ ] Models only from the sources above, verified by the installer.
+- [ ] The worker runs only while its window is open. No service, no scheduled task, no daily production.
+- [ ] No API keys or tokens in job files, the repository or chat.
 
 ## Troubleshooting
 | Symptom | Fix |
 |---|---|
-| "CUDA out of memory" | Add ` --lowvram` to the python line in `run_nvidia_gpu.bat`; or ask me to lower `hires_scale` to 1.3 |
-| Manifest error "IPAdapter_plus is not installed" | Step 5; restart ComfyUI afterwards |
-| ComfyUI "value not in list" for a model | File in the wrong folder or misnamed (step 3); restart ComfyUI |
-| Worker "round failed: git ..." | Check the token / network; results stay committed locally and are pushed next round |
-| Black images | Launch ComfyUI with `--fp32-vae` |
-| Worker refuses the server | It only talks to 127.0.0.1 / localhost by design |
+| Installer: "SHA-256 mismatch" | The download was corrupted or replaced; run the installer again. If it repeats, send me the message |
+| Installer: "no published hash … access restricted" | Open the Hugging Face model page in a browser, accept its terms if asked, run again |
+| "CUDA out of memory" | Add ` --lowvram` to the python line in `run_comfyui_local.bat`; or ask me to lower `hires_scale` to 1.3 |
+| Manifest error "IPAdapter_plus is not installed" | Restart ComfyUI after the installer; check `custom_nodes\ComfyUI_IPAdapter_plus` exists |
+| ComfyUI "value not in list" for a model | File missing or misnamed; run the installer again (it skips verified files) |
+| Worker "round failed: git …" | Check the token and network; results stay committed locally and are pushed next round |
+| Black images | Add `--fp32-vae` to `run_comfyui_local.bat` |
+
+## Manual install (if the script cannot be used)
+1. Download `ComfyUI_windows_portable_nvidia.7z` from https://github.com/comfyanonymous/ComfyUI/releases and extract it to `C:\AI\`.
+2. `git clone` https://github.com/Comfy-Org/ComfyUI-Manager and https://github.com/cubiq/ComfyUI_IPAdapter_plus into `ComfyUI\custom_nodes\`.
+3. Download the models in the table into the listed folders, and compare each SHA-256 (`Get-FileHash`) with the value on its Hugging Face page.
+4. Start ComfyUI with `python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --listen 127.0.0.1`.
+5. Clone the branch into `C:\AI\ghm-worker` and continue at step 4 above.
