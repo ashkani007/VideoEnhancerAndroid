@@ -1,0 +1,65 @@
+{
+ "job_id": "napoleon_test3_v1",
+ "kind": "illustrate",
+ "created": "2026-10-25",
+ "notes": "First workflow test: three new Napoleon illustrations for three narrative beats of an Austerlitz short (planning, the sun of Austerlitz, the assault). 4 seeds each; Claude reviews the contact sheet against the approved look.",
+ "workflow": "sdxl_hires_ipadapter",
+ "defaults": {
+  "width": 768,
+  "height": 1344,
+  "steps": 30,
+  "cfg": 6.0,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 20,
+  "hires_denoise": 0.4,
+  "ipadapter_weight": 0.6,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {
+  "style": "assets/references/napoleon_style_reference_01.png"
+ },
+ "shots": [
+  {
+   "id": "n1_bivouac_night",
+   "positive": "medium close-up, chest-up portrait, three-quarter view facing right, face in the upper middle third, map table in the lower third, night before the battle of Austerlitz, December 1805, Napoleon studying a campaign map by lantern light at a field bivouac, one hand resting on the map, focused narrowed eyes, campfires and soldiers' silhouettes in the deep blue background, frost in the air, Napoleon Bonaparte, clean-shaven man in his mid-thirties, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair with a lock over the forehead, black bicorne hat worn side-on with a tricolour cockade and thin gold trim, dark navy general's coat with a high scarlet collar, red piping and gold buttons, gold fringed epaulettes, white waistcoat, cinematic digital illustration, painterly cel-shaded rendering, clean flat colour masses with hard-edged shadow shapes, subtle gouache texture, faceted cloth folds, atmospheric haze and depth, epic historical poster composition, highly detailed, sharp focus, warm amber lantern light from below right on the face, deep navy night shadows, glowing orange campfire bokeh, cold blue moonlit sky, vertical 9:16 frame, strong silhouette, clear readable focal point, calm uncluttered area in the upper fifth for titles",
+   "negative": "photo, photorealistic, 3d render, cgi, plastic skin, chibi, childish cartoon, rough sketch, lineart only, mosaic, stained glass, paper cut-out, oversaturated neon colours, extra fingers, deformed hands, distorted face, asymmetrical eyes, crossed eyes, extra limbs, duplicate figure, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, modern objects, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    1101,
+    1102,
+    1103,
+    1104
+   ],
+   "ipadapter_weight": 0.5
+  },
+  {
+   "id": "n2_sun_of_austerlitz",
+   "positive": "wide establishing shot, Napoleon on a white horse on a rocky hilltop in the lower third, seen from behind at three-quarter, a few staff officers on horseback behind him, vast valley below, dawn on 2 December 1805, the sun breaking through a sea of thick fog over the valley, bright rising sun disk, church spires and hilltops emerging from the fog, dark columns of French infantry with tricolour flags marching in the fog, Napoleon Bonaparte, clean-shaven man in his mid-thirties, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair with a lock over the forehead, black bicorne hat worn side-on with a tricolour cockade and thin gold trim, dark navy general's coat with a high scarlet collar, red piping and gold buttons, gold fringed epaulettes, white waistcoat, cinematic digital illustration, painterly cel-shaded rendering, clean flat colour masses with hard-edged shadow shapes, subtle gouache texture, faceted cloth folds, atmospheric haze and depth, epic historical poster composition, highly detailed, sharp focus, low rising sun straight ahead, strong golden backlight and rim light, cool blue-grey fog, apricot sky, vertical 9:16 frame, strong silhouette, clear readable focal point, calm uncluttered area in the upper fifth for titles",
+   "negative": "photo, photorealistic, 3d render, cgi, plastic skin, chibi, childish cartoon, rough sketch, lineart only, mosaic, stained glass, paper cut-out, oversaturated neon colours, extra fingers, deformed hands, distorted face, asymmetrical eyes, crossed eyes, extra limbs, duplicate figure, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, modern objects, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    2101,
+    2102,
+    2103,
+    2104
+   ]
+  },
+  {
+   "id": "n3_pratzen_assault",
+   "positive": "low-angle wide shot, dense column of French line infantry advancing uphill toward the viewer, officer with raised sword in front, tall tricolour flag with a golden eagle in the centre, battle of Austerlitz 1805, French line infantry in dark blue coats with white crossbelts and black bicorne hats, fixed bayonets, drummer boy, cannon smoke and morning fog clearing over the Pratzen heights, enemy lines faint on the ridge, cinematic digital illustration, painterly cel-shaded rendering, clean flat colour masses with hard-edged shadow shapes, subtle gouache texture, faceted cloth folds, atmospheric haze and depth, epic historical poster composition, highly detailed, sharp focus, low golden-hour sun from the right, warm orange rim light, cool navy shadows, apricot and slate-blue sky, vertical 9:16 frame, strong silhouette, clear readable focal point, calm uncluttered area in the upper fifth for titles",
+   "negative": "photo, photorealistic, 3d render, cgi, plastic skin, chibi, childish cartoon, rough sketch, lineart only, mosaic, stained glass, paper cut-out, oversaturated neon colours, extra fingers, deformed hands, distorted face, asymmetrical eyes, crossed eyes, extra limbs, duplicate figure, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, modern objects, shakos, modern helmets, rifles with scopes",
+   "seeds": [
+    3101,
+    3102,
+    3103,
+    3104
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "job_id": "napoleon_test3_v1",
+ "created": "2026-10-25",
+ "notes": "First workflow test: three new Napoleon illustrations for three narrative beats of an Austerlitz short (planning, the sun of Austerlitz, the assault). 4 seeds each; Claude reviews the contact sheet against the approved look.",
+ "style": "ghm_cinematic_v1",
+ "workflow": "sdxl_hires_ipadapter",
+ "shots": [
+  {
+   "id": "n1_bivouac_night",
+   "characters": ["napoleon"],
+   "framing": "medium close-up, chest-up portrait, three-quarter view facing right, face in the upper middle third, map table in the lower third",
+   "scene": "night before the battle of Austerlitz, December 1805, Napoleon studying a campaign map by lantern light at a field bivouac, one hand resting on the map, focused narrowed eyes, campfires and soldiers' silhouettes in the deep blue background, frost in the air",
+   "lighting": "warm amber lantern light from below right on the face, deep navy night shadows, glowing orange campfire bokeh, cold blue moonlit sky",
+   "ipadapter_weight": 0.5,
+   "seeds": [1101, 1102, 1103, 1104]
+  },
+  {
+   "id": "n2_sun_of_austerlitz",
+   "characters": ["napoleon"],
+   "framing": "wide establishing shot, Napoleon on a white horse on a rocky hilltop in the lower third, seen from behind at three-quarter, a few staff officers on horseback behind him, vast valley below",
+   "scene": "dawn on 2 December 1805, the sun breaking through a sea of thick fog over the valley, bright rising sun disk, church spires and hilltops emerging from the fog, dark columns of French infantry with tricolour flags marching in the fog",
+   "lighting": "low rising sun straight ahead, strong golden backlight and rim light, cool blue-grey fog, apricot sky",
+   "seeds": [2101, 2102, 2103, 2104]
+  },
+  {
+   "id": "n3_pratzen_assault",
+   "characters": [],
+   "framing": "low-angle wide shot, dense column of French line infantry advancing uphill toward the viewer, officer with raised sword in front, tall tricolour flag with a golden eagle in the centre",
+   "scene": "battle of Austerlitz 1805, French line infantry in dark blue coats with white crossbelts and black bicorne hats, fixed bayonets, drummer boy, cannon smoke and morning fog clearing over the Pratzen heights, enemy lines faint on the ridge",
+   "negative_extra": "shakos, modern helmets, rifles with scopes",
+   "seeds": [3101, 3102, 3103, 3104]
+  }
+ ]
+}

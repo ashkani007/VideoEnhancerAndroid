@@ -1,0 +1,37 @@
+{
+ "id": "ghm_cinematic_v1",
+ "approved": "2026-10-25 (client approved the Napoleon_20s_POC look, based on assets/references/napoleon_style_reference_01.png)",
+ "reference_image": "assets/references/napoleon_style_reference_01.png",
+ "positive": "cinematic digital illustration, painterly cel-shaded rendering, clean flat colour masses with hard-edged shadow shapes, subtle gouache texture, faceted cloth folds, atmospheric haze and depth, epic historical poster composition, highly detailed, sharp focus",
+ "negative": "photo, photorealistic, 3d render, cgi, plastic skin, chibi, childish cartoon, rough sketch, lineart only, mosaic, stained glass, paper cut-out, oversaturated neon colours, extra fingers, deformed hands, distorted face, asymmetrical eyes, crossed eyes, extra limbs, duplicate figure, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, modern objects",
+ "composition_9x16": "vertical 9:16 frame, strong silhouette, clear readable focal point, calm uncluttered area in the upper fifth for titles",
+ "palette": [
+  "deep navy",
+  "ivory",
+  "scarlet",
+  "brass gold",
+  "apricot orange",
+  "slate blue"
+ ],
+ "sampler": {
+  "steps": 30,
+  "cfg": 6.0,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras"
+ },
+ "size": {
+  "width": 768,
+  "height": 1344
+ },
+ "hires": {
+  "scale": 1.5,
+  "steps": 20,
+  "denoise": 0.4
+ },
+ "ipadapter": {
+  "weight": 0.6,
+  "weight_type": "style transfer",
+  "end_at": 1.0
+ },
+ "lighting_default": "low golden-hour sun from the right, warm orange rim light, cool navy shadows, apricot and slate-blue sky"
+}
