@@ -45,10 +45,14 @@ def make_job(spec):
     char_ids = {c for s in spec["shots"] for c in s.get("characters", [])}
     chars = {c: load(os.path.join(BIBLE, "characters", f"{c}.json")) for c in char_ids}
     sm, sz, hi, ip = style["sampler"], style["size"], style["hires"], style["ipadapter"]
+    wf = spec.get("workflow", "sdxl_style_face")
+    face_ref = next((chars[c]["face_reference"] for c in sorted(char_ids) if chars[c].get("face_reference")), None)
     shots = []
     for s in spec["shots"]:
         pos, neg = prompt_for(s, style, chars)
         shot = dict(id=s["id"], positive=pos, negative=neg, seeds=s["seeds"])
+        if wf == "sdxl_style_face":                       # face adapter only where the character appears
+            shot["ipadapter_face_weight"] = s.get("ipadapter_face_weight", 0.45 if s.get("characters") else 0.0)
         loras = [lo for c in s.get("characters", []) for lo in chars[c].get("loras", [])]
         if loras:
             shot["loras"] = loras
@@ -56,13 +60,25 @@ def make_job(spec):
             if k in s:
                 shot[k] = s[k]
         shots.append(shot)
+    defaults = dict(width=sz["width"], height=sz["height"], steps=sm["steps"], cfg=sm["cfg"], sampler_name=sm["sampler_name"],
+                    scheduler=sm["scheduler"], hires_scale=hi["scale"], hires_steps=hi["steps"], hires_denoise=hi["denoise"],
+                    ipadapter_weight=ip["weight"], ipadapter_weight_type=ip["weight_type"], ipadapter_end_at=ip["end_at"])
+    refs = {"style": style["reference_image"]}
+    if wf == "sdxl_style_face":
+        if not face_ref:
+            raise SystemExit("sdxl_style_face needs a character with face_reference in its bible")
+        refs["face"] = face_ref
+    if wf == "flux_schnell":                              # distilled model: 4 steps, CFG 1, no negative, no IP-Adapter
+        defaults = dict(width=sz["width"], height=sz["height"], steps=4, cfg=1.0, sampler_name="euler", scheduler="simple",
+                        hires_scale=hi["scale"], hires_steps=6, hires_denoise=0.4)
+        refs = {}
+        for sh in shots:
+            sh.pop("ipadapter_weight", None)
     return {
         "job_id": spec["job_id"], "kind": "illustrate", "created": spec.get("created", ""),
-        "notes": spec.get("notes", ""), "workflow": spec.get("workflow", "sdxl_hires_ipadapter"),
-        "defaults": dict(width=sz["width"], height=sz["height"], steps=sm["steps"], cfg=sm["cfg"], sampler_name=sm["sampler_name"],
-                         scheduler=sm["scheduler"], hires_scale=hi["scale"], hires_steps=hi["steps"], hires_denoise=hi["denoise"],
-                         ipadapter_weight=ip["weight"], ipadapter_weight_type=ip["weight_type"], ipadapter_end_at=ip["end_at"]),
-        "references": {"style": style["reference_image"]},
+        "notes": spec.get("notes", ""), "workflow": wf,
+        "defaults": defaults,
+        "references": refs,
         "shots": shots,
         "output": {"format": "jpg", "quality": 92, "contact_sheet": True},
     }

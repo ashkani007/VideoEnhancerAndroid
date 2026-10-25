@@ -334,6 +334,11 @@ class MapShot:
         keys = [(k[0], (k[1] - self.lon0) * self.kx, self.lat1 - k[2], math.log(k[3])) for k in c["camera"]]
         cx, cy, lw = hermite(keys, tl)
         Wu = math.exp(lw)
+        # never look past the canvas (the border would show as a mirrored strip)
+        Wu = min(Wu, self.CW / self.ppu, self.CH / self.ppu * OW / OH)
+        hwu, hhu = Wu / 2, Wu / 2 * OH / OW
+        cx = min(max(cx, hwu), self.CW / self.ppu - hwu)
+        cy = min(max(cy, hhu), self.CH / self.ppu - hhu)
         s = OW / (Wu * self.ppu)
         cxp, cyp = cx * self.ppu, cy * self.ppu
         hw, hh = Wu * self.ppu / 2, Wu * self.ppu / 2 * OH / OW

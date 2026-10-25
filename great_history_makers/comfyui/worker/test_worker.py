@@ -27,7 +27,10 @@ import ghm_worker as W  # noqa: E402
 REQUIRED = {"KSampler": {"model", "seed", "steps", "cfg", "sampler_name", "scheduler", "positive", "negative", "latent_image", "denoise"},
             "CLIPTextEncode": {"text", "clip"}, "VAEDecodeTiled": {"samples", "vae", "tile_size", "overlap"},
             "IPAdapterAdvanced": {"model", "ipadapter", "image", "weight", "weight_type", "start_at", "end_at"},
-            "LoraLoader": {"model", "clip", "lora_name", "strength_model", "strength_clip"}, "SaveImage": {"images", "filename_prefix"}}
+            "LoraLoader": {"model", "clip", "lora_name", "strength_model", "strength_clip"}, "SaveImage": {"images", "filename_prefix"},
+            "IPAdapterModelLoader": {"ipadapter_file"}, "CLIPVisionLoader": {"clip_name"}, "UnetLoaderGGUF": {"unet_name"},
+            "DualCLIPLoader": {"clip_name1", "clip_name2", "type"}, "VAELoader": {"vae_name"},
+            "EmptySD3LatentImage": {"width", "height", "batch_size"}, "LoadImage": {"image"}}
 SEEN = []
 
 
@@ -87,10 +90,12 @@ def expect_reject(job, why):
 
 
 def main():
-    job = json.load(open(os.path.join(GHM, "jobs", "queue", "napoleon_test3_v1.json"), encoding="utf-8"))
+    JOB = "napoleon_3scene_test_v1"
+    job = json.load(open(os.path.join(GHM, "jobs", "queue", JOB + ".json"), encoding="utf-8"))
     v = W.validate(job, GHM)
-    assert len(v["runs"]) == 12
-    print("validation: the Napoleon job is valid (12 runs)")
+    N = len(v["runs"])
+    assert N == 8
+    print(f"validation: the queued Napoleon job is valid ({N} runs)")
     bad = json.loads(json.dumps(job))
     bad["references"]["style"] = "../../../../etc/passwd"
     expect_reject(bad, "path escape")
@@ -125,20 +130,25 @@ def main():
         print(f"  rejected (node allow-list): {e}")
     for wf, extra in (("sdxl_layout_ipadapter", {"init_image": "assets/references/napoleon_style_reference_01.png"}),
                       ("upscale2x", {"init_image": "assets/references/napoleon_style_reference_01.png"}),
-                      ("sdxl_hires", {})):
+                      ("sdxl_hires", {}), ("sdxl_style_face", {}), ("flux_schnell", {})):
         j = {"job_id": "t_" + wf, "kind": "upscale" if wf == "upscale2x" else "illustrate", "workflow": wf,
-             "references": {"style": "assets/references/napoleon_style_reference_01.png"},
+             "references": {"style": "assets/references/napoleon_style_reference_01.png",
+                            "face": "assets/references/napoleon_face_ref_01.png"} if wf != "flux_schnell" else {},
              "shots": [dict({"id": "s01", "positive": "test", "seeds": [1]}, **extra)]}
         rr = W.validate(j, GHM)["runs"][0]
         g = W.build_graph(json.load(open(os.path.join(GHM, "comfyui", "workflows", W.WORKFLOWS[wf]))), rr,
-                          {"style": "a.png", "init_image": "b.png"})
+                          {"style": "a.png", "face": "f.png", "init_image": "b.png"})
         for k, n in g.items():
             assert not REQUIRED.get(n["class_type"], set()) - set(n["inputs"]), (wf, k)
             for val in n["inputs"].values():
                 assert not (isinstance(val, list) and len(val) == 2 and isinstance(val[0], str) and val[0] not in g), (wf, val)
+        if wf == "sdxl_style_face":
+            assert g["15"]["inputs"]["image"] == "f.png" and g["16"]["inputs"]["image"] == ["15", 0] and g["16"]["inputs"]["model"] == ["12", 0] and g["5"]["inputs"]["model"] == ["16", 0]
+        if wf == "flux_schnell":
+            assert g["6"]["class_type"] == "EmptySD3LatentImage" and g["10"]["inputs"]["vae"] == ["3", 0]
         if wf == "sdxl_layout_ipadapter":
             assert g["5"]["inputs"]["denoise"] == 0.72 and g["13"]["inputs"]["image"] == "b.png"
-    print("graph building: LoRA rewiring, node allow-list and all four templates ok")
+    print("graph building: LoRA rewiring, node allow-list and all workflow templates ok")
 
     # end-to-end: mock ComfyUI + temporary git remote
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Mock)
@@ -163,14 +173,14 @@ def main():
         assert out.returncode == 0, out.stderr
         check = os.path.join(tmp, "check")
         sh("git", "clone", "-q", "-b", "testbranch", remote, check)
-        m = json.load(open(os.path.join(check, "great_history_makers", "jobs", "results", "napoleon_test3_v1", "manifest.json")))
-        assert m["status"] == "done" and len(m["images"]) == 12, m
-        assert os.path.exists(os.path.join(check, "great_history_makers", "jobs", "results", "napoleon_test3_v1", "contact_sheet.jpg"))
-        assert len(SEEN) == 12 and SEEN[0]["10"]["inputs"]["image"].startswith("ghm_")
-        print(f"end-to-end: 12 graphs accepted, results pushed to the remote ({m['system']['gpu']}, {m['system']['vram_total_gb']} GB)")
+        m = json.load(open(os.path.join(check, "great_history_makers", "jobs", "results", JOB, "manifest.json")))
+        assert m["status"] == "done" and len(m["images"]) == N, m
+        assert os.path.exists(os.path.join(check, "great_history_makers", "jobs", "results", JOB, "contact_sheet.jpg"))
+        assert len(SEEN) == N and SEEN[0]["10"]["inputs"]["image"].startswith("ghm_") and SEEN[0]["15"]["inputs"]["image"].startswith("ghm_")
+        print(f"end-to-end: {N} graphs accepted, results pushed to the remote ({m['system']['gpu']}, {m['system']['vram_total_gb']} GB)")
         out2 = subprocess.run([sys.executable, os.path.join(HERE, "ghm_worker.py"), "--repo", work, "--branch", "testbranch",
                                "--server", url, "--once"], capture_output=True, text=True)
-        assert len(SEEN) == 12, "a finished job was run twice"
+        assert len(SEEN) == N, "a finished job was run twice"
         print("idempotence: a finished job is not run again")
     finally:
         srv.shutdown()

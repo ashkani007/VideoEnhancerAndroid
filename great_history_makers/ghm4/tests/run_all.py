@@ -13,6 +13,7 @@ Tests
   narrate       retime to aligned words, caption-band collision check, excerpt duration
   masks         region-scored automatic mattes (ghm4/tests/test_masks.py)
   worker        ComfyUI worker plumbing (comfyui/worker/test_worker.py)
+  episode       automated episode pipeline end to end with stand-in results (ghm4/tests/test_episode.py)
 Writes ghm4/tests/out/test_report.json.
 """
 import argparse
@@ -210,7 +211,8 @@ def main():
              ("transitions", test_transitions), ("narrate", test_narrate)]
     if not a.quick:
         tests += [("masks", lambda: run_script(["-m", "ghm4.tests.test_masks", "--methods", "hybrid"])),
-                  ("worker", lambda: run_script(["comfyui/worker/test_worker.py"]))]
+                  ("worker", lambda: run_script(["comfyui/worker/test_worker.py"])),
+                  ("episode", lambda: run_script(["-m", "ghm4.tests.test_episode"]))]
     report, failed = {}, 0
     for name, fn in tests:
         t = time.time()

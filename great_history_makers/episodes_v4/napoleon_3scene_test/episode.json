@@ -1,0 +1,162 @@
+{
+ "id": "napoleon_3scene_test",
+ "_about": "Three-scene test of the local ComfyUI pipeline: AI portrait + AI battlefield + animated map, cut to the opening of the approved Ep02 narration (already paid; no new credits).",
+ "style": "ghm_cinematic_v1",
+ "workflow": "sdxl_style_face",
+ "narration": {
+  "audio": "episodes/ep02_napoleon/audio/narration.mp3",
+  "transcript": "episodes/ep02_napoleon/audio/transcript.txt",
+  "words": "episodes/ep02_napoleon/audio/words_aligned.json",
+  "groups": [
+   "He rose from an artillery officer",
+   "to become the most feared / ruler in Europe.",
+   "Napoleon Bonaparte crowned himself",
+   "Emperor of the French / in 1804.",
+   "His armies won / extraordinary victories,",
+   "and his empire / reshaped the continent.",
+   "But Napoleon wanted more.",
+   "In 1812, he invaded Russia",
+   "with a vast / multinational army.",
+   "He reached Moscow,",
+   "only to find much of the city / burning.",
+   "Then came the retreat.",
+   "Hunger, disease, exhaustion,",
+   "and bitter cold / devastated his forces.",
+   "His enemies united.",
+   "In 1814, Napoleon abdicated",
+   "and was exiled to Elba.",
+   "He returned the following year",
+   "for one final gamble.",
+   "At Waterloo, / his army was defeated.",
+   "This time, exile meant / a remote island in the Atlantic:",
+   "Saint Helena.",
+   "Napoleon died there / in 1821.",
+   "He conquered kingdoms, / changed Europe,",
+   "and became a legend.",
+   "But he could not conquer",
+   "the consequences / of his own ambition."
+  ],
+  "excerpt_end": 18.2
+ },
+ "beats": [
+  {
+   "id": "b1_portrait",
+   "type": "portrait",
+   "cue": "He rose from an artillery officer",
+   "illustration": {
+    "characters": [
+     "napoleon"
+    ],
+    "framing": "cinematic close-up portrait, head and shoulders, three-quarter view facing right, both eyes clearly visible, face in the upper third of the frame, one gloved hand resting on a sword hilt near the lower edge",
+    "scene": "Napoleon Bonaparte as a young general around 1804, calm determined gaze toward the horizon, wind lifting his hair and coat collar, blurred tricolour flags and soldiers far behind",
+    "seeds": [
+     1201,
+     1202,
+     1203,
+     1204
+    ]
+   },
+   "motion": {
+    "blink_at": 0.62,
+    "sway_at": 0.15
+   },
+   "text": [
+    {
+     "text": "1769 – 1821",
+     "preset": "kicker",
+     "size": 30,
+     "y": 712,
+     "at": 0.4,
+     "out": [
+      4.4,
+      4.8
+     ]
+    },
+    {
+     "text": "NAPOLEON",
+     "preset": "title",
+     "size": 92,
+     "y": 800,
+     "at": 0.6,
+     "out": [
+      4.4,
+      4.8
+     ]
+    },
+    {
+     "rule": 400,
+     "y": 826,
+     "at": 1.2,
+     "out": [
+      4.4,
+      4.8
+     ]
+    },
+    {
+     "text": "1804",
+     "preset": "title_m",
+     "size": 84,
+     "y": 790,
+     "color": "gold",
+     "at": 5.3,
+     "out": [
+      9.6,
+      10.0
+     ]
+    },
+    {
+     "text": "EMPEROR OF THE FRENCH",
+     "preset": "legend",
+     "size": 22,
+     "track": 6,
+     "y": 830,
+     "at": 5.6,
+     "rise": 10,
+     "out": [
+      9.6,
+      10.0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b2_battle",
+   "type": "battle",
+   "cue": "His armies won",
+   "illustration": {
+    "characters": [],
+    "framing": "epic wide battlefield panorama, horizon slightly above the middle of the frame, columns of French line infantry advancing from the lower foreground toward distant hills, several tall tricolour flags with golden eagles, cannon smoke drifting across the field",
+    "scene": "battle of Austerlitz, 2 December 1805, morning fog lifting from the valley, Pratzen heights in the distance, cavalry on the flank, drummers, no single hero figure",
+    "lighting": "low winter sun breaking through the fog from the right, golden rim light on smoke and flags, cool blue-grey shadows, apricot sky",
+    "negative_extra": "close-up, portrait, modern uniforms, rifles with scopes, helmets",
+    "seeds": [
+     2201,
+     2202,
+     2203,
+     2204
+    ]
+   },
+   "puffs": 2,
+   "text": [
+    {
+     "text": "AUSTERLITZ · JENA · WAGRAM",
+     "preset": "legend",
+     "size": 22,
+     "track": 5,
+     "y": 820,
+     "at": 0.3,
+     "out": [
+      2.2,
+      2.5
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b3_map",
+   "type": "map",
+   "cue": "and his empire",
+   "map": "ghm4/data/maps/empire_1811_to_russia.json"
+  }
+ ]
+}

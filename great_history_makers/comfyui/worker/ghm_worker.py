@@ -36,15 +36,19 @@ WORKFLOWS = {                       # job "workflow" name -> template file (comf
     "sdxl_hires_ipadapter": "ghm_sdxl_hires_ipadapter_api.json",
     "sdxl_layout_ipadapter": "ghm_sdxl_layout_ipadapter_api.json",
     "upscale2x": "ghm_upscale2x_api.json",
+    "sdxl_style_face": "ghm_sdxl_style_face_api.json",          # default: style + face IP-Adapters (no InsightFace)
+    "flux_schnell": "ghm_flux_schnell_gguf_api.json",            # optional A/B: FLUX.1 [schnell] GGUF (Apache-2.0)
 }
+NEEDS_REFS = {"sdxl_hires_ipadapter": {"style"}, "sdxl_layout_ipadapter": {"style"}, "sdxl_style_face": {"style", "face"}}
 ALLOWED_NODES = {"CheckpointLoaderSimple", "CLIPTextEncode", "EmptyLatentImage", "KSampler", "LatentUpscaleBy",
                  "VAEDecode", "VAEDecodeTiled", "VAEEncode", "SaveImage", "LoadImage", "LoraLoader",
                  "IPAdapterUnifiedLoader", "IPAdapterAdvanced", "UpscaleModelLoader", "ImageUpscaleWithModel",
-                 "ImageScaleBy"}
+                 "ImageScaleBy", "IPAdapterModelLoader", "CLIPVisionLoader", "UnetLoaderGGUF", "DualCLIPLoader",
+                 "VAELoader", "EmptySD3LatentImage"}
 JOB_KEYS = {"job_id", "kind", "created", "notes", "workflow", "defaults", "references", "shots", "output"}
 SHOT_KEYS = {"id", "positive", "negative", "seeds", "width", "height", "steps", "cfg", "hires_scale", "hires_steps",
              "hires_denoise", "ipadapter_weight", "ipadapter_weight_type", "ipadapter_end_at", "init_image", "denoise",
-             "loras", "notes", "sampler_name", "scheduler", "checkpoint"}
+             "loras", "notes", "sampler_name", "scheduler", "checkpoint", "ipadapter_face_weight", "ipadapter_face_end_at"}
 SAMPLERS = {"euler", "euler_ancestral", "dpmpp_2m", "dpmpp_2m_sde", "dpmpp_3m_sde", "dpmpp_sde", "uni_pc", "ddim"}
 SCHEDULERS = {"normal", "karras", "exponential", "sgm_uniform", "simple", "beta"}
 WEIGHT_TYPES = {"linear", "style transfer", "composition", "strong style transfer", "style and composition", "ease in-out"}
@@ -104,11 +108,13 @@ def validate(job, ghm_root):
     out = job.get("output", {})
     if not all(isinstance(x, dict) for x in (defaults, refs, out)):
         raise JobError("defaults, references and output must be objects")
-    if set(defaults) - SHOT_KEYS or set(refs) - {"style"} or set(out) - {"format", "quality", "contact_sheet"}:
+    if set(defaults) - SHOT_KEYS or set(refs) - {"style", "face"} or set(out) - {"format", "quality", "contact_sheet"}:
         raise JobError("unknown keys in defaults, references or output")
     style = _repo_image(ghm_root, refs["style"]) if "style" in refs else None
-    if "ipadapter" in WORKFLOWS[wf] and not style:
-        raise JobError("IP-Adapter workflows need references.style")
+    face = _repo_image(ghm_root, refs["face"]) if "face" in refs else None
+    missing = NEEDS_REFS.get(wf, set()) - set(refs)
+    if missing:
+        raise JobError(f"workflow {wf} needs references {sorted(missing)}")
     fmt = out.get("format", "jpg")
     if fmt not in ("jpg", "png"):
         raise JobError("output.format must be jpg or png")
@@ -136,6 +142,8 @@ def validate(job, ghm_root):
                  ipadapter_weight=_num(p, "ipadapter_weight", 0.0, 1.5, 0.6),
                  ipadapter_end_at=_num(p, "ipadapter_end_at", 0.1, 1.0, 1.0),
                  ipadapter_weight_type=p.get("ipadapter_weight_type", "style transfer"),
+                 ipadapter_face_weight=_num(p, "ipadapter_face_weight", 0.0, 1.5, 0.45),
+                 ipadapter_face_end_at=_num(p, "ipadapter_face_end_at", 0.1, 1.0, 0.75), face=face,
                  sampler_name=p.get("sampler_name", "dpmpp_2m"), scheduler=p.get("scheduler", "karras"),
                  checkpoint=p.get("checkpoint", "sd_xl_base_1.0.safetensors"), loras=p.get("loras", []), style=style)
         if job["kind"] == "illustrate" and not r["positive"].strip():
@@ -198,7 +206,10 @@ def build_graph(template, r, uploaded):
     _, ip = by_title(g, "ipadapter")
     if ip is not None:
         ip.update(weight=r["ipadapter_weight"], weight_type=r["ipadapter_weight_type"], end_at=r["ipadapter_end_at"])
-    for title, key in (("style_image", "style"), ("init_image", "init_image")):
+    _, ipf = by_title(g, "ipadapter_face")
+    if ipf is not None:                                    # weight 0 = shot without the character (face adapter idle)
+        ipf.update(weight=r["ipadapter_face_weight"], end_at=r["ipadapter_face_end_at"])
+    for title, key in (("style_image", "style"), ("face_image", "face"), ("init_image", "init_image")):
         _, n = by_title(g, title)
         if n is not None:
             n["image"] = uploaded[key]
@@ -350,13 +361,15 @@ def process(job_path, ghm_root, comfy, keep_dir):
         job = validate(raw, ghm_root)
         manifest["system"] = comfy.stats()
         tpl = json.load(open(os.path.join(ghm_root, "comfyui", "workflows", WORKFLOWS[job["workflow"]]), encoding="utf-8"))
-        if "ipadapter" in job["workflow"] and not comfy.has_node("IPAdapterAdvanced"):
+        if job["workflow"] in NEEDS_REFS and not comfy.has_node("IPAdapterAdvanced"):
             raise JobError("ComfyUI_IPAdapter_plus is not installed (see SETUP_WINDOWS_RTX4060.md, step 5)")
+        if job["workflow"] == "flux_schnell" and not comfy.has_node("UnetLoaderGGUF"):
+            raise JobError("ComfyUI-GGUF is not installed (optional FLUX route, see SETUP_WINDOWS_RTX4060.md)")
         cache = {}
         files = []
         for r in job["runs"]:
             up = {}
-            for key in ("style", "init_image"):
+            for key in ("style", "face", "init_image"):
                 if r.get(key):
                     if r[key] not in cache:
                         cache[r[key]] = comfy.upload(r[key])
@@ -456,13 +469,18 @@ def check(comfy):
     print(json.dumps(st, indent=1))
     if st["vram_total_gb"] and st["vram_total_gb"] < 7.5:
         print("WARNING: less than 8 GB VRAM reported; start ComfyUI with --lowvram")
-    for cls in ("IPAdapterAdvanced", "IPAdapterUnifiedLoader", "UpscaleModelLoader"):
-        print(f"node {cls}: {'ok' if comfy.has_node(cls) else 'MISSING'}")
-    for folder, need in (("checkpoints", "sd_xl_base_1.0.safetensors"), ("upscale_models", "RealESRGAN_x4plus.pth"),
-                         ("ipadapter", "ip-adapter-plus_sdxl_vit-h.safetensors"),
-                         ("clip_vision", "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors")):
+    for cls, why in (("IPAdapterAdvanced", "required"), ("IPAdapterModelLoader", "required"), ("UpscaleModelLoader", "required"),
+                     ("UnetLoaderGGUF", "optional FLUX route")):
+        print(f"node {cls} ({why}): {'ok' if comfy.has_node(cls) else 'MISSING'}")
+    for folder, need, why in (("checkpoints", "sd_xl_base_1.0.safetensors", "required"),
+                              ("upscale_models", "RealESRGAN_x4plus.pth", "required"),
+                              ("ipadapter", "ip-adapter-plus_sdxl_vit-h.safetensors", "required"),
+                              ("ipadapter", "ip-adapter-plus-face_sdxl_vit-h.safetensors", "required"),
+                              ("clip_vision", "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors", "required"),
+                              ("unet", "flux1-schnell-Q4_K_S.gguf", "optional FLUX"), ("text_encoders", "t5xxl_fp8_e4m3fn.safetensors", "optional FLUX"),
+                              ("text_encoders", "clip_l.safetensors", "optional FLUX"), ("vae", "ae.safetensors", "optional FLUX")):
         have = comfy.models(folder)
-        print(f"model {folder}/{need}: {'ok' if have is not None and need in have else ('unknown' if have is None else 'MISSING')}")
+        print(f"model {folder}/{need} ({why}): {'ok' if have is not None and need in have else ('unknown' if have is None else 'MISSING')}")
 
 
 def main():

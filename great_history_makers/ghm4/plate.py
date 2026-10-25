@@ -12,6 +12,7 @@ plate.json (coordinates in plate pixels at `ref_width`; they are rescaled to the
             (optional "gain_key": "battle", "default_gain": 0 -> only shots with gains {"battle": 1} show it)
   "smoke_column": [{"x": 830, "y": 665, "sx": 50, "sy": 40}],                 billowing column
   "wind": [{"box": [...], "amp": 2.0, "rate": 0.6, "feather": 20}],           cloth ripple (foreground layer)
+  "sway": [{"box": [...], "pivot": [x, y], "angle": 1.5, "rate": 0.35, "feather": 20, "at": 1.0}],   hand / forearm motion
   "eyes": [{"upper": [[x,y],...], "lower": [[x,y],...], "close_y": 320, "skin": [x0,y0,x1,y1]}],
   "sun": {"x": 905, "y": 590, "r": 160}
 }
@@ -157,6 +158,7 @@ class Plate:
             skin = self.img[sy0:sy1, sx0:sx1].reshape(-1, 3).mean(0)
             self.eyes.append((roi, eye, float(up[:, 1].min()), e.get("close_y", lo[:, 1].max() / k) * k, skin))
         self.winds = [(r, w) for w in m.get("wind", []) for r in [self.box(w["box"], w.get("feather", 20))] if ok(r)]
+        self.sways = [(r, w) for w in m.get("sway", []) for r in [self.box(w["box"], w.get("feather", 20))] if ok(r)]
 
     def _bgmask(self, roi):
         if self.alpha is None:
@@ -274,6 +276,16 @@ class Plate:
             amp = w.get("amp", 2.0) * k * wind
             self._warp(fg, roi, amp * mask * np.sin(2 * math.pi * r * t + YY / (55 * k)),
                        0.4 * amp * mask * np.sin(2 * math.pi * r * t + YY / (70 * k) + 1), XX, YY)
+        for roi, w in self.sways:                                 # subtle hand / forearm motion around a pivot
+            XX, YY = self.grid(roi)
+            mask = self.soft(w["box"], w.get("feather", 20), roi)
+            px, py = w["pivot"][0] * k, w["pivot"][1] * k
+            on = 1.0 if "at" not in w else min(1.0, max(0.0, (tl - w["at"]) / 0.6))
+            ang = math.radians(w.get("angle", 1.5)) * math.sin(2 * math.pi * w.get("rate", 0.35) * t + w.get("phase", 0.0)) * on
+            ca, sa = math.cos(ang), math.sin(ang)
+            dx = ((XX - px) * ca - (YY - py) * sa + px - XX) * mask
+            dy = ((XX - px) * sa + (YY - py) * ca + py - YY) * mask
+            self._warp(fg, roi, dx, dy, XX, YY)
         b = max([blink_amount((tl - tb) / blink_dur) for tb in blinks] + [0.0])
         if b > 0:
             for roi, eye, top, close_y, skin in self.eyes:

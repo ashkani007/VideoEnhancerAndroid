@@ -1,0 +1,37 @@
+{
+ "job_id": "napoleon_3scene_test_v1",
+ "created": "",
+ "notes": "illustrations for episode napoleon_3scene_test",
+ "style": "ghm_cinematic_v1",
+ "workflow": "sdxl_style_face",
+ "shots": [
+  {
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "cinematic close-up portrait, head and shoulders, three-quarter view facing right, both eyes clearly visible, face in the upper third of the frame, one gloved hand resting on a sword hilt near the lower edge",
+   "scene": "Napoleon Bonaparte as a young general around 1804, calm determined gaze toward the horizon, wind lifting his hair and coat collar, blurred tricolour flags and soldiers far behind",
+   "id": "b1_portrait",
+   "seeds": [
+    1201,
+    1202,
+    1203,
+    1204
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "epic wide battlefield panorama, horizon slightly above the middle of the frame, columns of French line infantry advancing from the lower foreground toward distant hills, several tall tricolour flags with golden eagles, cannon smoke drifting across the field",
+   "scene": "battle of Austerlitz, 2 December 1805, morning fog lifting from the valley, Pratzen heights in the distance, cavalry on the flank, drummers, no single hero figure",
+   "lighting": "low winter sun breaking through the fog from the right, golden rim light on smoke and flags, cool blue-grey shadows, apricot sky",
+   "negative_extra": "close-up, portrait, modern uniforms, rifles with scopes, helmets",
+   "id": "b2_battle",
+   "seeds": [
+    2201,
+    2202,
+    2203,
+    2204
+   ]
+  }
+ ]
+}

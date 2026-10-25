@@ -6,8 +6,9 @@
  "negative": "beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
  "loras": [],
  "consistency_plan": [
-  "now: fixed descriptor + IP-Adapter style reference + seed search; Claude reviews faces against the approved look",
-  "after about 20 approved images: train an SDXL character LoRA locally (OneTrainer or kohya_ss, 8 GB settings) and list it in loras"
+  "now: identical descriptor in every prompt + IP-Adapter style reference (whole approved image) + IP-Adapter Plus-Face reference (approved face crop, no InsightFace) + seed search; Claude rejects candidates whose face or uniform drifts",
+  "after about 20 approved Napoleon images: train an SDXL character LoRA locally (OneTrainer or kohya_ss, 8 GB settings) and list it in loras; keep the face adapter at a lower weight"
  ],
- "history_note": "The approved look is artistic (client reference). In 1805 Napoleon usually wore the green colonel's uniform of the Chasseurs a Cheval of the Guard, often under a grey greatcoat, with a plain bicorne."
+ "history_note": "The approved look is artistic (client reference). In 1805 Napoleon usually wore the green colonel's uniform of the Chasseurs a Cheval of the Guard, often under a grey greatcoat, with a plain bicorne.",
+ "face_reference": "assets/references/napoleon_face_ref_01.png"
 }
