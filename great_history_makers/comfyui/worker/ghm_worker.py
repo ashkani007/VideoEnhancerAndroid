@@ -430,7 +430,28 @@ def pending(ghm_root):
     return out
 
 
+def listening_addresses(port=8188):
+    """Local addresses ComfyUI's port is bound to (netstat; Windows and Linux)."""
+    try:
+        out = subprocess.run(["netstat", "-an"], capture_output=True, text=True, timeout=20).stdout
+    except (OSError, subprocess.SubprocessError):
+        return None
+    addrs = set()
+    for ln in out.splitlines():
+        parts = ln.split()
+        if "LISTEN" not in ln.upper():
+            continue
+        local = next((x for x in parts if x.endswith(f":{port}")), None)   # first address column is the local one
+        if local:
+            addrs.add(local.rsplit(":", 1)[0])
+    return sorted(addrs)
+
+
 def check(comfy):
+    addrs = listening_addresses()
+    if addrs is not None:
+        exposed = [a for a in addrs if a not in ("127.0.0.1", "[::1]", "::1")]
+        print(f"port 8188 bound to: {addrs or 'nothing'}" + ("  <-- WARNING: reachable from other machines; remove --listen" if exposed else "  (local only: ok)"))
     st = comfy.stats()
     print(json.dumps(st, indent=1))
     if st["vram_total_gb"] and st["vram_total_gb"] < 7.5:

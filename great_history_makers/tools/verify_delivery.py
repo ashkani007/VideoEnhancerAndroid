@@ -144,6 +144,8 @@ def main():
     ap.add_argument("episode")
     ap.add_argument("--report")
     ap.add_argument("--no-endcard", action="store_true", help="short tests branded with the watermark only")
+    ap.add_argument("--no-logo", action="store_true", help="unbranded previews: skip the logo check")
+    ap.add_argument("--excerpt", action="store_true", help="the video uses only the opening of the narration")
     a = ap.parse_args()
     name = next(n for n in ("episode.json", "storyboard.json", "poc.json")                 # v1 / v2 / v3 test
                 if os.path.exists(os.path.join(a.episode, n)))
@@ -165,6 +167,12 @@ def main():
     rep["container"]["ok"] = bool(au) and vs["codec_name"] == "h264" and vs["r_frame_rate"] == "30/1" and W * 16 == H * 9
     narr = os.path.join(a.episode, cfg["audio"]["narration_file"])
     rep["narration"] = check_narration(a.video, narr, words) if au else dict(ok=False, error="no audio stream")
+    n_all = len(cues)
+    if a.excerpt:                                                 # only the cues that fit in the video are checked
+        cues = [c for c in cues if c["end"] <= dur]
+        cc = dict(cc, groups=cc["groups"][:len(cues)])
+        n_words = sum(len(c["text"].split()) for c in cues)
+        tr = " ".join(tr.split()[:n_words])                       # the opening words of the real transcript
     rep["captions"], rows = check_captions(a.video, cues, W, H, dur)
     first = []
     i = 0
@@ -173,9 +181,11 @@ def main():
         i += len(g.replace("/", " ").split())
     rep["captions"]["cue_start_vs_first_word_max_ms"] = round(1000 * max(abs(c["start"] - f) for c, f in zip(cues, first)), 1)
     rep["captions"]["wording_matches_transcript"] = " ".join(c["text"].replace("\n", " ") for c in cues).split() == tr.split()
+    if a.excerpt:
+        rep["captions"]["excerpt_cues"] = f"{len(cues)} of {n_all}"
     rep["captions"]["ok"] = rep["captions"]["ok"] and rep["captions"]["wording_matches_transcript"] \
         and rep["captions"]["cue_start_vs_first_word_max_ms"] <= 10
-    rep["logo"] = check_logo(a.video, W, H, dur, not a.no_endcard)
+    rep["logo"] = dict(ok=True, skipped="unbranded preview") if a.no_logo else check_logo(a.video, W, H, dur, not a.no_endcard)
     rep["passed"] = all(rep[k]["ok"] for k in ("container", "narration", "captions", "logo"))
     rep["caption_rows"] = rows
     print(json.dumps({k: v for k, v in rep.items() if k != "caption_rows"}, indent=1))

@@ -1,0 +1,312 @@
+{
+ "id": "renderer_demo_napoleon",
+ "fps": 30,
+ "duration": 18.2,
+ "fade_out": 0.5,
+ "_about": "Renderer demo: four plates (three test plates derived from the approved illustration + a data-driven map) cut to the opening of the approved Ep02 narration. Unbranded preview.",
+ "shots": [
+  {
+   "id": "s1_wide",
+   "type": "plate",
+   "start": 0.0,
+   "end": 4.95,
+   "cue": "He rose from an artillery officer",
+   "plate": "plates/p1_wide.png",
+   "meta": "plates/p1_wide.json",
+   "camera": {
+    "from": {
+     "zoom": 1.2,
+     "focus": [
+      470,
+      720
+     ]
+    },
+    "to": {
+     "zoom": 1.04,
+     "focus": [
+      470,
+      836
+     ]
+    },
+    "ease": "inout",
+    "parallax": 0.55
+   },
+   "exit_focus": [
+    440,
+    420
+   ],
+   "scrim": [
+    [
+     560,
+     1280,
+     0.72
+    ]
+   ],
+   "text": [
+    {
+     "text": "1769 – 1821",
+     "preset": "kicker",
+     "size": 30,
+     "y": 712,
+     "at": 0.4,
+     "out": [
+      4.3,
+      4.7
+     ]
+    },
+    {
+     "text": "NAPOLEON",
+     "preset": "title",
+     "size": 92,
+     "y": 800,
+     "at": 0.6,
+     "out": [
+      4.3,
+      4.7
+     ]
+    },
+    {
+     "rule": 400,
+     "y": 826,
+     "at": 1.2,
+     "out": [
+      4.3,
+      4.7
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2_portrait",
+   "type": "plate",
+   "start": 4.95,
+   "end": 10.25,
+   "cue": "Napoleon Bonaparte crowned himself",
+   "plate": "plates/p2_portrait.png",
+   "meta": "plates/p2_portrait.json",
+   "camera": {
+    "from": {
+     "zoom": 1.0,
+     "focus": [
+      270,
+      470
+     ]
+    },
+    "to": {
+     "zoom": 1.38,
+     "focus": [
+      292,
+      300
+     ]
+    },
+    "ease": "out",
+    "parallax": 0.55
+   },
+   "blink": [
+    2.6
+   ],
+   "scrim": [
+    [
+     640,
+     1280,
+     0.55
+    ]
+   ],
+   "text": [
+    {
+     "text": "1804",
+     "preset": "title_m",
+     "size": 84,
+     "x": 612,
+     "y": 575,
+     "color": "ivory",
+     "at": 2.2,
+     "out": [
+      4.9,
+      5.3
+     ]
+    },
+    {
+     "text": "CORONATION",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "x": 612,
+     "y": 610,
+     "color": "gold",
+     "at": 2.5,
+     "rise": 10,
+     "out": [
+      4.9,
+      5.3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s3_map",
+   "type": "map",
+   "start": 10.25,
+   "end": 15.74,
+   "cue": "His armies won",
+   "map": "../../ghm4/data/maps/victories_1805_1811.json"
+  },
+  {
+   "id": "s4_battle",
+   "type": "plate",
+   "start": 15.74,
+   "end": 18.2,
+   "cue": "But Napoleon wanted more",
+   "plate": "plates/p4_battle.png",
+   "meta": "plates/p4_battle.json",
+   "camera": {
+    "from": {
+     "zoom": 1.02,
+     "focus": [
+      250,
+      440
+     ]
+    },
+    "to": {
+     "zoom": 1.14,
+     "focus": [
+      275,
+      420
+     ]
+    },
+    "ease": "inout"
+   },
+   "gains": {
+    "flags": 2.0,
+    "bob": 1.7,
+    "battle": 1.0
+   },
+   "puffs": [
+    [
+     0.35,
+     462,
+     408
+    ],
+    [
+     1.25,
+     190,
+     415
+    ]
+   ],
+   "haze": 0.14,
+   "sharpen": 0.4
+  }
+ ],
+ "transitions": [
+  {
+   "at": 4.95,
+   "type": "whip"
+  },
+  {
+   "at": 10.25,
+   "type": "ink"
+  },
+  {
+   "at": 15.74,
+   "type": "flash"
+  }
+ ],
+ "captions": {
+  "transcript": "../../episodes/ep02_napoleon/audio/transcript.txt",
+  "words": "../../episodes/ep02_napoleon/audio/words_aligned.json",
+  "groups": [
+   "He rose from an artillery officer",
+   "to become the most feared / ruler in Europe.",
+   "Napoleon Bonaparte crowned himself",
+   "Emperor of the French / in 1804.",
+   "His armies won / extraordinary victories,",
+   "and his empire / reshaped the continent.",
+   "But Napoleon wanted more.",
+   "In 1812, he invaded Russia",
+   "with a vast / multinational army.",
+   "He reached Moscow,",
+   "only to find much of the city / burning.",
+   "Then came the retreat.",
+   "Hunger, disease, exhaustion,",
+   "and bitter cold / devastated his forces.",
+   "His enemies united.",
+   "In 1814, Napoleon abdicated",
+   "and was exiled to Elba.",
+   "He returned the following year",
+   "for one final gamble.",
+   "At Waterloo, / his army was defeated.",
+   "This time, exile meant / a remote island in the Atlantic:",
+   "Saint Helena.",
+   "Napoleon died there / in 1821.",
+   "He conquered kingdoms, / changed Europe,",
+   "and became a legend.",
+   "But he could not conquer",
+   "the consequences / of his own ambition."
+  ],
+  "y": 1410,
+  "size": 60
+ },
+ "audio": {
+  "narration_file": "../../episodes/ep02_napoleon/audio/narration.mp3",
+  "bed_under_voice_db": 20,
+  "bed_in_pauses_db": 11,
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 7,
+   "root_hz": 110.0,
+   "mode": "minor",
+   "drum_from": 10.3,
+   "drum_to": 15.6
+  },
+  "sfx": [
+   {
+    "type": "wind",
+    "start": 0.0,
+    "end": 10.4,
+    "gain": 0.3
+   },
+   {
+    "type": "whoosh",
+    "start": 4.47,
+    "gain": 0.55
+   },
+   {
+    "type": "whoosh",
+    "start": 9.75,
+    "gain": 0.45
+   },
+   {
+    "type": "drum",
+    "start": 10.25,
+    "end": 15.6,
+    "period": 0.5,
+    "gain": 0.25
+   },
+   {
+    "type": "cannon",
+    "start": 15.74,
+    "gain": 0.7
+   },
+   {
+    "type": "cannon",
+    "start": 16.1,
+    "gain": 0.4,
+    "dist": 0.6
+   },
+   {
+    "type": "cannon",
+    "start": 17.0,
+    "gain": 0.35,
+    "dist": 0.6
+   },
+   {
+    "type": "flutter",
+    "start": 15.74,
+    "end": 18.2,
+    "gain": 0.2
+   }
+  ]
+ },
+ "excerpt": true
+}

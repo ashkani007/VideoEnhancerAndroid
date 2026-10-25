@@ -1,0 +1,113 @@
+{
+ "hybrid/full": {
+  "passed": true,
+  "outcome": "mask",
+  "seconds": 32.5,
+  "figure": {
+   "hat": 0.997,
+   "face": 0.995,
+   "hair_ear": 0.993,
+   "epaulette": 0.977,
+   "collar_chest": 0.994,
+   "coat_left": 0.996,
+   "waistcoat_torso": 1.0,
+   "legs": 0.994,
+   "coat_right_edge": 0.976
+  },
+  "background": {
+   "sky": 0.0,
+   "sun": 0.0,
+   "town": 0.0,
+   "midground_flags": 0.0,
+   "rider": 0.0,
+   "ranks": 0.0
+  },
+  "props": {
+   "crate_map_spyglass": 0.351,
+   "rocks_right": 0.017
+  },
+  "qa": {
+   "fg_fraction": 0.366,
+   "components": 1,
+   "main_component_share": 1.0,
+   "edge_alignment": 7.1,
+   "soft_ratio": 0.015
+  },
+  "qa_problems": [],
+  "failing_figure": {},
+  "failing_background": {}
+ },
+ "hybrid/portrait": {
+  "passed": true,
+  "outcome": "mask",
+  "seconds": 15.9,
+  "figure": {
+   "hat": 0.997,
+   "face": 0.995,
+   "hair_ear": 0.991,
+   "epaulette": 1.0,
+   "collar_chest": 0.994,
+   "coat_left": 1.0,
+   "waistcoat_torso": 1.0,
+   "coat_right_edge": 1.0
+  },
+  "background": {
+   "sky": 0.0,
+   "town": 0.0,
+   "midground_flags": 0.0
+  },
+  "props": {},
+  "qa": {
+   "fg_fraction": 0.615,
+   "components": 1,
+   "main_component_share": 1.0,
+   "edge_alignment": 7.6,
+   "soft_ratio": 0.017
+  },
+  "qa_problems": [],
+  "failing_figure": {},
+  "failing_background": {}
+ },
+ "hybrid/battlefield": {
+  "passed": true,
+  "outcome": "fallback (single layer)",
+  "seconds": 8.1,
+  "figure": {
+   "collar_chest": 0.0,
+   "waistcoat_torso": 0.0,
+   "legs": 0.0,
+   "coat_right_edge": 0.0
+  },
+  "background": {
+   "sky": 0.0,
+   "sun": 0.0,
+   "town": 0.0,
+   "midground_flags": 0.0,
+   "rider": 0.0,
+   "ranks": 0.0
+  },
+  "props": {
+   "crate_map_spyglass": 0.0,
+   "rocks_right": 0.0
+  },
+  "qa": {
+   "fg_fraction": 0.0,
+   "components": 0,
+   "main_component_share": 0.0,
+   "edge_alignment": 0.0,
+   "soft_ratio": 0.0
+  },
+  "qa_problems": [
+   "foreground covers 0% of the frame",
+   "figure split into pieces (largest piece 0%)",
+   "matte edge does not follow image edges (alignment 0.00 < 1.6)"
+  ],
+  "failing_figure": {
+   "collar_chest": 0.0,
+   "waistcoat_torso": 0.0,
+   "legs": 0.0,
+   "coat_right_edge": 0.0
+  },
+  "failing_background": {}
+ }
+}

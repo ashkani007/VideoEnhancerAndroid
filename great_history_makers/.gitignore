@@ -27,3 +27,9 @@ comfyui/candidates/
 **/*_music_sfx.wav
 **/*_mix.wav
 GreatHistoryMakers/Napoleon_20s_POC/ghm4_port/output/*.mp4
+GreatHistoryMakers/Renderer_Demo/output/*_preview.mp4
+GreatHistoryMakers/Renderer_Demo/output/*1080x1920*
+GreatHistoryMakers/Renderer_Demo/output/still_*.png
+ghm4/tests/out/*.jpg
+_t_storyboard*.json
+ghm4/tests/out/*.png

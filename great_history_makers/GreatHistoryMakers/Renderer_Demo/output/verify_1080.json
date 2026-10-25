@@ -1,0 +1,73 @@
+{
+ "file": "/home/user/VideoEnhancerAndroid/great_history_makers/GreatHistoryMakers/Renderer_Demo/output/renderer_demo_napoleon_1080x1920_final.mp4",
+ "container": {
+  "width": 1080,
+  "height": 1920,
+  "fps": "30/1",
+  "video": "h264",
+  "audio": "aac",
+  "sample_rate": "48000",
+  "duration": 18.2,
+  "ok": true
+ },
+ "narration": {
+  "corr": 0.977,
+  "offset_ms": 0.0,
+  "speech_rms_dbfs": -20.4,
+  "pause_rms_dbfs": -29.6,
+  "ok": true
+ },
+ "captions": {
+  "cues": 7,
+  "cues_with_text": 7,
+  "median_on": 0.0332,
+  "median_in_pauses": 0.0,
+  "pauses_checked": 2,
+  "ok": true,
+  "cue_start_vs_first_word_max_ms": 0.0,
+  "wording_matches_transcript": true,
+  "excerpt_cues": "7 of 27"
+ },
+ "logo": {
+  "ok": true,
+  "skipped": "unbranded preview"
+ },
+ "passed": true,
+ "caption_rows": [
+  {
+   "start": 0.0,
+   "end": 1.9,
+   "score": 0.0287
+  },
+  {
+   "start": 1.93,
+   "end": 4.87,
+   "score": 0.0374
+  },
+  {
+   "start": 5.1,
+   "end": 7.23,
+   "score": 0.0332
+  },
+  {
+   "start": 7.26,
+   "end": 10.09,
+   "score": 0.028
+  },
+  {
+   "start": 10.4,
+   "end": 12.94,
+   "score": 0.0367
+  },
+  {
+   "start": 12.97,
+   "end": 15.55,
+   "score": 0.0476
+  },
+  {
+   "start": 15.89,
+   "end": 17.99,
+   "score": 0.0255
+  }
+ ]
+}

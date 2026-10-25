@@ -1,0 +1,51 @@
+[
+ {
+  "plate": "p1_wide",
+  "size": [
+   941,
+   1672
+  ],
+  "qa": {
+   "fg_fraction": 0.449,
+   "components": 1,
+   "main_component_share": 1.0,
+   "edge_alignment": 6.34,
+   "soft_ratio": 0.011
+  },
+  "problems": []
+ },
+ {
+  "plate": "p2_portrait",
+  "size": [
+   1000,
+   1780
+  ],
+  "qa": {
+   "fg_fraction": 0.615,
+   "components": 1,
+   "main_component_share": 1.0,
+   "edge_alignment": 9.85,
+   "soft_ratio": 0.009
+  },
+  "problems": []
+ },
+ {
+  "plate": "p4_battle",
+  "size": [
+   491,
+   840
+  ],
+  "qa": {
+   "fg_fraction": 0.0,
+   "components": 0,
+   "main_component_share": 0.0,
+   "edge_alignment": 0.0,
+   "soft_ratio": 0.0
+  },
+  "problems": [
+   "foreground covers 0% of the frame",
+   "figure split into pieces (largest piece 0%)",
+   "matte edge does not follow image edges (alignment 0.00 < 1.6)"
+  ]
+ }
+]

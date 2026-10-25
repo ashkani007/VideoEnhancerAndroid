@@ -159,3 +159,16 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   the matte swallow the background (IoU 0.79 vs the hand matte once fixed).
 - **Port before you extend:** re-expressing the approved POC as a storyboard (`Napoleon_20s_POC/ghm4_port`) proved the
   new engine reproduces the approved frames before any new content depended on it.
+
+## 2026-10-25: renderer stabilisation and regression tests
+- **Score mattes by named regions, not IoU.** IoU against a matte that also contains rocks and crates said BiRefNet
+  was poor (0.67); region scores showed the figure was kept at ≥ 97.6 % with 0 % background leak. The hand
+  reference itself over-reached ~30 px at the frame edge.
+- **Saliency models pick the wrong subject when the hero is a sliver** (the rider instead of Napoleon's coat edge).
+  The hint outline + QA turns that into a safe single-layer fallback instead of a wrong matte.
+- **Profile per shot type:** blending whole map ROIs in float for every star ring and territory made map frames take
+  9 s. Blend only inside each element's bounding box, precompute static patterns, use `cv2.blendLinear`: under 1 s.
+- **New tests found three crash bugs** (off-plate regions, camera without focus, missing matte file) that the
+  hand-made demo never hit. Write the robustness tests before relying on generated plates.
+- **Hand-traced coastlines fail at continent scale;** Natural Earth 1:50m (public domain, via GitHub) is clean.
+- `ref_width` in plate metadata defines the coordinate space; reusing a metadata file for a crop needs new coordinates.

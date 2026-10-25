@@ -36,6 +36,11 @@ GitHub → the repository → **Settings → General → Danger Zone → Change 
 4. Start it with `C:\AI\ComfyUI_windows_portable\run_nvidia_gpu.bat`. The UI opens at http://127.0.0.1:8188.
    ComfyUI listens only on 127.0.0.1 by default. **Never add `--listen`, never port-forward 8188 and never
    put ComfyUI behind a public tunnel**: ComfyUI has no login, and its API can write files and run custom nodes.
+5. **Windows Firewall:** if Windows shows "Allow python.exe to communicate on networks?", click **Cancel** (deny).
+   ComfyUI does not need inbound access; the worker only makes outgoing connections to GitHub.
+6. **Verify it is local-only:** in PowerShell run `netstat -an | findstr :8188`. The only listening line must show
+   `127.0.0.1:8188`. If you see `0.0.0.0:8188` or your LAN IP, close ComfyUI and remove `--listen` from the .bat file.
+   (`check_setup.bat` in step 6 runs the same check.)
 
 ## 3. Download the models (all free, licences allow commercial use)
 Put each file in the folder shown, inside `C:\AI\ComfyUI_windows_portable\ComfyUI\models\`. Create missing folders.
@@ -75,7 +80,8 @@ An image should appear in well under a minute after the first (slower) model loa
    - Never paste the token into the repository, a job file, a chat or a script.
 3. Check everything (ComfyUI must be running):
    `C:\AI\ghm-worker\VideoEnhancerAndroid\great_history_makers\comfyui\worker\check_setup.bat`
-   Expected: the GPU with about 8 GB, nodes `ok`, models `ok` (or `unknown` on older ComfyUI builds).
+   Expected: `port 8188 bound to: ['127.0.0.1'] (local only: ok)`, the GPU with about 8 GB, nodes `ok`, models `ok`
+   (or `unknown` on older ComfyUI builds).
 
 ## 7. Run the first test (three new Napoleon illustrations)
 1. Start ComfyUI (`run_nvidia_gpu.bat`).
@@ -100,6 +106,17 @@ plus the 1.5× hires pass (1152 × 2016) ≈ 30–60 s per image with IP-Adapter
    Add the file to `models\loras\` and list it in `napoleon.json` → `loras`; every job then uses it automatically.
 3. **Composition control:** the `sdxl_layout_ipadapter` workflow starts from a rough layout image (img2img), so a
    storyboard can fix where the figure, horizon and empty title space go without ControlNet models.
+
+## Security checklist (keep it true)
+- [ ] Repository private (step 0); worker token limited to this repository, Contents read/write, with an expiry.
+- [ ] `netstat -an | findstr :8188` shows only `127.0.0.1:8188`; no router port forward; no ngrok/Cloudflare/remote tunnel.
+- [ ] Windows Firewall: no "Allow" rule for the portable `python.exe` (Windows Security → Firewall → Allow an app).
+- [ ] Custom nodes: only ComfyUI-Manager and ComfyUI_IPAdapter_plus. Every extra node runs code with your user rights.
+- [ ] Models only from the sources in step 3; prefer `.safetensors`. `RealESRGAN_x4plus.pth` is a PyTorch pickle file:
+      download it only from the official Real-ESRGAN GitHub release and keep ComfyUI and its bundled PyTorch updated
+      (newer PyTorch versions restrict what a `.pth` file may execute when loaded).
+- [ ] The worker runs only while its window is open; nothing is installed as a service or scheduled task.
+- [ ] Never put API keys or tokens in job files, the repository or chat.
 
 ## Troubleshooting
 | Symptom | Fix |

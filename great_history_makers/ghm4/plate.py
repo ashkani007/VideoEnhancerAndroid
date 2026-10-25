@@ -19,6 +19,7 @@ plate.json (coordinates in plate pixels at `ref_width`; they are rescaled to the
 import json
 import math
 import os
+import sys
 
 import cv2
 import numpy as np
@@ -36,6 +37,11 @@ def tileable_noise(h, w, sigma, seed):
     F *= np.exp(-2 * (np.pi * sigma) ** 2 * (fx ** 2 + fy ** 2))
     n = np.fft.irfft2(F, s=(h, w)).astype(np.float32)
     return (n - n.min()) / (np.ptp(n) + 1e-6)
+
+
+def ok(roi, min_size=2):
+    """A region of interest that lies (at least partly) inside the plate."""
+    return roi[2] - roi[0] >= min_size and roi[3] - roi[1] >= min_size
 
 
 def blink_amount(u):
@@ -59,8 +65,10 @@ class Plate:
         self.H, self.W = self.img.shape[:2]
         self.k = self.W / float(self.meta.get("ref_width", W0))   # meta coordinates -> working pixels
         self.alpha = None
-        if self.meta.get("mask"):
-            m = cv2.imread(os.path.join(base, self.meta["mask"]), 0)
+        m = cv2.imread(os.path.join(base, self.meta["mask"]), 0) if self.meta.get("mask") else None
+        if self.meta.get("mask") and m is None:
+            print(f"warning: matte {self.meta['mask']} not found; {os.path.basename(path)} renders as one layer", file=sys.stderr)
+        if m is not None:
             m = cv2.resize(m, (self.W, self.H), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
             self.alpha = cv2.GaussianBlur(m, (0, 0), max(0.6, 0.9 * self.k))
             if self.meta.get("background"):
@@ -108,6 +116,8 @@ class Plate:
         hsv = None
         for f in m.get("flags", []):
             roi = self.box(f["box"], 14)
+            if not ok(roi):
+                continue
             if hsv is None:
                 hsv = cv2.cvtColor((self.img * 255).astype(np.uint8), cv2.COLOR_RGB2HSV)
             sub = hsv[roi[1]:roi[3], roi[0]:roi[2]].astype(np.float32)
@@ -117,10 +127,12 @@ class Plate:
             length = max(1.0, f["box"][2] * k - pole)
             mask = self.soft(f["box"], 6, roi) * np.maximum(cloth, 0.25) * np.clip((XX - pole) / length, 0, 1)
             self.flags.append((roi, mask, pole, f))
-        self.bobs = [(self.box(b["box"], b.get("feather", 30)), b) for b in m.get("bob", [])]
+        self.bobs = [(r, b) for b in m.get("bob", []) for r in [self.box(b["box"], b.get("feather", 30))] if ok(r)]
         self.smokes = []
         for i, s in enumerate(m.get("smoke", [])):
             roi = self.box(s["box"], s.get("feather", 45))
+            if not ok(roi):
+                continue
             self.smokes.append((roi, self.soft(s["box"], s.get("feather", 45), roi) * self._bgmask(roi), s))
         if self.smokes:
             n = max(8, int(self.W / 4))
@@ -135,13 +147,16 @@ class Plate:
             x0, y0 = np.floor(pts.min(0)).astype(int) - 4
             x1, y1 = np.ceil(pts.max(0)).astype(int) + 5
             roi = (max(0, x0), max(0, y0), min(self.W, x1), min(self.H, y1))
+            sk = self.box(e["skin"])
+            if not ok(roi) or not ok(sk, 1) or x0 < 0 or y0 < 0 or x1 > self.W or y1 > self.H:
+                continue                                              # eye (partly) outside this plate
             mm = np.zeros((roi[3] - roi[1], roi[2] - roi[0]), np.uint8)
             cv2.fillPoly(mm, [np.round((pts - [roi[0], roi[1]]) * 4).astype(np.int32)], 255, cv2.LINE_AA, shift=2)
             eye = cv2.GaussianBlur(mm.astype(np.float32) / 255, (0, 0), 0.7 * max(1.0, k))
             sx0, sy0, sx1, sy1 = self.box(e["skin"])
             skin = self.img[sy0:sy1, sx0:sx1].reshape(-1, 3).mean(0)
             self.eyes.append((roi, eye, float(up[:, 1].min()), e.get("close_y", lo[:, 1].max() / k) * k, skin))
-        self.winds = [(self.box(w["box"], w.get("feather", 20)), w) for w in m.get("wind", [])]
+        self.winds = [(r, w) for w in m.get("wind", []) for r in [self.box(w["box"], w.get("feather", 20))] if ok(r)]
 
     def _bgmask(self, roi):
         if self.alpha is None:
@@ -159,7 +174,7 @@ class Plate:
         m, k = self.meta, self.k
         bg = self.bg.copy()
         sky = m.get("sky")
-        if sky:
+        if sky and (sky["y"] + 80) * k > 2:
             y1 = min(self.H, int((sky["y"] + 80) * k))
             roi = (0, 0, self.W, y1)
             XX, YY = self.grid(roi)
@@ -168,6 +183,8 @@ class Plate:
         for c in m.get("smoke_column", []):
             cx, cy, sx, sy = c["x"] * k, c["y"] * k, c["sx"] * k, c["sy"] * k
             roi = (max(0, int(cx - 2 * sx)), max(0, int(cy - 2 * sy)), min(self.W, int(cx + 2 * sx)), min(self.H, int(cy + 2 * sy)))
+            if not ok(roi):
+                continue
             XX, YY = self.grid(roi)
             w = np.exp(-(((XX - cx) / sx) ** 2 + ((YY - cy) / sy) ** 2))
             ph = 2 * math.pi * t
@@ -200,10 +217,12 @@ class Plate:
         for (tc, px, py) in puffs:
             self._puff(bg, px * k, py * k, tl - tc)
         sun = m.get("sun")
+        roi = None
         if sun:
             r = sun.get("r", 160) * k
             roi = self.box([sun["x"] - 2 * sun.get("r", 160), sun["y"] - 2 * sun.get("r", 160), sun["x"] + 2 * sun.get("r", 160),
                             sun["y"] + 2 * sun.get("r", 160)])
+        if sun and ok(roi):
             XX, YY = self.grid(roi)
             gl = np.exp(-(((XX - sun["x"] * k) / r) ** 2 + ((YY - sun["y"] * k) / (0.9 * r)) ** 2)) * 0.05 * (0.5 + 0.5 * math.sin(0.8 * t))
             bg[roi[1]:roi[3], roi[0]:roi[2]] += gl[..., None] * np.array([1.0, 0.75, 0.45], np.float32)

@@ -1,0 +1,172 @@
+{
+ "golden": {
+  "passed": true,
+  "seconds": 36.1,
+  "detail": {
+   "port@1.5": 99.0,
+   "port@4.3": 99.0,
+   "port@7.49": 99.0,
+   "port@9.0": 99.0,
+   "port@12.6": 99.0,
+   "port@15.1": 99.0,
+   "port@17.0": 99.0,
+   "demo@2.0": 99.0,
+   "demo@7.55": 99.0,
+   "demo@10.25": 99.0,
+   "demo@12.5": 99.0,
+   "demo@14.6": 99.0,
+   "demo@16.6": 99.0
+  }
+ },
+ "plate_sizes": {
+  "passed": true,
+  "seconds": 10.3,
+  "detail": {
+   "sdxl_native_768x1344": {
+    "work_size": [
+     768,
+     1344
+    ],
+    "seconds_per_1080p_frame": 0.26
+   },
+   "hires_1152x2016": {
+    "work_size": [
+     1152,
+     2016
+    ],
+    "seconds_per_1080p_frame": 0.32
+   },
+   "upscaled_2304x4032": {
+    "work_size": [
+     1935,
+     3387
+    ],
+    "seconds_per_1080p_frame": 0.51
+   },
+   "landscape_1920x1080": {
+    "work_size": [
+     1920,
+     1080
+    ],
+    "seconds_per_1080p_frame": 0.32
+   },
+   "very_tall_600x1600": {
+    "work_size": [
+     600,
+     1600
+    ],
+    "seconds_per_1080p_frame": 0.17
+   }
+  }
+ },
+ "robustness": {
+  "passed": true,
+  "seconds": 0.3,
+  "detail": {
+   "flags_kept": 0,
+   "eyes_kept": 0,
+   "winds_kept": 0,
+   "missing_mask": "ignored"
+  }
+ },
+ "transitions": {
+  "passed": true,
+  "seconds": 8.5,
+  "detail": {
+   "whip": {
+    "max_step": 0.334,
+    "large_changes_at": [
+     1.3,
+     1.333,
+     1.367,
+     1.4,
+     1.433,
+     1.467,
+     1.5
+    ]
+   },
+   "ink": {
+    "max_step": 0.081,
+    "large_changes_at": [
+     1.467,
+     1.5,
+     1.533,
+     1.567
+    ],
+    "share_a": 0.45,
+    "share_b": 0.45
+   },
+   "flash": {
+    "max_step": 0.075,
+    "large_changes_at": [
+     1.333,
+     1.367,
+     1.4,
+     1.433,
+     1.667,
+     1.7,
+     1.733,
+     1.767
+    ]
+   },
+   "dissolve": {
+    "max_step": 0.029,
+    "large_changes_at": []
+   },
+   "cut": {
+    "max_step": 0.336,
+    "large_changes_at": [
+     1.5
+    ]
+   }
+  }
+ },
+ "narrate": {
+  "passed": true,
+  "seconds": 0.1,
+  "detail": {
+   "shot_starts": [
+    0.0,
+    4.95,
+    10.25,
+    15.74
+   ],
+   "demo_conflicts": 0,
+   "port_conflicts_detected": 10
+  }
+ },
+ "masks": {
+  "passed": true,
+  "seconds": 58.7,
+  "detail": {
+   "seconds": 58.7,
+   "output": [
+    "hybrid   full         PASS mask      32.5s  min figure 0.976  max bg leak 0.000",
+    "hybrid   portrait     PASS mask      15.9s  min figure 0.991  max bg leak 0.000",
+    "hybrid   battlefield  PASS fallback   8.1s  min figure 0.000  max bg leak 0.000",
+    "hybrid (production method): PASS"
+   ]
+  }
+ },
+ "worker": {
+  "passed": true,
+  "seconds": 2.9,
+  "detail": {
+   "seconds": 2.9,
+   "output": [
+    "  rejected (path escape): reference '../../../../etc/passwd' is outside great_history_makers/ or not an image",
+    "  rejected (unknown workflow): workflow must be one of ['sdxl_hires', 'sdxl_hires_ipadapter', 'sdxl_layout_ipadapter', 'upscale2x']",
+    "  rejected (unknown key): unknown shot keys: ['command']",
+    "  rejected (too many seeds): n1_bivouac_night: seeds must be 1-8 integers",
+    "  rejected (lora path): n1_bivouac_night: lora entries are {name: file.safetensors, strength}",
+    "  rejected (non-loopback server): refusing ComfyUI server http://203.0.113.5:8188: only 127.0.0.1 / localhost is allowed",
+    "  rejected (node allow-list): workflow uses node types outside the allow-list: ['ExecutePythonCode']",
+    "graph building: LoRA rewiring, node allow-list and all four templates ok",
+    "  -> done, 12 images",
+    "end-to-end: 12 graphs accepted, results pushed to the remote (cuda:0 NVIDIA GeForce RTX 4060 (mock), 8.0 GB)",
+    "idempotence: a finished job is not run again",
+    "ALL WORKER TESTS PASSED"
+   ]
+  }
+ }
+}

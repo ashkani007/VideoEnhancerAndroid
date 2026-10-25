@@ -1,0 +1,130 @@
+{
+ "_about": "Ground-truth regions for the approved plate (source pixels, 941x1672). Reference matte: Napoleon_Animation_Test/project/mask_foreground.png (hand-seeded GrabCut, checked by eye). Figure parts must stay in the matte; background regions must stay out; props are reported only. The reference matte over-reaches by up to ~30 px at the left frame edge and along the right coat edge (it includes sky there); boxes avoid the frame edge and boundaries get a 5 px tolerance.",
+ "figure": {
+  "hat": [
+   160,
+   120,
+   600,
+   300
+  ],
+  "face": [
+   380,
+   280,
+   510,
+   450
+  ],
+  "hair_ear": [
+   240,
+   280,
+   380,
+   430
+  ],
+  "epaulette": [
+   60,
+   420,
+   230,
+   540
+  ],
+  "collar_chest": [
+   200,
+   380,
+   500,
+   700
+  ],
+  "coat_left": [
+   40,
+   600,
+   200,
+   1180
+  ],
+  "waistcoat_torso": [
+   200,
+   700,
+   500,
+   1000
+  ],
+  "legs": [
+   230,
+   1000,
+   520,
+   1300
+  ],
+  "coat_right_edge": [
+   440,
+   700,
+   560,
+   1300
+  ]
+ },
+ "background": {
+  "sky": [
+   600,
+   0,
+   941,
+   560
+  ],
+  "sun": [
+   820,
+   520,
+   941,
+   640
+  ],
+  "town": [
+   530,
+   600,
+   941,
+   900
+  ],
+  "midground_flags": [
+   520,
+   950,
+   890,
+   1100
+  ],
+  "rider": [
+   630,
+   1050,
+   800,
+   1300
+  ],
+  "ranks": [
+   600,
+   1110,
+   941,
+   1300
+  ]
+ },
+ "props": {
+  "crate_map_spyglass": [
+   0,
+   1290,
+   470,
+   1672
+  ],
+  "rocks_right": [
+   470,
+   1320,
+   941,
+   1672
+  ]
+ },
+ "crops": {
+  "portrait": [
+   150,
+   100,
+   650,
+   990
+  ],
+  "battlefield": [
+   450,
+   520,
+   941,
+   1360
+  ]
+ },
+ "expect": {
+  "full": "mask",
+  "portrait": "mask",
+  "battlefield": "mask_or_fallback"
+ }
+}

@@ -1,5 +1,5 @@
 {
- "_about": "Napoleon's 1805 campaign, Boulogne to Austerlitz (approved in Napoleon_20s_POC). Coastline is hand-traced; replace with Natural Earth for production.",
+ "_about": "Napoleon's 1805 campaign, Boulogne to Austerlitz (approved in Napoleon_20s_POC). Coastline: Natural Earth 1:50m (public domain).",
  "bounds": [
   -6.0,
   26.0,
@@ -8,7 +8,7 @@
  ],
  "ref_lat": 48,
  "ppu": 220,
- "coast": "ghm2/data/europe_simplified.json",
+ "coast": "ghm4/data/europe_ne50m.json",
  "rivers": [
   [
    [

@@ -105,8 +105,9 @@ class Renderer:
     def shot_plate(self, sh, tl, t, mods):
         P = self.plate_for(sh)
         cam = sh.get("camera", {})
-        a, b = cam.get("from", {"zoom": 1.0, "focus": [P.W / P.k / 2, P.H / P.k / 2]}), cam.get("to")
-        b = b or a
+        centre = [P.W / P.k / 2, P.H / P.k / 2]                      # defaults: zoom 1 (cover), plate centre
+        a = dict({"zoom": 1.0, "focus": centre}, **cam.get("from", {}))
+        b = dict(a, **cam.get("to", {})) if cam.get("to") else a
         u = EASES[cam.get("ease", "inout")]((tl) / (sh["end"] - sh["start"]))
         z0 = a["zoom"]
         z = a["zoom"] + (b["zoom"] - a["zoom"]) * u

@@ -11,6 +11,9 @@ Map JSON (lon/lat degrees; times are shot-local seconds; label offsets in 720x12
              {"color": "red", "points": [...], "draw": [t0, t1], "width": 30, "head": 80}],
   "dots": [["ULM", t], ["OLMÜTZ", t, 14]], "rings": [["ULM", t0, t1, "red"]], "stars": [["AUSTERLITZ", t]],
   "labels": [{"place": "ULM", "text": "ULM · 20 OCT", "dx": 0, "dy": -84, "at": 1.95, "preset": "map_label", "align": "c"}],
+  "regions": [{"source": "ghm2/data/napoleonic_regions.json", "key": "french_empire_1811", "color": "blue",
+               "alpha": 0.42, "hatch": false, "origin": [lon, lat], "reveal": [t0, t1]}],    territory spreading from origin
+  "element_scale": 1.0,                                  line/dot/label size multiplier for wide views
   "camera": [[t, lon, lat, width_in_units], ...],      width in degrees of longitude x cos(ref_lat)
   "kicker": [text, t], "dates": [[t, text], ...], "legend": [[text, color, t], ...], "fade_out": [t0, t1]
 }
@@ -93,7 +96,7 @@ class MapShot:
         self.lon0, self.lon1, self.lat0, self.lat1 = c["bounds"]
         self.kx = math.cos(math.radians(c.get("ref_lat", 48)))
         self.ppu = c.get("ppu", 220) * max(1.0, 0.85 * OW / 720)
-        self.q = self.ppu / 220.0                                    # canvas sizes were authored at ppu 220
+        self.q = self.ppu / 220.0 * c.get("element_scale", 1.0)      # canvas sizes were authored at ppu 220
         self.CW = int((self.lon1 - self.lon0) * self.kx * self.ppu)
         self.CH = int((self.lat1 - self.lat0) * self.ppu)
         self.routes = []
@@ -167,6 +170,22 @@ class MapShot:
                 d.text((xc, y), ch, font=f, fill=LABEL_COL[kind], anchor="ls")
                 xc += f.getlength(ch) + tr
         self.base = np.asarray(pil).copy()
+        self.regions = []
+        for r in c.get("regions", []):
+            polys = json.load(open(os.path.join(GHM, r["source"])))[r["key"]]
+            m = np.zeros((CH, CW), np.uint8)
+            pts = [np.round(np.array([self.cpx(lo, la) for lo, la in p]) * 4).astype(np.int32) for p in polys]
+            cv2.fillPoly(m, pts, 255, cv2.LINE_AA, shift=2)
+            m = np.minimum(m, land)                                     # territory never spills into the sea
+            a = m.astype(np.float32) * (r.get("alpha", 0.42) / 255)
+            if r.get("hatch"):                                          # diagonal hatching, precomputed once
+                period = max(4, int(14 * self.q))
+                tile = ((np.add.outer(np.arange(2 * period), np.arange(2 * period)) // period) % 2).astype(np.float32)
+                a *= np.tile(tile, (CH // (2 * period) + 1, CW // (2 * period) + 1))[:CH, :CW]
+            m = a                                                       # static per-pixel opacity (float32)
+            ys, xs = np.nonzero(m[::8, ::8])
+            ext = (xs.min() * 8, ys.min() * 8, xs.max() * 8 + 8, ys.max() * 8 + 8) if len(xs) else None
+            self.regions.append((m, pts, r, ext))
 
     # ---------------------------------------------------------------- dynamic elements (canvas pixels in a ROI)
     def arrow(self, roi, off, path, cum, L, col, t, Tw=34, head=88):
@@ -222,6 +241,24 @@ class MapShot:
         cv2.circle(roi, c, rr + int(22 * self.q), DARK, -1, cv2.LINE_AA, shift=2)
         cv2.circle(roi, c, rr, (247, 237, 214), -1, cv2.LINE_AA, shift=2)
 
+    @staticmethod
+    def _bbox(roi, cx, cy, r):
+        """Integer box (clipped to the ROI) around a circle of radius r at (cx, cy) in ROI pixels."""
+        x0, y0 = max(0, int(cx - r)), max(0, int(cy - r))
+        x1, y1 = min(roi.shape[1], int(cx + r) + 1), min(roi.shape[0], int(cy + r) + 1)
+        return (x0, y0, x1, y1) if x1 > x0 and y1 > y0 else None
+
+    def _circle_fade(self, roi, cx, cy, r, col, th, k):
+        """Draw a circle outline blended with weight k, touching only its bounding box."""
+        b = self._bbox(roi, cx, cy, r + th)
+        if b is None or k <= 0:
+            return
+        x0, y0, x1, y1 = b
+        part = roi[y0:y1, x0:x1]
+        sub = part.copy()
+        cv2.circle(sub, (int((cx - x0) * 4), int((cy - y0) * 4)), int(r * 4), col, th, cv2.LINE_AA, shift=2)
+        part[:] = cv2.addWeighted(sub, k, part, 1 - k, 0)
+
     def ring(self, roi, off, lon, lat, p, pulse, col):
         q = self.q
         x, y = self.cpx(lon, lat)
@@ -231,16 +268,14 @@ class MapShot:
         for a0 in range(-90, int(-90 + 360 * T.easeout(p)), 24):
             cv2.ellipse(roi, c, (R, R), 0, a0, a0 + 15, c255, int(10 * q), cv2.LINE_AA, shift=2)
         if 0 < pulse < 1:
-            sub = roi.copy()
-            cv2.circle(sub, c, int((110 + 150 * T.easeout(pulse)) * q * 4), c255, int(6 * q), cv2.LINE_AA, shift=2)
-            roi[:] = (roi * pulse + sub * (1 - pulse)).astype(np.uint8)
+            self._circle_fade(roi, x - off[0], y - off[1], (110 + 150 * T.easeout(pulse)) * q, c255, int(6 * q), 1 - pulse)
 
     def star(self, roi, off, lon, lat, p, t):
         if p <= 0:
             return
         q = self.q
         x, y = self.cpx(lon, lat)
-        R = 84 * q * backout(p)
+        R = 84 * q * self.cfg.get("star_scale", 1.0) * backout(p)
         ang = np.linspace(0, 2 * np.pi, 17)[:-1] + 0.25 * t
         rad = np.where(np.arange(16) % 2 == 0, R, R * 0.42)
         pts = np.stack([x - off[0] + rad * np.cos(ang), y - off[1] + rad * np.sin(ang)], 1)
@@ -248,13 +283,38 @@ class MapShot:
         cv2.fillPoly(roi, [Q], DARK, cv2.LINE_AA, shift=2)
         cv2.polylines(roi, [Q], True, DARK, int(12 * q), cv2.LINE_AA, shift=2)
         cv2.fillPoly(roi, [Q], (240, 186, 82), cv2.LINE_AA, shift=2)
-        for k in range(2):
+        for k in range(2):                                                  # shock rings
             u = (p * 1.6 - 0.3 * k) % 1.6
             if 0 < u < 1:
-                sub = roi.copy()
-                cv2.circle(sub, (int((x - off[0]) * 4), int((y - off[1]) * 4)), int((R + 160 * q * T.easeout(u)) * 4), (240, 196, 110),
-                           int(7 * q), cv2.LINE_AA, shift=2)
-                roi[:] = (roi * u + sub * (1 - u)).astype(np.uint8)
+                self._circle_fade(roi, x - off[0], y - off[1], R + 160 * q * T.easeout(u), (240, 196, 110), int(7 * q), 1 - u)
+
+    def region(self, roi, off, m, pts, r, tl, bbox):
+        p = ramp(tl, *r["reveal"])
+        if p <= 0 or bbox is None:
+            return
+        x0, y0, x1, y1 = bbox                                               # region extent inside this ROI
+        part = roi[y0:y1, x0:x1]
+        a = m[y0:y1, x0:x1]
+        if p < 1:                                                           # soft spreading front, at quarter resolution
+            ox, oy = self.cpx(*r["origin"])
+            far = max(np.hypot(ox - x, oy - y) for x in (0, self.CW) for y in (0, self.CH))
+            h4, w4 = max(1, (y1 - y0) // 4), max(1, (x1 - x0) // 4)
+            yy, xx = np.mgrid[0:h4, 0:w4].astype(np.float32)
+            d = np.hypot(xx * (x1 - x0) / w4 + x0 + off[0] - ox, yy * (y1 - y0) / h4 + y0 + off[1] - oy)
+            front = cv2.resize(np.clip((p * far - d) / (60 * self.q), 0, 1), (x1 - x0, y1 - y0), interpolation=cv2.INTER_LINEAR)
+            a = a * front.astype(np.float32)
+        if not a.any():
+            return
+        col = np.empty_like(part)
+        col[:] = [int(255 * v) for v in T.COLORS[r.get("color", "blue")]]
+        a = np.ascontiguousarray(a, np.float32)
+        part[:] = cv2.blendLinear(np.ascontiguousarray(part), col, 1 - a, a)
+        if p > 0.6 and not r.get("hatch"):                                  # border fades in at the end
+            sub = part.copy()
+            cv2.polylines(sub, [q - np.round((off + [x0, y0]) * 4).astype(np.int32) for q in pts], True, (32, 44, 92),
+                          max(2, int(4 * self.q)), cv2.LINE_AA, shift=2)
+            k = min(1.0, (p - 0.6) / 0.4)
+            part[:] = cv2.addWeighted(sub, k, part, 1 - k, 0)
 
     def route_length(self, r, cum, wl, tl):
         if "draw" in r:
@@ -281,6 +341,13 @@ class MapShot:
         x1, y1 = min(self.CW, int(cxp + hw) + 7), min(self.CH, int(cyp + hh) + 7)
         roi = self.base[y0:y1, x0:x1].copy()
         off = np.array([x0, y0], np.float64)
+        for m, pts, r, ext in self.regions:
+            bb = None
+            if ext:
+                bx0, by0 = max(ext[0], x0) - x0, max(ext[1], y0) - y0
+                bx1, by1 = min(ext[2], x1) - x0, min(ext[3], y1) - y0
+                bb = (bx0, by0, bx1, by1) if bx1 > bx0 and by1 > by0 else None
+            self.region(roi, off, m[y0:y1, x0:x1], pts, r, tl, bb)
         for name, t0, t1, col in c.get("rings", []):
             self.ring(roi, off, *self.place(name), ramp(tl, t0, t1), (tl - t0 - 0.25) / 0.8, T.COLORS[col])
         for r, path, cum, wl in reversed(self.routes):                # first route drawn last (on top)
@@ -306,7 +373,7 @@ class MapShot:
             sp = (tl - t0) / 0.45
             if sp > 0:
                 ax, ay = proj(name)
-                g = np.exp(-(((self.XO - ax) / (90 * U)) ** 2 + ((self.YO - ay) / (90 * U)) ** 2)) * 0.35 * min(1.0, sp)
+                g = np.exp(-(((self.XO - ax) / (90 * U)) ** 2 + ((self.YO - ay) / (90 * U)) ** 2)) * c.get("glow", 0.35) * min(1.0, sp)
                 img += g[..., None] * np.array([1.0, 0.72, 0.35], np.float32)
         img = T.scrim(img, 0, 340, 0.8, top=True, U=U)
         img = T.scrim(img, 900, 1280, 0.45, U=U)

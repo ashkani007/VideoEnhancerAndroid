@@ -86,7 +86,9 @@ py -m ghm4.illustrate job jobs/specs/<id>.json      # illustration job for the l
 py comfyui/worker/test_worker.py                     # worker plumbing test (mock ComfyUI + temp git remote)
 py -m ghm4.render <storyboard.json> [--final|--still T|--sheet]   # v4 picture render (+ music/SFX preview)
 py -m ghm4.narrate <storyboard.json> check|align|retime|finish <picture.mp4>   # v4 narration + captions stage
-py -m ghm4.plate_tool overlay|mask <plate.png> <plate.json>      # check plate metadata / auto foreground matte
+py -m ghm4.plate_tool overlay <plate.png> <plate.json>          # draw plate metadata regions for checking
+py -m ghm4.masks make <plate.png> <plate.json>                  # automatic matte (hybrid) + QA; rejected -> one layer
+py -m ghm4.tests.run_all [--quick|--update-golden]              # v4 regression suite (golden frames, masks, worker...)
 ```
 
 ## Environment gotchas (verified)

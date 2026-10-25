@@ -477,6 +477,21 @@
     "paid_api_usd": 0
    },
    "outcome": "napoleon_test3_v1 queued; waiting for the client's PC to run it"
+  },
+  {
+   "id": "ghm4_renderer_demo",
+   "date": "2026-10-25",
+   "dir": "GreatHistoryMakers/Renderer_Demo",
+   "format": "18.2 s, 4 shots (3 test plates + map), Ep02 narration excerpt (no new credits), captions",
+   "metrics": {
+    "render_720_s": 115,
+    "render_1080_s": 282,
+    "narrate_1080_s": 95,
+    "verify": "pass (corr 0.977, 7/7 captions)",
+    "tests": "7/7",
+    "matte_hybrid": "full 0.976/0.000, portrait 0.991/0.000, battlefield fallback"
+   },
+   "outcome": "awaiting client review; next: ComfyUI on the client's PC"
   }
  ],
  "next_episode_goals": [

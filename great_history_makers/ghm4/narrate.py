@@ -16,6 +16,7 @@ storyboard.json keys used here (compatible with tools/verify_delivery.py):
                "words": "audio/words_aligned.json", "groups": ["line one / line two", ...], "spoken": {...},
                "y": 1410, "size": 60}                       (y and size in 1080x1920 pixels, CLAUDE.md caption rule)
   shot "cue": "exact transcript words"                     (the shot starts 0.15 s before the first of those words)
+  "excerpt": true                                          (tests: the video covers only the opening of the narration)
 Timing always comes from the aligned words of the real audio; nothing is estimated.
 """
 import argparse
@@ -131,7 +132,8 @@ def cmd_retime(a):
             sys.exit(f"cue {s['cue']!r} found {len(hit)} times in the transcript; make it unique")
         s["start"] = round(max(0.0, words[hit[0]]["start"] - a.lead), 3)
     shots[0]["start"] = 0.0
-    sb["duration"] = round(max(sb["duration"], words[-1]["end"] + a.tail), 3)
+    if not sb.get("excerpt"):                                       # excerpt: keep the storyboard's own duration
+        sb["duration"] = round(max(sb["duration"], words[-1]["end"] + a.tail), 3)
     for s, n in zip(shots, shots[1:] + [None]):
         s["end"] = n["start"] if n else sb["duration"]
         if s["end"] - s["start"] < 1.0:
