@@ -121,14 +121,14 @@
    "place": "SAINT HELENA",
    "text": "SAINT HELENA",
    "dx": 0,
-   "dy": -74,
+   "dy": -104,
    "at": 3.85
   },
   {
    "place": "SAINT HELENA",
    "text": "≈ 1,900 KM FROM AFRICA",
    "dx": 0,
-   "dy": 96,
+   "dy": -70,
    "at": 4.2,
    "preset": "map_label",
    "size": 20

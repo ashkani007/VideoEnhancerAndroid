@@ -1,0 +1,145 @@
+{
+ "b01_hook": [
+  [
+   "ok",
+   "fixed: date moved under the title, stronger scrim and shadow",
+   "ok"
+  ]
+ ],
+ "b02_coronation": [
+  [
+   "ok",
+   "fixed: plate v2: transverse pointed ribs, rose-window tracery, floor tiles",
+   "ok"
+  ],
+  [
+   "ok",
+   "QC: low detail comes from the flat stand-in source, not the render (render/source 1.5x)",
+   "ok"
+  ]
+ ],
+ "b03_victories": [
+  [
+   "ok",
+   "fixed: map safe-label mode: labels slide inside, region labels fade at edges",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: flash strength 0.5, 0.25 s",
+   "ok"
+  ]
+ ],
+ "b04_more": [
+  [
+   "ok",
+   "fixed: softer flash; TEMP labels moved to the bottom edge",
+   "ok"
+  ]
+ ],
+ "b05_invasion": [
+  [
+   "ok",
+   "fixed: taller bounds, wider camera",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: allied hatch removed on this map",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: ivory bold label; softer flash",
+   "ok"
+  ]
+ ],
+ "b06_moscow": [
+  [
+   "ok",
+   "fixed: plate v2: irregular glowing windows, tiered bell tower, onion domes, rippled reflection",
+   "ok"
+  ]
+ ],
+ "b07_retreat": [
+  [
+   "ok",
+   "fixed: plate v2: misty horizon, cannon sunk in a drift, ruts, birch trunks",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: lower-third scrim",
+   "ok"
+  ]
+ ],
+ "b08_coalition": [
+  [
+   "ok",
+   "fixed: labels moved; safe-label mode",
+   "ok"
+  ]
+ ],
+ "b09_elba": [
+  [
+   "ok",
+   "fixed: exile via Avignon, return via Grenoble (historical routes, separated)",
+   "ok"
+  ]
+ ],
+ "b10_waterloo": [
+  [
+   "ok",
+   "fixed: Real-ESRGAN 2x on CPU (hash-pinned weights) -> 982x1680, enlarged 1.03x",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: periodic_resize in ghm4/plate.py (seam now below the normal step)",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: camera framed past the coat",
+   "ok"
+  ],
+  [
+   "ok",
+   "fixed: top scrim; QC contrast check",
+   "ok"
+  ]
+ ],
+ "b11_helena_map": [
+  [
+   "ok",
+   "fixed: safe-label mode fades labels in the title zone",
+   "ok"
+  ]
+ ],
+ "b12_helena": [
+  [
+   "ok",
+   "fixed: plate v2: perspective wave streaks, glitter path; water moves through a wind ripple",
+   "ok"
+  ],
+  [
+   "ok",
+   "QC: low detail comes from the source, not the render",
+   "ok"
+  ]
+ ],
+ "b13_legacy": [
+  [
+   "ok",
+   "no defect found; unchanged",
+   "ok"
+  ]
+ ],
+ "b14_ending": [
+  [
+   "ok",
+   "fixed: island moved right, clear sky, title higher; sea redrawn",
+   "ok"
+  ]
+ ]
+}

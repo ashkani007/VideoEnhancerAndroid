@@ -48,6 +48,23 @@ def text_extent(it):
     return x0, x0 + w
 
 
+def source_detail(path, cam, OW, OH):
+    """Laplacian variance of the plate itself at the shot's mid zoom (same half-resolution measure as the frames),
+    so 'soft' can be split into: the render lost detail vs. the source simply has little detail."""
+    src = cv2.imread(path)
+    if src is None:
+        return None
+    z = (cam.get("from", {}).get("zoom", 1.0) + cam.get("to", cam.get("from", {})).get("zoom", 1.0)) / 2
+    H0, W0 = src.shape[:2]
+    sc = max(OW / W0, OH / H0) * z / 2
+    im = cv2.resize(src, (max(8, int(W0 * sc)), max(8, int(H0 * sc))), interpolation=cv2.INTER_AREA if sc < 1 else cv2.INTER_LANCZOS4)
+    g = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY).astype(np.float32) / 255
+    h, w = g.shape                                                # the visible window (centre), then the same rows
+    fh, fw = min(h, OH // 2), min(w, OW // 2)                     # as the frame measure: 10-68 % (above the captions)
+    win = g[(h - fh) // 2:(h - fh) // 2 + fh, (w - fw) // 2:(w - fw) // 2 + fw]
+    return float(cv2.Laplacian(win[int(0.1 * fh):int(0.68 * fh)], cv2.CV_32F).var())
+
+
 def static_checks(sb, sb_dir, OW, OH):
     """Problems visible from the storyboard and the source images alone (no decoding)."""
     out = {}
@@ -101,12 +118,14 @@ def map_checks(sb, sb_dir, OW, OH):
         if sh["type"] != "map":
             continue
         m = mapshot.MapShot(os.path.join(sb_dir, sh["map"]), OW, OH)
-        clipped, overl = {}, {}
+        clipped, overl, under = {}, {}, {}
         for tl in np.arange(0.0, sh["end"] - sh["start"], 0.25):
             boxes = [b for b in m.layout(float(tl)) if b[5] > 0.35]
             for txt, x0, x1, y, sz, a, kind in boxes:
                 if (x0 < 4 or x1 > 716) and y > 0 and y < 1280:
                     clipped.setdefault(txt, round(sh["start"] + tl, 2))
+                if sb.get("captions") and CAPTION_BAND[0] - 10 < y < CAPTION_BAND[1] + 30 and x1 > 120 and x0 < 600:
+                    under.setdefault(txt, round(sh["start"] + tl, 2))
             for i in range(len(boxes)):
                 for j in range(i + 1, len(boxes)):
                     A, B = boxes[i], boxes[j]
@@ -114,10 +133,11 @@ def map_checks(sb, sb_dir, OW, OH):
                         continue
                     ox = min(A[2], B[2]) - max(A[1], B[1])
                     oy = min(A[3], B[3]) - max(A[3] - A[4] * 0.8, B[3] - B[4] * 0.8)
-                    if ox > -12 and oy > 4:                          # touching labels read as one word
+                    if ox > -12 and oy > -8:                         # touching labels read as one word
                         overl.setdefault(f"{A[0]} / {B[0]}", round(sh["start"] + tl, 2))
         fl = [("WARN", f"map label '{k}' cut by the frame edge at {v}s") for k, v in clipped.items()]
         fl += [("WARN", f"map labels overlap or touch: {k} at {v}s") for k, v in overl.items()]
+        fl += [("WARN", f"map label '{k}' under the subtitle band at {v}s") for k, v in under.items()]
         out[sh["id"]] = fl
     return out
 
@@ -253,7 +273,13 @@ def analyse(sb_path, video, out_dir):
             fl.append(("WARN", f"{len(jumps)} luma jumps (flicker) e.g. {(a + jumps[0] + 1) / fps:.2f}s"))
         ms = float(np.median(sharp[seg])) if b > a else 0.0
         if ms < LIMITS["rel_sharp"] * med_sharp:
-            fl.append(("WARN", f"soft: sharpness {ms / max(med_sharp, 1e-9):.2f}x the episode median"))
+            sd = source_detail(os.path.join(sb_dir, sh["plate"]), sh.get("camera", {}), OW, OH) if sh["type"] == "plate" else None
+            if sd and ms >= 0.8 * sd:
+                fl.append(("INFO", f"low detail ({ms / max(med_sharp, 1e-9):.2f}x the episode median) comes from the source "
+                                   f"image, not the render (render/source detail {ms / sd:.1f}x)"))
+            else:
+                fl.append(("WARN", f"soft: sharpness {ms / max(med_sharp, 1e-9):.2f}x the episode median"
+                                   + (f", render/source detail {ms / sd:.2f}x (render loses detail)" if sd else "")))
         mm = float(np.median(diff[a + 1:b])) if b > a + 1 else 0.0
         if mm < LIMITS["min_motion"]:
             fl.append(("WARN", f"little motion (median frame change {mm:.4f})"))

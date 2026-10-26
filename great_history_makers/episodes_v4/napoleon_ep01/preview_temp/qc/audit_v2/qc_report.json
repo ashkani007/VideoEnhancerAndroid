@@ -1,0 +1,197 @@
+{
+ "video": "episodes_v4/napoleon_ep01/preview_temp/output/Napoleon_Ep01_TEMP_PREVIEW_v2_720x1280.mp4",
+ "size": [
+  720,
+  1280
+ ],
+ "fps": 30.0,
+ "frames": 2046,
+ "expected_frames": 2046,
+ "shots": [
+  {
+   "id": "b01_hook",
+   "type": "plate",
+   "start": 0.0,
+   "end": 4.95,
+   "sharpness_rel": 2.237,
+   "motion": 0.0072,
+   "luma": 0.326,
+   "flags": []
+  },
+  {
+   "id": "b02_coronation",
+   "type": "plate",
+   "start": 4.95,
+   "end": 10.25,
+   "sharpness_rel": 0.245,
+   "motion": 0.00371,
+   "luma": 0.239,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "INFO",
+     "low detail (0.25x the episode median) comes from the source image, not the render (render/source detail 1.5x)"
+    ]
+   ]
+  },
+  {
+   "id": "b03_victories",
+   "type": "map",
+   "start": 10.25,
+   "end": 15.74,
+   "sharpness_rel": 1.649,
+   "motion": 0.00641,
+   "luma": 0.403,
+   "flags": []
+  },
+  {
+   "id": "b04_more",
+   "type": "plate",
+   "start": 15.74,
+   "end": 18.16,
+   "sharpness_rel": 0.59,
+   "motion": 0.00888,
+   "luma": 0.359,
+   "flags": []
+  },
+  {
+   "id": "b05_invasion",
+   "type": "map",
+   "start": 18.16,
+   "end": 23.17,
+   "sharpness_rel": 1.115,
+   "motion": 0.0129,
+   "luma": 0.438,
+   "flags": []
+  },
+  {
+   "id": "b06_moscow",
+   "type": "plate",
+   "start": 23.17,
+   "end": 27.21,
+   "sharpness_rel": 1.803,
+   "motion": 0.00553,
+   "luma": 0.137,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ]
+   ]
+  },
+  {
+   "id": "b07_retreat",
+   "type": "plate",
+   "start": 27.21,
+   "end": 34.84,
+   "sharpness_rel": 0.893,
+   "motion": 0.00457,
+   "luma": 0.545,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ]
+   ]
+  },
+  {
+   "id": "b08_coalition",
+   "type": "map",
+   "start": 34.84,
+   "end": 37.17,
+   "sharpness_rel": 2.076,
+   "motion": 0.00932,
+   "luma": 0.381,
+   "flags": []
+  },
+  {
+   "id": "b09_elba",
+   "type": "map",
+   "start": 37.17,
+   "end": 45.81,
+   "sharpness_rel": 1.212,
+   "motion": 0.01021,
+   "luma": 0.431,
+   "flags": []
+  },
+  {
+   "id": "b10_waterloo",
+   "type": "plate",
+   "start": 45.81,
+   "end": 48.89,
+   "sharpness_rel": 1.09,
+   "motion": 0.00819,
+   "luma": 0.453,
+   "flags": []
+  },
+  {
+   "id": "b11_helena_map",
+   "type": "map",
+   "start": 48.89,
+   "end": 54.08,
+   "sharpness_rel": 0.612,
+   "motion": 0.01441,
+   "luma": 0.298,
+   "flags": []
+  },
+  {
+   "id": "b12_helena",
+   "type": "plate",
+   "start": 54.08,
+   "end": 57.54,
+   "sharpness_rel": 0.171,
+   "motion": 0.00621,
+   "luma": 0.292,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "INFO",
+     "low detail (0.17x the episode median) comes from the source image, not the render (render/source detail 1.5x)"
+    ]
+   ]
+  },
+  {
+   "id": "b13_legacy",
+   "type": "plate",
+   "start": 57.54,
+   "end": 62.18,
+   "sharpness_rel": 0.515,
+   "motion": 0.00394,
+   "luma": 0.306,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ]
+   ]
+  },
+  {
+   "id": "b14_ending",
+   "type": "plate",
+   "start": 62.18,
+   "end": 68.2,
+   "sharpness_rel": 0.336,
+   "motion": 0.00629,
+   "luma": 0.093,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "INFO",
+     "low detail (0.34x the episode median) comes from the source image, not the render (render/source detail 1.4x)"
+    ]
+   ]
+  }
+ ],
+ "global": [],
+ "errors": 0,
+ "warnings": 0
+}

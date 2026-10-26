@@ -390,8 +390,8 @@
   {
    "place": "VITORIA",
    "text": "BRITAIN",
-   "dx": 30,
-   "dy": 60,
+   "dx": -20,
+   "dy": -34,
    "at": 0.75
   },
   {

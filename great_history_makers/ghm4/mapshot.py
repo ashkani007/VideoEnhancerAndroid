@@ -396,7 +396,7 @@ class MapShot:
                 if sz < 9:
                     continue
                 x0, x1 = self.label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-                a = self.safe_alpha(x0, x1, sy) * fade * 0.9
+                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * _band_alpha(sy)
                 if a > 0.01:
                     cv.letters(name, sx, sy, 99, "map_note", "c", a, tuple(v / 255 for v in LABEL_COL[kind]), sz,
                                track=sz * 0.35, style="Italic", shadow=0.0)
@@ -471,7 +471,7 @@ def _layout(self, tl):
         sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
         sz = size * self.q * s / U
         x0, x1 = _label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-        a = (_safe_alpha(x0, x1, sy) if safe else 1.0) * fade
+        a = (_safe_alpha(x0, x1, sy) * _band_alpha(sy) if safe else 1.0) * fade
         if sz >= 9 and -50 < sy < 1330:
             out.append((name, x0, x1, sy, sz, a, "region"))
     for lb in c.get("labels", []):
@@ -489,6 +489,11 @@ def _layout(self, tl):
             a *= _safe_alpha(None, None, y)
         out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
     return out
+
+
+def _band_alpha(y):
+    """Decorative region labels step aside for the subtitles (design y 850-1030)."""
+    return 1.0 - min(1.0, max(0.0, min(y - 840, 1040 - y) / 20.0))
 
 
 MapShot.layout = _layout
