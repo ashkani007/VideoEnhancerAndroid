@@ -305,8 +305,10 @@ def analyse(sb_path, video, out_dir):
     return report
 
 
-def contact(report, frames, fps, cuts, path, tw=150):
-    th = int(tw * 16 / 9)
+def contact(report, frames, fps, cuts, path, tw=None):
+    fw, fh = report["size"]
+    tw = tw or (150 if fh > fw else 300)                          # thumbnails keep the frame's aspect (9:16 or 16:9)
+    th = int(round(tw * fh / fw))
     rows = report["shots"]
     W = tw * 6 + 520
     sheet = Image.new("RGB", (W, (th + 8) * len(rows)), (18, 18, 22))

@@ -1,0 +1,25 @@
+{
+ "video": "docs_longform/napoleon_rise_fall/poc/output/napoleon_longform_map_poc_1920x1080_preview.mp4",
+ "size": [
+  1920,
+  1080
+ ],
+ "fps": 30.0,
+ "frames": 630,
+ "expected_frames": 630,
+ "shots": [
+  {
+   "id": "m1_ulm_austerlitz",
+   "type": "map",
+   "start": 0,
+   "end": 21.0,
+   "sharpness_rel": 1.0,
+   "motion": 0.01111,
+   "luma": 0.588,
+   "flags": []
+  }
+ ],
+ "global": [],
+ "errors": 0,
+ "warnings": 0
+}
