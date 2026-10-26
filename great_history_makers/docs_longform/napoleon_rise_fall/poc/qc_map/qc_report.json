@@ -1,21 +1,21 @@
 {
- "video": "docs_longform/napoleon_rise_fall/poc/output/napoleon_longform_map_poc_1920x1080_preview.mp4",
+ "video": "docs_longform/napoleon_rise_fall/poc/output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_1080p.mp4",
  "size": [
   1920,
   1080
  ],
  "fps": 30.0,
- "frames": 630,
- "expected_frames": 630,
+ "frames": 495,
+ "expected_frames": 495,
  "shots": [
   {
    "id": "m1_ulm_austerlitz",
    "type": "map",
    "start": 0,
-   "end": 21.0,
+   "end": 16.5,
    "sharpness_rel": 1.0,
-   "motion": 0.01111,
-   "luma": 0.588,
+   "motion": 0.0119,
+   "luma": 0.552,
    "flags": []
   }
  ],

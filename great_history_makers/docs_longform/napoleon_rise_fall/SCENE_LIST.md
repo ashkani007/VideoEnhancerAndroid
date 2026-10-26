@@ -16,7 +16,7 @@
 |---|---|---|---|---|---|
 | 1 | Cold open | P | 13 | Dawn, 18 Jun 1815: rain-soaked rye fields, mud, the ridge of Mont-Saint-Jean in mist | drift, fog |
 | 2 | Cold open | P | 13 | Napoleon (1815) on a low rise near La Belle Alliance with a telescope, staff behind | push, par, blink |
-| 3 | Cold open | M | 22 | Belgium, 15–18 Jun 1815: French, Anglo-allied and Prussian armies; Ligny and Quatre Bras; Blücher's march on Wavre → Waterloo | units, arrows, dates |
+| 3 | Cold open | M | 22 | Belgium, 15–18 Jun 1815: French, Anglo-allied and Prussian armies; Ligny and Quatre Bras; Blücher's march on Wavre → Waterloo | arrows, dots, dates |
 | 4 | Cold open | P | 13 | Hougoumont farm burning, Guards defending the gate | smoke, fire, puffs |
 | 5 | Cold open | P | 13 | French cuirassiers charging British squares | ranks, smoke, puffs |
 | 6 | Cold open | P | 14 | Evening: the Imperial Guard climbing the slope; Prussians emerging on the flank | push, smoke, flags |
@@ -32,7 +32,7 @@
 | 16 | 1 | P | 13 | Paris, 5 Oct 1795: guns on the rue Saint-Honoré, smoke before the church of Saint-Roch | puffs, smoke |
 | 17 | 1 | P | 11 | Joséphine de Beauharnais in a Paris salon, 1796 | push, blink |
 | 18 | 2 | C | 3 | "II · Italy, Egypt and Power · 1796–1800" | — |
-| 19 | 2 | M | 25 | Italian campaign 1796–97: Montenotte → Lodi → siege of Mantua → Arcole → Rivoli → Leoben | units, arrows, stars |
+| 19 | 2 | M | 25 | Italian campaign 1796–97: Montenotte → Lodi → siege of Mantua → Arcole → Rivoli → Leoben | arrows, dots, stars |
 | 20 | 2 | P | 14 | The ragged Army of Italy in the Alpine foothills, spring 1796 | drift, ranks |
 | 21 | 2 | P | 14 | Arcole: the young general with a flag on the causeway through the marshes | push, smoke, flags |
 | 22 | 2 | P | 13 | Rivoli plateau, January snow, Austrian columns in the valley | drift, snow, smoke |
@@ -46,10 +46,10 @@
 | 30 | 3 | P | 14 | First Consul at his desk at night with the Civil Code drafts | push, flicker, blink |
 | 31 | 3 | P | 16 | Notre-Dame, 2 Dec 1804: Napoleon raising the crown, Pius VII seated | push, flicker |
 | 32 | 3 | P | 13 | The Boulogne camp: endless tents, the Channel beyond | drift, flags |
-| 33 | 3 | M | 38 | **Ulm–Austerlitz campaign** (POC map, done): Boulogne → Rhine; corps I–VI and cavalry swing round Ulm; Mack surrenders; Vienna; Austerlitz | units, arrows, rings, star |
+| 33 | 3 | M | 38 | **Ulm–Austerlitz campaign** (sample done, ORIGINAL locked map style): Boulogne → Strasbourg → Ulm (ring, Mack surrenders) → Vienna → Austerlitz, allied arrow from Olmütz | arrows, dots, ring, star |
 | 34 | 3 | P | 13 | Trafalgar, 21 Oct 1805: ships of the line in smoke | smoke, puffs |
 | 35 | 3 | P | 18 | **Austerlitz dawn** (POC plate): Napoleon on the Zuran hill, fog in the valley | push, par, fog |
-| 36 | 3 | M | 22 | Austerlitz tactical map: the allied attack on the French right; Soult takes the Pratzen; the allied army split | units, arrows |
+| 36 | 3 | M | 22 | Austerlitz tactical map: the allied attack on the French right; Soult takes the Pratzen; the allied army split | arrows, dots |
 | 37 | 3 | P | 18 | **Pratzen Heights** (POC plate): French columns storming out of the mist | smoke, puffs, ranks, flags |
 | 38 | 4 | C | 3 | "IV · Master of Europe · 1806–1811" | — |
 | 39 | 4 | P | 13 | Jena, 14 Oct 1806: French infantry advancing through fog | smoke, ranks |
@@ -68,14 +68,14 @@
 | 52 | 6 | P | 18 | **The retreat** (POC plate): snowbound column, birch forest | snow, wind, drift |
 | 53 | 6 | P | 14 | Ney with the rearguard, musket in hand | push, snow, puffs |
 | 54 | 6 | P | 16 | The Berezina, Nov 1812: pontonniers in icy water, bridges crowded | snow, water, smoke |
-| 55 | 6 | M | 25 | Retreat route and losses; then 1813: coalition armies converging on Leipzig | arrows, rings, units |
+| 55 | 6 | M | 25 | Retreat route and losses; then 1813: coalition armies converging on Leipzig | arrows, rings, dots |
 | 56 | 6 | P | 14 | Leipzig, Oct 1813: the "Battle of the Nations", city outskirts in flames | smoke, fire |
 | 57 | 6 | P | 13 | 1814: the Emperor in the Champagne snow with young conscripts (after Meissonier's *1814*) | drift, snow |
 | 58 | 6 | P | 13 | Fontainebleau, Apr 1814: farewell to the Old Guard on the horseshoe staircase | push, flags |
 | 59 | 7 | C | 3 | "VII · The Hundred Days · 1815" | — |
 | 60 | 7 | P | 13 | Golfe-Juan, 1 Mar 1815: boats landing at dusk | drift, water |
 | 61 | 7 | P | 14 | Laffrey near Grenoble: the 5th Line facing him, lowering their muskets | push, flags |
-| 62 | 7 | M | 25 | The return route Golfe-Juan → Grenoble → Lyon → Paris (20 Mar); then June 1815 into Belgium (Ligny, Quatre Bras) | routes, units |
+| 62 | 7 | M | 25 | The return route Golfe-Juan → Grenoble → Lyon → Paris (20 Mar); then June 1815 into Belgium (Ligny, Quatre Bras) | routes, dots |
 | 63 | 7 | P | 13 | Ligny, 16 Jun: burning village, Prussian lines | smoke, fire |
 | 64 | 7 | P | 11 | Waterloo evening reprise (callback to the cold open) | pull, smoke |
 | 65 | 8 | C | 3 | "VIII · Saint Helena and the Legend · 1815–1821" | — |
@@ -90,6 +90,8 @@
 | 74 | 8 | C | 5 | End card and branding | — |
 
 ## The 14 maps (all historical-accuracy notes in each JSON's `_about`)
+**All maps use the ORIGINAL approved map style (locked, `ghm4/map_style.py`).** Armies move as the approved campaign arrows;
+no unit blocks or other new map elements without the client's explicit approval.
 1. Waterloo campaign, 15–18 Jun 1815 (cold open).
 2. Corsica 1768–69, and the route to French schools.
 3. Italian campaign 1796–97.
