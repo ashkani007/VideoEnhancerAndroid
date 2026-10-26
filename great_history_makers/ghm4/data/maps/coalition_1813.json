@@ -164,8 +164,8 @@
   72.0
  ],
  "ref_lat": 50,
- "ppu": 150,
- "element_scale": 1.7,
+ "ppu": 90,
+ "element_scale": 2.833,
  "region_labels": [
   [
    "RUSSIA",
