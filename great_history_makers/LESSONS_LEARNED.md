@@ -210,3 +210,18 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
 - **Character bible variants** (1793, 1804 coronation, 1812, 1820 exile) keep the face descriptor identical while the
   costume and age follow the history; prompts pick them with `"variants": {"napoleon": "<variant>"}`.
 - **Worker test isolation:** the end-to-end worker test must seed only its own job, or newly queued episodes make it fail.
+
+## 2026-10-26: visual audit of the Ep01 TEMP preview (client: "several scenes poorly rendered")
+- **Automated checks passing is not visual quality.** v1 passed sync, captions, black/freeze scans, yet had clipped map
+  labels, 0.8 s whiteout flashes, a drifting smoke seam, a soft enlarged crop and badly drawn stand-ins. Every render now
+  goes through `python -m ghm4.qc` (per-shot contact sheet + flags) *and* a human look at full-resolution frames.
+- **Thresholded noise must be tileable after resizing.** `cv2.resize` of tileable noise leaves a wrap seam 3–4x the normal
+  step; the smoke threshold turned it into hard straight edges that drift across the plate (`periodic_resize`).
+- **Flash transitions:** 0.92 peak for 0.4 s on both sides reads as blank frames in a long episode. Use
+  `{"type": "flash", "strength": 0.5, "dur": 0.25}`; the approved POC default is unchanged.
+- **Map labels need layout rules** (`"safe_labels": true`): point labels slide inside the frame, region labels follow the
+  camera and fade out before an edge, nothing in the kicker/date zone. Labels closer than 12 px read as one word.
+- **Source pixels:** any crop under 720 px wide is enlarged; QC warns above 1.6x. `tools/esrgan_cpu.py` (hash-pinned
+  Real-ESRGAN, ONNX on CPU, ~1 min for 491x840) gives a clean 2x in the cloud; the PC job does it for real plates.
+- **Re-render only what failed:** `ghm4.render --patch old_picture.mp4 --shots ...` (±0.5 s for transitions).
+- **Small gold text on light areas disappears** (the 3 px en dash over a white waistcoat): QC measures title contrast.

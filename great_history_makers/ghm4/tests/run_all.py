@@ -11,6 +11,8 @@ Tests
   robustness    metadata regions outside the plate, missing matte, eyes outside the frame
   transitions   whip / ink / flash / dissolve / cut: no NaN, only intended jumps, both shots visible mid-wipe
   narrate       retime to aligned words, caption-band collision check, excerpt duration
+  qc            visual QC stage flags planted defects (black, frozen, washout, clipped text, small plate, map labels);
+                smoke noise tileable without a seam; safe map labels never cut
   masks         region-scored automatic mattes (ghm4/tests/test_masks.py)
   worker        ComfyUI worker plumbing (comfyui/worker/test_worker.py)
   episode       automated episode pipeline end to end with stand-in results (ghm4/tests/test_episode.py)
@@ -197,6 +199,56 @@ def run_script(args):
     return dict(seconds=round(time.time() - t, 1), output=tail)
 
 
+def test_qc():
+    from ghm4 import qc
+    from ghm4.plate import periodic_resize, tileable_noise
+    n = periodic_resize(tileable_noise(60, 34, 3, 1), 491, 840)
+    step, wrap = np.abs(np.diff(n, axis=1)).mean(), np.abs(n[:, 0] - n[:, -1]).mean()
+    assert wrap < 1.6 * step, f"noise seam {wrap:.4f} vs step {step:.4f}"
+    with tempfile.TemporaryDirectory() as d:
+        cv2.imwrite(os.path.join(d, "tiny.png"), np.full((180, 100, 3), 128, np.uint8))
+        mp = os.path.join(GHM, "ghm4", "data", "maps", "coalition_1813.json")
+        m = json.load(open(mp))
+        m.pop("safe_labels", None)
+        m["labels"].append({"place": "PARIS", "text": "A VERY LONG LABEL THAT RUNS OFF THE FRAME", "dx": -300, "dy": 0, "at": 0.0})
+        json.dump(m, open(os.path.join(d, "m.json"), "w"))
+        sb = {"id": "q", "fps": 30, "duration": 4.0, "fade_out": 0.1,
+              "shots": [{"id": "p", "type": "plate", "start": 0, "end": 2.0, "plate": "tiny.png", "camera": {"from": {"zoom": 1.2}},
+                         "text": [{"text": "A TITLE FAR TOO WIDE FOR THE FRAME", "preset": "title", "y": 300}]},
+                        {"id": "m", "type": "map", "start": 2.0, "end": 4.0, "map": "m.json"}],
+              "transitions": [{"at": 2.0, "type": "cut"}]}
+        sbp = os.path.join(d, "sb.json")
+        json.dump(sb, open(sbp, "w"))
+        vid = os.path.join(d, "v.mp4")
+        ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "360x640", "-r", "30", "-i", "-",
+                               "-c:v", "libx264", "-pix_fmt", "yuv420p", vid], stdin=subprocess.PIPE)
+        rng = np.random.default_rng(0)
+        base = (rng.random((640, 360, 3)) * 255).astype(np.uint8)
+        for k in range(120):
+            if 10 <= k < 25:
+                fr = np.zeros_like(base)                                   # black
+            elif 25 <= k < 60:
+                fr = base                                                  # frozen 1.2 s
+            elif 70 <= k < 80:
+                fr = np.full_like(base, 235)                               # washout
+            else:
+                fr = np.roll(base, k * 3, axis=1)
+            ff.stdin.write(fr.tobytes())
+        ff.stdin.close()
+        ff.wait()
+        r = qc.analyse(sbp, vid, os.path.join(d, "qc"))
+        flags = {s["id"]: " | ".join(f[1] for f in s["flags"]) for s in r["shots"]}
+        for shot, want in (("p", "black frames"), ("p", "frozen"), ("p", "enlarged"), ("p", "clipped"), ("m", "washed-out"),
+                           ("m", "cut by the frame edge")):
+            assert want in flags[shot], f"QC missed '{want}' in shot {shot}: {flags[shot]}"
+        assert os.path.exists(os.path.join(d, "qc", "qc_contact.jpg"))
+        m["safe_labels"] = True
+        json.dump(m, open(os.path.join(d, "m.json"), "w"))
+        safe = qc.map_checks(sb, d, 720, 1280)["m"]
+        assert not [f for f in safe if "cut by" in f[1]], safe
+    return dict(flags=flags, seam=round(float(wrap / step), 2))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
@@ -205,7 +257,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(GOLD, exist_ok=True)
     tests = [("golden", lambda: test_golden(a.update_golden)), ("plate_sizes", test_plate_sizes), ("robustness", test_robustness),
-             ("transitions", test_transitions), ("narrate", test_narrate)]
+             ("transitions", test_transitions), ("narrate", test_narrate), ("qc", test_qc)]
     if not a.quick:
         tests += [("masks", lambda: run_script(["-m", "ghm4.tests.test_masks", "--methods", "hybrid"])),
                   ("worker", lambda: run_script(["comfyui/worker/test_worker.py"])),

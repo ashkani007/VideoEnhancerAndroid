@@ -1,0 +1,23 @@
+{
+ "b01_hook": [["compositing", "date '1769 – 1821' unreadable: gold 30 px text over the white waistcoat, scrim too weak there", "date moved under the title, stronger scrim and shadow"]],
+ "b02_coronation": [["generation", "stand-in plate badly drawn: side arches in the wrong plane (diagonal smears), rose window a radial smear, flat blocks", "plate v2: transverse pointed ribs, rose-window tracery, floor tiles"]],
+ "b03_victories": [["animation", "'WAGRAM 1809' label and region labels cut by the frame edge (no edge-aware label layout)", "map safe-label mode: labels slide inside, region labels fade at edges"],
+                   ["compositing", "outgoing flash: 0.8 s of 92 % cream frames (reads as blank)", "flash strength 0.5, 0.25 s"]],
+ "b04_more": [["compositing", "incoming flash wash; TEMP label over the cockade", "softer flash; TEMP labels moved to the bottom edge"]],
+ "b05_invasion": [["animation", "camera pans so the arrow origin leaves the frame; view width capped by the canvas height", "taller bounds, wider camera"],
+                  ["generation", "hatched allied-state polygons read as crude blobs", "allied hatch removed on this map"],
+                  ["compositing", "'NIEMEN · 24 JUNE' gold italic unreadable on sand; flash whiteout into Moscow", "ivory bold label; softer flash"]],
+ "b06_moscow": [["generation", "stand-in plate: grid of square 'pixel' windows, Ivan tower a plain rectangle, onion domes malformed", "plate v2: irregular glowing windows, tiered bell tower, onion domes, rippled reflection"]],
+ "b07_retreat": [["generation", "stand-in plate: hard horizon line, cart floating in mid-air, ghost-triangle road", "plate v2: misty horizon, cannon sunk in a drift, ruts, birch trunks"],
+                 ["compositing", "subtitles over white snow (low contrast)", "lower-third scrim"]],
+ "b08_coalition": [["animation", "labels run together: 'PRUSSIARUSSIA', 'LEIPZIGAUSTRIA'; 'RUSSIA' / 'ATLANTIC' cut", "labels moved; safe-label mode"]],
+ "b09_elba": [["animation", "return route drawn on top of the exile route; 'ITALY' cut", "exile via Avignon, return via Grenoble (historical routes, separated)"]],
+ "b10_waterloo": [["scaling", "soft: 491x840 crop enlarged 1.77x", "Real-ESRGAN 2x on CPU (hash-pinned weights) -> 982x1680, enlarged 1.03x"],
+                  ["compositing", "straight-edged 'rectangle' drifting in the battle smoke: smoke noise not tileable, seam 3-4x the normal step, thresholding makes it a hard edge (renderer bug)", "periodic_resize in ghm4/plate.py (seam now below the normal step)"],
+                  ["animation", "sliver of the foreground coat at the left edge (crop + camera)", "camera framed past the coat"],
+                  ["compositing", "'18 JUNE 1815' low contrast on the bright sky", "top scrim; QC contrast check"]],
+ "b11_helena_map": [["animation", "PLYMOUTH label inside the kicker/date zone at the wide view; EUROPE / AFRICA cut", "safe-label mode fades labels in the title zone"]],
+ "b12_helena": [["generation", "sea drawn with blob noise + a 'smoke' band: camouflage-like blotches", "plate v2: perspective wave streaks, glitter path; water moves through a wind ripple"]],
+ "b13_legacy": [["ok", "no defect found; plate and frames kept unchanged", "ok"]],
+ "b14_ending": [["compositing", "'AMBITION' title placed over the island silhouette; blotchy sea", "island moved right, clear sky, title higher; sea redrawn"]]
+}

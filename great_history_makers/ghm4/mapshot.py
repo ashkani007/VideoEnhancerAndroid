@@ -15,6 +15,8 @@ Map JSON (lon/lat degrees; times are shot-local seconds; label offsets in 720x12
                "alpha": 0.42, "hatch": false, "origin": [lon, lat], "reveal": [t0, t1]}],    territory spreading from origin
   "element_scale": 1.0,                                  line/dot/label size multiplier for wide views
   "camera": [[t, lon, lat, width_in_units], ...],      width in degrees of longitude x cos(ref_lat)
+  "safe_labels": true,                                   labels never leave the frame or enter the title zone (fade),
+                                                         region labels follow the camera and fade out instead of being cut
   "kicker": [text, t], "dates": [[t, text], ...], "legend": [[text, color, t], ...], "fade_out": [t0, t1]
 }
 """
@@ -160,7 +162,7 @@ class MapShot:
             cv2.polylines(base, [pts], False, (70, 112, 136), max(3, int(5 * q)), cv2.LINE_AA, shift=2)
         pil = Image.fromarray(base)
         d = ImageDraw.Draw(pil)
-        for name, lon, lat, size, kind in c.get("region_labels", []):
+        for name, lon, lat, size, kind in ([] if c.get("safe_labels") else c.get("region_labels", [])):
             f = T.font("Italic", int(size * q))
             x, y = self.cpx(lon, lat)
             tr = size * q * 0.35
@@ -385,10 +387,32 @@ class MapShot:
         cv = T.Canvas(OW, OH)
         fo = c.get("fade_out")
         fade = 1 - ramp(tl, *fo) if fo else 1.0
+        safe = c.get("safe_labels", False)
+        if safe:                                                      # region labels drawn live, faded near the edges
+            for name, lon, lat, size, kind in c.get("region_labels", []):
+                X, Y = self.cpx(lon, lat)
+                sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
+                sz = size * self.q * s / U
+                if sz < 9:
+                    continue
+                x0, x1 = self.label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
+                a = self.safe_alpha(x0, x1, sy) * fade * 0.9
+                if a > 0.01:
+                    cv.letters(name, sx, sy, 99, "map_note", "c", a, tuple(v / 255 for v in LABEL_COL[kind]), sz,
+                               track=sz * 0.35, style="Italic", shadow=0.0)
         for lb in c.get("labels", []):
             px, py = proj(lb["place"])
-            cv.letters(lb.get("text", lb["place"]), px / U + lb.get("dx", 0), py / U + lb.get("dy", 0), tl - lb["at"],
-                       lb.get("preset", "map_label"), lb.get("align", "c"), fade, lb.get("color"), lb.get("size"), shadow=0.85)
+            x, y = px / U + lb.get("dx", 0), py / U + lb.get("dy", 0)
+            a = fade
+            if safe:
+                st, sz0, tr0, *_ = T.PRESETS[lb.get("preset", "map_label")]
+                sz = lb.get("size") or sz0
+                x0, x1 = self.label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
+                x += max(0.0, 20 - x0) - max(0.0, x1 - 700)              # slide back inside the frame
+                a *= self.safe_alpha(None, None, y)
+            if a > 0.01:
+                cv.letters(lb.get("text", lb["place"]), x, y, tl - lb["at"],
+                           lb.get("preset", "map_label"), lb.get("align", "c"), a, lb.get("color"), lb.get("size"), shadow=0.85)
         if c.get("kicker"):
             cv.letters(c["kicker"][0], 360, 176, tl - c["kicker"][1], "legend", size=22, track=6, stagger=0.015, alpha=fade,
                        col="gold", rise=16, shadow=0.5)
@@ -407,6 +431,69 @@ class MapShot:
                 cv.rect(70, yb - 12, 112, yb - 2, a, col, 0.5)
                 cv.letters(txt, 124, yb, 99, "legend", align="l", alpha=a, shadow=0.6)
         return cv.apply(img)
+
+
+def _label_extent(text, x, style, size, track, align):
+    f = T.font(style, max(8, int(round(size))))
+    w = sum(f.getlength(ch) for ch in text) + track * (len(text) - 1)
+    x0 = x - w / 2 if align == "c" else (x - w if align == "r" else x)
+    return x0, x0 + w
+
+
+def _safe_alpha(x0, x1, y):
+    """1 inside the safe area, fading to 0 when a label crosses the frame edge or enters the kicker/date zone.
+    x0 = None: vertical test only (point labels are slid back inside the frame instead)."""
+    a = 1.0
+    if x0 is not None:
+        edge = min(x0 - 12, 708 - x1)                                 # fully faded before the label reaches the edge
+        a = min(1.0, max(0.0, edge / 40.0))
+    a *= min(1.0, max(0.0, (y - 285) / 30.0)) * min(1.0, max(0.0, (1250 - y) / 30.0))
+    return a
+
+
+def _layout(self, tl):
+    """Screen boxes (design units) of the labels at shot time tl: [(text, x0, x1, y, size, alpha, kind)], for QC."""
+    c, OW, OH, U = self.cfg, self.OW, self.OH, self.U
+    keys = [(k[0], (k[1] - self.lon0) * self.kx, self.lat1 - k[2], math.log(k[3])) for k in c["camera"]]
+    cx, cy, lw = hermite(keys, tl)
+    Wu = min(math.exp(lw), self.CW / self.ppu, self.CH / self.ppu * OW / OH)
+    hwu, hhu = Wu / 2, Wu / 2 * OH / OW
+    cx = min(max(cx, hwu), self.CW / self.ppu - hwu)
+    cy = min(max(cy, hhu), self.CH / self.ppu - hhu)
+    s = OW / (Wu * self.ppu)
+    cxp, cyp = cx * self.ppu, cy * self.ppu
+    fo = c.get("fade_out")
+    fade = 1 - ramp(tl, *fo) if fo else 1.0
+    safe = c.get("safe_labels", False)
+    out = []
+    for name, lon, lat, size, kind in c.get("region_labels", []):
+        X, Y = self.cpx(lon, lat)
+        sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
+        sz = size * self.q * s / U
+        x0, x1 = _label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
+        a = (_safe_alpha(x0, x1, sy) if safe else 1.0) * fade
+        if sz >= 9 and -50 < sy < 1330:
+            out.append((name, x0, x1, sy, sz, a, "region"))
+    for lb in c.get("labels", []):
+        if tl < lb["at"] + 0.4:
+            continue
+        X, Y = self.cpx(*self.place(lb["place"]))
+        x, y = (s * (X - cxp) + OW / 2) / U + lb.get("dx", 0), (s * (Y - cyp) + OH / 2) / U + lb.get("dy", 0)
+        st, sz0, tr0, *_ = T.PRESETS[lb.get("preset", "map_label")]
+        sz = lb.get("size") or sz0
+        x0, x1 = _label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
+        a = fade
+        if safe:
+            sh = max(0.0, 20 - x0) - max(0.0, x1 - 700)
+            x0, x1 = x0 + sh, x1 + sh
+            a *= _safe_alpha(None, None, y)
+        out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
+    return out
+
+
+MapShot.layout = _layout
+MapShot.label_extent = staticmethod(_label_extent)
+MapShot.safe_alpha = staticmethod(_safe_alpha)
 
 
 @functools.lru_cache(None)

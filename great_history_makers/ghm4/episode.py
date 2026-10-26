@@ -8,7 +8,7 @@
   python -m ghm4.episode plates <episode_dir>              # plates + automatic metadata + mattes + review sheets
   python -m ghm4.episode sheet <episode_dir> <beat>        # grid overlay for annotating eyes / hands (annotations.json)
   python -m ghm4.episode storyboard <episode_dir>          # storyboard.json (+ timed to the narration)
-  python -m ghm4.episode render <episode_dir> [--final]    # picture, narration + captions, verification
+  python -m ghm4.episode render <episode_dir> [--final]    # picture, narration + captions, verification, visual QC
 
 episode.json
 {
@@ -349,6 +349,13 @@ def cmd_render(ep, a):
                             os.path.join(ep.dir, "output", f"verify_{W}.json")], cwd=GHM, capture_output=True, text=True)
         print(f"verification: {'PASS' if r.returncode == 0 else 'FAIL'} -> output/verify_{W}.json")
         print(final)
+    else:
+        final = pic
+    q = subprocess.run([PY, "-m", "ghm4.qc", sb, final, "--out", os.path.join(ep.dir, "output", f"qc_{W}")], cwd=GHM,
+                       capture_output=True, text=True)
+    print("visual QC: " + q.stdout.strip().splitlines()[-1] if q.stdout.strip() else "visual QC: no output")
+    for ln in q.stdout.splitlines()[:-1]:
+        print("  " + ln)
 
 
 def cmd_run(ep, a):

@@ -423,5 +423,6 @@
   5.5
  ],
  "glow": 0.16,
- "star_scale": 0.62
+ "star_scale": 0.62,
+ "safe_labels": true
 }

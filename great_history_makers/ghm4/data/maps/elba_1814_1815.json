@@ -156,7 +156,7 @@
    ]
   ]
  ],
- "_about": "April 1814 abdication at Fontainebleau, exile to Elba (via Saint-Raphael); 1 March 1815 landing at Golfe-Juan, the Route Napoleon via Grenoble and Lyon to Paris (20 March 1815). Routes simplified.",
+ "_about": "April 1814 abdication at Fontainebleau, exile to Elba (via Avignon and Saint-Raphael); 1 March 1815 landing at Golfe-Juan, the Route Napoleon via Grenoble and Lyon to Paris (20 March 1815). Routes simplified.",
  "bounds": [
   -6.0,
   20.0,
@@ -228,12 +228,12 @@
      48.4
     ],
     [
-     4.83,
-     45.76
+     3.9,
+     46.6
     ],
     [
-     6.0,
-     44.2
+     4.81,
+     43.95
     ],
     [
      6.77,
@@ -264,11 +264,15 @@
     ],
     [
      8.6,
-     43.25
+     43.35
     ],
     [
      7.08,
      43.57
+    ],
+    [
+     6.25,
+     44.6
     ],
     [
      5.72,
@@ -279,8 +283,8 @@
      45.76
     ],
     [
-     3.6,
-     47.4
+     3.4,
+     47.6
     ],
     [
      2.45,
@@ -337,7 +341,8 @@
    "dx": 0,
    "dy": 92,
    "at": 0.8,
-   "preset": "map_note"
+   "preset": "map_label",
+   "size": 20
   },
   {
    "place": "ELBA",
@@ -352,8 +357,9 @@
    "dx": -10,
    "dy": 52,
    "at": 5.8,
-   "preset": "map_note",
-   "align": "r"
+   "preset": "map_label",
+   "align": "r",
+   "size": 20
   },
   {
    "place": "PARIS",
@@ -412,5 +418,6 @@
  "fade_out": [
   8.5,
   8.64
- ]
+ ],
+ "safe_labels": true
 }

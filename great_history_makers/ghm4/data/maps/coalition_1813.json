@@ -362,8 +362,8 @@
   {
    "place": "WARSAW",
    "text": "RUSSIA",
-   "dx": 40,
-   "dy": -30,
+   "dx": 120,
+   "dy": -48,
    "at": 0.3
   },
   {
@@ -397,10 +397,12 @@
   {
    "place": "LEIPZIG",
    "text": "LEIPZIG",
-   "dx": 0,
-   "dy": 78,
+   "dx": -36,
+   "dy": 64,
    "at": 1.4,
-   "preset": "map_note"
+   "preset": "map_label",
+   "size": 22,
+   "align": "r"
   }
  ],
  "camera": [
@@ -431,5 +433,6 @@
  "fade_out": [
   2.25,
   2.35
- ]
+ ],
+ "safe_labels": true
 }

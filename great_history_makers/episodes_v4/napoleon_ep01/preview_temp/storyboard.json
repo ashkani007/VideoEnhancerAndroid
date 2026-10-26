@@ -38,22 +38,23 @@
    ],
    "scrim": [
     [
-     560,
+     470,
      1280,
-     0.72
+     0.82
     ]
    ],
    "text": [
     {
      "text": "1769 – 1821",
      "preset": "kicker",
-     "size": 30,
-     "y": 712,
+     "size": 32,
+     "y": 864,
      "at": 0.25,
      "out": [
       4.3,
       4.7
-     ]
+     ],
+     "shadow": 1.0
     },
     {
      "text": "NAPOLEON",
@@ -82,11 +83,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -116,10 +117,9 @@
    },
    "scrim": [
     [
-     0,
-     420,
-     0.55,
-     1
+     300,
+     700,
+     0.0
     ]
    ],
    "text": [
@@ -127,7 +127,7 @@
      "text": "2 DECEMBER 1804",
      "preset": "date",
      "size": 30,
-     "y": 250,
+     "y": 440,
      "at": 2.3,
      "out": [
       4.9,
@@ -138,7 +138,7 @@
      "text": "CORONATION",
      "preset": "title_m",
      "size": 70,
-     "y": 330,
+     "y": 515,
      "at": 2.5,
      "out": [
       4.9,
@@ -150,7 +150,7 @@
      "preset": "legend",
      "size": 20,
      "track": 6,
-     "y": 372,
+     "y": 556,
      "color": "gold",
      "at": 2.9,
      "out": [
@@ -164,11 +164,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -221,11 +221,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -298,11 +298,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -336,6 +336,11 @@
      760,
      0.42,
      1
+    ],
+    [
+     820,
+     1280,
+     0.4
     ]
    ],
    "text": [
@@ -405,11 +410,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -432,21 +437,21 @@
    "type": "plate",
    "start": 45.81,
    "end": 48.89,
-   "plate": "../../../GreatHistoryMakers/Renderer_Demo/plates/p4_battle.png",
+   "plate": "plates/p4_battle_esrgan2x.png",
    "meta": "../../../GreatHistoryMakers/Renderer_Demo/plates/p4_battle.json",
    "camera": {
     "from": {
-     "zoom": 1.02,
+     "zoom": 1.32,
      "focus": [
-      250,
-      440
+      310,
+      430
      ]
     },
     "to": {
-     "zoom": 1.16,
+     "zoom": 1.42,
      "focus": [
-      275,
-      420
+      318,
+      415
      ]
     },
     "ease": "inout"
@@ -474,7 +479,6 @@
     ]
    ],
    "haze": 0.14,
-   "sharpen": 0.4,
    "scrim": [
     [
      0,
@@ -512,11 +516,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -582,11 +586,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -645,11 +649,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   },
@@ -662,7 +666,7 @@
    "meta": "plates/temp_b15_night_sea.json",
    "camera": {
     "from": {
-     "zoom": 1.18,
+     "zoom": 1.12,
      "focus": [
       540,
       900
@@ -677,27 +681,20 @@
     },
     "ease": "out"
    },
-   "scrim": [
-    [
-     0,
-     700,
-     0.35,
-     1
-    ]
-   ],
+   "scrim": [],
    "text": [
     {
      "text": "AMBITION",
      "preset": "title",
      "size": 88,
-     "y": 470,
+     "y": 380,
      "at": 2.9,
      "stagger": 0.07,
      "dur": 0.6
     },
     {
      "rule": 360,
-     "y": 500,
+     "y": 410,
      "at": 3.6
     },
     {
@@ -705,7 +702,7 @@
      "preset": "legend",
      "size": 20,
      "track": 6,
-     "y": 548,
+     "y": 456,
      "color": "gold",
      "at": 3.9
     },
@@ -715,11 +712,11 @@
      "size": 15,
      "track": 3,
      "x": 700,
-     "y": 118,
+     "y": 1252,
      "align": "r",
      "color": "gold",
      "at": 0.0,
-     "shadow": 0.8
+     "shadow": 1.0
     }
    ]
   }
@@ -735,7 +732,9 @@
   },
   {
    "at": 15.74,
-   "type": "flash"
+   "type": "flash",
+   "strength": 0.5,
+   "dur": 0.25
   },
   {
    "at": 18.16,
@@ -743,7 +742,9 @@
   },
   {
    "at": 23.17,
-   "type": "flash"
+   "type": "flash",
+   "strength": 0.5,
+   "dur": 0.25
   },
   {
    "at": 27.21,
@@ -759,7 +760,9 @@
   },
   {
    "at": 45.81,
-   "type": "flash"
+   "type": "flash",
+   "strength": 0.5,
+   "dur": 0.25
   },
   {
    "at": 48.89,
@@ -767,7 +770,9 @@
   },
   {
    "at": 54.08,
-   "type": "flash"
+   "type": "flash",
+   "strength": 0.5,
+   "dur": 0.25
   },
   {
    "at": 57.54,

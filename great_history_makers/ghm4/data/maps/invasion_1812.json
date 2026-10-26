@@ -2,9 +2,9 @@
  "_about": "June 1812: the Grande Armee crosses the Niemen and marches on Moscow. Empire 1811 shown for context (simplified polygons).",
  "bounds": [
   -10.0,
-  44.0,
-  34.0,
-  66.0
+  48.0,
+  30.0,
+  70.0
  ],
  "ref_lat": 50,
  "ppu": 150,
@@ -231,21 +231,6 @@
  "regions": [
   {
    "source": "ghm2/data/napoleonic_regions.json",
-   "key": "french_allies_1811",
-   "color": "blue",
-   "alpha": 0.55,
-   "hatch": true,
-   "origin": [
-    2.35,
-    48.86
-   ],
-   "reveal": [
-    0.0,
-    0.6
-   ]
-  },
-  {
-   "source": "ghm2/data/napoleonic_regions.json",
    "key": "french_empire_1811",
    "color": "blue",
    "alpha": 0.45,
@@ -328,9 +313,10 @@
    "place": "NIEMEN",
    "text": "NIEMEN · 24 JUNE",
    "dx": 0,
-   "dy": 52,
+   "dy": 48,
    "at": 1.5,
-   "preset": "map_note"
+   "preset": "map_label",
+   "size": 22
   },
   {
    "place": "SMOLENSK",
@@ -350,21 +336,21 @@
  "camera": [
   [
    0.0,
-   12.0,
-   51.0,
-   17.5
+   13.0,
+   51.5,
+   21.0
   ],
   [
    1.6,
-   19.5,
-   53.0,
-   16.5
+   18.5,
+   52.5,
+   21.5
   ],
   [
    4.9,
-   31.5,
-   54.6,
-   15.0
+   27.5,
+   54.0,
+   21.5
   ]
  ],
  "kicker": [
@@ -382,5 +368,6 @@
  "fade_out": [
   4.85,
   5.0
- ]
+ ],
+ "safe_labels": true
 }

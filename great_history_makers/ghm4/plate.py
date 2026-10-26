@@ -42,6 +42,18 @@ def tileable_noise(h, w, sigma, seed):
     return (n - n.min()) / (np.ptp(n) + 1e-6)
 
 
+def periodic_resize(small, W, H):
+    """Resize a tileable noise field to W x H and keep it tileable: pad by wrapping before the cubic resize, then crop.
+    A plain resize leaves a seam at the wrap edge (3-4x the normal step), which the smoke threshold turns into hard
+    straight edges that drift across the frame."""
+    h, w = small.shape
+    p = 3
+    big = cv2.resize(np.pad(small, p, mode="wrap"), (int(round(W * (w + 2 * p) / w)), int(round(H * (h + 2 * p) / h))),
+                     interpolation=cv2.INTER_CUBIC)
+    ox, oy = int(round(W * p / w)), int(round(H * p / h))
+    return np.ascontiguousarray(big[oy:oy + H, ox:ox + W])
+
+
 def ok(roi, min_size=2):
     """A region of interest that lies (at least partly) inside the plate."""
     return roi[2] - roi[0] >= min_size and roi[3] - roi[1] >= min_size
@@ -140,8 +152,8 @@ class Plate:
         if self.smokes:
             n = max(8, int(self.W / 4))
             hN = max(8, int(self.H / 4))
-            self.n1 = cv2.resize(tileable_noise(hN, n, 26 * k / 4, 3), (self.W, self.H), interpolation=cv2.INTER_CUBIC)
-            self.n2 = cv2.resize(tileable_noise(hN, n, 11 * k / 4, 7), (self.W, self.H), interpolation=cv2.INTER_CUBIC)
+            self.n1 = periodic_resize(tileable_noise(hN, n, 26 * k / 4, 3), self.W, self.H)
+            self.n2 = periodic_resize(tileable_noise(hN, n, 11 * k / 4, 7), self.W, self.H)
         self.eyes = []
         for e in m.get("eyes", []):
             up = np.array(e["upper"], np.float32) * k

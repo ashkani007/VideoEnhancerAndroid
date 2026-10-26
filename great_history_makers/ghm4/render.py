@@ -5,6 +5,8 @@
   python -m ghm4.render <storyboard.json> --final         # 1080x1920
   python -m ghm4.render <storyboard.json> --still 7.4     # one frame
   python -m ghm4.render <storyboard.json> --sheet         # contact sheet of 15 frames
+  python -m ghm4.render <storyboard.json> --patch old_picture.mp4 --shots b02,b07   # re-render only these shots
+                                                          (+0.5 s on each side for transitions); other frames are copied
 
 Outputs: <id>_<W>x<H>_picture.mp4 (video only, the input of the narration stage) and <id>_<W>x<H>_preview.mp4
 (picture + procedural music/SFX, for review). Narration and subtitles are added by `python -m ghm4.narrate`.
@@ -21,7 +23,7 @@ storyboard.json:
      "text": [... see ghm4.text.draw_items ...]},
     {"type": "map", "start": 9.0, "end": 15.0, "map": "maps/austerlitz_1805.json"}
   ],
-  "transitions": [{"at": 4.4, "type": "whip"|"ink"|"flash"|"dissolve"|"cut"}],
+  "transitions": [{"at": 4.4, "type": "whip"|"ink"|"flash"|"dissolve"|"cut"}],   flash: optional "strength" 0-1, "dur" s
   "audio": {... mosaic.audio cfg: music, sfx ...}
 }
 Plate focus/zoom are in plate pixels at the plate meta's ref_width; zoom 1 = the plate covers the frame.
@@ -58,6 +60,7 @@ class Renderer:
         self.dur = self.sb["duration"]
         self.shots = sorted(self.sb["shots"], key=lambda s: s["start"])
         self.trans = {round(tr["at"], 3): tr["type"] for tr in self.sb.get("transitions", [])}
+        self.tparams = {round(tr["at"], 3): tr for tr in self.sb.get("transitions", [])}
         yy, xx = np.mgrid[0:OH, 0:OW].astype(np.float32)
         self.XO, self.YO = xx, yy
         vg = self.sb.get("vignette", 0.24)
@@ -194,12 +197,18 @@ class Renderer:
         elif tin == "dissolve" and prev and tl < 0.3:
             a = T.ease((tl + 0.3) / 0.6)
             img = self.render_shot(prev, t) * (1 - a) + img * a
-        if tout == "flash" and t > cut_out - 0.4:
-            f = T.ease((t - (cut_out - 0.4)) / 0.4) ** 2 * 0.92
-            img = img * (1 - f) + FLASH * f
-        if tin == "flash" and prev and tl < 0.4:
-            f = (1 - T.ease(tl / 0.4)) * 0.92
-            img = img * (1 - f) + FLASH * f
+        if tout == "flash":                       # optional "strength" (peak, default 0.92) and "dur" (each side, 0.4 s)
+            fp = self.tparams.get(cut_out, {})
+            fd, fs = fp.get("dur", 0.4), fp.get("strength", 0.92)
+            if t > cut_out - fd:
+                f = T.ease((t - (cut_out - fd)) / fd) ** 2 * fs
+                img = img * (1 - f) + FLASH * f
+        if tin == "flash" and prev:
+            fp = self.tparams.get(cut_in, {})
+            fd, fs = fp.get("dur", 0.4), fp.get("strength", 0.92)
+            if tl < fd:
+                f = (1 - T.ease(tl / fd)) * fs
+                img = img * (1 - f) + FLASH * f
         img = img * self.vignette
         fo = self.sb.get("fade_out", 0.65)
         img = img * (1 - T.ease((t - (self.dur - fo)) / (fo - 0.03)))
@@ -238,6 +247,8 @@ def main():
     ap.add_argument("--sheet", action="store_true")
     ap.add_argument("--workers", type=int, default=max(1, min(4, (os.cpu_count() or 2) - 0)))
     ap.add_argument("--out", default=None)
+    ap.add_argument("--patch", help="existing picture.mp4 to copy unchanged frames from")
+    ap.add_argument("--shots", help="comma-separated shot ids to re-render (with --patch)")
     a = ap.parse_args()
     OW, OH = (1080, 1920) if a.final else (720, 1280)
     R = Renderer(a.storyboard, OW, OH)
@@ -264,13 +275,39 @@ def main():
         return
     n = int(round(R.fps * R.dur))
     picture = os.path.join(out_dir, f"{sid}_{OW}x{OH}_picture.mp4")
+    todo = set(range(n))
+    old = None
+    if a.patch:
+        ids = set(a.shots.split(",")) if a.shots else set()
+        unknown = ids - {s["id"] for s in R.shots}
+        if unknown or not ids:
+            sys.exit(f"--patch needs --shots with known ids (unknown: {sorted(unknown)})")
+        todo = set()
+        for s in R.shots:
+            if s["id"] in ids:
+                todo.update(range(max(0, int((s["start"] - 0.5) * R.fps)), min(n, int(np.ceil((s["end"] + 0.5) * R.fps)))))
+        old = cv2.VideoCapture(a.patch)
+        if int(old.get(cv2.CAP_PROP_FRAME_COUNT)) < n or int(old.get(cv2.CAP_PROP_FRAME_WIDTH)) != OW:
+            sys.exit(f"{a.patch} does not match this storyboard ({n} frames, {OW}x{OH})")
+        picture = picture.replace("_picture.mp4", "_picture_patched.mp4")
+        print(f"patch: re-rendering {len(todo)} of {n} frames ({sorted(ids)}), copying the rest from {a.patch}")
     t0 = time.time()
     ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{OW}x{OH}", "-r", str(R.fps),
                            "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "18" if not a.final else "15", "-profile:v", "high",
                            "-pix_fmt", "yuv420p", "-movflags", "+faststart", picture], stdin=subprocess.PIPE)
     ctx = mp.get_context("spawn" if os.name == "nt" else "fork")
+    order = sorted(todo)
     with ctx.Pool(a.workers, initializer=_init, initargs=(R.path, OW, OH)) as pool:
-        for k, buf in enumerate(pool.imap(_work, range(n), chunksize=2)):
+        rendered = pool.imap(_work, order, chunksize=2)
+        for k in range(n):
+            if old is not None:
+                ok, fr = old.read()
+                if not ok:
+                    sys.exit(f"could not read frame {k} of {a.patch}")
+            if k in todo:
+                buf = next(rendered)
+            else:
+                buf = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB).tobytes()
             ff.stdin.write(buf)
             if k % 60 == 0:
                 print(f"frame {k}/{n} {time.time() - t0:.0f}s", flush=True)

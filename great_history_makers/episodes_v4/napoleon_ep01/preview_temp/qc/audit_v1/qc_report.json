@@ -1,0 +1,319 @@
+{
+ "video": "episodes_v4/napoleon_ep01/preview_temp/output/Napoleon_Ep01_TEMP_PREVIEW_720x1280.mp4",
+ "size": [
+  720,
+  1280
+ ],
+ "fps": 30.0,
+ "frames": 2046,
+ "expected_frames": 2046,
+ "shots": [
+  {
+   "id": "b01_hook",
+   "type": "plate",
+   "start": 0.0,
+   "end": 4.95,
+   "sharpness_rel": 2.064,
+   "motion": 0.00774,
+   "luma": 0.342,
+   "flags": []
+  },
+  {
+   "id": "b02_coronation",
+   "type": "plate",
+   "start": 4.95,
+   "end": 10.25,
+   "sharpness_rel": 0.125,
+   "motion": 0.00342,
+   "luma": 0.225,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "WARN",
+     "soft: sharpness 0.13x the episode median"
+    ]
+   ]
+  },
+  {
+   "id": "b03_victories",
+   "type": "map",
+   "start": 10.25,
+   "end": 15.74,
+   "sharpness_rel": 1.487,
+   "motion": 0.00629,
+   "luma": 0.414,
+   "flags": [
+    [
+     "WARN",
+     "map label 'GREAT BRITAIN' cut by the frame edge at 10.25s"
+    ],
+    [
+     "WARN",
+     "map label 'RUSSIAN EMPIRE' cut by the frame edge at 10.25s"
+    ],
+    [
+     "WARN",
+     "map label 'OTTOMAN EMPIRE' cut by the frame edge at 10.25s"
+    ],
+    [
+     "WARN",
+     "map label 'SPAIN' cut by the frame edge at 10.25s"
+    ],
+    [
+     "WARN",
+     "map label 'ATLANTIC' cut by the frame edge at 10.25s"
+    ],
+    [
+     "WARN",
+     "map label 'WAGRAM 1809' cut by the frame edge at 13.0s"
+    ]
+   ]
+  },
+  {
+   "id": "b04_more",
+   "type": "plate",
+   "start": 15.74,
+   "end": 18.16,
+   "sharpness_rel": 0.538,
+   "motion": 0.0091,
+   "luma": 0.392,
+   "flags": []
+  },
+  {
+   "id": "b05_invasion",
+   "type": "map",
+   "start": 18.16,
+   "end": 23.17,
+   "sharpness_rel": 1.575,
+   "motion": 0.02575,
+   "luma": 0.472,
+   "flags": [
+    [
+     "WARN",
+     "map label 'GREAT BRITAIN' cut by the frame edge at 18.16s"
+    ],
+    [
+     "WARN",
+     "map label 'RUSSIAN EMPIRE' cut by the frame edge at 18.16s"
+    ],
+    [
+     "WARN",
+     "map label 'OTTOMAN EMPIRE' cut by the frame edge at 18.16s"
+    ],
+    [
+     "WARN",
+     "map label 'ATLANTIC' cut by the frame edge at 18.16s"
+    ],
+    [
+     "WARN",
+     "map label 'BLACK SEA' cut by the frame edge at 18.16s"
+    ],
+    [
+     "WARN",
+     "map label 'PARIS' cut by the frame edge at 18.91s"
+    ],
+    [
+     "WARN",
+     "map label 'BALTIC SEA' cut by the frame edge at 22.16s"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 8 in a row from 23.10s (transition too strong?)"
+    ]
+   ]
+  },
+  {
+   "id": "b06_moscow",
+   "type": "plate",
+   "start": 23.17,
+   "end": 27.21,
+   "sharpness_rel": 1.985,
+   "motion": 0.00659,
+   "luma": 0.175,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 8 in a row from 23.10s (transition too strong?)"
+    ]
+   ]
+  },
+  {
+   "id": "b07_retreat",
+   "type": "plate",
+   "start": 27.21,
+   "end": 34.84,
+   "sharpness_rel": 0.821,
+   "motion": 0.00509,
+   "luma": 0.591,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ]
+   ]
+  },
+  {
+   "id": "b08_coalition",
+   "type": "map",
+   "start": 34.84,
+   "end": 37.17,
+   "sharpness_rel": 1.821,
+   "motion": 0.00823,
+   "luma": 0.381,
+   "flags": [
+    [
+     "WARN",
+     "map label 'RUSSIA' cut by the frame edge at 34.84s"
+    ],
+    [
+     "WARN",
+     "map label 'ATLANTIC' cut by the frame edge at 34.84s"
+    ],
+    [
+     "WARN",
+     "map labels overlap or touch: RUSSIA / PRUSSIA at 35.84s"
+    ],
+    [
+     "WARN",
+     "map labels overlap or touch: AUSTRIA / LEIPZIG at 36.84s"
+    ]
+   ]
+  },
+  {
+   "id": "b09_elba",
+   "type": "map",
+   "start": 37.17,
+   "end": 45.81,
+   "sharpness_rel": 1.045,
+   "motion": 0.00787,
+   "luma": 0.455,
+   "flags": [
+    [
+     "WARN",
+     "map label 'ITALY' cut by the frame edge at 37.17s"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 6 in a row from 45.77s (transition too strong?)"
+    ]
+   ]
+  },
+  {
+   "id": "b10_waterloo",
+   "type": "plate",
+   "start": 45.81,
+   "end": 48.89,
+   "sharpness_rel": 1.127,
+   "motion": 0.01269,
+   "luma": 0.441,
+   "flags": [
+    [
+     "WARN",
+     "source 491x840 enlarged 1.77x at zoom 1.16 (soft)"
+    ],
+    [
+     "WARN",
+     "text '18 JUNE 1815' low contrast at 47.01s (ratio 1.53)"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 6 in a row from 45.77s (transition too strong?)"
+    ]
+   ]
+  },
+  {
+   "id": "b11_helena_map",
+   "type": "map",
+   "start": 48.89,
+   "end": 54.08,
+   "sharpness_rel": 0.648,
+   "motion": 0.01542,
+   "luma": 0.309,
+   "flags": [
+    [
+     "WARN",
+     "map label 'EUROPE' cut by the frame edge at 48.89s"
+    ],
+    [
+     "WARN",
+     "map label 'ATLANTIC OCEAN' cut by the frame edge at 49.89s"
+    ],
+    [
+     "WARN",
+     "map label 'AFRICA' cut by the frame edge at 52.89s"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 8 in a row from 53.97s (transition too strong?)"
+    ]
+   ]
+  },
+  {
+   "id": "b12_helena",
+   "type": "plate",
+   "start": 54.08,
+   "end": 57.54,
+   "sharpness_rel": 0.185,
+   "motion": 0.00547,
+   "luma": 0.29,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "WARN",
+     "washed-out frames: 8 in a row from 53.97s (transition too strong?)"
+    ],
+    [
+     "WARN",
+     "soft: sharpness 0.19x the episode median"
+    ]
+   ]
+  },
+  {
+   "id": "b13_legacy",
+   "type": "plate",
+   "start": 57.54,
+   "end": 62.18,
+   "sharpness_rel": 0.475,
+   "motion": 0.00404,
+   "luma": 0.31,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ]
+   ]
+  },
+  {
+   "id": "b14_ending",
+   "type": "plate",
+   "start": 62.18,
+   "end": 68.2,
+   "sharpness_rel": 0.2,
+   "motion": 0.00629,
+   "luma": 0.086,
+   "flags": [
+    [
+     "INFO",
+     "temporary stand-in plate"
+    ],
+    [
+     "WARN",
+     "soft: sharpness 0.20x the episode median"
+    ]
+   ]
+  }
+ ],
+ "global": [],
+ "errors": 0,
+ "warnings": 32
+}

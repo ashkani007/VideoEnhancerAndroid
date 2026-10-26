@@ -27,6 +27,9 @@ storyboard timed to the narration → render → narration + captions → verifi
 | 8 | Picture render (720p preview, then 1080p) | cloud | `python -m ghm4.render <sb>.timed.json [--final]` |
 | 9 | Narration mix (ducked music and SFX) and burned subtitles | cloud | `python -m ghm4.narrate <sb> finish <picture.mp4>` |
 | 10 | Verification and branding | cloud | `tools/verify_delivery.py`, `tools/brand.py` |
+| 11 | Visual QC: flags suspicious shots (black / frozen / washed-out frames, soft or over-enlarged plates, clipped or overlapping map labels, low-contrast titles, bright subtitle background) and writes a per-shot contact sheet | cloud | `python -m ghm4.qc <storyboard> <video>` (also run by `ghm4.episode render`) |
+| – | Re-render only the shots that failed review; other frames are copied | cloud | `python -m ghm4.render <sb> --patch <old_picture.mp4> --shots b02,b07` |
+| – | Cloud-side 2x Real-ESRGAN for small plates or crops (hash-pinned weights, no PyTorch) | cloud | `python tools/esrgan_cpu.py <RealESRGAN_x4plus.pth> in.png out.png` |
 
 Publishing and daily scheduling are **not** part of the pipeline until the client authorises them.
 

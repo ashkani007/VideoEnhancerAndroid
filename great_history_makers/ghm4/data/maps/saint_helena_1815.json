@@ -112,10 +112,10 @@
   {
    "place": "PLYMOUTH",
    "text": "PLYMOUTH · AUG 1815",
-   "dx": -34,
-   "dy": 64,
+   "dx": 36,
+   "dy": 8,
    "at": 0.8,
-   "align": "r"
+   "align": "l"
   },
   {
    "place": "SAINT HELENA",
@@ -130,7 +130,8 @@
    "dx": 0,
    "dy": 96,
    "at": 4.2,
-   "preset": "map_note"
+   "preset": "map_label",
+   "size": 20
   }
  ],
  "camera": [
@@ -176,5 +177,6 @@
  "fade_out": [
   5.05,
   5.19
- ]
+ ],
+ "safe_labels": true
 }
