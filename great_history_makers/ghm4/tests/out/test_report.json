@@ -1,21 +1,21 @@
 {
  "golden": {
   "passed": true,
-  "seconds": 38.3,
+  "seconds": 44.7,
   "detail": {
-   "port@1.5": 99.0,
-   "port@4.3": 99.0,
+   "port@1.5": 90.7,
+   "port@4.3": 97.0,
    "port@7.49": 99.0,
    "port@9.0": 99.0,
    "port@12.6": 99.0,
-   "port@15.1": 99.0,
-   "port@17.0": 99.0,
-   "demo@2.0": 99.0,
+   "port@15.1": 78.8,
+   "port@17.0": 72.6,
+   "demo@2.0": 93.0,
    "demo@7.55": 99.0,
    "demo@10.25": 99.0,
    "demo@12.5": 99.0,
    "demo@14.6": 99.0,
-   "demo@16.6": 99.0
+   "demo@16.6": 66.0
   }
  },
  "plate_sizes": {
@@ -27,41 +27,41 @@
      768,
      1344
     ],
-    "seconds_per_1080p_frame": 0.31
+    "seconds_per_1080p_frame": 0.23
    },
    "hires_1152x2016": {
     "work_size": [
      1152,
      2016
     ],
-    "seconds_per_1080p_frame": 0.3
+    "seconds_per_1080p_frame": 0.4
    },
    "upscaled_2304x4032": {
     "work_size": [
      1935,
      3387
     ],
-    "seconds_per_1080p_frame": 0.62
+    "seconds_per_1080p_frame": 0.67
    },
    "landscape_1920x1080": {
     "work_size": [
      1920,
      1080
     ],
-    "seconds_per_1080p_frame": 0.43
+    "seconds_per_1080p_frame": 0.31
    },
    "very_tall_600x1600": {
     "work_size": [
      600,
      1600
     ],
-    "seconds_per_1080p_frame": 0.26
+    "seconds_per_1080p_frame": 0.28
    }
   }
  },
  "robustness": {
   "passed": true,
-  "seconds": 0.4,
+  "seconds": 0.3,
   "detail": {
    "flags_kept": 0,
    "eyes_kept": 0,
@@ -133,6 +133,17 @@
    ],
    "demo_conflicts": 0,
    "port_conflicts_detected": 10
+  }
+ },
+ "qc": {
+  "passed": true,
+  "seconds": 1.4,
+  "detail": {
+   "flags": {
+    "p": "source 100x180 enlarged 4.32x at zoom 1.2 (blurry) | text 'A TITLE FAR TOO WIDE FOR THE FRAME' spans x -738-1458 (frame 0-720): clipped | 15 black frames from 0.33s | frozen for 1.1s from 0.83s | 2 luma jumps (flicker) e.g. 0.33s | little motion (median frame change 0.0000)",
+    "m": "map label 'RUSSIA' cut by the frame edge at 2.0s | map label 'ATLANTIC' cut by the frame edge at 2.0s | map label 'A VERY LONG LABEL THAT RUNS OFF THE FRAME' cut by the frame edge at 2.5s | washed-out frames: 10 in a row from 2.33s (transition too strong?) | 1 luma jumps (flicker) e.g. 2.67s"
+   },
+   "seam": 0.88
   }
  }
 }

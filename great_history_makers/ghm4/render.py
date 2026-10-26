@@ -7,6 +7,7 @@
   python -m ghm4.render <storyboard.json> --sheet         # contact sheet of 15 frames
   python -m ghm4.render <storyboard.json> --patch old_picture.mp4 --shots b02,b07   # re-render only these shots
                                                           (+0.5 s on each side for transitions); other frames are copied
+                                                          (patched files are encoded at CRF 10 to limit generation loss)
 
 Outputs: <id>_<W>x<H>_picture.mp4 (video only, the input of the narration stage) and <id>_<W>x<H>_preview.mp4
 (picture + procedural music/SFX, for review). Narration and subtitles are added by `python -m ghm4.narrate`.
@@ -293,7 +294,7 @@ def main():
         print(f"patch: re-rendering {len(todo)} of {n} frames ({sorted(ids)}), copying the rest from {a.patch}")
     t0 = time.time()
     ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{OW}x{OH}", "-r", str(R.fps),
-                           "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "18" if not a.final else "15", "-profile:v", "high",
+                           "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "10" if a.patch else ("18" if not a.final else "15"), "-profile:v", "high",
                            "-pix_fmt", "yuv420p", "-movflags", "+faststart", picture], stdin=subprocess.PIPE)
     ctx = mp.get_context("spawn" if os.name == "nt" else "fork")
     order = sorted(todo)

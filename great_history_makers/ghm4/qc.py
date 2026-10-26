@@ -30,7 +30,7 @@ from PIL import Image, ImageDraw
 
 from . import text as T
 
-CAPTION_BAND = (900, 990)          # design units (720x1280); captions sit at y 1410/1920
+CAPTION_BAND = (860, 990)          # design units (720x1280): titles must stay above y 840 (ghm4.narrate check)
 LIMITS = {"washout_frames": 6, "washout_std": 0.07, "caption_bg_luma": 0.70, "text_contrast": 1.6, "black_luma": 0.035, "frozen_s": 1.0, "frozen_diff": 0.0008, "flicker_jump": 0.06, "rel_sharp": 0.40,
           "upscale_warn": 1.6, "upscale_error": 2.4, "min_motion": 0.0015}
 
@@ -87,7 +87,7 @@ def static_checks(sb, sb_dir, OW, OH):
             if x0 < 8 or x1 > 712:
                 fl.append(("ERROR", f"text '{it['text']}' spans x {x0:.0f}-{x1:.0f} (frame 0-720): clipped"))
             y = it.get("y", 0)
-            if caps and CAPTION_BAND[0] - 20 <= y <= CAPTION_BAND[1] + 40:
+            if caps and CAPTION_BAND[0] - 20 < y <= CAPTION_BAND[1] + 40:
                 fl.append(("WARN", f"text '{it['text']}' at y {y} sits in the caption band"))
         out[sh["id"]] = fl
     return out

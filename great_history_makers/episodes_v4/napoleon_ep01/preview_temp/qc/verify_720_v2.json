@@ -1,0 +1,172 @@
+{
+ "file": "/home/user/VideoEnhancerAndroid/great_history_makers/episodes_v4/napoleon_ep01/preview_temp/output/Napoleon_Ep01_TEMP_PREVIEW_v2_720x1280.mp4",
+ "container": {
+  "width": 720,
+  "height": 1280,
+  "fps": "30/1",
+  "video": "h264",
+  "audio": "aac",
+  "sample_rate": "48000",
+  "duration": 68.2,
+  "ok": true
+ },
+ "narration": {
+  "corr": 0.975,
+  "offset_ms": 0.0,
+  "speech_rms_dbfs": -16.4,
+  "pause_rms_dbfs": -26.6,
+  "ok": true
+ },
+ "captions": {
+  "cues": 27,
+  "cues_with_text": 27,
+  "median_on": 0.0351,
+  "median_in_pauses": 0.0,
+  "pauses_checked": 15,
+  "ok": true,
+  "cue_start_vs_first_word_max_ms": 0.0,
+  "wording_matches_transcript": true
+ },
+ "logo": {
+  "ok": true,
+  "skipped": "unbranded preview"
+ },
+ "passed": true,
+ "caption_rows": [
+  {
+   "start": 0.0,
+   "end": 1.9,
+   "score": 0.0355
+  },
+  {
+   "start": 1.93,
+   "end": 4.87,
+   "score": 0.0466
+  },
+  {
+   "start": 5.1,
+   "end": 7.23,
+   "score": 0.042
+  },
+  {
+   "start": 7.26,
+   "end": 10.09,
+   "score": 0.0351
+  },
+  {
+   "start": 10.4,
+   "end": 12.94,
+   "score": 0.0447
+  },
+  {
+   "start": 12.97,
+   "end": 15.55,
+   "score": 0.0447
+  },
+  {
+   "start": 15.89,
+   "end": 17.99,
+   "score": 0.0325
+  },
+  {
+   "start": 18.31,
+   "end": 20.51,
+   "score": 0.0311
+  },
+  {
+   "start": 20.54,
+   "end": 23.04,
+   "score": 0.0351
+  },
+  {
+   "start": 23.32,
+   "end": 24.61,
+   "score": 0.0244
+  },
+  {
+   "start": 24.64,
+   "end": 27.09,
+   "score": 0.0413
+  },
+  {
+   "start": 27.36,
+   "end": 29.03,
+   "score": 0.0244
+  },
+  {
+   "start": 29.31,
+   "end": 31.68,
+   "score": 0.0343
+  },
+  {
+   "start": 31.71,
+   "end": 34.74,
+   "score": 0.0423
+  },
+  {
+   "start": 34.99,
+   "end": 36.54,
+   "score": 0.0222
+  },
+  {
+   "start": 37.32,
+   "end": 40.08,
+   "score": 0.0348
+  },
+  {
+   "start": 40.11,
+   "end": 41.93,
+   "score": 0.0266
+  },
+  {
+   "start": 42.25,
+   "end": 43.68,
+   "score": 0.0367
+  },
+  {
+   "start": 43.71,
+   "end": 45.65,
+   "score": 0.0316
+  },
+  {
+   "start": 45.96,
+   "end": 48.57,
+   "score": 0.0413
+  },
+  {
+   "start": 49.04,
+   "end": 52.7,
+   "score": 0.0595
+  },
+  {
+   "start": 52.73,
+   "end": 53.83,
+   "score": 0.0156
+  },
+  {
+   "start": 54.23,
+   "end": 57.07,
+   "score": 0.034
+  },
+  {
+   "start": 57.69,
+   "end": 60.02,
+   "score": 0.0503
+  },
+  {
+   "start": 60.05,
+   "end": 62.06,
+   "score": 0.0253
+  },
+  {
+   "start": 62.33,
+   "end": 63.4,
+   "score": 0.0279
+  },
+  {
+   "start": 63.43,
+   "end": 66.16,
+   "score": 0.0439
+  }
+ ]
+}
