@@ -1,7 +1,7 @@
 {
  "golden": {
   "passed": true,
-  "seconds": 42.2,
+  "seconds": 38.3,
   "detail": {
    "port@1.5": 99.0,
    "port@4.3": 99.0,
@@ -20,48 +20,48 @@
  },
  "plate_sizes": {
   "passed": true,
-  "seconds": 7.6,
+  "seconds": 11.1,
   "detail": {
    "sdxl_native_768x1344": {
     "work_size": [
      768,
      1344
     ],
-    "seconds_per_1080p_frame": 0.22
+    "seconds_per_1080p_frame": 0.31
    },
    "hires_1152x2016": {
     "work_size": [
      1152,
      2016
     ],
-    "seconds_per_1080p_frame": 0.24
+    "seconds_per_1080p_frame": 0.3
    },
    "upscaled_2304x4032": {
     "work_size": [
      1935,
      3387
     ],
-    "seconds_per_1080p_frame": 0.49
+    "seconds_per_1080p_frame": 0.62
    },
    "landscape_1920x1080": {
     "work_size": [
      1920,
      1080
     ],
-    "seconds_per_1080p_frame": 0.24
+    "seconds_per_1080p_frame": 0.43
    },
    "very_tall_600x1600": {
     "work_size": [
      600,
      1600
     ],
-    "seconds_per_1080p_frame": 0.18
+    "seconds_per_1080p_frame": 0.26
    }
   }
  },
  "robustness": {
   "passed": true,
-  "seconds": 0.3,
+  "seconds": 0.4,
   "detail": {
    "flags_kept": 0,
    "eyes_kept": 0,
@@ -71,7 +71,7 @@
  },
  "transitions": {
   "passed": true,
-  "seconds": 9.9,
+  "seconds": 11.5,
   "detail": {
    "whip": {
     "max_step": 0.334,
@@ -133,54 +133,6 @@
    ],
    "demo_conflicts": 0,
    "port_conflicts_detected": 10
-  }
- },
- "masks": {
-  "passed": true,
-  "seconds": 59.2,
-  "detail": {
-   "seconds": 59.2,
-   "output": [
-    "hybrid   full         PASS mask      37.6s  min figure 0.976  max bg leak 0.000",
-    "hybrid   portrait     PASS mask      10.4s  min figure 0.991  max bg leak 0.000",
-    "hybrid   battlefield  PASS fallback   8.3s  min figure 0.000  max bg leak 0.000",
-    "hybrid (production method): PASS"
-   ]
-  }
- },
- "worker": {
-  "passed": true,
-  "seconds": 5.2,
-  "detail": {
-   "seconds": 5.2,
-   "output": [
-    "  rejected (unknown key): unknown shot keys: ['command']",
-    "  rejected (too many seeds): b1_portrait: seeds must be 1-8 integers",
-    "  rejected (lora path): b1_portrait: lora entries are {name: file.safetensors, strength}",
-    "  rejected (non-loopback server): refusing ComfyUI server http://203.0.113.5:8188: only 127.0.0.1 / localhost is allowed",
-    "  rejected (node allow-list): workflow uses node types outside the allow-list: ['ExecutePythonCode']",
-    "graph building: LoRA rewiring, node allow-list and all workflow templates ok",
-    "  -> done, 8 images",
-    "end-to-end: 8 graphs accepted, results pushed to the remote (cuda:0 NVIDIA GeForce RTX 4060 (mock), 8.0 GB)",
-    "idempotence: a finished job is not run again",
-    "dedicated-repository layout: results pushed to main without any path or branch settings",
-    "credential-bearing remote URL: refused, token not echoed",
-    "ALL WORKER TESTS PASSED"
-   ]
-  }
- },
- "episode": {
-  "passed": true,
-  "seconds": 83.3,
-  "detail": {
-   "seconds": 83.3,
-   "output": [
-    "queued jobs/queue/zz_pipeline_test_v1.json: 2 illustrations x seeds = 8 images (workflow sdxl_style_face). Commit + push, then run run_worker.bat on the PC.",
-    "b1_portrait: 1152x2016, matte yes, flags 0, sky 426, to annotate: eyes (blink), hand pivot (optional)",
-    "b2_battle: 1152x2016, matte no, flags 3, sky 308",
-    "storyboard.json: 3 shots, 18.2s, transitions ['whip', 'ink']",
-    "EPISODE PIPELINE TEST PASSED (stand-in images)"
-   ]
   }
  }
 }

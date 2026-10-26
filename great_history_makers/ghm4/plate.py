@@ -14,7 +14,9 @@ plate.json (coordinates in plate pixels at `ref_width`; they are rescaled to the
   "wind": [{"box": [...], "amp": 2.0, "rate": 0.6, "feather": 20}],           cloth ripple (foreground layer)
   "sway": [{"box": [...], "pivot": [x, y], "angle": 1.5, "rate": 0.35, "feather": 20, "at": 1.0}],   hand / forearm motion
   "eyes": [{"upper": [[x,y],...], "lower": [[x,y],...], "close_y": 320, "skin": [x0,y0,x1,y1]}],
-  "sun": {"x": 905, "y": 590, "r": 160}
+  "sun": {"x": 905, "y": 590, "r": 160},
+  "particles": [{"kind": "snow"|"embers"|"ash", "box": [...], "count": 300, "size": 2.2, "speed": 60, "seed": 1}],
+  "flicker": [{"x": 500, "y": 900, "r": 300, "amp": 0.12, "color": [1.0, 0.55, 0.2]}]      firelight that breathes
 }
 """
 import json
@@ -218,6 +220,19 @@ class Plate:
             bg[y0:y1, x0:x1] = bg[y0:y1, x0:x1] * (1 - a[..., None]) + col * a[..., None]
         for (tc, px, py) in puffs:
             self._puff(bg, px * k, py * k, tl - tc)
+        for fl in m.get("flicker", []):
+            r = fl.get("r", 300) * k
+            roi = self.box([fl["x"] - 2 * fl.get("r", 300), fl["y"] - 2 * fl.get("r", 300), fl["x"] + 2 * fl.get("r", 300),
+                            fl["y"] + 2 * fl.get("r", 300)])
+            if not ok(roi):
+                continue
+            XX, YY = self.grid(roi)
+            ph = fl.get("phase", 0.0)
+            lvl = 0.55 + 0.25 * math.sin(7.1 * t + ph) + 0.2 * math.sin(12.7 * t + 2 * ph) * math.sin(3.3 * t)
+            gl = np.exp(-(((XX - fl["x"] * k) / r) ** 2 + ((YY - fl["y"] * k) / r) ** 2)) * fl.get("amp", 0.12) * lvl
+            bg[roi[1]:roi[3], roi[0]:roi[2]] += gl[..., None] * np.array(fl.get("color", [1.0, 0.55, 0.2]), np.float32)
+        for pc in m.get("particles", []):
+            self._particles(bg, pc, t)
         sun = m.get("sun")
         roi = None
         if sun:
@@ -229,6 +244,43 @@ class Plate:
             gl = np.exp(-(((XX - sun["x"] * k) / r) ** 2 + ((YY - sun["y"] * k) / (0.9 * r)) ** 2)) * 0.05 * (0.5 + 0.5 * math.sin(0.8 * t))
             bg[roi[1]:roi[3], roi[0]:roi[2]] += gl[..., None] * np.array([1.0, 0.75, 0.45], np.float32)
         return np.clip(bg, 0, 1)
+
+    def _particles(self, bg, pc, t):
+        """Snow falls with a sideways drift; embers and ash rise and flicker. Deterministic in t (any frame order)."""
+        k = self.k
+        x0, y0, x1, y1 = self.box(pc.get("box", [0, 0, self.W / k, self.H / k]))
+        if not ok((x0, y0, x1, y1)):
+            return
+        kind = pc.get("kind", "snow")
+        n = pc.get("count", 300)
+        r = np.random.default_rng(pc.get("seed", 1))
+        px, py = r.uniform(0, 1, n), r.uniform(0, 1, n)
+        depth = r.uniform(0.35, 1.0, n)                                  # near flakes are bigger, faster, brighter
+        ph = r.uniform(0, 2 * math.pi, n)
+        w, h = x1 - x0, y1 - y0
+        sp = pc.get("speed", 60) * k * depth
+        if kind == "snow":
+            ys = y0 + (py * h + sp * t) % h
+            xs = x0 + (px * w + 18 * k * np.sin(0.7 * t + ph) * depth + pc.get("wind", 25) * k * t * depth) % w
+            col, alpha = np.array([0.95, 0.96, 1.0], np.float32), 0.85 * depth
+        else:
+            ys = y1 - (py * h + sp * t) % h
+            xs = x0 + (px * w + 22 * k * np.sin(1.3 * t + ph) * depth) % w
+            if kind == "embers":
+                col = np.array([1.0, 0.62, 0.22], np.float32)
+                alpha = depth * (0.55 + 0.45 * np.sin(9 * t + 3 * ph)) * np.clip((ys - y0) / (0.35 * h), 0, 1)
+            else:
+                col, alpha = np.array([0.55, 0.52, 0.50], np.float32), 0.5 * depth
+        size = pc.get("size", 2.2) * k * depth
+        lay = np.zeros(bg.shape[:2], np.float32)
+        for x, y, s_, a in zip(xs, ys, size, alpha):
+            if a > 0.02:
+                cv2.circle(lay, (int(x * 4), int(y * 4)), max(1, int(s_ * 4)), float(min(1.0, a)), -1, cv2.LINE_AA, shift=2)
+        lay = cv2.GaussianBlur(lay, (0, 0), max(0.6, 0.5 * k))
+        if kind == "embers":
+            bg += (lay[..., None] * col) * 1.2
+        else:
+            bg[:] = bg * (1 - lay[..., None]) + col * lay[..., None]
 
     _BLOBS = [(0, 0, 1.0), (0.85, 0.2, 0.78), (-0.8, 0.25, 0.72), (0.35, -0.6, 0.74), (-0.38, -0.5, 0.62), (1.45, 0.45, 0.52),
               (-1.4, 0.5, 0.5), (0.0, 0.55, 0.7)]

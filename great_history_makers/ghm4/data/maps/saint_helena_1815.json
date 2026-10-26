@@ -1,0 +1,180 @@
+{
+ "_about": "August-October 1815: HMS Northumberland carries Napoleon from Plymouth to Saint Helena (arrived 15 Oct 1815). Track simplified via Madeira. Coast: Natural Earth 1:50m.",
+ "bounds": [
+  -45.0,
+  40.0,
+  -35.0,
+  62.0
+ ],
+ "ref_lat": 20,
+ "ppu": 42,
+ "element_scale": 3.4,
+ "coast": "ghm4/data/atlantic_ne50m.json",
+ "region_labels": [
+  [
+   "ATLANTIC OCEAN",
+   -23.0,
+   -3.0,
+   130,
+   "sea"
+  ],
+  [
+   "AFRICA",
+   6.0,
+   13.0,
+   140,
+   "land"
+  ],
+  [
+   "EUROPE",
+   14.0,
+   50.0,
+   120,
+   "land"
+  ]
+ ],
+ "places": {
+  "PLYMOUTH": [
+   -4.14,
+   50.37
+  ],
+  "MADEIRA": [
+   -16.9,
+   32.7
+  ],
+  "SAINT HELENA": [
+   -5.71,
+   -15.96
+  ],
+  "PARIS": [
+   2.35,
+   48.86
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     -4.6,
+     49.8
+    ],
+    [
+     -11.0,
+     42.0
+    ],
+    [
+     -16.2,
+     33.2
+    ],
+    [
+     -20.0,
+     18.0
+    ],
+    [
+     -15.0,
+     0.0
+    ],
+    [
+     -6.3,
+     -15.4
+    ]
+   ],
+   "draw": [
+    0.9,
+    3.75
+   ],
+   "width": 30,
+   "head": 84
+  }
+ ],
+ "dots": [
+  [
+   "PLYMOUTH",
+   0.7,
+   15
+  ],
+  [
+   "SAINT HELENA",
+   3.75,
+   16
+  ]
+ ],
+ "rings": [
+  [
+   "SAINT HELENA",
+   3.8,
+   4.5,
+   "red"
+  ]
+ ],
+ "labels": [
+  {
+   "place": "PLYMOUTH",
+   "text": "PLYMOUTH · AUG 1815",
+   "dx": -34,
+   "dy": 64,
+   "at": 0.8,
+   "align": "r"
+  },
+  {
+   "place": "SAINT HELENA",
+   "text": "SAINT HELENA",
+   "dx": 0,
+   "dy": -74,
+   "at": 3.85
+  },
+  {
+   "place": "SAINT HELENA",
+   "text": "≈ 1,900 KM FROM AFRICA",
+   "dx": 0,
+   "dy": 96,
+   "at": 4.2,
+   "preset": "map_note"
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   -2.0,
+   47.0,
+   26.0
+  ],
+  [
+   1.4,
+   -8.0,
+   30.0,
+   44.0
+  ],
+  [
+   2.9,
+   -9.0,
+   5.0,
+   48.0
+  ],
+  [
+   4.8,
+   -6.0,
+   -14.5,
+   26.0
+  ]
+ ],
+ "kicker": [
+  "THE FINAL EXILE",
+  0.05
+ ],
+ "dates": [
+  [
+   0.0,
+   "1815"
+  ],
+  [
+   3.75,
+   "OCTOBER 1815"
+  ]
+ ],
+ "fade_out": [
+  5.05,
+  5.19
+ ]
+}

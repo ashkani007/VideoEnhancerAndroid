@@ -10,5 +10,11 @@
   "after about 20 approved Napoleon images: train an SDXL character LoRA locally (OneTrainer or kohya_ss, 8 GB settings) and list it in loras; keep the face adapter at a lower weight"
  ],
  "history_note": "The approved look is artistic (client reference). In 1805 Napoleon usually wore the green colonel's uniform of the Chasseurs a Cheval of the Guard, often under a grey greatcoat, with a plain bicorne.",
- "face_reference": "assets/references/napoleon_face_ref_01.png"
+ "face_reference": "assets/references/napoleon_face_ref_01.png",
+ "variants": {
+  "artillery_1793": "Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 24, long hair falling to the collar, no hat, blue French artillery officer's coat with red facings and gold buttons, white breeches",
+  "coronation_1804": "Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 35, short hair, golden laurel wreath on his head, no hat, crimson velvet coronation mantle embroidered with golden bees, broad ermine collar and lining, white satin robes",
+  "campaign_1812": "Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 43, fuller face, black bicorne worn side-on with a tricolour cockade, long grey redingote greatcoat over a green chasseur coat, white breeches, black riding boots",
+  "exile_1820": "Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 51, heavier build, pale tired face, receding dark hair, green civilian-cut coat, white waistcoat and breeches, black bicorne in his hand"
+ }
 }

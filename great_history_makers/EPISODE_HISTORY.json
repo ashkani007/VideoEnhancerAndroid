@@ -1,6 +1,6 @@
 {
  "channel": "great_history_makers_en",
- "updated": "2026-10-25",
+ "updated": "2026-10-26",
  "episodes": [
   {
    "id": "ep01",
@@ -160,6 +160,30 @@
     "client to listen-check pronunciation",
     "YouTube handle not verified",
     "final 1080x1920 after approval"
+   ]
+  },
+  {
+   "id": "ep01_v4_napoleon",
+   "topic": "Napoleon - from artillery officer to Saint Helena (v4 pipeline, full length)",
+   "goals": [
+    "first full-length v4 episode: one composition per narrative beat (9 illustrations + 5 animated maps), cut on the aligned words of the approved narration",
+    "readable motion graphics throughout: maps with dated captions, kinetic words on the retreat, nothing in the caption band",
+    "zero new paid credits: reuse the approved Ep02 ElevenLabs take unchanged"
+   ],
+   "versions": [
+    {
+     "v": "TEMP preview",
+     "dir": "episodes_v4/napoleon_ep01/preview_temp",
+     "date": "2026-10-26",
+     "format": "720x1280 30fps",
+     "decisions": [
+      "illustration beats use crops of the one approved style frame (3 beats) or labelled environment stand-ins (6 beats) until the ComfyUI job napoleon_ep01_v1 returns",
+      "5 maps: victories (no legend), invasion 1812, coalition 1813, Elba and the Hundred Days, Saint Helena (Natural Earth Atlantic coast)",
+      "new plate effects: particles (snow, embers, ash) and firelight flicker",
+      "character bible variants (1793, 1804 coronation, 1812, 1820 exile) for the prompts"
+     ],
+     "outcome": "awaiting client review; not publishable (stand-ins)"
+    }
    ]
   }
  ],

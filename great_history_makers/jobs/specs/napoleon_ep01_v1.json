@@ -1,0 +1,152 @@
+{
+ "job_id": "napoleon_ep01_v1",
+ "created": "",
+ "notes": "illustrations for episode napoleon_ep01",
+ "style": "ghm_cinematic_v1",
+ "workflow": "sdxl_style_face",
+ "shots": [
+  {
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "cinematic low-angle wide shot, the young officer standing on the left third of the frame on an earthwork gun battery, full figure, gunners and a bronze field cannon behind him, harbour and fortress far below on the right",
+   "scene": "Siege of Toulon, December 1793, young artillery captain Napoleon Bonaparte pointing toward the enemy forts, gunners ramming a cannon, gabions and powder smoke, British warships in the harbour",
+   "lighting": "dawn light from the right, warm orange rim light on smoke, cool blue shadows",
+   "variants": {
+    "napoleon": "artillery_1793"
+   },
+   "negative_extra": "crown, bicorne with plume, cavalry",
+   "id": "b01_toulon",
+   "seeds": [
+    3101,
+    3102,
+    3103,
+    3104
+   ]
+  },
+  {
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "cinematic medium-wide shot from the nave, the emperor in the centre of the frame on the altar steps raising a golden crown above his own head, Gothic arches and candles framing him, onlookers blurred on both sides",
+   "scene": "coronation in Notre-Dame de Paris, 2 December 1804, Napoleon crowning himself, Pope Pius VII seated behind him, crimson and gold banners, incense haze",
+   "lighting": "shafts of window light from high on the left, warm candle glow, deep red and gold palette",
+   "variants": {
+    "napoleon": "coronation_1804"
+   },
+   "negative_extra": "modern church, electric light, bicorne",
+   "id": "b02_coronation",
+   "seeds": [
+    3201,
+    3202,
+    3203,
+    3204
+   ]
+  },
+  {
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "extreme cinematic close-up, face filling the upper half of the frame, three-quarter view facing right, both eyes clearly visible and sharp, eyes looking into the distance",
+   "scene": "Napoleon at the height of his power, cold ambitious gaze, a map of Europe and candlelight reflected faintly in his eyes, dark tent interior behind",
+   "lighting": "single warm candle key light from the lower left, deep shadows, dramatic chiaroscuro",
+   "negative_extra": "smile, open mouth",
+   "id": "b04_ambition",
+   "seeds": [
+    3401,
+    3402,
+    3403,
+    3404
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "epic wide shot from a hill above the river, the city skyline across the middle of the frame, sky filling the upper half",
+   "scene": "Moscow burning, September 1812, the Kremlin towers, Ivan the Great bell tower and onion domes silhouetted against towering flames and black smoke, embers in the air, a few French soldiers watching from the riverbank in the foreground",
+   "lighting": "night, furious orange firelight reflected in the Moskva river, red smoke clouds",
+   "negative_extra": "modern buildings, Cathedral of Christ the Saviour, skyscrapers",
+   "id": "b06_moscow",
+   "seeds": [
+    3601,
+    3602,
+    3603,
+    3604
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "wide shot along a snowy road receding to the horizon in the centre, upper half grey sky",
+   "scene": "the retreat from Russia, November 1812, exhausted French soldiers in torn greatcoats and blankets trudging through deep snow, abandoned cannon and broken wagons half buried, dead horses, birch forest, falling snow, no single hero figure",
+   "lighting": "overcast freezing light, desaturated blue-grey palette with small warm accents",
+   "negative_extra": "gore, blood, summer",
+   "id": "b07_retreat",
+   "seeds": [
+    3701,
+    3702,
+    3703,
+    3704
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "epic wide battlefield panorama, horizon slightly above the middle, French Imperial Guard columns in bearskins advancing up a muddy slope in the foreground toward red-coated British lines on the ridge",
+   "scene": "battle of Waterloo, 18 June 1815, cuirassiers charging on the flank, cannon smoke, eagle standards and vertical tricolour flags, the farm of La Haye Sainte in the distance",
+   "lighting": "late afternoon storm light breaking through dark clouds, golden rim light on smoke",
+   "negative_extra": "gore, blood, close-up",
+   "id": "b10_waterloo",
+   "seeds": [
+    3901,
+    3902,
+    3903,
+    3904
+   ]
+  },
+  {
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide shot, the lone figure small on the left third standing on a high basalt cliff edge, seen from behind in three-quarter view, endless ocean filling the right of the frame",
+   "scene": "Napoleon in exile on Saint Helena around 1820, looking out over the South Atlantic, wind in his coat, steep volcanic cliffs, Longwood house small in the distance",
+   "lighting": "dusk, low sun on the horizon, apricot and violet sky, long shadows",
+   "variants": {
+    "napoleon": "exile_1820"
+   },
+   "negative_extra": "young man, crowd, army",
+   "id": "b12_helena",
+   "seeds": [
+    4101,
+    4102,
+    4103,
+    4104
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "monumental low-angle shot, the arch centred and filling the middle of the frame, the avenue leading toward it in the foreground",
+   "scene": "the Arc de Triomphe in Paris, commissioned by Napoleon in 1806, 19th-century Paris rooftops, horse-drawn carriages on the avenue, tricolour flag beneath the vault",
+   "lighting": "golden sunset light through the arch, warm haze",
+   "negative_extra": "cars, modern traffic, street lamps of today, people in modern clothing",
+   "id": "b13_legacy",
+   "seeds": [
+    4201,
+    4202,
+    4203,
+    4204
+   ]
+  },
+  {
+   "characters": [],
+   "framing": "close symbolic still life, the object in the lower middle of the frame, dark sea and night sky above",
+   "scene": "Napoleon's black bicorne hat resting alone on a wet black rock by the sea at night, Saint Helena cliffs faint behind, waves breaking softly",
+   "lighting": "cold moonlight from the upper left, faint warm glow on the gold trim, deep blue palette",
+   "negative_extra": "person, hand, crown",
+   "id": "b14_ending",
+   "seeds": [
+    4301,
+    4302,
+    4303,
+    4304
+   ]
+  }
+ ]
+}

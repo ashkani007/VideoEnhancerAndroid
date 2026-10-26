@@ -162,6 +162,10 @@ def main():
         seed = os.path.join(tmp, "seed")
         for rel in ("comfyui/workflows", "assets/references", "jobs/queue"):
             shutil.copytree(os.path.join(GHM, rel), os.path.join(seed, "great_history_makers", rel))
+        qdir = os.path.join(seed, "great_history_makers", "jobs", "queue")
+        for f in os.listdir(qdir):                                   # only the test job (other queued episodes stay out)
+            if f != JOB + ".json":
+                os.remove(os.path.join(qdir, f))
         sh("git", "init", "-q", "-b", "testbranch", cwd=seed)
         sh("git", "add", "-A", cwd=seed)
         sh("git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "seed", cwd=seed)

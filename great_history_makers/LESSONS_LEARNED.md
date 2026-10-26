@@ -196,3 +196,17 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   installer gates. Mocks need `$global:` scope; `$script:` vars are invisible to a called script.
 - **A sparse checkout of a mixed repository still pulls root files** (the LensPrompt APK zip): another reason for a
   dedicated Great History Makers repository.
+
+## 2026-10-26: first full-length v4 episode (Napoleon Ep01, TEMP preview)
+- **Reuse the paid narration first.** The approved Ep02 take (66.0 s, speech ends 65.86 s) drives Ep01; beat cuts are the
+  aligned word starts minus 0.15 s, so the preview storyboard and `ghm4.episode storyboard` produce identical times.
+  The take is 66 s and may not be stretched: the video is ≈ 68 s (+3 s end signature), slightly over a 55–65 s target.
+- **Map legends sit in the caption band** (design y 968+). Narrated episodes use maps without legends
+  (`victories_1805_1811_nolegend.json`) and put context into labels and the date ticker.
+- **Map camera width is capped by the canvas height** (`width ≤ lat_range × 9/16` units): a wide view needs tall
+  `bounds`, not just a larger camera width. Saint Helena needed a new coastline (`atlantic_ne50m.json`, Natural Earth).
+- **Stand-ins must be honest:** with one approved illustration, crops of it cover 3 beats and painted environment
+  stand-ins (no code-drawn characters) cover 6, each labelled TEMP on screen. Real variety only comes from the PC job.
+- **Character bible variants** (1793, 1804 coronation, 1812, 1820 exile) keep the face descriptor identical while the
+  costume and age follow the history; prompts pick them with `"variants": {"napoleon": "<variant>"}`.
+- **Worker test isolation:** the end-to-end worker test must seed only its own job, or newly queued episodes make it fail.

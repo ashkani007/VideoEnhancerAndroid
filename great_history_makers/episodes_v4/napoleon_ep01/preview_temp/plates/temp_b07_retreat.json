@@ -1,0 +1,56 @@
+{
+ "ref_width": 1080,
+ "temp_standin": true,
+ "sky": {
+  "y": 900,
+  "drift": 6.0
+ },
+ "particles": [
+  {
+   "kind": "snow",
+   "box": [
+    0,
+    0,
+    1080,
+    1920
+   ],
+   "count": 420,
+   "size": 3.0,
+   "speed": 110,
+   "wind": 60,
+   "seed": 7
+  },
+  {
+   "kind": "snow",
+   "box": [
+    0,
+    0,
+    1080,
+    1920
+   ],
+   "count": 160,
+   "size": 5.5,
+   "speed": 190,
+   "wind": 110,
+   "seed": 8
+  }
+ ],
+ "smoke": [
+  {
+   "box": [
+    0,
+    860,
+    1080,
+    1150
+   ],
+   "feather": 90,
+   "density": 1.0,
+   "speed": 30,
+   "color": [
+    0.92,
+    0.93,
+    0.96
+   ]
+  }
+ ]
+}

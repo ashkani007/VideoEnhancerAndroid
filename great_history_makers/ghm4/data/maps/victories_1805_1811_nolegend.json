@@ -1,0 +1,427 @@
+{
+ "_about": "Napoleon's major victories 1805-1809 and the French Empire at its 1811 peak. Territory polygons: ghm2/data/napoleonic_regions.json (simplified, hand-traced). Coastline: Natural Earth 1:50m (public domain). (Ep01 copy without legend: the legend rows sit in the caption band.)",
+ "bounds": [
+  -10.0,
+  32.0,
+  32.0,
+  66.0
+ ],
+ "ref_lat": 48,
+ "ppu": 160,
+ "element_scale": 1.6,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "rivers": [
+  [
+   [
+    9.5,
+    47.6
+   ],
+   [
+    8.6,
+    47.6
+   ],
+   [
+    7.6,
+    47.56
+   ],
+   [
+    7.75,
+    48.58
+   ],
+   [
+    8.47,
+    49.49
+   ],
+   [
+    8.27,
+    50.0
+   ],
+   [
+    7.6,
+    50.36
+   ],
+   [
+    6.96,
+    50.94
+   ],
+   [
+    6.77,
+    51.23
+   ],
+   [
+    5.86,
+    51.84
+   ],
+   [
+    4.3,
+    51.9
+   ]
+  ],
+  [
+   [
+    8.5,
+    47.95
+   ],
+   [
+    9.99,
+    48.4
+   ],
+   [
+    11.42,
+    48.76
+   ],
+   [
+    12.1,
+    49.02
+   ],
+   [
+    13.46,
+    48.57
+   ],
+   [
+    14.29,
+    48.31
+   ],
+   [
+    16.37,
+    48.21
+   ],
+   [
+    17.1,
+    48.14
+   ],
+   [
+    17.6,
+    47.7
+   ],
+   [
+    19.04,
+    47.5
+   ],
+   [
+    18.9,
+    46.0
+   ]
+  ]
+ ],
+ "relief": [
+  [
+   [
+    5.8,
+    44.6
+   ],
+   [
+    6.6,
+    45.5
+   ],
+   [
+    7.3,
+    45.95
+   ],
+   [
+    8.5,
+    46.35
+   ],
+   [
+    10.0,
+    46.55
+   ],
+   [
+    11.8,
+    46.9
+   ],
+   [
+    13.6,
+    47.15
+   ],
+   [
+    15.4,
+    47.45
+   ]
+  ],
+  [
+   [
+    17.6,
+    48.9
+   ],
+   [
+    19.2,
+    49.35
+   ],
+   [
+    20.9,
+    49.3
+   ],
+   [
+    22.4,
+    49.0
+   ],
+   [
+    23.8,
+    48.1
+   ],
+   [
+    24.9,
+    47.1
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "GREAT BRITAIN",
+   -2.0,
+   53.0,
+   60,
+   "land"
+  ],
+  [
+   "RUSSIAN EMPIRE",
+   27.5,
+   55.5,
+   60,
+   "land"
+  ],
+  [
+   "OTTOMAN EMPIRE",
+   25.0,
+   42.0,
+   56,
+   "land"
+  ],
+  [
+   "SPAIN",
+   -4.0,
+   40.0,
+   56,
+   "land"
+  ],
+  [
+   "ATLANTIC",
+   -8.0,
+   47.0,
+   60,
+   "sea"
+  ],
+  [
+   "BALTIC SEA",
+   18.0,
+   57.2,
+   52,
+   "sea"
+  ],
+  [
+   "MEDITERRANEAN",
+   6.0,
+   38.5,
+   56,
+   "sea"
+  ]
+ ],
+ "places": {
+  "PARIS": [
+   2.35,
+   48.86
+  ],
+  "AUSTERLITZ": [
+   16.76,
+   49.13
+  ],
+  "JENA": [
+   11.59,
+   50.93
+  ],
+  "FRIEDLAND": [
+   21.01,
+   54.44
+  ],
+  "WAGRAM": [
+   16.56,
+   48.3
+  ]
+ },
+ "regions": [
+  {
+   "source": "ghm2/data/napoleonic_regions.json",
+   "key": "french_allies_1811",
+   "color": "blue",
+   "alpha": 0.55,
+   "hatch": true,
+   "origin": [
+    2.35,
+    48.86
+   ],
+   "reveal": [
+    2.75,
+    4.0
+   ]
+  },
+  {
+   "source": "ghm2/data/napoleonic_regions.json",
+   "key": "french_empire_1811",
+   "color": "blue",
+   "alpha": 0.45,
+   "origin": [
+    2.35,
+    48.86
+   ],
+   "reveal": [
+    2.6,
+    3.8
+   ]
+  }
+ ],
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     2.35,
+     48.86
+    ],
+    [
+     6.5,
+     49.0
+    ],
+    [
+     10.5,
+     48.8
+    ],
+    [
+     14.0,
+     48.6
+    ],
+    [
+     16.6,
+     49.0
+    ]
+   ],
+   "draw": [
+    0.15,
+    0.75
+   ],
+   "width": 30,
+   "head": 80
+  }
+ ],
+ "dots": [
+  [
+   "PARIS",
+   0.1
+  ]
+ ],
+ "stars": [
+  [
+   "AUSTERLITZ",
+   0.75
+  ],
+  [
+   "JENA",
+   1.25
+  ],
+  [
+   "FRIEDLAND",
+   1.75
+  ],
+  [
+   "WAGRAM",
+   2.25
+  ]
+ ],
+ "labels": [
+  {
+   "place": "PARIS",
+   "dx": 0,
+   "dy": -28,
+   "at": 0.15,
+   "align": "c"
+  },
+  {
+   "place": "AUSTERLITZ",
+   "text": "AUSTERLITZ 1805",
+   "dx": -20,
+   "dy": -26,
+   "at": 0.85,
+   "align": "r"
+  },
+  {
+   "place": "JENA",
+   "text": "JENA 1806",
+   "dx": 0,
+   "dy": -30,
+   "at": 1.35
+  },
+  {
+   "place": "FRIEDLAND",
+   "text": "FRIEDLAND 1807",
+   "dx": -22,
+   "dy": 8,
+   "at": 1.85,
+   "align": "r"
+  },
+  {
+   "place": "WAGRAM",
+   "text": "WAGRAM 1809",
+   "dx": 18,
+   "dy": 40,
+   "at": 2.35,
+   "align": "l"
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   11.0,
+   50.8,
+   16.5
+  ],
+  [
+   2.6,
+   11.8,
+   50.6,
+   15.0
+  ],
+  [
+   5.5,
+   11.4,
+   50.2,
+   15.6
+  ]
+ ],
+ "kicker": [
+  "THE NAPOLEONIC WARS",
+  0.05
+ ],
+ "dates": [
+  [
+   0.0,
+   "1805"
+  ],
+  [
+   0.75,
+   "1805 · AUSTERLITZ"
+  ],
+  [
+   1.25,
+   "1806 · JENA"
+  ],
+  [
+   1.75,
+   "1807 · FRIEDLAND"
+  ],
+  [
+   2.25,
+   "1809 · WAGRAM"
+  ],
+  [
+   2.9,
+   "1811 · THE EMPIRE"
+  ]
+ ],
+ "legend": [],
+ "fade_out": [
+  5.1,
+  5.5
+ ],
+ "glow": 0.16,
+ "star_scale": 0.62
+}

@@ -32,7 +32,8 @@ def prompt_for(shot, style, chars):
     parts = [shot.get("framing", ""), shot["scene"]]
     negs = [style["negative"]]
     for cid in shot.get("characters", []):
-        parts.append(chars[cid]["descriptor"])
+        var = shot.get("variants", {}).get(cid)                      # costume / age variant from the character bible
+        parts.append(chars[cid]["variants"][var] if var else chars[cid]["descriptor"])
         negs.append(chars[cid].get("negative", ""))
     parts += [style["positive"], shot.get("lighting", style["lighting_default"]), style["composition_9x16"]]
     if shot.get("negative_extra"):

@@ -1,0 +1,526 @@
+{
+ "id": "napoleon_ep01",
+ "_about": "Great History Makers Ep01 (v4): Napoleon, from artillery officer to Saint Helena. 66 s approved narration (Ep02 ElevenLabs take, voice Max, already paid; unchanged), 9 AI illustrations + 5 animated maps. Preview with stand-ins: preview_temp/.",
+ "style": "ghm_cinematic_v1",
+ "workflow": "sdxl_style_face",
+ "narration": {
+  "audio": "episodes/ep02_napoleon/audio/narration.mp3",
+  "transcript": "episodes/ep02_napoleon/audio/transcript.txt",
+  "words": "episodes/ep02_napoleon/audio/words_aligned.json",
+  "groups": [
+   "He rose from an artillery officer",
+   "to become the most feared / ruler in Europe.",
+   "Napoleon Bonaparte crowned himself",
+   "Emperor of the French / in 1804.",
+   "His armies won / extraordinary victories,",
+   "and his empire / reshaped the continent.",
+   "But Napoleon wanted more.",
+   "In 1812, he invaded Russia",
+   "with a vast / multinational army.",
+   "He reached Moscow,",
+   "only to find much of the city / burning.",
+   "Then came the retreat.",
+   "Hunger, disease, exhaustion,",
+   "and bitter cold / devastated his forces.",
+   "His enemies united.",
+   "In 1814, Napoleon abdicated",
+   "and was exiled to Elba.",
+   "He returned the following year",
+   "for one final gamble.",
+   "At Waterloo, / his army was defeated.",
+   "This time, exile meant / a remote island in the Atlantic:",
+   "Saint Helena.",
+   "Napoleon died there / in 1821.",
+   "He conquered kingdoms, / changed Europe,",
+   "and became a legend.",
+   "But he could not conquer",
+   "the consequences / of his own ambition."
+  ]
+ },
+ "beats": [
+  {
+   "id": "b01_toulon",
+   "type": "hero_wide",
+   "cue": "He rose from an artillery officer",
+   "illustration": {
+    "characters": [
+     "napoleon"
+    ],
+    "framing": "cinematic low-angle wide shot, the young officer standing on the left third of the frame on an earthwork gun battery, full figure, gunners and a bronze field cannon behind him, harbour and fortress far below on the right",
+    "scene": "Siege of Toulon, December 1793, young artillery captain Napoleon Bonaparte pointing toward the enemy forts, gunners ramming a cannon, gabions and powder smoke, British warships in the harbour",
+    "lighting": "dawn light from the right, warm orange rim light on smoke, cool blue shadows",
+    "seeds": [
+     3101,
+     3102,
+     3103,
+     3104
+    ],
+    "variants": {
+     "napoleon": "artillery_1793"
+    },
+    "negative_extra": "crown, bicorne with plume, cavalry"
+   },
+   "motion": {
+    "sway_at": 0.2
+   },
+   "text": [
+    {
+     "text": "1769 – 1821",
+     "preset": "kicker",
+     "size": 30,
+     "y": 712,
+     "at": 0.25,
+     "out": [
+      4.3,
+      4.7
+     ]
+    },
+    {
+     "text": "NAPOLEON",
+     "preset": "title",
+     "size": 96,
+     "y": 800,
+     "at": 0.35,
+     "stagger": 0.04,
+     "out": [
+      4.3,
+      4.7
+     ]
+    },
+    {
+     "rule": 420,
+     "y": 826,
+     "at": 0.9,
+     "out": [
+      4.3,
+      4.7
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b02_coronation",
+   "type": "hero_wide",
+   "cue": "Napoleon Bonaparte crowned himself",
+   "illustration": {
+    "characters": [
+     "napoleon"
+    ],
+    "framing": "cinematic medium-wide shot from the nave, the emperor in the centre of the frame on the altar steps raising a golden crown above his own head, Gothic arches and candles framing him, onlookers blurred on both sides",
+    "scene": "coronation in Notre-Dame de Paris, 2 December 1804, Napoleon crowning himself, Pope Pius VII seated behind him, crimson and gold banners, incense haze",
+    "lighting": "shafts of window light from high on the left, warm candle glow, deep red and gold palette",
+    "seeds": [
+     3201,
+     3202,
+     3203,
+     3204
+    ],
+    "variants": {
+     "napoleon": "coronation_1804"
+    },
+    "negative_extra": "modern church, electric light, bicorne"
+   },
+   "text": [
+    {
+     "text": "2 DECEMBER 1804",
+     "preset": "date",
+     "size": 30,
+     "y": 250,
+     "at": 2.3,
+     "out": [
+      4.9,
+      5.3
+     ]
+    },
+    {
+     "text": "CORONATION",
+     "preset": "title_m",
+     "size": 70,
+     "y": 330,
+     "at": 2.5,
+     "out": [
+      4.9,
+      5.3
+     ]
+    },
+    {
+     "text": "NOTRE-DAME DE PARIS",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "y": 372,
+     "color": "gold",
+     "at": 2.9,
+     "out": [
+      4.9,
+      5.3
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b03_victories",
+   "type": "map",
+   "cue": "His armies won",
+   "map": "ghm4/data/maps/victories_1805_1811_nolegend.json"
+  },
+  {
+   "id": "b04_ambition",
+   "type": "portrait",
+   "cue": "But Napoleon wanted more",
+   "illustration": {
+    "characters": [
+     "napoleon"
+    ],
+    "framing": "extreme cinematic close-up, face filling the upper half of the frame, three-quarter view facing right, both eyes clearly visible and sharp, eyes looking into the distance",
+    "scene": "Napoleon at the height of his power, cold ambitious gaze, a map of Europe and candlelight reflected faintly in his eyes, dark tent interior behind",
+    "lighting": "single warm candle key light from the lower left, deep shadows, dramatic chiaroscuro",
+    "seeds": [
+     3401,
+     3402,
+     3403,
+     3404
+    ],
+    "negative_extra": "smile, open mouth"
+   },
+   "motion": {
+    "blink_at": 0.45
+   },
+   "text": []
+  },
+  {
+   "id": "b05_invasion",
+   "type": "map",
+   "cue": "In 1812, he invaded Russia",
+   "map": "ghm4/data/maps/invasion_1812.json"
+  },
+  {
+   "id": "b06_moscow",
+   "type": "landscape",
+   "cue": "He reached Moscow,",
+   "illustration": {
+    "characters": [],
+    "framing": "epic wide shot from a hill above the river, the city skyline across the middle of the frame, sky filling the upper half",
+    "scene": "Moscow burning, September 1812, the Kremlin towers, Ivan the Great bell tower and onion domes silhouetted against towering flames and black smoke, embers in the air, a few French soldiers watching from the riverbank in the foreground",
+    "lighting": "night, furious orange firelight reflected in the Moskva river, red smoke clouds",
+    "seeds": [
+     3601,
+     3602,
+     3603,
+     3604
+    ],
+    "negative_extra": "modern buildings, Cathedral of Christ the Saviour, skyscrapers"
+   },
+   "text": [
+    {
+     "text": "14 SEPTEMBER 1812",
+     "preset": "date",
+     "size": 30,
+     "y": 300,
+     "at": 0.5,
+     "out": [
+      3.6,
+      4.0
+     ]
+    },
+    {
+     "text": "MOSCOW",
+     "preset": "title_m",
+     "size": 84,
+     "y": 392,
+     "at": 0.7,
+     "out": [
+      3.6,
+      4.0
+     ]
+    },
+    {
+     "rule": 300,
+     "y": 418,
+     "at": 1.1,
+     "out": [
+      3.6,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b07_retreat",
+   "type": "landscape",
+   "cue": "Then came the retreat.",
+   "illustration": {
+    "characters": [],
+    "framing": "wide shot along a snowy road receding to the horizon in the centre, upper half grey sky",
+    "scene": "the retreat from Russia, November 1812, exhausted French soldiers in torn greatcoats and blankets trudging through deep snow, abandoned cannon and broken wagons half buried, dead horses, birch forest, falling snow, no single hero figure",
+    "lighting": "overcast freezing light, desaturated blue-grey palette with small warm accents",
+    "seeds": [
+     3701,
+     3702,
+     3703,
+     3704
+    ],
+    "negative_extra": "gore, blood, summer"
+   },
+   "text": [
+    {
+     "text": "OCTOBER – DECEMBER 1812",
+     "preset": "date",
+     "size": 26,
+     "y": 250,
+     "at": 0.5,
+     "out": [
+      7.0,
+      7.5
+     ]
+    },
+    {
+     "text": "HUNGER",
+     "preset": "title_m",
+     "size": 62,
+     "y": 380,
+     "at": 2.0,
+     "out": [
+      7.0,
+      7.5
+     ]
+    },
+    {
+     "text": "DISEASE",
+     "preset": "title_m",
+     "size": 62,
+     "y": 460,
+     "at": 2.7,
+     "out": [
+      7.0,
+      7.5
+     ]
+    },
+    {
+     "text": "EXHAUSTION",
+     "preset": "title_m",
+     "size": 62,
+     "y": 540,
+     "at": 3.55,
+     "out": [
+      7.0,
+      7.5
+     ]
+    },
+    {
+     "text": "COLD",
+     "preset": "title_m",
+     "size": 62,
+     "y": 620,
+     "at": 5.05,
+     "color": [
+      0.75,
+      0.86,
+      1.0
+     ],
+     "out": [
+      7.0,
+      7.5
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b08_coalition",
+   "type": "map",
+   "cue": "His enemies united.",
+   "map": "ghm4/data/maps/coalition_1813.json"
+  },
+  {
+   "id": "b09_elba",
+   "type": "map",
+   "cue": "In 1814, Napoleon abdicated",
+   "map": "ghm4/data/maps/elba_1814_1815.json"
+  },
+  {
+   "id": "b10_waterloo",
+   "type": "battle",
+   "cue": "At Waterloo, his army",
+   "illustration": {
+    "characters": [],
+    "framing": "epic wide battlefield panorama, horizon slightly above the middle, French Imperial Guard columns in bearskins advancing up a muddy slope in the foreground toward red-coated British lines on the ridge",
+    "scene": "battle of Waterloo, 18 June 1815, cuirassiers charging on the flank, cannon smoke, eagle standards and vertical tricolour flags, the farm of La Haye Sainte in the distance",
+    "lighting": "late afternoon storm light breaking through dark clouds, golden rim light on smoke",
+    "seeds": [
+     3901,
+     3902,
+     3903,
+     3904
+    ],
+    "negative_extra": "gore, blood, close-up"
+   },
+   "puffs": 3,
+   "text": [
+    {
+     "text": "18 JUNE 1815",
+     "preset": "date",
+     "size": 30,
+     "y": 250,
+     "at": 0.3,
+     "out": [
+      2.6,
+      3.0
+     ]
+    },
+    {
+     "text": "WATERLOO",
+     "preset": "title_m",
+     "size": 84,
+     "y": 340,
+     "at": 0.45,
+     "out": [
+      2.6,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b11_helena_map",
+   "type": "map",
+   "cue": "This time, exile meant",
+   "map": "ghm4/data/maps/saint_helena_1815.json"
+  },
+  {
+   "id": "b12_helena",
+   "type": "hero_wide",
+   "cue": "Napoleon died there",
+   "illustration": {
+    "characters": [
+     "napoleon"
+    ],
+    "framing": "wide shot, the lone figure small on the left third standing on a high basalt cliff edge, seen from behind in three-quarter view, endless ocean filling the right of the frame",
+    "scene": "Napoleon in exile on Saint Helena around 1820, looking out over the South Atlantic, wind in his coat, steep volcanic cliffs, Longwood house small in the distance",
+    "lighting": "dusk, low sun on the horizon, apricot and violet sky, long shadows",
+    "seeds": [
+     4101,
+     4102,
+     4103,
+     4104
+    ],
+    "variants": {
+     "napoleon": "exile_1820"
+    },
+    "negative_extra": "young man, crowd, army"
+   },
+   "text": [
+    {
+     "text": "5 MAY 1821",
+     "preset": "date",
+     "size": 34,
+     "y": 300,
+     "at": 1.4,
+     "out": [
+      3.0,
+      3.4
+     ]
+    },
+    {
+     "text": "LONGWOOD, SAINT HELENA",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "y": 342,
+     "color": "ivory",
+     "at": 1.7,
+     "out": [
+      3.0,
+      3.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b13_legacy",
+   "type": "landscape",
+   "cue": "He conquered kingdoms,",
+   "illustration": {
+    "characters": [],
+    "framing": "monumental low-angle shot, the arch centred and filling the middle of the frame, the avenue leading toward it in the foreground",
+    "scene": "the Arc de Triomphe in Paris, commissioned by Napoleon in 1806, 19th-century Paris rooftops, horse-drawn carriages on the avenue, tricolour flag beneath the vault",
+    "lighting": "golden sunset light through the arch, warm haze",
+    "seeds": [
+     4201,
+     4202,
+     4203,
+     4204
+    ],
+    "negative_extra": "cars, modern traffic, street lamps of today, people in modern clothing"
+   },
+   "text": [
+    {
+     "text": "ARC DE TRIOMPHE · COMPLETED 1836",
+     "preset": "legend",
+     "size": 18,
+     "track": 5,
+     "y": 230,
+     "color": "gold",
+     "at": 0.8,
+     "out": [
+      4.0,
+      4.4
+     ]
+    },
+    {
+     "text": "LEGEND",
+     "preset": "title_m",
+     "size": 80,
+     "y": 330,
+     "at": 3.4,
+     "out": [
+      4.0,
+      4.4
+     ]
+    }
+   ]
+  },
+  {
+   "id": "b14_ending",
+   "type": "landscape",
+   "cue": "But he could not conquer",
+   "illustration": {
+    "characters": [],
+    "framing": "close symbolic still life, the object in the lower middle of the frame, dark sea and night sky above",
+    "scene": "Napoleon's black bicorne hat resting alone on a wet black rock by the sea at night, Saint Helena cliffs faint behind, waves breaking softly",
+    "lighting": "cold moonlight from the upper left, faint warm glow on the gold trim, deep blue palette",
+    "seeds": [
+     4301,
+     4302,
+     4303,
+     4304
+    ],
+    "negative_extra": "person, hand, crown"
+   },
+   "text": [
+    {
+     "text": "AMBITION",
+     "preset": "title",
+     "size": 88,
+     "y": 470,
+     "at": 2.9,
+     "stagger": 0.07,
+     "dur": 0.6
+    },
+    {
+     "rule": 360,
+     "y": 500,
+     "at": 3.6
+    },
+    {
+     "text": "NAPOLEON BONAPARTE · 1769 – 1821",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "y": 548,
+     "color": "gold",
+     "at": 3.9
+    }
+   ]
+  }
+ ]
+}
