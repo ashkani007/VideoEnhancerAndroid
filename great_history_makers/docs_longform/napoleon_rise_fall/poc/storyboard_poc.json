@@ -1,0 +1,305 @@
+{
+ "id": "napoleon_longform_poc",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 82.0,
+ "fade_out": 0.8,
+ "grain": 0.006,
+ "vignette": 0.18,
+ "_status": "ASSEMBLY TEMPLATE: waits for the client-approved plates (job napoleon_longform_poc_v1, then the 2x upscale) and the approved narration take. Times are planned; 'ghm4.narrate retime' sets them from the aligned words. Not rendered with placeholders.",
+ "shots": [
+  {
+   "id": "s1_austerlitz_dawn",
+   "type": "plate",
+   "cue": "December 1805.",
+   "start": 0.0,
+   "end": 17.0,
+   "plate": "plates/poc_s1_austerlitz_dawn.png",
+   "meta": "plates/poc_s1_austerlitz_dawn.json",
+   "camera": {
+    "from": {
+     "zoom": 1.12
+    },
+    "to": {
+     "zoom": 1.03
+    },
+    "ease": "inout",
+    "parallax": 0.5
+   },
+   "text": [
+    {
+     "text": "2 DECEMBER 1805",
+     "preset": "date",
+     "size": 30,
+     "x": 640,
+     "y": 96,
+     "at": 0.6,
+     "out": [
+      6.0,
+      6.6
+     ]
+    },
+    {
+     "text": "THE HILLS OF MORAVIA",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "x": 640,
+     "y": 132,
+     "color": "gold",
+     "at": 1.0,
+     "out": [
+      6.0,
+      6.6
+     ]
+    },
+    {
+     "text": "ARTISTIC RECONSTRUCTION",
+     "preset": "legend",
+     "size": 13,
+     "track": 3,
+     "x": 1250,
+     "y": 40,
+     "align": "r",
+     "at": 0.5,
+     "out": [
+      4.0,
+      4.6
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s2_campaign_map",
+   "type": "map",
+   "cue": "Three months earlier,",
+   "start": 17.0,
+   "end": 38.0,
+   "map": "../../../ghm4/data/maps/campaign_1805_ulm_austerlitz_16x9.json"
+  },
+  {
+   "id": "s3_pratzen",
+   "type": "plate",
+   "cue": "At dawn on the second of December,",
+   "start": 38.0,
+   "end": 58.0,
+   "plate": "plates/poc_s3_pratzen.png",
+   "meta": "plates/poc_s3_pratzen.json",
+   "camera": {
+    "from": {
+     "zoom": 1.04
+    },
+    "to": {
+     "zoom": 1.14
+    },
+    "ease": "inout"
+   },
+   "gains": {
+    "flags": 1.6,
+    "bob": 1.4,
+    "battle": 1.0
+   },
+   "haze": 0.12,
+   "text": [
+    {
+     "text": "THE PRATZEN HEIGHTS",
+     "preset": "legend",
+     "size": 22,
+     "track": 6,
+     "x": 640,
+     "y": 110,
+     "color": "gold",
+     "at": 0.8,
+     "out": [
+      5.0,
+      5.6
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s4_retreat",
+   "type": "plate",
+   "cue": "Seven years later,",
+   "start": 58.0,
+   "end": 76.0,
+   "plate": "plates/poc_s4_retreat.png",
+   "meta": "plates/poc_s4_retreat.json",
+   "camera": {
+    "from": {
+     "zoom": 1.0
+    },
+    "to": {
+     "zoom": 1.1
+    },
+    "ease": "inout"
+   },
+   "text": [
+    {
+     "text": "NOVEMBER 1812",
+     "preset": "date",
+     "size": 30,
+     "x": 640,
+     "y": 96,
+     "at": 0.6,
+     "out": [
+      6.0,
+      6.6
+     ]
+    },
+    {
+     "text": "THE RETREAT FROM MOSCOW",
+     "preset": "legend",
+     "size": 20,
+     "track": 6,
+     "x": 640,
+     "y": 132,
+     "color": "gold",
+     "at": 1.0,
+     "out": [
+      6.0,
+      6.6
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s5_title",
+   "type": "plate",
+   "cue": "This is the story",
+   "start": 76.0,
+   "end": 82.0,
+   "plate": "plates/poc_s4_retreat.png",
+   "meta": "plates/poc_s4_retreat.json",
+   "camera": {
+    "from": {
+     "zoom": 1.1
+    },
+    "to": {
+     "zoom": 1.16
+    }
+   },
+   "scrim": [
+    [
+     0,
+     720,
+     0.55
+    ]
+   ],
+   "text": [
+    {
+     "text": "NAPOLEON",
+     "preset": "title",
+     "size": 96,
+     "x": 640,
+     "y": 330,
+     "at": 0.4
+    },
+    {
+     "rule": 520,
+     "x": 640,
+     "y": 356,
+     "at": 1.0
+    },
+    {
+     "text": "THE RISE AND FALL OF AN EMPEROR",
+     "preset": "kicker",
+     "size": 28,
+     "x": 640,
+     "y": 400,
+     "at": 1.3
+    }
+   ]
+  }
+ ],
+ "transitions": [
+  {
+   "at": 17.0,
+   "type": "ink"
+  },
+  {
+   "at": 38.0,
+   "type": "flash",
+   "strength": 0.45,
+   "dur": 0.25
+  },
+  {
+   "at": 58.0,
+   "type": "dissolve"
+  },
+  {
+   "at": 76.0,
+   "type": "dissolve"
+  }
+ ],
+ "captions": {
+  "transcript": "audio/transcript_poc.txt",
+  "words": "audio/words_aligned_poc.json",
+  "y": 975,
+  "size": 46
+ },
+ "audio": {
+  "narration_file": "audio/narration_poc.mp3",
+  "bed_under_voice_db": 20,
+  "bed_in_pauses_db": 11,
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 19,
+   "root_hz": 98.0,
+   "mode": "minor",
+   "drum_from": 17.0,
+   "drum_to": 37.5
+  },
+  "sfx": [
+   {
+    "type": "wind",
+    "start": 0,
+    "end": 17,
+    "gain": 0.25
+   },
+   {
+    "type": "drum",
+    "start": 17,
+    "end": 37.8,
+    "period": 0.5,
+    "gain": 0.2
+   },
+   {
+    "type": "march",
+    "start": 20,
+    "end": 26,
+    "gain": 0.2
+   },
+   {
+    "type": "cannon",
+    "start": 38.2,
+    "gain": 0.55
+   },
+   {
+    "type": "volley",
+    "start": 39,
+    "end": 41,
+    "gain": 0.22
+   },
+   {
+    "type": "cannon",
+    "start": 44,
+    "gain": 0.4,
+    "dist": 0.6
+   },
+   {
+    "type": "flutter",
+    "start": 38,
+    "end": 58,
+    "gain": 0.18
+   },
+   {
+    "type": "wind",
+    "start": 58,
+    "end": 82,
+    "gain": 0.5
+   }
+  ]
+ }
+}

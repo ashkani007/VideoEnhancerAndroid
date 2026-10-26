@@ -1,0 +1,38 @@
+{
+ "id": "ghm_painterly_v2",
+ "approved": "NOT YET: proposed 2026-10-26 for the long-form documentary (client rejected the minimalist stand-ins; wants cinematic historical digital paintings). Becomes approved only after the client reviews the proof of concept.",
+ "reference_image": null,
+ "positive": "cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus",
+ "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border",
+ "composition": "widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+ "palette": [
+  "umber",
+  "slate blue",
+  "imperial blue",
+  "off-white",
+  "faded scarlet",
+  "brass",
+  "winter grey"
+ ],
+ "sampler": {
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras"
+ },
+ "size": {
+  "width": 1344,
+  "height": 768
+ },
+ "hires": {
+  "scale": 1.5,
+  "steps": 22,
+  "denoise": 0.38
+ },
+ "ipadapter": {
+  "weight": 0.55,
+  "weight_type": "style transfer",
+  "end_at": 1.0
+ },
+ "lighting_default": "soft directional morning light from the left, warm key and cool atmospheric shadows, gentle haze"
+}

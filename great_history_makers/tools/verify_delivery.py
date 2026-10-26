@@ -72,7 +72,7 @@ def check_narration(video, narr, words):
 
 def caption_score(img, H, W):
     """Fraction of band pixels that are ivory text sitting next to a dark outline."""
-    y0, y1 = int(H * 1300 / 1920), int(H * 1530 / 1920)
+    y0, y1 = (int(H * 1300 / 1920), int(H * 1530 / 1920)) if H > W else (int(H * 0.84), int(H * 0.97))   # vertical / 16:9
     band = img[y0:y1, int(W * 0.06):int(W * 0.94)].astype(np.float32)
     ivory = np.linalg.norm(band - IVORY, axis=2) < 38
     dark = band.mean(2) < 55

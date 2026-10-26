@@ -1,0 +1,127 @@
+{
+ "job_id": "napoleon_longform_poc_v1",
+ "created": "2026-10-26",
+ "notes": "Long-form POC: look development (4 Napoleon references) + 3 painted POC scenes, 16:9, SDXL base hires. Client picks references and plates; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "ref_1796",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible",
+   "scene": "character reference of General Bonaparte during the Italian campaign",
+   "lighting": "soft north-window light from the left",
+   "seeds": [
+    5101,
+    5102,
+    5103,
+    5104
+   ],
+   "variants": {
+    "napoleon": "italy_1796"
+   }
+  },
+  {
+   "id": "ref_1805",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible",
+   "scene": "character reference of Emperor Napoleon in campaign dress",
+   "lighting": "soft north-window light from the left",
+   "seeds": [
+    5201,
+    5202,
+    5203,
+    5204
+   ],
+   "variants": {
+    "napoleon": "austerlitz_1805"
+   }
+  },
+  {
+   "id": "ref_1812",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible",
+   "scene": "character reference of Emperor Napoleon during the Russian campaign",
+   "lighting": "soft north-window light from the left",
+   "seeds": [
+    5301,
+    5302,
+    5303,
+    5304
+   ],
+   "variants": {
+    "napoleon": "campaign_1812"
+   }
+  },
+  {
+   "id": "ref_1815",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible",
+   "scene": "character reference of Emperor Napoleon at the time of Waterloo",
+   "lighting": "soft north-window light from the left",
+   "seeds": [
+    5401,
+    5402,
+    5403,
+    5404
+   ],
+   "variants": {
+    "napoleon": "waterloo_1815"
+   }
+  },
+  {
+   "id": "poc_s1_austerlitz_dawn",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "cinematic medium-wide shot, the Emperor on a grey horse on the left third of the frame on a hilltop, three-quarter view looking toward the right, staff officers and Guard chasseurs on horseback behind him, a wide valley falling away to the right",
+   "scene": "dawn of 2 December 1805 on the Zuran hill near Austerlitz in Moravia, Napoleon holding a telescope, thick white fog filling the valley below with church spires and the dark Pratzen Heights rising out of the mist, campfires smouldering, frost on the grass",
+   "lighting": "low winter sun rising behind the hills on the right, golden light breaking through the fog, cool blue shadows",
+   "seeds": [
+    5501,
+    5502,
+    5503,
+    5504
+   ],
+   "variants": {
+    "napoleon": "austerlitz_1805"
+   }
+  },
+  {
+   "id": "poc_s3_pratzen",
+   "characters": [],
+   "framing": "epic wide battlefield panorama at eye level, columns of French line infantry climbing a frosty slope from the lower left toward the crest on the upper right, an eagle standard and drummers in the foreground column, artillery firing from the midground",
+   "scene": "Battle of Austerlitz, 2 December 1805, Marshal Soult's infantry in dark blue coats, white breeches and shakos storming the Pratzen Heights out of the morning mist, Russian infantry in dark green coats on the crest firing a volley, thick powder smoke, fallen muskets and snow-dusted grass, no single hero figure",
+   "lighting": "morning sun breaking through mist from behind the French columns, golden rim light on smoke and bayonets, cold blue shadows",
+   "seeds": [
+    5601,
+    5602,
+    5603,
+    5604
+   ],
+   "negative_extra": "close-up, portrait, modern uniforms, gore"
+  },
+  {
+   "id": "poc_s4_retreat",
+   "characters": [],
+   "framing": "wide cinematic shot along a snowbound road receding into a birch forest, the column moving from the right foreground toward the left background, upper third grey sky",
+   "scene": "the retreat from Moscow, November 1812, a long column of starving French soldiers in torn greatcoats wrapped in blankets and stolen furs, wounded men on a cart, a dead horse and an abandoned cannon half buried in deep snow, a lone officer on a gaunt horse, crows, falling snow, no single hero figure",
+   "lighting": "overcast freezing light, low grey sky, desaturated blue-grey palette with small warm accents of a distant fire",
+   "seeds": [
+    5701,
+    5702,
+    5703,
+    5704
+   ],
+   "negative_extra": "summer, green leaves, gore, blood"
+  }
+ ]
+}

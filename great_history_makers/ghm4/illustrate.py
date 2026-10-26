@@ -35,7 +35,7 @@ def prompt_for(shot, style, chars):
         var = shot.get("variants", {}).get(cid)                      # costume / age variant from the character bible
         parts.append(chars[cid]["variants"][var] if var else chars[cid]["descriptor"])
         negs.append(chars[cid].get("negative", ""))
-    parts += [style["positive"], shot.get("lighting", style["lighting_default"]), style["composition_9x16"]]
+    parts += [style["positive"], shot.get("lighting", style["lighting_default"]), style.get("composition") or style["composition_9x16"]]
     if shot.get("negative_extra"):
         negs.append(shot["negative_extra"])
     return ", ".join(p.strip().rstrip(",") for p in parts if p), ", ".join(n for n in negs if n)
@@ -64,7 +64,7 @@ def make_job(spec):
     defaults = dict(width=sz["width"], height=sz["height"], steps=sm["steps"], cfg=sm["cfg"], sampler_name=sm["sampler_name"],
                     scheduler=sm["scheduler"], hires_scale=hi["scale"], hires_steps=hi["steps"], hires_denoise=hi["denoise"],
                     ipadapter_weight=ip["weight"], ipadapter_weight_type=ip["weight_type"], ipadapter_end_at=ip["end_at"])
-    refs = {"style": style["reference_image"]}
+    refs = {"style": style["reference_image"]} if style.get("reference_image") else {}   # look development: no style ref yet
     if wf == "sdxl_style_face":
         if not face_ref:
             raise SystemExit("sdxl_style_face needs a character with face_reference in its bible")

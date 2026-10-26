@@ -15,6 +15,7 @@ storyboard.json keys used here (compatible with tools/verify_delivery.py):
   "captions": {"transcript": "audio/transcript.txt", "transcript_align": "audio/transcript_align.txt",
                "words": "audio/words_aligned.json", "groups": ["line one / line two", ...], "spoken": {...},
                "y": 1410, "size": 60}                       (y and size in 1080x1920 pixels, CLAUDE.md caption rule)
+               landscape storyboards ("format": "landscape"): y / size in 1920x1080 pixels, default y 975, size 46
   shot "cue": "exact transcript words"                     (the shot starts 0.15 s before the first of those words)
   "excerpt": true                                          (tests: the video covers only the opening of the narration)
 Timing always comes from the aligned words of the real audio; nothing is estimated.
@@ -57,13 +58,21 @@ def cues_for(sb, d):
     return captions.build(tp, wp)
 
 
+def caption_frame(sb):
+    """(reference width, reference height, default y, default size, design band) for the storyboard's format."""
+    if sb.get("format") == "landscape":
+        return 1920, 1080, 975, 46, (596, 700)
+    return 1080, 1920, 1410, 60, CAPTION_BAND
+
+
 def text_conflicts(sb, cues):
     """Typography inside the caption band while a caption is on screen (would collide)."""
+    band = caption_frame(sb)[4]
     out = []
     for sh in sb["shots"]:
         for it in sh.get("text", []):
             y = it.get("y")
-            if y is None or not CAPTION_BAND[0] - 40 <= y <= CAPTION_BAND[1] + 40:
+            if y is None or not band[0] - 40 <= y <= band[1] + 40:
                 continue
             t0 = sh["start"] + it.get("at", 0)
             t1 = sh["start"] + (it["out"][1] if "out" in it else sh["end"] - sh["start"])
@@ -148,15 +157,15 @@ def cmd_retime(a):
     print(f"-> {out} (duration {sb['duration']}s)")
 
 
-def caption_image(text, W, H, y, size):
+def caption_image(text, W, H, y, size, ref=(1080, 1920)):
     """Ivory text with a dark outline, centred on y, at most two lines (CLAUDE.md caption rule)."""
-    U = W / 1080.0
+    U = W / float(ref[0])
     fnt = T.font("Bold", int(size * U))
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     lines = text.split("\n")[:2]
     lh = int(size * U * 1.22)
-    y0 = y * H / 1920 - lh * (len(lines) - 1) / 2
+    y0 = y * H / float(ref[1]) - lh * (len(lines) - 1) / 2
     for i, ln in enumerate(lines):
         d.text((W / 2, y0 + i * lh), ln, font=fnt, fill=IVORY + (255,), anchor="mm", stroke_width=max(2, int(5 * U)),
                stroke_fill=OUTLINE + (255,))
@@ -175,7 +184,8 @@ def cmd_finish(a):
     cues = cues_for(sb, d)
     for c in text_conflicts(sb, cues):
         print("WARNING:", c)
-    imgs = [caption_image(c["text"], W, H, cc.get("y", 1410), cc.get("size", 60)) for c in cues]
+    rw, rh, y_def, s_def, _ = caption_frame(sb)
+    imgs = [caption_image(c["text"], W, H, cc.get("y", y_def), cc.get("size", s_def), (rw, rh)) for c in cues]
     out_dir = os.path.dirname(os.path.abspath(a.picture))
     wav = os.path.join(out_dir, f"{sb['id']}_mix.wav")
     has_voice = build_mix(d, {"duration": sb["duration"], "audio": sb["audio"]}, wav)

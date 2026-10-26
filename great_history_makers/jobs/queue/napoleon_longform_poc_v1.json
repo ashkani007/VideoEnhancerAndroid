@@ -1,0 +1,106 @@
+{
+ "job_id": "napoleon_longform_poc_v1",
+ "kind": "illustrate",
+ "created": "2026-10-26",
+ "notes": "Long-form POC: look development (4 Napoleon references) + 3 painted POC scenes, 16:9, SDXL base hires. Client picks references and plates; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "ref_1796",
+   "positive": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible, character reference of General Bonaparte during the Italian campaign, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 27, very thin face, long straight hair falling to the shoulders, French general's dark blue coat with gold oak-leaf embroidery on collar and cuffs, tricolour sash, bicorne with tricolour plumes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft north-window light from the left, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    5101,
+    5102,
+    5103,
+    5104
+   ]
+  },
+  {
+   "id": "ref_1805",
+   "positive": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible, character reference of Emperor Napoleon in campaign dress, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 36, short cropped hair, slightly fuller face, black bicorne worn side-on with a small tricolour cockade, green colonel's coat of the Chasseurs a Cheval of the Imperial Guard with red facings, white waistcoat and breeches, grey redingote greatcoat open over it, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft north-window light from the left, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    5201,
+    5202,
+    5203,
+    5204
+   ]
+  },
+  {
+   "id": "ref_1812",
+   "positive": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible, character reference of Emperor Napoleon during the Russian campaign, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 43, fuller face, black bicorne worn side-on with a tricolour cockade, long grey redingote greatcoat over a green chasseur coat, white breeches, black riding boots, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft north-window light from the left, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    5301,
+    5302,
+    5303,
+    5304
+   ]
+  },
+  {
+   "id": "ref_1815",
+   "positive": "head-and-shoulders portrait reference, three-quarter view facing left, neutral dark umber background, even studio light, face fully visible, character reference of Emperor Napoleon at the time of Waterloo, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 45, heavier build, rounder face, thinning short hair, black bicorne side-on, grey redingote greatcoat over the green Guard chasseur coat, tired eyes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft north-window light from the left, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    5401,
+    5402,
+    5403,
+    5404
+   ]
+  },
+  {
+   "id": "poc_s1_austerlitz_dawn",
+   "positive": "cinematic medium-wide shot, the Emperor on a grey horse on the left third of the frame on a hilltop, three-quarter view looking toward the right, staff officers and Guard chasseurs on horseback behind him, a wide valley falling away to the right, dawn of 2 December 1805 on the Zuran hill near Austerlitz in Moravia, Napoleon holding a telescope, thick white fog filling the valley below with church spires and the dark Pratzen Heights rising out of the mist, campfires smouldering, frost on the grass, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 36, short cropped hair, slightly fuller face, black bicorne worn side-on with a small tricolour cockade, green colonel's coat of the Chasseurs a Cheval of the Imperial Guard with red facings, white waistcoat and breeches, grey redingote greatcoat open over it, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, low winter sun rising behind the hills on the right, golden light breaking through the fog, cool blue shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours",
+   "seeds": [
+    5501,
+    5502,
+    5503,
+    5504
+   ]
+  },
+  {
+   "id": "poc_s3_pratzen",
+   "positive": "epic wide battlefield panorama at eye level, columns of French line infantry climbing a frosty slope from the lower left toward the crest on the upper right, an eagle standard and drummers in the foreground column, artillery firing from the midground, Battle of Austerlitz, 2 December 1805, Marshal Soult's infantry in dark blue coats, white breeches and shakos storming the Pratzen Heights out of the morning mist, Russian infantry in dark green coats on the crest firing a volley, thick powder smoke, fallen muskets and snow-dusted grass, no single hero figure, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, morning sun breaking through mist from behind the French columns, golden rim light on smoke and bayonets, cold blue shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, close-up, portrait, modern uniforms, gore",
+   "seeds": [
+    5601,
+    5602,
+    5603,
+    5604
+   ]
+  },
+  {
+   "id": "poc_s4_retreat",
+   "positive": "wide cinematic shot along a snowbound road receding into a birch forest, the column moving from the right foreground toward the left background, upper third grey sky, the retreat from Moscow, November 1812, a long column of starving French soldiers in torn greatcoats wrapped in blankets and stolen furs, wounded men on a cart, a dead horse and an abandoned cannon half buried in deep snow, a lone officer on a gaunt horse, crows, falling snow, no single hero figure, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, overcast freezing light, low grey sky, desaturated blue-grey palette with small warm accents of a distant fire, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, summer, green leaves, gore, blood",
+   "seeds": [
+    5701,
+    5702,
+    5703,
+    5704
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

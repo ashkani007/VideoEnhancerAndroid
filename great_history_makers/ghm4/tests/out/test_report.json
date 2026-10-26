@@ -1,7 +1,7 @@
 {
  "golden": {
   "passed": true,
-  "seconds": 40.8,
+  "seconds": 44.5,
   "detail": {
    "port@1.5": 90.7,
    "port@4.3": 97.0,
@@ -20,21 +20,21 @@
  },
  "plate_sizes": {
   "passed": true,
-  "seconds": 7.9,
+  "seconds": 7.6,
   "detail": {
    "sdxl_native_768x1344": {
     "work_size": [
      768,
      1344
     ],
-    "seconds_per_1080p_frame": 0.17
+    "seconds_per_1080p_frame": 0.18
    },
    "hires_1152x2016": {
     "work_size": [
      1152,
      2016
     ],
-    "seconds_per_1080p_frame": 0.25
+    "seconds_per_1080p_frame": 0.21
    },
    "upscaled_2304x4032": {
     "work_size": [
@@ -48,14 +48,14 @@
      1920,
      1080
     ],
-    "seconds_per_1080p_frame": 0.25
+    "seconds_per_1080p_frame": 0.22
    },
    "very_tall_600x1600": {
     "work_size": [
      600,
      1600
     ],
-    "seconds_per_1080p_frame": 0.15
+    "seconds_per_1080p_frame": 0.21
    }
   }
  },
@@ -123,7 +123,7 @@
  },
  "narrate": {
   "passed": true,
-  "seconds": 0.2,
+  "seconds": 0.3,
   "detail": {
    "shot_starts": [
     0.0,
@@ -137,7 +137,7 @@
  },
  "qc": {
   "passed": true,
-  "seconds": 1.0,
+  "seconds": 8.4,
   "detail": {
    "flags": {
     "p": "source 100x180 enlarged 4.32x at zoom 1.2 (blurry) | text 'A TITLE FAR TOO WIDE FOR THE FRAME' spans x -738-1458 (frame 0-720): clipped | 15 black frames from 0.33s | frozen for 1.1s from 0.83s | 2 luma jumps (flicker) e.g. 0.33s | little motion (median frame change 0.0000)",

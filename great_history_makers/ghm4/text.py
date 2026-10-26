@@ -1,6 +1,7 @@
 """Cinematic typography for ghm4: per-letter reveals, gold rules, lower-third bars, scrims (approved in Napoleon_20s_POC).
 
-Positions and sizes are authored in a 720x1280 design space and scaled to the output by U = OW / 720.
+Positions and sizes are authored in a design space and scaled to the output by U = OW / design_width:
+720x1280 for vertical Shorts (default), 1280x720 for landscape documentaries (storyboard "format": "landscape").
 """
 import functools
 import math
@@ -11,7 +12,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 FONTS = "/usr/share/fonts/truetype/crosextra/"
 COLORS = {"ivory": (0.97, 0.93, 0.84), "gold": (0.90, 0.70, 0.36), "navy": (0.05, 0.07, 0.12),
-          "blue": (0.20, 0.34, 0.68), "red": (0.74, 0.17, 0.14), "white": (1.0, 1.0, 1.0)}
+          "blue": (0.20, 0.34, 0.68), "red": (0.74, 0.17, 0.14), "white": (1.0, 1.0, 1.0),
+          "green": (0.22, 0.40, 0.26)}
 NAVY = np.array(COLORS["navy"], np.float32)
 
 # presets: font style, size, tracking, colour, stagger, rise (design units)
@@ -59,8 +61,8 @@ def font(style, size):
 class Canvas:
     """Collects text/graphic masks for one frame and composites them with soft drop shadows."""
 
-    def __init__(self, OW, OH):
-        self.OW, self.OH, self.U = OW, OH, OW / 720.0
+    def __init__(self, OW, OH, dw=720):
+        self.OW, self.OH, self.U = OW, OH, OW / float(dw)
         self.items = []
 
     def letters(self, s, x, y, tt, preset="tagline", align="c", alpha=1.0, col=None, size=None, track=None, stagger=None,

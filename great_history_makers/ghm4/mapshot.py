@@ -8,12 +8,16 @@ Map JSON (lon/lat degrees; times are shot-local seconds; label offsets in 720x12
   "region_labels": [["FRENCH EMPIRE", lon, lat, size, "land"|"sea"|"river"], ...],
   "places": {"ULM": [9.99, 48.40], ...},
   "routes": [{"color": "blue", "points": [[lon, lat], ...], "legs": [[t0, t1, point_index], ...]},     leg ends at that point
-             {"color": "red", "points": [...], "draw": [t0, t1], "width": 30, "head": 80}],
+             {"color": "red", "points": [...], "draw": [t0, t1], "width": 30, "head": 80, "hide": [t0, t1]}],
   "dots": [["ULM", t], ["OLMÜTZ", t, 14]], "rings": [["ULM", t0, t1, "red"]], "stars": [["AUSTERLITZ", t]],
-  "labels": [{"place": "ULM", "text": "ULM · 20 OCT", "dx": 0, "dy": -84, "at": 1.95, "preset": "map_label", "align": "c"}],
+  "labels": [{"place": "ULM", "text": "ULM · 20 OCT", "dx": 0, "dy": -84, "at": 1.95, "preset": "map_label", "align": "c",
+              "out": [t0, t1]}],                                      ("out" optional: fade the label away)
   "regions": [{"source": "ghm2/data/napoleonic_regions.json", "key": "french_empire_1811", "color": "blue",
                "alpha": 0.42, "hatch": false, "origin": [lon, lat], "reveal": [t0, t1]}],    territory spreading from origin
   "element_scale": 1.0,                                  line/dot/label size multiplier for wide views
+  "smooth_rivers": true,                                 spline the river polylines (close-up regional maps)
+  "units": [{"label": "SOULT", "side": "fr", "path": [[lon, lat], ...], "times": [t, ...], "appear": t, "leave": t}],
+                                                         moving army positions (unit blocks with a trail)
   "camera": [[t, lon, lat, width_in_units], ...],      width in degrees of longitude x cos(ref_lat)
   "safe_labels": true,                                   labels never leave the frame or enter the title zone (fade),
                                                          region labels follow the camera and fade out instead of being cut
@@ -94,10 +98,11 @@ class MapShot:
     def __init__(self, path, OW, OH):
         self.cfg = json.load(open(path, encoding="utf-8"))
         c = self.cfg
-        self.OW, self.OH, self.U = OW, OH, OW / 720.0
+        self.L = LAYOUT["landscape" if OW > OH else "portrait"]
+        self.OW, self.OH, self.U = OW, OH, OW / float(self.L["dw"])
         self.lon0, self.lon1, self.lat0, self.lat1 = c["bounds"]
         self.kx = math.cos(math.radians(c.get("ref_lat", 48)))
-        self.ppu = c.get("ppu", 220) * max(1.0, 0.85 * OW / 720)
+        self.ppu = c.get("ppu", 220) * max(1.0, 0.85 * min(OW, OH) / 720)
         self.q = self.ppu / 220.0 * c.get("element_scale", 1.0)      # canvas sizes were authored at ppu 220
         self.CW = int((self.lon1 - self.lon0) * self.kx * self.ppu)
         self.CH = int((self.lat1 - self.lat0) * self.ppu)
@@ -158,7 +163,10 @@ class MapShot:
                 ch = np.round(np.array([(x - sz, y + sz * 0.55), (x, y - sz * 0.6), (x + sz, y + sz * 0.55)]) * 4).astype(np.int32)
                 cv2.polylines(base, [ch], False, (116, 86, 56), max(2, int(4 * q)), cv2.LINE_AA, shift=2)
         for river in c.get("rivers", []):
-            pts = np.round(np.array([self.cpx(*p) for p in river]) * 4).astype(np.int32)
+            pr = [self.cpx(*p) for p in river]
+            if c.get("smooth_rivers") and len(pr) > 2:                   # spline through the river points
+                pr = catmull(pr, 10)[0]
+            pts = np.round(np.array(pr) * 4).astype(np.int32)
             cv2.polylines(base, [pts], False, (70, 112, 136), max(3, int(5 * q)), cv2.LINE_AA, shift=2)
         pil = Image.fromarray(base)
         d = ImageDraw.Draw(pil)
@@ -328,6 +336,74 @@ class MapShot:
             prev = idx
         return L
 
+    # ---------------------------------------------------------------- moving army positions
+    UNIT_COL = {"fr": ((0.20, 0.34, 0.68), (0.95, 0.93, 0.86)), "at": ((0.93, 0.92, 0.88), (0.62, 0.12, 0.12)),
+                "ru": ((0.22, 0.40, 0.26), (0.95, 0.93, 0.86)), "pr": ((0.12, 0.12, 0.14), (0.95, 0.93, 0.86)),
+                "gb": ((0.74, 0.17, 0.14), (0.95, 0.93, 0.86))}
+
+    def unit_pos(self, u, tl):
+        """Position of a unit along its path at shot time tl ([[lon, lat], ...] reached at "times")."""
+        P, Ts = u["path"], u.get("times", [u.get("appear", 0.0)])
+        if len(P) == 1 or tl <= Ts[0]:
+            return P[0]
+        for i in range(len(Ts) - 1):
+            if tl < Ts[i + 1]:
+                k = T.ease((tl - Ts[i]) / max(1e-6, Ts[i + 1] - Ts[i]))
+                return [P[i][0] + (P[i + 1][0] - P[i][0]) * k, P[i][1] + (P[i + 1][1] - P[i][1]) * k]
+        return P[min(len(P), len(Ts)) - 1]
+
+    def draw_units(self, img, cv, tl, proj_ll, fade):
+        """Army corps / armies as unit blocks (NATO-style infantry cross) that march along their paths, with a faint trail
+        and a label; "units": [{"label", "side": fr|at|ru|pr|gb, "path", "times", "appear", "leave"}]."""
+        units = self.cfg.get("units", [])
+        if not units:
+            return img
+        U = self.U
+        OWi, OHi = self.OW, self.OH
+        lay = np.zeros((OHi, OWi, 3), np.float32)
+        al = np.zeros((OHi, OWi), np.float32)
+        for u in units:
+            a = T.ease((tl - u.get("appear", 0.0)) / 0.35) * fade
+            if "leave" in u:
+                a *= 1 - T.ease((tl - u["leave"]) / 0.35)
+            if a <= 0.01:
+                continue
+            body, mark = self.UNIT_COL[u.get("side", "fr")]
+            # trail: positions already travelled
+            Ts = u.get("times", [u.get("appear", 0.0)])
+            pts = [proj_ll(*self.unit_pos(u, t)) for t in np.linspace(Ts[0], min(tl, Ts[-1]), 24)] if tl > Ts[0] else []
+            if len(pts) > 1:
+                m = np.zeros((OHi, OWi), np.uint8)
+                cv2.polylines(m, [np.round(np.array(pts) * 4).astype(np.int32)], False, 255, max(2, int(3 * U)) * 1, cv2.LINE_AA, shift=2)
+                t_a = (m.astype(np.float32) / 255) * 0.32 * a
+                lay[:] = lay * (1 - t_a[..., None]) + np.array(body, np.float32) * t_a[..., None]
+                al[:] = np.maximum(al, t_a)
+            x, y = proj_ll(*self.unit_pos(u, tl))
+            w, h = u.get("w", 44) * U, u.get("h", 28) * U
+            box = np.array([[x - w / 2, y - h / 2], [x + w / 2, y - h / 2], [x + w / 2, y + h / 2], [x - w / 2, y + h / 2]])
+            m = np.zeros((OHi, OWi), np.uint8)
+            cv2.fillPoly(m, [np.round((box + [3 * U, 4 * U]) * 4).astype(np.int32)], 255, cv2.LINE_AA, shift=2)
+            sh = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), 3 * U) * 0.55 * a          # drop shadow
+            lay[:] = lay * (1 - sh[..., None])
+            al[:] = np.maximum(al, sh)
+            m = np.zeros((OHi, OWi), np.uint8)
+            cv2.fillPoly(m, [np.round(box * 4).astype(np.int32)], 255, cv2.LINE_AA, shift=2)
+            fa = (m.astype(np.float32) / 255) * a
+            lay[:] = lay * (1 - fa[..., None]) + np.array(body, np.float32) * fa[..., None]
+            al[:] = np.maximum(al, fa)
+            m = np.zeros((OHi, OWi), np.uint8)                       # frame + infantry cross
+            cv2.polylines(m, [np.round(box * 4).astype(np.int32)], True, 255, max(1, int(2.2 * U)), cv2.LINE_AA, shift=2)
+            for (p0, p1) in ((box[0], box[2]), (box[1], box[3])):
+                cv2.line(m, tuple(np.round(p0 * 4).astype(int)), tuple(np.round(p1 * 4).astype(int)), 255, max(1, int(1.8 * U)),
+                         cv2.LINE_AA, shift=2)
+            ma = (m.astype(np.float32) / 255) * a
+            lay[:] = lay * (1 - ma[..., None]) + np.array(mark, np.float32) * ma[..., None]
+            al[:] = np.maximum(al, ma)
+            if u.get("label"):
+                cv.letters(u["label"], x / U + u.get("dx", 0), y / U + u.get("dy", h / U / 2 + 20), 99, "legend",
+                           align="c", alpha=a, size=u.get("size", 17), track=3, shadow=0.9)
+        return img * (1 - al[..., None]) + lay                     # lay is premultiplied by its coverage al
+
     # ---------------------------------------------------------------- frame
     def frame(self, tl):
         if self.base is None:
@@ -358,8 +434,14 @@ class MapShot:
         for name, t0, t1, col in c.get("rings", []):
             self.ring(roi, off, *self.place(name), ramp(tl, t0, t1), (tl - t0 - 0.25) / 0.8, T.COLORS[col])
         for r, path, cum, wl in reversed(self.routes):                # first route drawn last (on top)
-            self.arrow(roi, off, path, cum, self.route_length(r, cum, wl, tl), T.COLORS[r["color"]], tl, r.get("width", 34),
+            k = 1 - ramp(tl, *r["hide"]) if r.get("hide") else 1.0        # optional "hide": [t0, t1] fade-out
+            if k <= 0.01:
+                continue
+            tgt = roi if k >= 0.99 else roi.copy()
+            self.arrow(tgt, off, path, cum, self.route_length(r, cum, wl, tl), T.COLORS[r["color"]], tl, r.get("width", 34),
                        r.get("head", 88))
+            if k < 0.99:
+                roi[:] = cv2.addWeighted(tgt, k, roi, 1 - k, 0)
         for d in c.get("dots", []):
             self.dot(roi, off, *self.place(d[0]), (tl - d[1]) / 0.35, d[2] if len(d) > 2 else 17)
         for name, t0 in c.get("stars", []):
@@ -373,20 +455,25 @@ class MapShot:
         img = cv2.warpAffine(small, M, (OW, OH), flags=cv2.INTER_CUBIC if s >= 0.95 else cv2.INTER_LINEAR,
                              borderMode=cv2.BORDER_REFLECT).astype(np.float32) / 255
 
-        def proj(name):                                               # output pixels
-            X, Y = self.cpx(*self.place(name))
+        def proj_ll(lon, lat):                                        # output pixels
+            X, Y = self.cpx(lon, lat)
             return s * (X - cxp) + OW / 2, s * (Y - cyp) + OH / 2
+
+        def proj(name):
+            return proj_ll(*self.place(name))
         for name, t0 in c.get("stars", []):
             sp = (tl - t0) / 0.45
             if sp > 0:
                 ax, ay = proj(name)
                 g = np.exp(-(((self.XO - ax) / (90 * U)) ** 2 + ((self.YO - ay) / (90 * U)) ** 2)) * c.get("glow", 0.35) * min(1.0, sp)
                 img += g[..., None] * np.array([1.0, 0.72, 0.35], np.float32)
-        img = T.scrim(img, 0, 340, 0.8, top=True, U=U)
-        img = T.scrim(img, 900, 1280, 0.45, U=U)
-        cv = T.Canvas(OW, OH)
+        L = self.L
+        img = T.scrim(img, 0, L["top_scrim"], 0.8, top=True, U=U)
+        img = T.scrim(img, L["bot_scrim"][0], L["bot_scrim"][1], 0.45, U=U)
+        cv = T.Canvas(OW, OH, L["dw"])
         fo = c.get("fade_out")
         fade = 1 - ramp(tl, *fo) if fo else 1.0
+        img = self.draw_units(img, cv, tl, proj_ll, fade)
         safe = c.get("safe_labels", False)
         if safe:                                                      # region labels drawn live, faded near the edges
             for name, lon, lat, size, kind in c.get("region_labels", []):
@@ -396,25 +483,25 @@ class MapShot:
                 if sz < 9:
                     continue
                 x0, x1 = self.label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * _band_alpha(sy)
+                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * self.band_alpha(sy)
                 if a > 0.01:
                     cv.letters(name, sx, sy, 99, "map_note", "c", a, tuple(v / 255 for v in LABEL_COL[kind]), sz,
                                track=sz * 0.35, style="Italic", shadow=0.0)
         for lb in c.get("labels", []):
             px, py = proj(lb["place"])
             x, y = px / U + lb.get("dx", 0), py / U + lb.get("dy", 0)
-            a = fade
+            a = fade * (1 - ramp(tl, *lb["out"]) if lb.get("out") else 1.0)
             if safe:
                 st, sz0, tr0, *_ = T.PRESETS[lb.get("preset", "map_label")]
                 sz = lb.get("size") or sz0
                 x0, x1 = self.label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
-                x += max(0.0, 20 - x0) - max(0.0, x1 - 700)              # slide back inside the frame
+                x += max(0.0, L["slide"][0] - x0) - max(0.0, x1 - L["slide"][1])     # slide back inside the frame
                 a *= self.safe_alpha(None, None, y)
             if a > 0.01:
                 cv.letters(lb.get("text", lb["place"]), x, y, tl - lb["at"],
                            lb.get("preset", "map_label"), lb.get("align", "c"), a, lb.get("color"), lb.get("size"), shadow=0.85)
         if c.get("kicker"):
-            cv.letters(c["kicker"][0], 360, 176, tl - c["kicker"][1], "legend", size=22, track=6, stagger=0.015, alpha=fade,
+            cv.letters(c["kicker"][0], L["cx"], L["kicker_y"], tl - c["kicker"][1], "legend", size=22, track=6, stagger=0.015, alpha=fade,
                        col="gold", rise=16, shadow=0.5)
         dates = c.get("dates", [])
         for i, (td, txt) in enumerate(dates):
@@ -423,13 +510,14 @@ class MapShot:
                 a_in, a_out = T.ease((tl - td) / 0.25), T.ease((tl - tn + 0.18) / 0.18)
                 a = a_in * (1 - a_out) * fade
                 if a > 0.003:
-                    cv.letters(txt, 360, 240 + 26 * (1 - a_in) - 26 * a_out, 99, "ticker", alpha=a, shadow=0.6)
+                    cv.letters(txt, L["cx"], L["date_y"] + 26 * (1 - a_in) - 26 * a_out, 99, "ticker", alpha=a, shadow=0.6)
         for k, (txt, col, t0) in enumerate(c.get("legend", [])):
             a = T.ease((tl - t0) / 0.4) * fade
             if a > 0:
-                yb = 968 + 38 * k
-                cv.rect(70, yb - 12, 112, yb - 2, a, col, 0.5)
-                cv.letters(txt, 124, yb, 99, "legend", align="l", alpha=a, shadow=0.6)
+                ls = L.get("legend_size", 23)
+                yb = L["legend_y"] + ls * 1.65 * k
+                cv.rect(L["legend_x"], yb - ls * 0.52, L["legend_x"] + ls * 1.8, yb - ls * 0.09, a, col, 0.5)
+                cv.letters(txt, L["legend_x"] + ls * 2.35, yb, 99, "legend", align="l", alpha=a, size=ls, shadow=0.6)
         return cv.apply(img)
 
 
@@ -440,14 +528,24 @@ def _label_extent(text, x, style, size, track, align):
     return x0, x0 + w
 
 
-def _safe_alpha(x0, x1, y):
+# design-space layout per format (720x1280 vertical Shorts, 1280x720 landscape documentaries)
+LAYOUT = {
+    "portrait": dict(dw=720, cx=360, kicker_y=176, date_y=240, top_scrim=340, bot_scrim=(900, 1280), title_zone=285,
+                     bottom=1250, xl=12, xr=708, slide=(20, 700), band=(840, 1040), legend_x=70, legend_y=968),
+    "landscape": dict(dw=1280, cx=640, kicker_y=70, date_y=122, top_scrim=190, bot_scrim=(540, 720), title_zone=150,
+                      bottom=705, xl=14, xr=1266, slide=(24, 1256), band=(596, 700), legend_x=36, legend_y=52, legend_size=17),
+}
+
+
+def _safe_alpha(self, x0, x1, y):
     """1 inside the safe area, fading to 0 when a label crosses the frame edge or enters the kicker/date zone.
     x0 = None: vertical test only (point labels are slid back inside the frame instead)."""
+    L = self.L
     a = 1.0
     if x0 is not None:
-        edge = min(x0 - 12, 708 - x1)                                 # fully faded before the label reaches the edge
+        edge = min(x0 - L["xl"], L["xr"] - x1)                        # fully faded before the label reaches the edge
         a = min(1.0, max(0.0, edge / 40.0))
-    a *= min(1.0, max(0.0, (y - 285) / 30.0)) * min(1.0, max(0.0, (1250 - y) / 30.0))
+    a *= min(1.0, max(0.0, (y - L["title_zone"]) / 30.0)) * min(1.0, max(0.0, (L["bottom"] - y) / 30.0))
     return a
 
 
@@ -471,11 +569,11 @@ def _layout(self, tl):
         sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
         sz = size * self.q * s / U
         x0, x1 = _label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-        a = (_safe_alpha(x0, x1, sy) * _band_alpha(sy) if safe else 1.0) * fade
-        if sz >= 9 and -50 < sy < 1330:
+        a = (self.safe_alpha(x0, x1, sy) * self.band_alpha(sy) if safe else 1.0) * fade
+        if sz >= 9 and -50 < sy < OH / U + 50:
             out.append((name, x0, x1, sy, sz, a, "region"))
     for lb in c.get("labels", []):
-        if tl < lb["at"] + 0.4:
+        if tl < lb["at"] + 0.4 or (lb.get("out") and tl > lb["out"][1]):
             continue
         X, Y = self.cpx(*self.place(lb["place"]))
         x, y = (s * (X - cxp) + OW / 2) / U + lb.get("dx", 0), (s * (Y - cyp) + OH / 2) / U + lb.get("dy", 0)
@@ -484,21 +582,31 @@ def _layout(self, tl):
         x0, x1 = _label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
         a = fade
         if safe:
-            sh = max(0.0, 20 - x0) - max(0.0, x1 - 700)
+            sh = max(0.0, self.L["slide"][0] - x0) - max(0.0, x1 - self.L["slide"][1])
             x0, x1 = x0 + sh, x1 + sh
-            a *= _safe_alpha(None, None, y)
+            a *= self.safe_alpha(None, None, y)
         out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
+    for u in c.get("units", []):                                  # unit labels (they move: QC samples them too)
+        if not u.get("label") or tl < u.get("appear", 0.0) + 0.3 or ("leave" in u and tl > u["leave"]):
+            continue
+        X, Y = self.cpx(*self.unit_pos(u, tl))
+        x, y = (s * (X - cxp) + OW / 2) / U + u.get("dx", 0), (s * (Y - cyp) + OH / 2) / U + u.get("dy", u.get("h", 28) / 2 + 20)
+        sz = u.get("size", 17)
+        x0, x1 = _label_extent(u["label"], x, "Bold", sz, 3, "c")
+        out.append((u["label"], x0, x1, y, sz, fade, "label"))
     return out
 
 
-def _band_alpha(y):
-    """Decorative region labels step aside for the subtitles (design y 850-1030)."""
-    return 1.0 - min(1.0, max(0.0, min(y - 840, 1040 - y) / 20.0))
+def _band_alpha(self, y):
+    """Decorative region labels step aside for the subtitles."""
+    b0, b1 = self.L["band"]
+    return 1.0 - min(1.0, max(0.0, min(y - b0, b1 - y) / 20.0))
 
 
 MapShot.layout = _layout
 MapShot.label_extent = staticmethod(_label_extent)
-MapShot.safe_alpha = staticmethod(_safe_alpha)
+MapShot.safe_alpha = _safe_alpha
+MapShot.band_alpha = _band_alpha
 
 
 @functools.lru_cache(None)

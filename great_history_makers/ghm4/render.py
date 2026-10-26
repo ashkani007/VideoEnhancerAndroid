@@ -3,6 +3,7 @@
 
   python -m ghm4.render <storyboard.json>                 # 720x1280 preview with music/SFX -> <dir>/output/
   python -m ghm4.render <storyboard.json> --final         # 1080x1920
+  ("format": "landscape" in the storyboard: 1280x720 preview / 1920x1080 final, design space 1280x720)
   python -m ghm4.render <storyboard.json> --still 7.4     # one frame
   python -m ghm4.render <storyboard.json> --sheet         # contact sheet of 15 frames
   python -m ghm4.render <storyboard.json> --patch old_picture.mp4 --shots b02,b07   # re-render only these shots
@@ -51,12 +52,27 @@ FLASH = np.array([1.0, 0.93, 0.78], np.float32)
 EASES = {"inout": T.ease, "out": lambda u: 1 - (1 - min(1.0, max(0.0, u))) ** 2.2, "linear": lambda u: min(1.0, max(0.0, u))}
 
 
+def landscape(sb):
+    return sb.get("format") == "landscape"
+
+
+def design_width(sb):
+    return 1280 if landscape(sb) else 720
+
+
+def output_size(sb, final):
+    if landscape(sb):
+        return (1920, 1080) if final else (1280, 720)
+    return (1080, 1920) if final else (720, 1280)
+
+
 class Renderer:
     def __init__(self, sb_path, OW, OH):
         self.path = os.path.abspath(sb_path)
         self.dir = os.path.dirname(self.path)
         self.sb = json.load(open(self.path, encoding="utf-8"))
-        self.OW, self.OH, self.U = OW, OH, OW / 720.0
+        self.dw = design_width(self.sb)
+        self.OW, self.OH, self.U = OW, OH, OW / float(self.dw)
         self.fps = self.sb.get("fps", 30)
         self.dur = self.sb["duration"]
         self.shots = sorted(self.sb["shots"], key=lambda s: s["start"])
@@ -148,7 +164,7 @@ class Renderer:
             img = self.zoom_blur(img, blur, self.OW * 0.47, self.OH * 0.36)
         for y0, y1, k, *top in sh.get("scrim", []):
             img = T.scrim(img, y0, y1, k, bool(top and top[0]), self.U)
-        cv = T.Canvas(self.OW, self.OH)
+        cv = T.Canvas(self.OW, self.OH, self.dw)
         T.draw_items(cv, sh.get("text", []), tl)
         return cv.apply(img)
 
@@ -251,7 +267,7 @@ def main():
     ap.add_argument("--patch", help="existing picture.mp4 to copy unchanged frames from")
     ap.add_argument("--shots", help="comma-separated shot ids to re-render (with --patch)")
     a = ap.parse_args()
-    OW, OH = (1080, 1920) if a.final else (720, 1280)
+    OW, OH = output_size(json.load(open(a.storyboard, encoding="utf-8")), a.final)
     R = Renderer(a.storyboard, OW, OH)
     out_dir = a.out or os.path.join(R.dir, "output")
     os.makedirs(out_dir, exist_ok=True)
@@ -265,7 +281,7 @@ def main():
         ts = np.linspace(0.4, R.dur - 0.4, 15)
         tiles = []
         for t in ts:
-            th = cv2.resize(R.frame(float(t)), (240, 427), interpolation=cv2.INTER_AREA)
+            th = cv2.resize(R.frame(float(t)), (240, 427) if OH > OW else (384, 216), interpolation=cv2.INTER_AREA)
             th = (th * 255).astype(np.uint8)
             cv2.putText(th, f"{t:.1f}s", (8, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
             tiles.append(th)

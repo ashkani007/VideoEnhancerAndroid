@@ -11,6 +11,7 @@ Tests
   robustness    metadata regions outside the plate, missing matte, eyes outside the frame
   transitions   whip / ink / flash / dissolve / cut: no NaN, only intended jumps, both shots visible mid-wipe
   narrate       retime to aligned words, caption-band collision check, excerpt duration
+  landscape     16:9 format: 1280x720 frames for map (with moving units) and plate shots; map labels clean (QC)
   qc            visual QC stage flags planted defects (black, frozen, washout, clipped text, small plate, map labels);
                 smoke noise tileable without a seam; safe map labels never cut
   masks         region-scored automatic mattes (ghm4/tests/test_masks.py)
@@ -199,6 +200,29 @@ def run_script(args):
     return dict(seconds=round(time.time() - t, 1), output=tail)
 
 
+def test_landscape():
+    from ghm4 import qc
+    mp = os.path.join(GHM, "ghm4", "data", "maps", "campaign_1805_ulm_austerlitz_16x9.json")
+    with tempfile.TemporaryDirectory() as d:
+        cv2.imwrite(os.path.join(d, "p.png"), cv2.imread(MASTER))
+        sb = {"id": "l", "format": "landscape", "fps": 30, "duration": 4.0, "fade_out": 0.1,
+              "shots": [{"id": "m", "type": "map", "start": 0, "end": 2.0, "map": mp},
+                        {"id": "p", "type": "plate", "start": 2.0, "end": 4.0, "plate": "p.png", "camera": {"from": {"zoom": 1.0}},
+                         "text": [{"text": "LANDSCAPE TITLE", "preset": "title_m", "x": 640, "y": 120}]}],
+              "transitions": [{"at": 2.0, "type": "dissolve"}]}
+        p = os.path.join(d, "sb.json")
+        json.dump(sb, open(p, "w"))
+        R = Renderer(p, 1280, 720)
+        for t in (1.0, 3.0):
+            f = R.frame(t)
+            assert f.shape == (720, 1280, 3) and np.isfinite(f).all(), f.shape
+        flags = qc.map_checks(json.load(open(p)), d, 1280, 720)["m"]
+    full = qc.map_checks({"format": "landscape", "captions": {}, "shots": [{"id": "m", "type": "map", "start": 0, "end": 21.0, "map": mp}]},
+                         GHM, 1280, 720)["m"]
+    assert not full, full
+    return dict(map_flags_2s=len(flags), map_flags_full=0)
+
+
 def test_qc():
     from ghm4 import qc
     from ghm4.plate import periodic_resize, tileable_noise
@@ -257,7 +281,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(GOLD, exist_ok=True)
     tests = [("golden", lambda: test_golden(a.update_golden)), ("plate_sizes", test_plate_sizes), ("robustness", test_robustness),
-             ("transitions", test_transitions), ("narrate", test_narrate), ("qc", test_qc)]
+             ("transitions", test_transitions), ("narrate", test_narrate), ("landscape", test_landscape), ("qc", test_qc)]
     if not a.quick:
         tests += [("masks", lambda: run_script(["-m", "ghm4.tests.test_masks", "--methods", "hybrid"])),
                   ("worker", lambda: run_script(["comfyui/worker/test_worker.py"])),

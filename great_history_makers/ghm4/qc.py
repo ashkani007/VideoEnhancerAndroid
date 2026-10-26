@@ -31,6 +31,12 @@ from PIL import Image, ImageDraw
 from . import text as T
 
 CAPTION_BAND = (860, 990)          # design units (720x1280): titles must stay above y 840 (ghm4.narrate check)
+FORMATS = {"portrait": dict(dw=720, dh=1280, band=CAPTION_BAND, cap_rows=(880 / 1280, 1000 / 1280)),
+           "landscape": dict(dw=1280, dh=720, band=(600, 700), cap_rows=(0.84, 0.97))}
+
+
+def fmt(sb):
+    return FORMATS["landscape" if sb.get("format") == "landscape" else "portrait"]
 LIMITS = {"washout_frames": 6, "washout_std": 0.07, "caption_bg_luma": 0.70, "text_contrast": 1.6, "black_luma": 0.035, "frozen_s": 1.0, "frozen_diff": 0.0008, "flicker_jump": 0.06, "rel_sharp": 0.40,
           "upscale_warn": 1.6, "upscale_error": 2.4, "min_motion": 0.0015}
 
@@ -67,6 +73,7 @@ def source_detail(path, cam, OW, OH):
 
 def static_checks(sb, sb_dir, OW, OH):
     """Problems visible from the storyboard and the source images alone (no decoding)."""
+    F = fmt(sb)
     out = {}
     caps = sb.get("captions")
     for sh in sb["shots"]:
@@ -93,18 +100,19 @@ def static_checks(sb, sb_dir, OW, OH):
                 fl.append(("WARN", f"source {W0}x{H0} enlarged {up:.2f}x at zoom {zmax} (soft)"))
             vis = (OW / OH) / (W0 / H0)
             vis = min(vis, 1 / vis) / zmax ** 2
-            if abs(W0 / H0 - 9 / 16) > 0.08:
-                fl.append(("WARN", f"source aspect {W0 / H0:.2f} is not 9:16; only {vis * 100:.0f}% of the image is ever visible"))
+            target = OW / OH
+            if abs(W0 / H0 - target) > 0.08 * target:
+                fl.append(("WARN", f"source aspect {W0 / H0:.2f} differs from the frame ({target:.2f}); only {vis * 100:.0f}% of the image is ever visible"))
             if meta.get("temp_standin"):
                 fl.append(("INFO", "temporary stand-in plate"))
         for it in sh.get("text", []):
             if "text" not in it:
                 continue
             x0, x1 = text_extent(it)
-            if x0 < 8 or x1 > 712:
-                fl.append(("ERROR", f"text '{it['text']}' spans x {x0:.0f}-{x1:.0f} (frame 0-720): clipped"))
+            if x0 < 8 or x1 > F["dw"] - 8:
+                fl.append(("ERROR", f"text '{it['text']}' spans x {x0:.0f}-{x1:.0f} (frame 0-{F['dw']}): clipped"))
             y = it.get("y", 0)
-            if caps and CAPTION_BAND[0] - 20 < y <= CAPTION_BAND[1] + 40:
+            if caps and F["band"][0] - 20 < y <= F["band"][1] + 40:
                 fl.append(("WARN", f"text '{it['text']}' at y {y} sits in the caption band"))
         out[sh["id"]] = fl
     return out
@@ -113,6 +121,7 @@ def static_checks(sb, sb_dir, OW, OH):
 def map_checks(sb, sb_dir, OW, OH):
     """Clipped and overlapping map labels, sampled every 0.25 s."""
     from . import mapshot
+    F = fmt(sb)
     out = {}
     for sh in sb["shots"]:
         if sh["type"] != "map":
@@ -122,9 +131,9 @@ def map_checks(sb, sb_dir, OW, OH):
         for tl in np.arange(0.0, sh["end"] - sh["start"], 0.25):
             boxes = [b for b in m.layout(float(tl)) if b[5] > 0.35]
             for txt, x0, x1, y, sz, a, kind in boxes:
-                if (x0 < 4 or x1 > 716) and y > 0 and y < 1280:
+                if (x0 < 4 or x1 > F["dw"] - 4) and y > 0 and y < F["dh"]:
                     clipped.setdefault(txt, round(sh["start"] + tl, 2))
-                if sb.get("captions") and CAPTION_BAND[0] - 10 < y < CAPTION_BAND[1] + 30 and x1 > 120 and x0 < 600:
+                if sb.get("captions") and F["band"][0] - 10 < y < F["band"][1] + 30 and x1 > F["dw"] / 6 and x0 < F["dw"] * 5 / 6:
                     under.setdefault(txt, round(sh["start"] + tl, 2))
             for i in range(len(boxes)):
                 for j in range(i + 1, len(boxes)):
@@ -157,7 +166,7 @@ def text_contrast(sb, frames_at, fps):
             if fr is None:
                 continue
             Hh, Ww = fr.shape[:2]
-            U = Ww / 720
+            U = Ww / fmt(sb)["dw"]
             st, sz, *_ = T.PRESETS[it.get("preset", "tagline")]
             size = it.get("size") or sz
             x0, x1 = text_extent(it)
@@ -206,7 +215,8 @@ def analyse(sb_path, video, out_dir):
         g = cv2.cvtColor(cv2.resize(fr, (OW // 2, OH // 2), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2GRAY).astype(np.float32) / 255
         luma.append(float(g.mean()))
         lstd.append(float(g.std()))
-        capl.append(float(g[int(g.shape[0] * 880 / 1280):int(g.shape[0] * 1000 / 1280), int(g.shape[1] * 0.15):int(g.shape[1] * 0.85)].mean()))
+        r0, r1 = fmt(sb)["cap_rows"]
+        capl.append(float(g[int(g.shape[0] * r0):int(g.shape[0] * r1), int(g.shape[1] * 0.15):int(g.shape[1] * 0.85)].mean()))
         sharp.append(float(cv2.Laplacian(g[int(0.1 * g.shape[0]):int(0.68 * g.shape[0])], cv2.CV_32F).var()))  # above the captions
         diff.append(float(np.abs(g - prev).mean()) if prev is not None else 0.0)
         prev = g
@@ -219,8 +229,9 @@ def analyse(sb_path, video, out_dir):
     report = {"video": video, "size": [OW, OH], "fps": fps, "frames": n, "expected_frames": expect, "shots": [], "global": []}
     if n != expect:
         report["global"].append(("ERROR", f"{n} frames decoded, {expect} expected"))
-    if abs(OW / OH - 9 / 16) > 0.01:
-        report["global"].append(("ERROR", f"output aspect {OW}x{OH} is not 9:16"))
+    want = 16 / 9 if sb.get("format") == "landscape" else 9 / 16
+    if abs(OW / OH - want) > 0.01:
+        report["global"].append(("ERROR", f"output aspect {OW}x{OH} is not {'16:9' if want > 1 else '9:16'}"))
     luma, diff, sharp, lstd, capl = map(np.array, (luma, diff, sharp, lstd, capl))
     mapq = map_checks(sb, sb_dir, OW, OH)
     txtq = text_contrast(sb, frames.get, fps)

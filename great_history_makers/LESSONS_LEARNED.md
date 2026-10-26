@@ -225,3 +225,14 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   Real-ESRGAN, ONNX on CPU, ~1 min for 491x840) gives a clean 2x in the cloud; the PC job does it for real plates.
 - **Re-render only what failed:** `ghm4.render --patch old_picture.mp4 --shots ...` (±0.5 s for transitions).
 - **Small gold text on light areas disappears** (the 3 px en dash over a white waistcoat): QC measures title contrast.
+
+## 2026-10-26: long-form brief (16:9) and client feedback on the Short
+- **The client published the Short and rejected its minimalist stand-ins.** Environment stand-ins drawn in code are not an
+  acceptable substitute for paintings, even when labelled. When no image source exists, stop at the approval gate and deliver
+  the parts that are real (maps, script, plan) rather than a video with placeholders.
+- **16:9 support:** `"format": "landscape"`: design space 1280×720, map layout table (kicker, date, legend top-left, caption
+  band 596–700), subtitles at y 975/1080, QC and verifier format-aware.
+- **Moving army positions** read best as unit blocks with corps numerals and a legend; full commander names collide. The QC
+  overlap check samples unit labels too; reroute paths so corps never cross in screen space.
+- **Close zooms on parchment need a high ppu**, but canvas memory grows with ppu² (a 5500×7500 canvas killed a worker).
+  Keep regional battles as their own map with tight bounds instead of zooming a strategic map.

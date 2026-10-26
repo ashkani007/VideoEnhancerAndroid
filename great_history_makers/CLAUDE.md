@@ -52,6 +52,15 @@ transitions, atmosphere, sound. No 2.5D/3D character animation, no paid image-to
 `episodes_v4/<id>/episode.json`, produced with `python -m ghm4.episode run`. Local generation is NOT confirmed working
 until the client's PC returns a manifest (`jobs/results/<id>/manifest.json`).
 
+## Long-form documentary direction (client brief 2026-10-26): *Napoleon: The Rise and Fall of an Emperor*
+16:9 1920×1080, 15–20 min, English. Project folder `docs_longform/napoleon_rise_fall/` (script with citations, style bible,
+characters, scene list, production plan, POC). **The client rejected the minimalist stand-in look** (flat vector church,
+simplified Moscow skyline, empty snowfields): never use code-drawn or minimalist environments or placeholder art in a video
+again. New look: cinematic historical digital paintings with realistic proportions and rich detail (`style_ghm_painterly_v2`),
+consistent Napoleon references per age (`napoleon.json` variants), subtle motion and atmosphere, and **maps as a major
+storytelling element** (moving army positions, routes, dates, territorial change). Renderer: storyboard `"format": "landscape"`.
+Deliver a 60–90 s POC for approval before producing the full film; no publishing.
+
 ## v2 direction (client decision 2026-10-23, superseded by v4 for new work)
 New episodes use **illustration plates + limited 2D animation + motion graphics** (`ghm2/`, see
 `ghm2/MIGRATION_PLAN.md`). Do not build new 2.5D rigs or per-shot procedural scenes; the v1 engine stays in the
