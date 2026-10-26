@@ -236,3 +236,12 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   overlap check samples unit labels too; reroute paths so corps never cross in screen space.
 - **Close zooms on parchment need a high ppu**, but canvas memory grows with ppu² (a 5500×7500 canvas killed a worker).
   Keep regional battles as their own map with tight bounds instead of zooming a strategic map.
+
+## 2026-10-26: client correction: the original map style is approved and LOCKED
+- I read "I liked the maps" as licence to improve them and produced a zoomed parchment map with unit blocks and a moved
+  legend. That was a redesign the client never asked for. **When the client praises an element, keep it exactly; only
+  change what they criticised.** Any visual change to an approved element is an A/B proposal, never a default.
+- Measurable cause of the different look: graphics scale = element_scale / camera width (short side). The approved maps
+  sit at about 0.07–0.14; the rejected map reached 0.25–0.40 (2.5–4× oversized rivers, chevrons, dots), and the close
+  zoom removed the sea. `ghm4/map_style.py` now guards the scale and the non-original features.
+- In 16:9, camera widths mean the frame's short side, so an approved vertical map renders at the same graphics size.

@@ -120,11 +120,16 @@ def static_checks(sb, sb_dir, OW, OH):
 
 def map_checks(sb, sb_dir, OW, OH):
     """Clipped and overlapping map labels, sampled every 0.25 s."""
-    from . import mapshot
+    from . import map_style, mapshot
     F = fmt(sb)
     out = {}
     for sh in sb["shots"]:
         if sh["type"] != "map":
+            continue
+        cfg = json.load(open(os.path.join(sb_dir, sh["map"]), encoding="utf-8"))
+        bad = map_style.violations(cfg)
+        if bad:                                                   # the approved map look is locked
+            out[sh["id"]] = [("ERROR", "map style LOCKED, not in the approved style: " + "; ".join(bad))]
             continue
         m = mapshot.MapShot(os.path.join(sb_dir, sh["map"]), OW, OH)
         clipped, overl, under = {}, {}, {}
@@ -140,11 +145,19 @@ def map_checks(sb, sb_dir, OW, OH):
                     A, B = boxes[i], boxes[j]
                     if A[6] == "region" and B[6] == "region":
                         continue
+                    if "legend" in (A[6], B[6]):                  # the legend block is a box: plain rectangle overlap
+                        bx = A if A[6] == "legend" else B
+                        o = B if bx is A else A
+                        if o[2] > bx[1] and o[1] < bx[2] and o[3] > bx[3] - bx[4] and o[3] - o[4] * 0.8 < bx[3]:
+                            overl.setdefault(f"{A[0]} / {B[0]}", round(sh["start"] + tl, 2))
+                        continue
                     ox = min(A[2], B[2]) - max(A[1], B[1])
                     oy = min(A[3], B[3]) - max(A[3] - A[4] * 0.8, B[3] - B[4] * 0.8)
                     if ox > -12 and oy > -8:                         # touching labels read as one word
                         overl.setdefault(f"{A[0]} / {B[0]}", round(sh["start"] + tl, 2))
-        fl = [("WARN", f"map label '{k}' cut by the frame edge at {v}s") for k, v in clipped.items()]
+        fl = [("WARN", f"map graphics scale {r} at camera key {t}s is outside the approved range {map_style.SCALE_RANGE} "
+                       "(element_scale / camera width)") for t, r in map_style.scale_issues(cfg)]
+        fl += [("WARN", f"map label '{k}' cut by the frame edge at {v}s") for k, v in clipped.items()]
         fl += [("WARN", f"map labels overlap or touch: {k} at {v}s") for k, v in overl.items()]
         fl += [("WARN", f"map label '{k}' under the subtitle band at {v}s") for k, v in under.items()]
         out[sh["id"]] = fl

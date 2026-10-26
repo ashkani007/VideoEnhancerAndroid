@@ -3,9 +3,10 @@
 **Status:** proposal. It becomes binding after the client approves the proof of concept.
 **Replaces:** the minimalist stand-in look of the Shorts preview, which the client rejected. The flat vector church, the simplified skyline and the empty snowfields are **never** used again.
 **Machine-readable version:** `comfyui/bible/style_ghm_painterly_v2.json`.
+**Scope:** the painterly style applies to **non-map scenes only**. Maps keep the original approved style (§6, locked).
 
 ## 1. The look in one sentence
-Cinematic historical digital paintings in the tradition of nineteenth-century academic battle painting, brought to life with subtle camera moves, parallax and weather, held together by animated campaign maps.
+Cinematic historical digital paintings in the tradition of nineteenth-century academic battle painting (non-map scenes), brought to life with subtle camera moves, parallax and weather, held together by the original, approved animated campaign maps.
 
 **Visual references** (all public domain, for look only; we never copy compositions):
 - Meissonier, *1814, Campagne de France* and *1807, Friedland*;
@@ -75,34 +76,32 @@ Cinematic historical digital paintings in the tradition of nineteenth-century ac
 - **Britain:** red coats, Belgic shako (1815), Highlanders in kilts; Wellington in a plain dark blue civilian-cut coat.
 - **Artillery and horses:** French Gribeauval guns in olive green; Napoleon's greys (Marengo, Vizir) as era-appropriate options.
 
-## 6. Maps (the client's favourite element: a major storytelling device, not a transition)
-- **Look:** the approved parchment campaign atlas:
-  - sand-coloured land, navy sea with shoreline ripples, river blue;
-  - relief hatching for mountains;
-  - Natural Earth 1:50m coastlines (public domain).
-- **Content:**
-  - campaign routes as thick arrows with marching dashes;
-  - **moving army positions** as unit blocks (NATO-style infantry cross), with corps numerals (I–VI, CAV) and a legend;
-  - date ticker, battle stars, encirclement rings, territorial reveals spreading from the capital.
-- **Colour code:**
+## 6. Maps: the ORIGINAL approved style is LOCKED (client correction, 2026-10-26)
+The client approved the animated maps of the original Napoleon Short (Ep01) and the 1805 campaign map of the 20s POC.
+Their look is the reference for every map in this documentary and is **locked** in code (`ghm4/map_style.py`).
+It changes only with the client's explicit, dated approval.
 
-  | Side | Colour |
-  |---|---|
-  | France and allies | Imperial blue |
-  | Austria | White |
-  | Russia | Green |
-  | Prussia | Black |
-  | Britain | Red |
-  | Generic enemy movement | Red arrow |
-  | Encirclement / defeat | Red ring |
+**What the approved look is:**
+- continental scale with prominent navy seas and shoreline ripples, sand parchment land, faint graticule;
+- thin straight river lines with italic river names; small relief chevrons;
+- bold blue (French) and red (enemy) campaign arrows with travelling dashes, drawn progressively;
+- white place dots, red dashed encirclement rings, gold battle stars with glow, territory fills where needed;
+- gold tracked kicker and ivory date ticker at the top; ivory labels with shadow; legend bars at the bottom left;
+- vignette 0.24, grain 0.008, slow spline camera with modest zoom.
 
-- **Layout (16:9):**
-  - kicker and date top centre; legend top left;
-  - labels never cross the frame edge, enter the title band or sit under the subtitles (`safe_labels`, checked by `ghm4.qc`).
-- **Accuracy:**
-  - dates and places from the cited sources;
-  - routes simplified, with the simplification stated in each map's `_about` and in the production notes;
-  - schematic positions labelled as such.
+**Allowed without approval** (technical, appearance unchanged):
+- 1080p and 16:9 output;
+- collision-safe labels: no clipping, no overlaps, nothing under subtitles or the legend; labels fade when their place leaves the frame;
+- QC checks, including a check that map graphics stay at the approved size;
+- historical-accuracy notes.
+
+**Refused by the renderer unless approved:**
+- unit blocks with corps numerals;
+- splined rivers;
+- fading arrows or labels.
+
+The earlier zoomed Ulm–Austerlitz map with NATO unit blocks and a top-left legend was a mistake and has been withdrawn
+(see `poc/MAP_STYLE_COMPARISON.jpg`).
 
 ## 7. Typography and subtitles
 - **Typeface:** Caladea (serif).

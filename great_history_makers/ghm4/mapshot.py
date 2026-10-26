@@ -18,7 +18,9 @@ Map JSON (lon/lat degrees; times are shot-local seconds; label offsets in 720x12
   "smooth_rivers": true,                                 spline the river polylines (close-up regional maps)
   "units": [{"label": "SOULT", "side": "fr", "path": [[lon, lat], ...], "times": [t, ...], "appear": t, "leave": t}],
                                                          moving army positions (unit blocks with a trail)
-  "camera": [[t, lon, lat, width_in_units], ...],      width in degrees of longitude x cos(ref_lat)
+  "camera": [[t, lon, lat, width_in_units], ...],      width in degrees of longitude x cos(ref_lat), measured along the
+                                                         frame's SHORT side (vertical: width; 16:9: height)
+  Visual style: LOCKED (ghm4/map_style.py). New visual features need "style_override_approved".
   "safe_labels": true,                                   labels never leave the frame or enter the title zone (fade),
                                                          region labels follow the camera and fade out instead of being cut
   "kicker": [text, t], "dates": [[t, text], ...], "legend": [[text, color, t], ...], "fade_out": [t0, t1]
@@ -33,6 +35,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 
+from . import map_style
 from . import text as T
 from .plate import tileable_noise
 
@@ -98,6 +101,7 @@ class MapShot:
     def __init__(self, path, OW, OH):
         self.cfg = json.load(open(path, encoding="utf-8"))
         c = self.cfg
+        map_style.check(c, os.path.basename(path))                     # the approved map look is locked
         self.L = LAYOUT["landscape" if OW > OH else "portrait"]
         self.OW, self.OH, self.U = OW, OH, OW / float(self.L["dw"])
         self.lon0, self.lon1, self.lat0, self.lat1 = c["bounds"]
@@ -411,7 +415,7 @@ class MapShot:
         c, OW, OH, U = self.cfg, self.OW, self.OH, self.U
         keys = [(k[0], (k[1] - self.lon0) * self.kx, self.lat1 - k[2], math.log(k[3])) for k in c["camera"]]
         cx, cy, lw = hermite(keys, tl)
-        Wu = math.exp(lw)
+        Wu = math.exp(lw) * max(1.0, OW / OH)        # camera width = the frame's SHORT side (16:9 keeps the approved scale)
         # never look past the canvas (the border would show as a mirrored strip)
         Wu = min(Wu, self.CW / self.ppu, self.CH / self.ppu * OW / OH)
         hwu, hhu = Wu / 2, Wu / 2 * OH / OW
@@ -483,7 +487,7 @@ class MapShot:
                 if sz < 9:
                     continue
                 x0, x1 = self.label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * self.band_alpha(sy)
+                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * self.band_alpha(sy) * self.legend_alpha(x0, x1, sy, sz, tl)
                 if a > 0.01:
                     cv.letters(name, sx, sy, 99, "map_note", "c", a, tuple(v / 255 for v in LABEL_COL[kind]), sz,
                                track=sz * 0.35, style="Italic", shadow=0.0)
@@ -496,7 +500,7 @@ class MapShot:
                 sz = lb.get("size") or sz0
                 x0, x1 = self.label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
                 x += max(0.0, L["slide"][0] - x0) - max(0.0, x1 - L["slide"][1])     # slide back inside the frame
-                a *= self.safe_alpha(None, None, y)
+                a *= self.safe_alpha(None, None, y) * self.anchor_alpha(px / U)       # ... only while the place is on screen
             if a > 0.01:
                 cv.letters(lb.get("text", lb["place"]), x, y, tl - lb["at"],
                            lb.get("preset", "map_label"), lb.get("align", "c"), a, lb.get("color"), lb.get("size"), shadow=0.85)
@@ -533,7 +537,7 @@ LAYOUT = {
     "portrait": dict(dw=720, cx=360, kicker_y=176, date_y=240, top_scrim=340, bot_scrim=(900, 1280), title_zone=285,
                      bottom=1250, xl=12, xr=708, slide=(20, 700), band=(840, 1040), legend_x=70, legend_y=968),
     "landscape": dict(dw=1280, cx=640, kicker_y=70, date_y=122, top_scrim=190, bot_scrim=(540, 720), title_zone=150,
-                      bottom=705, xl=14, xr=1266, slide=(24, 1256), band=(596, 700), legend_x=36, legend_y=52, legend_size=17),
+                      bottom=705, xl=14, xr=1266, slide=(24, 1256), band=(596, 700), legend_x=56, legend_y=520),
 }
 
 
@@ -554,7 +558,7 @@ def _layout(self, tl):
     c, OW, OH, U = self.cfg, self.OW, self.OH, self.U
     keys = [(k[0], (k[1] - self.lon0) * self.kx, self.lat1 - k[2], math.log(k[3])) for k in c["camera"]]
     cx, cy, lw = hermite(keys, tl)
-    Wu = min(math.exp(lw), self.CW / self.ppu, self.CH / self.ppu * OW / OH)
+    Wu = min(math.exp(lw) * max(1.0, OW / OH), self.CW / self.ppu, self.CH / self.ppu * OW / OH)
     hwu, hhu = Wu / 2, Wu / 2 * OH / OW
     cx = min(max(cx, hwu), self.CW / self.ppu - hwu)
     cy = min(max(cy, hhu), self.CH / self.ppu - hhu)
@@ -569,7 +573,7 @@ def _layout(self, tl):
         sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
         sz = size * self.q * s / U
         x0, x1 = _label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-        a = (self.safe_alpha(x0, x1, sy) * self.band_alpha(sy) if safe else 1.0) * fade
+        a = (self.safe_alpha(x0, x1, sy) * self.band_alpha(sy) * self.legend_alpha(x0, x1, sy, sz, tl) if safe else 1.0) * fade
         if sz >= 9 and -50 < sy < OH / U + 50:
             out.append((name, x0, x1, sy, sz, a, "region"))
     for lb in c.get("labels", []):
@@ -584,8 +588,11 @@ def _layout(self, tl):
         if safe:
             sh = max(0.0, self.L["slide"][0] - x0) - max(0.0, x1 - self.L["slide"][1])
             x0, x1 = x0 + sh, x1 + sh
-            a *= self.safe_alpha(None, None, y)
+            a *= self.safe_alpha(None, None, y) * self.anchor_alpha(x - lb.get("dx", 0))
         out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
+    lb_box = self.legend_box(tl)
+    if lb_box is not None:                                        # the legend block counts as a label for overlap checks
+        out.append(("legend", lb_box[0], lb_box[2], lb_box[3], lb_box[3] - lb_box[1], fade, "legend"))
     for u in c.get("units", []):                                  # unit labels (they move: QC samples them too)
         if not u.get("label") or tl < u.get("appear", 0.0) + 0.3 or ("leave" in u and tl > u["leave"]):
             continue
@@ -603,6 +610,33 @@ def _band_alpha(self, y):
     return 1.0 - min(1.0, max(0.0, min(y - b0, b1 - y) / 20.0))
 
 
+def _anchor_alpha(self, ax):
+    """Point labels fade out when their place leaves the frame (they are never parked at the edge)."""
+    return min(1.0, max(0.0, min(ax, self.L["dw"] - ax) / 30.0))
+
+
+def _legend_box(self, tl):
+    """Design-space box of the legend at shot time tl (None before its first entry appears)."""
+    lg = [e for e in self.cfg.get("legend", []) if tl >= e[2]]
+    if not lg:
+        return None
+    L, ls = self.L, self.L.get("legend_size", 23)
+    w = max(_label_extent(txt, 0, "Bold", ls, 2, "l")[1] for txt, _, _ in lg) + ls * 2.35
+    y0 = L["legend_y"] - ls * 1.0
+    return (L["legend_x"] - 6, y0, L["legend_x"] + w + 6, L["legend_y"] + ls * 1.65 * (len(lg) - 1) + ls * 0.4)
+
+
+def _legend_alpha(self, x0, x1, y, sz, tl):
+    """Decorative region labels step aside where the legend is (like they do for the subtitles)."""
+    b = self.legend_box(tl)
+    if b is None or x1 < b[0] or x0 > b[2] or y - sz * 0.8 > b[3] + 6 or y < b[1] - 6:
+        return 1.0
+    return 0.0
+
+
+MapShot.legend_box = _legend_box
+MapShot.legend_alpha = _legend_alpha
+MapShot.anchor_alpha = _anchor_alpha
 MapShot.layout = _layout
 MapShot.label_extent = staticmethod(_label_extent)
 MapShot.safe_alpha = _safe_alpha

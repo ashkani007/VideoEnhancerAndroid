@@ -59,6 +59,11 @@ simplified Moscow skyline, empty snowfields): never use code-drawn or minimalist
 again. New look: cinematic historical digital paintings with realistic proportions and rich detail (`style_ghm_painterly_v2`),
 consistent Napoleon references per age (`napoleon.json` variants), subtle motion and atmosphere, and **maps as a major
 storytelling element** (moving army positions, routes, dates, territorial change). Renderer: storyboard `"format": "landscape"`.
+**MAP STYLE IS LOCKED (client correction 2026-10-26):** the animated maps of the original Napoleon Short (Ep01) and the
+20s POC campaign map are the approved reference. Never redesign them (no new zoom scale, unit blocks, legend position,
+river style or fading behaviour) without the client's explicit approval; `ghm4/map_style.py` refuses non-original
+features and QC checks the graphics scale. The painterly illustration style applies to non-map scenes only.
+Do not assume a new style is better because it looks more cinematic.
 Deliver a 60–90 s POC for approval before producing the full film; no publishing.
 
 ## v2 direction (client decision 2026-10-23, superseded by v4 for new work)

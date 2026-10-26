@@ -1,65 +1,41 @@
 {
- "id": "napoleon_longform_map_poc",
+ "id": "napoleon_longform_map_sample",
  "format": "landscape",
  "fps": 30,
- "duration": 21.0,
+ "duration": 16.5,
  "fade_out": 0.5,
- "grain": 0.006,
- "vignette": 0.18,
  "shots": [
   {
    "id": "m1_ulm_austerlitz",
    "type": "map",
    "start": 0,
-   "end": 21.0,
+   "end": 16.5,
    "map": "../../../ghm4/data/maps/campaign_1805_ulm_austerlitz_16x9.json"
   }
  ],
  "transitions": [],
  "audio": {
   "music": {
-   "seed": 19,
-   "root_hz": 98.0,
+   "seed": 7,
+   "root_hz": 110.0,
    "mode": "minor",
-   "drum_from": 2.6,
-   "drum_to": 17.4
+   "drum_from": 0.3,
+   "drum_to": 15.8
   },
   "music_level": 1.0,
   "sfx_level": 0.8,
   "sfx": [
    {
     "type": "drum",
-    "start": 2.6,
-    "end": 17.4,
+    "start": 0.3,
+    "end": 15.8,
     "period": 0.5,
-    "gain": 0.22
-   },
-   {
-    "type": "march",
-    "start": 3.0,
-    "end": 9.0,
     "gain": 0.25
    },
    {
-    "type": "whoosh",
-    "start": 10.4,
-    "gain": 0.35
-   },
-   {
     "type": "cannon",
-    "start": 17.6,
-    "gain": 0.55
-   },
-   {
-    "type": "cannon",
-    "start": 18.2,
-    "gain": 0.35,
-    "dist": 0.6
-   },
-   {
-    "type": "bell",
-    "start": 9.1,
-    "gain": 0.2
+    "start": 12.05,
+    "gain": 0.5
    }
   ]
  }

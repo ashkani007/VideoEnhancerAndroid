@@ -12,6 +12,7 @@ Tests
   transitions   whip / ink / flash / dissolve / cut: no NaN, only intended jumps, both shots visible mid-wipe
   narrate       retime to aligned words, caption-band collision check, excerpt duration
   landscape     16:9 format: 1280x720 frames for map (with moving units) and plate shots; map labels clean (QC)
+  map_lock      the approved map style is locked: non-original features are refused, approved maps pass, graphics scale in range
   qc            visual QC stage flags planted defects (black, frozen, washout, clipped text, small plate, map labels);
                 smoke noise tileable without a seam; safe map labels never cut
   masks         region-scored automatic mattes (ghm4/tests/test_masks.py)
@@ -223,6 +224,32 @@ def test_landscape():
     return dict(map_flags_2s=len(flags), map_flags_full=0)
 
 
+def test_map_lock():
+    import glob
+    from ghm4 import map_style
+    from ghm4.mapshot import MapShot
+    ok = []
+    for f in sorted(glob.glob(os.path.join(GHM, "ghm4", "data", "maps", "*.json"))):
+        cfg = json.load(open(f))
+        assert not map_style.violations(cfg), (f, map_style.violations(cfg))
+        assert not map_style.scale_issues(cfg), (f, map_style.scale_issues(cfg))
+        ok.append(os.path.basename(f))
+    with tempfile.TemporaryDirectory() as d:
+        cfg = json.load(open(os.path.join(GHM, "ghm4", "data", "maps", "campaign_1805_austerlitz.json")))
+        cfg["units"] = [{"label": "IV", "path": [[10, 48]], "times": [0]}]
+        p = os.path.join(d, "m.json")
+        json.dump(cfg, open(p, "w"))
+        try:
+            MapShot(p, 720, 1280)
+            raise AssertionError("a map with unit blocks rendered without style approval")
+        except map_style.MapStyleLocked:
+            pass
+        cfg["style_override_approved"] = "test fixture"
+        json.dump(cfg, open(p, "w"))
+        MapShot(p, 720, 1280)                                     # explicit approval lets it through
+    return dict(approved_maps=len(ok))
+
+
 def test_qc():
     from ghm4 import qc
     from ghm4.plate import periodic_resize, tileable_noise
@@ -281,7 +308,7 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     os.makedirs(GOLD, exist_ok=True)
     tests = [("golden", lambda: test_golden(a.update_golden)), ("plate_sizes", test_plate_sizes), ("robustness", test_robustness),
-             ("transitions", test_transitions), ("narrate", test_narrate), ("landscape", test_landscape), ("qc", test_qc)]
+             ("transitions", test_transitions), ("narrate", test_narrate), ("landscape", test_landscape), ("map_lock", test_map_lock), ("qc", test_qc)]
     if not a.quick:
         tests += [("masks", lambda: run_script(["-m", "ghm4.tests.test_masks", "--methods", "hybrid"])),
                   ("worker", lambda: run_script(["comfyui/worker/test_worker.py"])),
