@@ -10,7 +10,7 @@ The final length follows the recorded voice, and is expected at about 17–19 mi
 | 1 | Audit of pipeline and reusable assets | **Done** | Renderer, map system, QC, narration and caption stage, music and SFX, job queue: all reusable. Reused: 3 POC paintings (job queued), the approved v2 Ulm–Austerlitz map, the Ep01 Saint Helena map, and Ep01 map data (coalition, Elba, 1811 territories) |
 | 2 | Script, complete and fact-checked | **Done** (draft 2, frozen for recording) | `NARRATION.txt`: 7 chapters, 2,277 words, 13,167 characters. Claim table with sources in `../SCRIPT.md` (one wording corrected before recording: the size of Elba) |
 | 3 | Shot list and storyboard | **Done** | `SHOT_LIST.md` (planned timecodes), `shots.py` (source), `chapters/ch1–ch7/storyboard.json` (full chapter storyboards: paintings, maps, chapter cards, film title, end card, transitions, captions, music, SFX) |
-| 4 | All animated maps, locked style | **Done; footage rendering** | 13 map files, 17 map shots, about 6 minutes of maps (31 % of the film). Every map passes the style lock, the size ranges (graphics scale, arrow stroke), canvas coverage and QC label checks (0 warnings). 1080p footage per chapter: `output/map_reels/chN/` |
+| 4 | All animated maps, locked style | **Done; footage delivered** | 13 map files, 17 map shots, about 6 minutes of maps (31 % of the film). Every map passes the style lock, the size ranges (graphics scale, arrow stroke), canvas coverage and the QC label checks. Final 1080p map footage per chapter: `output/Napoleon_Doc_ChN_..._MAPS_1080p.mp4`. Checks: decode, black/freeze scan, QC stage (0 errors; one warning on chapter 5 checked as a false alarm, see `output/QC_NOTES.md`). Paper/sea base oversampled like the approved maps (≥1.5×) |
 | 5 | Cinematic paintings and animation | **Blocked: image generation** | 57 new paintings plus the 3 POC paintings are designed (composition, period detail, light, motion, effects). 8 jobs (216 images, 4 candidates each) are queued for the PC worker: `jobs/queue/napoleon_doc_*` |
 | 6 | Narration, subtitles, music, SFX | **Narration blocked: needs your approval to spend credits.** Music and SFX ready | Procedural music (one seed and key per chapter) and SFX cues are in each storyboard. Subtitles are generated from the forced-aligned narration (never estimated) |
 | 7–9 | Chapter renders, QC, assembly | Waiting for steps 5 and 6 | The commands are in the runbook below; each chapter renders, is checked and is assembled automatically |
@@ -37,6 +37,17 @@ automatically to the recorded voice.
    - `py -m ghm4.qc …`
    - visual review
 5. **Assemble:** `py production/assemble.py`: concatenates chapters 1–7 → final MP4 (2-pass 12 Mbps delivery encode), English SRT from the same aligned caption cues, final chapter timestamps. **No publishing.**
+
+## Issues found and fixed during production
+- **Map framing:** the Belgian and several other maps were authored with canvases too small for 16:9, so they rendered wider than intended. The builder now checks and fits canvas coverage.
+- **Label collisions:**
+  - region labels against place labels;
+  - labels under stars and the legend;
+  - persistent 1806–07 labels in the 1811 view (the map was split in two).
+  - All are fixed in the data; QC finds 0 warnings.
+- **Soft paper texture:** several maps were resampled at about 1×. Canvases are now oversampled like the approved maps. A worker ran out of memory once, so canvases are capped at about 33 MP.
+- **Preview mux** dropped the last frame when the music track ended early. Audio is now padded.
+- **Elba wording** corrected before recording.
 
 ## Quality controls applied so far
 - **Map style lock:**
