@@ -7,7 +7,7 @@
   52.19
  ],
  "ref_lat": 50.7,
- "ppu": 1440,
+ "ppu": 1188,
  "coast": "ghm4/data/europe_ne50m.json",
  "element_scale": 0.15,
  "star_scale": 0.62,

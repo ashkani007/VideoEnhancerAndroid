@@ -5,6 +5,7 @@ P=docs_longform/napoleon_rise_fall/production
 LOG=$1
 for spec in "ch1:Waterloo" "ch2:Corsica_and_the_Revolution" "ch3:Italy_Egypt_and_Power" "ch4:Coronation_Ulm_and_Austerlitz" "ch5:Europe_and_Russia" "ch6:Retreat_Exile_and_Return" "ch7:Waterloo_Saint_Helena_and_Legacy"; do
   ch=${spec%%:*}; name=${spec#*:}
+  case " ${CHS:-ch1 ch2 ch3 ch4 ch5 ch6 ch7} " in *" $ch "*) ;; *) continue ;; esac
   until grep -q "$ch EXIT" "$LOG"; do sleep 20; done
   V=$P/output/map_reels/$ch/napoleon_doc_${ch}_maps_1920x1080_preview.mp4
   ffmpeg -v error -i "$V" -f null - && echo "$ch decode OK"

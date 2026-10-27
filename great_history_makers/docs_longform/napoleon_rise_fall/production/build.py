@@ -173,9 +173,10 @@ def fit_bounds(cfg, margin=0.6):
 OVERSAMPLE = 1.6      # canvas pixels per output pixel at the closest zoom (approved maps: v2 1.26-1.8, Ep01 about 2)
 
 
-def set_resolution(cfg, short=1080, cap_mp=60.0):
+def set_resolution(cfg, short=1080, cap_mp=20.0):
     """Raise the canvas resolution (ppu) so the parchment, sea and coast base is oversampled like the approved maps;
-    resolution only, the look is unchanged."""
+    resolution only, the look is unchanged. cap_mp is in config units: the renderer multiplies ppu by 1.275 at 1080p,
+    so 20 MP here is about 33 MP per render worker (a 3-worker render stays inside 15 GB; 36 MP config OOM-killed one)."""
     import math
     kx = math.cos(math.radians(cfg.get("ref_lat", 48)))
     lon0, lon1, lat0, lat1 = cfg["bounds"]
