@@ -345,8 +345,8 @@ def main():
         cfg = {"duration": R.dur, "audio": dict(R.sb["audio"], narration_file="__none__")}
         build_mix(R.dir, cfg, wav)
         prev = os.path.join(out_dir, f"{sid}_{OW}x{OH}_preview.mp4")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", picture, "-i", wav, "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
-                        "-ar", "48000", "-shortest", "-movflags", "+faststart", prev], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", picture, "-i", wav, "-c:v", "copy", "-af", "apad", "-c:a", "aac", "-b:a", "192k",
+                        "-ar", "48000", "-shortest", "-movflags", "+faststart", prev], check=True)   # audio padded: no frame lost
         os.remove(wav)
         print(f"preview: {prev}")
 
