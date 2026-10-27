@@ -2,7 +2,7 @@
  "hybrid/full": {
   "passed": true,
   "outcome": "mask",
-  "seconds": 63.2,
+  "seconds": 74.3,
   "figure": {
    "hat": 0.997,
    "face": 0.995,
@@ -40,7 +40,7 @@
  "hybrid/portrait": {
   "passed": true,
   "outcome": "mask",
-  "seconds": 14.9,
+  "seconds": 12.1,
   "figure": {
    "hat": 0.997,
    "face": 0.995,
