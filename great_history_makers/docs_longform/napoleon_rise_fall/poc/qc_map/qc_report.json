@@ -1,5 +1,5 @@
 {
- "video": "docs_longform/napoleon_rise_fall/poc/output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_1080p.mp4",
+ "video": "docs_longform/napoleon_rise_fall/poc/output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_v2_1080p.mp4",
  "size": [
   1920,
   1080
@@ -14,8 +14,8 @@
    "start": 0,
    "end": 16.5,
    "sharpness_rel": 1.0,
-   "motion": 0.0119,
-   "luma": 0.552,
+   "motion": 0.00915,
+   "luma": 0.555,
    "flags": []
   }
  ],

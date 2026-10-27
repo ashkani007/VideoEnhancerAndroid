@@ -245,3 +245,9 @@ Each entry says how it was verified. Add new lessons at the end, with a date and
   sit at about 0.07–0.14; the rejected map reached 0.25–0.40 (2.5–4× oversized rivers, chevrons, dots), and the close
   zoom removed the sea. `ghm4/map_style.py` now guards the scale and the non-original features.
 - In 16:9, camera widths mean the frame's short side, so an approved vertical map renders at the same graphics size.
+- (2026-10-27) **Compare against actual frames of the approved video, never a verbal description.** The side-by-side
+  sheet (`tools/map_compare_sheet.py`) showed what words had missed: gold italic date notes (low contrast on parchment,
+  never used in Ep01), a closing zoom inherited from a Short's punch-in (arrows about 60 ‰ of the frame against Ep01's
+  9–22 ‰), and an edge label parked over the route. Measure arrow stroke over the WHOLE shot, not only at camera keys.
+- Painting prompts need a history pass before generation: 1805 French line infantry wore bicornes (not shakos), and at
+  the Pratzen the rising sun was behind the allied crest, in the French soldiers' faces.

@@ -27,11 +27,27 @@ NON_ORIGINAL_FEATURES = {
 NON_ORIGINAL_ROUTE_KEYS = {"hide": "fading campaign arrows (approved arrows stay on the map once drawn)"}
 NON_ORIGINAL_LABEL_KEYS = {"out": "fading labels (approved labels stay once shown)"}
 
-# element scale on screen is proportional to element_scale / camera width (short side). Range of the approved maps
-# (Ep01 + POC): about 0.07-0.14 for most of the shot; the POC map closes in to about 0.2 before it fades.
-SCALE_RANGE = (0.06, 0.22)
+import hashlib
+import inspect
+import json
+import math
+import os
 
-DEFAULTS = {"vignette": 0.24, "grain": 0.008}
+PRESET_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "map_presets")
+PRESET_ID = "ghm_original_v1"
+
+
+def preset(pid=PRESET_ID):
+    return json.load(open(os.path.join(PRESET_DIR, pid + ".json"), encoding="utf-8"))
+
+
+_P = preset()
+# graphics scale on screen = element_scale / camera width (short side); arrow stroke = width * that / 220.
+# Ranges measured on the approved Ep01 maps (see the preset file).
+SCALE_RANGE = tuple(_P["measured_ranges"]["graphics_scale_element_scale_per_camera_width"])
+STROKE_RANGE = tuple(_P["measured_ranges"]["arrow_stroke_permille"])
+
+DEFAULTS = dict(_P["defaults"])
 
 
 class MapStyleLocked(ValueError):
@@ -55,6 +71,40 @@ def check(cfg, path=""):
     if v:
         raise MapStyleLocked(f"{path}: the map style is LOCKED (ghm4/map_style.py); not in the approved style: "
                              + "; ".join(v) + ". Add \"style_override_approved\" only with the client's explicit approval.")
+
+
+def code_fingerprint():
+    """SHA-256 over the source of everything that draws the map look (land, sea, coast, rivers, relief, arrows, dots,
+    rings, stars, territories, label colours and the typography presets the maps use)."""
+    from . import mapshot, text as T
+    parts = [inspect.getsource(getattr(mapshot.MapShot, f)) for f in ("build", "arrow", "dot", "_circle_fade", "ring", "star", "region")]
+    parts.append(repr(mapshot.DARK) + repr(mapshot.LABEL_COL))
+    parts.append(repr({k: T.PRESETS[k] for k in ("map_label", "map_note", "ticker", "legend", "kicker")}))
+    parts.append(repr({k: T.COLORS[k] for k in ("ivory", "gold", "navy", "blue", "red", "white")}))
+    return hashlib.sha256("\n".join(parts).encode()).hexdigest()
+
+
+def hermite_width(cfg, t):
+    """Camera width (short side, map units) at time t, interpolated like MapShot does (spline on log width)."""
+    from .mapshot import hermite
+    keys = [(k[0], 0, 0, math.log(k[3])) for k in cfg["camera"]]
+    return math.exp(hermite(keys, t)[2])
+
+
+def stroke_issues(cfg, end=None):
+    """Arrow strokes (per mille of the short side) outside the approved range at any moment of the shot."""
+    es = cfg.get("element_scale", 1.0)
+    cam = cfg.get("camera", [])
+    if not cam:
+        return []
+    end = end or (cfg.get("fade_out") or [0, cam[-1][0]])[1]
+    out = []
+    for i, r in enumerate(cfg.get("routes", [])):
+        vals = [r.get("width", 34) * es / (220 * hermite_width(cfg, end * j / 40)) * 1000 for j in range(41)]
+        lo, hi = min(vals), max(vals)
+        if lo < STROKE_RANGE[0] - 1e-6 or hi > STROKE_RANGE[1] + 1e-6:
+            out.append((i, round(lo, 1), round(hi, 1)))
+    return out
 
 
 def scale_issues(cfg):

@@ -63,7 +63,7 @@ Cinematic historical digital paintings in the tradition of nineteenth-century ac
 ## 5. Uniform and object reference (per year)
 - **French line infantry:**
   - **1796:** mixed, ragged dress in Italy.
-  - **1805–1812:** dark blue habit-veste, white lapels, red collar and cuffs, white breeches, black gaiters, shako with brass plate (bicorne until about 1807 in some regiments).
+  - **1805–1812:** dark blue habit-veste, white lapels, red collar and cuffs, white breeches, black gaiters. Headgear: **black bicorne in 1805 (Austerlitz)**; the shako with brass plate replaced it from 1806–07.
   - **1812 onward:** the 1812 "Bardin" short-tailed jacket.
 - **Imperial Guard:** Grenadiers à pied in bearskins with red plumes; Chasseurs à cheval in green with colpack (Napoleon's escort).
 - **Standards:**
@@ -80,6 +80,12 @@ Cinematic historical digital paintings in the tradition of nineteenth-century ac
 The client approved the animated maps of the original Napoleon Short (Ep01) and the 1805 campaign map of the 20s POC.
 Their look is the reference for every map in this documentary and is **locked** in code (`ghm4/map_style.py`).
 It changes only with the client's explicit, dated approval.
+
+**Reusable preset for all Great History Makers documentaries:** `ghm4/data/map_presets/ghm_original_v1.json`
+(status LOCKED). It holds the approved look, the measured size ranges (arrow stroke 9–22 ‰ of the frame's short side,
+typically 13.5; graphics scale 0.06–0.17), the label rules, the vignette and grain defaults, 8 actual Ep01 reference
+frames, and a fingerprint of the drawing code. The regression test `map_lock` fails if the drawing code changes or a map
+leaves the ranges. Map shots always use the preset's vignette and grain, whatever the storyboard sets for paintings.
 
 **What the approved look is:**
 - continental scale with prominent navy seas and shoreline ripples, sand parchment land, faint graticule;

@@ -2,7 +2,7 @@
  "hybrid/full": {
   "passed": true,
   "outcome": "mask",
-  "seconds": 37.6,
+  "seconds": 63.2,
   "figure": {
    "hat": 0.997,
    "face": 0.995,
@@ -40,7 +40,7 @@
  "hybrid/portrait": {
   "passed": true,
   "outcome": "mask",
-  "seconds": 10.4,
+  "seconds": 14.9,
   "figure": {
    "hat": 0.997,
    "face": 0.995,
@@ -71,7 +71,7 @@
  "hybrid/battlefield": {
   "passed": true,
   "outcome": "fallback (single layer)",
-  "seconds": 8.3,
+  "seconds": 7.8,
   "figure": {
    "collar_chest": 0.0,
    "waistcoat_torso": 0.0,

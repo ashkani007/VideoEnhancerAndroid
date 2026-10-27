@@ -1,5 +1,5 @@
 {
- "_about": "16:9 port of the APPROVED 1805 campaign map (campaign_1805_austerlitz.json, Napoleon_20s_POC / Ep01 map style, LOCKED): same data, colours, routes, labels, rings, star, legend and camera path; camera widths keep their meaning as the frame's short side, so map graphics have the approved size; timing stretched x2.9 for documentary narration. Dates: Chandler, Campaigns of Napoleon. Coastline: Natural Earth 1:50m. Only change to the approved data: the BAVARIA label moved 0.7 deg north-east so it no longer touches 'ULM · 20 OCT'.",
+ "_about": "16:9 port of the APPROVED 1805 campaign map (campaign_1805_austerlitz.json, Napoleon_20s_POC / Ep01 map style, LOCKED): same data, colours, routes, labels, rings, star, legend and camera path; camera widths keep their meaning as the frame's short side, so map graphics have the approved size; timing stretched x2.9 for documentary narration. Dates: Chandler, Campaigns of Napoleon. Coastline: Natural Earth 1:50m. Changes to the approved data, matched to the Ep01 Short: BAVARIA label moved 0.7 deg NE (touched ULM); arrow widths 27/24 (Ep01 stroke 11.5-15.4 per mille of the short side); final zoom held at 6.2 (Ep01 never zooms closer than graphics scale 0.17); gold/italic notes replaced by Ep01-style single ivory labels ('VIENNA · 13 NOV', 'AUSTRIAN ARMY SURRENDERS', 'AUSTERLITZ · 2 DEC').",
  "bounds": [
   -6.0,
   26.0,
@@ -330,7 +330,9 @@
      12.18,
      11
     ]
-   ]
+   ],
+   "width": 27,
+   "head": 74
   },
   {
    "color": "red",
@@ -360,8 +362,8 @@
     8.55,
     12.04
    ],
-   "width": 30,
-   "head": 80
+   "width": 24,
+   "head": 66
   }
  ],
  "dots": [
@@ -423,23 +425,17 @@
   },
   {
    "place": "ULM",
-   "text": "Austrian army surrenders",
-   "dy": -54,
+   "text": "AUSTRIAN ARMY SURRENDERS",
+   "dy": -56,
    "at": 6.52,
-   "preset": "map_note"
+   "preset": "map_label",
+   "size": 20
   },
   {
    "place": "VIENNA",
-   "dy": 48,
-   "at": 9.86
-  },
-  {
-   "place": "VIENNA",
-   "text": "13 NOV",
-   "dy": 75,
-   "at": 10.29,
-   "size": 23,
-   "color": "gold"
+   "dy": 46,
+   "at": 9.86,
+   "text": "VIENNA · 13 NOV"
   },
   {
    "place": "OLMÜTZ",
@@ -451,12 +447,12 @@
   },
   {
    "place": "AUSTERLITZ",
-   "dx": -58,
-   "dy": 12,
+   "dx": 54,
+   "dy": 40,
    "at": 12.47,
-   "align": "r",
-   "size": 36,
-   "color": "gold"
+   "align": "l",
+   "size": 29,
+   "text": "AUSTERLITZ · 2 DEC"
   }
  ],
  "camera": [
@@ -485,10 +481,10 @@
    7.4
   ],
   [
-   17.4,
+   16.5,
    16.76,
    49.13,
-   2.0
+   6.2
   ]
  ],
  "kicker": [

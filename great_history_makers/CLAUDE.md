@@ -62,7 +62,10 @@ storytelling element** (moving army positions, routes, dates, territorial change
 **MAP STYLE IS LOCKED (client correction 2026-10-26):** the animated maps of the original Napoleon Short (Ep01) and the
 20s POC campaign map are the approved reference. Never redesign them (no new zoom scale, unit blocks, legend position,
 river style or fading behaviour) without the client's explicit approval; `ghm4/map_style.py` refuses non-original
-features and QC checks the graphics scale. The painterly illustration style applies to non-map scenes only.
+features and QC checks the graphics scale. The locked, reusable preset for ALL future documentaries is
+`ghm4/data/map_presets/ghm_original_v1.json` (measured ranges, label rules, Ep01 reference frames, code fingerprint
+checked by the `map_lock` test). Compare new maps against actual Ep01 frames with `tools/map_compare_sheet.py`,
+never against a verbal description. The painterly illustration style applies to non-map scenes only.
 Do not assume a new style is better because it looks more cinematic.
 Deliver a 60–90 s POC for approval before producing the full film; no publishing.
 

@@ -6,7 +6,7 @@
 
 All of them are rendered by `ghm4/mapshot.py`.
 
-**Corrected sample:** `output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_1080p.mp4` (16.5 s, 1920×1080).
+**Corrected sample (round 1):** `Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_1080p.mp4` (16.5 s, 1920×1080), superseded by v2 below (kept in git history only).
 **Side-by-side comparison:** `MAP_STYLE_COMPARISON.jpg`.
 
 ## What had changed in the rejected Ulm–Austerlitz map, and why it looked different
@@ -45,3 +45,29 @@ The renderer's drawing code did not change: colours, land and sea textures, coas
 - **Project rules:**
   - `CLAUDE.md` and `STYLE_BIBLE.md` §6 state that the map style is locked;
   - the painterly illustration style applies to non-map scenes only.
+
+## Round 2: strict match against ACTUAL Ep01 frames (client review, 2026-10-27)
+The client approved the routes, arrows, dates and camera movement of the first ORIGINAL_STYLE sample and asked for
+strict consistency with the real Ep01 map frames, plus three fixes. The comparison was made on frames extracted from the
+published Ep01 video (`episodes_v4/napoleon_ep01/preview_temp/output/Napoleon_Ep01_TEMP_PREVIEW_v2_720x1280.mp4`),
+not from a description.
+
+**Corrected sample:** `output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_v2_1080p.mp4` (16.5 s, 1920×1080).
+**Contact sheet of actual frames:** `MAP_STYLE_CONTACT_SHEET_EP01_vs_SAMPLE.jpg`, six matching beats. Columns:
+Ep01 frame | Ep01 centre at the same map scale | previous sample v1 | corrected sample v2, with the measured arrow
+stroke and graphics scale printed on every v2 frame. Made with `tools/map_compare_sheet.py`.
+
+| Client point | Cause (found on the frames) | Fix |
+|---|---|---|
+| Low-contrast VIENNA label | A second label "13 NOV" in small gold italic under "VIENNA" (and the same under ULM). Ep01 never uses gold notes on the parchment; its place labels are ivory bold caps with a shadow, dates joined to the name ("NIEMEN · 24 JUNE") | One ivory label "VIENNA · 13 NOV"; "AUSTRIAN ARMY SURRENDERS" uses the Ep01 small-caps label preset; "AUSTERLITZ · 2 DEC" replaces the gold battle note |
+| Overlapping text | BAVARIA touched "ULM · 20 OCT"; the Austerlitz note overlapped the arrows and star; at the end STRASBOURG was pushed off its place and parked over the route and the Ulm ring | Labels moved off the arrows; a label whose place reaches the frame edge now fades instead of sliding over other map content (technical rule, look unchanged) |
+| Oversized arrows | The closing zoom went to camera 2.0 (from the 20s POC punch-in), so arrows grew to about 60 ‰ of the frame | Route widths 27 / 24 (Ep01 range) and closing camera 6.2. Measured: arrows 12–19 ‰ of the short side through the whole shot (Ep01: 9–22, typically 13.5); graphics scale 0.108–0.161 (Ep01: 0.06–0.17) |
+
+Unchanged: map background, land and sea textures, terrain (rivers, chevrons), colours, typography, legend, kicker and
+date ticker, arrow drawing behaviour, camera path up to the closing beat. Map shots now always use the locked vignette
+0.24 and grain 0.008, even inside a storyboard whose paintings use other values.
+
+**Locked preset (reusable for all future documentaries):** `ghm4/data/map_presets/ghm_original_v1.json` with 8 actual
+Ep01 reference frames in `ghm4/data/map_presets/ghm_original_v1/`. The regression test `map_lock` checks the drawing-code
+fingerprint, the non-original features, and the scale and arrow-stroke ranges of every map.
+The 20s POC map keeps its punch-in only as a recorded legacy exception (`legacy_exceptions`), not as a pattern.

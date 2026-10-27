@@ -1,0 +1,85 @@
+{
+  "id": "ghm_original_v1",
+  "status": "LOCKED. Approved by the client: the maps of the original Napoleon Short (Ep01) and the 1805 campaign map of the 20s POC; matched for 16:9 on 2026-10-27.",
+  "change_rule": "Any change to this preset, to the fingerprinted drawing code or to the ranges below needs the client's explicit, dated approval (record it in 'approvals').",
+  "approvals": [
+    {
+      "date": "2026-10-25",
+      "what": "v4 look incl. animated maps (Napoleon_20s_POC)"
+    },
+    {
+      "date": "2026-10-26",
+      "what": "client: maps of the original Ep01 Short are the locked reference"
+    },
+    {
+      "date": "2026-10-27",
+      "what": "client: strict consistency with the Ep01 map scenes; save as a reusable locked preset"
+    }
+  ],
+  "reference_frames": [
+    "ep01_ref_12.0.jpg",
+    "ep01_ref_14.0.jpg",
+    "ep01_ref_22.5.jpg",
+    "ep01_ref_36.6.jpg",
+    "ep01_ref_41.5.jpg",
+    "ep01_ref_44.0.jpg",
+    "ep01_ref_50.5.jpg",
+    "ep01_ref_53.5.jpg"
+  ],
+  "reference_maps": [
+    "victories_1805_1811_nolegend.json",
+    "invasion_1812.json",
+    "coalition_1813.json",
+    "elba_1814_1815.json",
+    "saint_helena_1815.json",
+    "campaign_1805_austerlitz.json"
+  ],
+  "look": {
+    "land": "sand parchment with paper texture and darker coastal rim",
+    "sea": "navy gradient with three shoreline ripple lines",
+    "graticule": "faint, every 4 degrees",
+    "coast": "dark brown stroke",
+    "rivers": "thin blue straight polylines, italic river names",
+    "relief": "small brown chevrons",
+    "arrows": "blue = France, red = enemies; dark outline, travelling light dashes, drawn progressively, stay on the map",
+    "markers": "white dots with dark ring, red dashed encirclement rings, gold battle stars with glow",
+    "typography": "gold tracked kicker + ivory date ticker at the top; ivory bold labels with shadow; legend bars bottom-left",
+    "image": "vignette 0.24, grain 0.008, top and bottom scrims"
+  },
+  "measured_ranges": {
+    "_how": "computed from the map data and camera over each shot (ghm4/map_style.py); relative to the frame's SHORT side",
+    "arrow_stroke_permille": [
+      9.0,
+      22.0
+    ],
+    "arrow_stroke_typical_permille": 13.5,
+    "graphics_scale_element_scale_per_camera_width": [
+      0.06,
+      0.17
+    ]
+  },
+  "label_rules": [
+    "point labels: map_label preset (ivory, bold, shadow), 20-29 design units",
+    "dated places as ONE label 'PLACE · DATE' (Ep01 convention), never a separate gold or italic line under it",
+    "notes: map_label size 20 (ivory); no gold or italic map_note text on land in new maps",
+    "labels never clipped, never touching (12 px), never under the subtitles or the legend; a label fades when its place leaves the frame"
+  ],
+  "defaults": {
+    "vignette": 0.24,
+    "grain": 0.008
+  },
+  "not_in_style": [
+    "unit blocks",
+    "splined rivers",
+    "fading arrows or labels",
+    "legend anywhere but bottom-left",
+    "zoom beyond the graphics-scale range"
+  ],
+  "code_fingerprint": "323e1e8ecf86883fd8a7e0d528a0a99f4ef2225542f7783d4770a605fa0e79bc",
+  "code_fingerprint_note": "SHA-256 of the MapShot drawing code and the colour/typography constants (ghm4.map_style.code_fingerprint). The regression test map_lock fails if it changes. Update it only together with a dated client approval in 'approvals'.",
+  "legacy_exceptions": {
+    "campaign_1805_austerlitz.json": {
+      "stroke": "The approved 20s POC (9:16 Short) ends this map with a fast punch-in toward Austerlitz (camera 7.4 -> 2.0 during the fade-out) as a transition into the painting; arrows reach 38-61 per mille there. Kept as the approved data for that Short, NOT a pattern for documentary maps: new maps must stay inside arrow_stroke_permille (the client called larger arrows oversized on 2026-10-27)."
+    }
+  }
+}

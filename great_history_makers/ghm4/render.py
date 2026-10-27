@@ -42,7 +42,7 @@ import time
 import cv2
 import numpy as np
 
-from . import mapshot
+from . import map_style, mapshot
 from . import text as T
 from .plate import Plate, tileable_noise
 
@@ -80,8 +80,7 @@ class Renderer:
         self.tparams = {round(tr["at"], 3): tr for tr in self.sb.get("transitions", [])}
         yy, xx = np.mgrid[0:OH, 0:OW].astype(np.float32)
         self.XO, self.YO = xx, yy
-        vg = self.sb.get("vignette", 0.24)
-        self.vignette = (1 - vg * np.clip(np.hypot((xx - OW / 2) / (OW * 0.62), (yy - OH / 2) / (OH * 0.62)) - 0.35, 0, 1) ** 1.4)[..., None]
+        self.vig_shape = (np.clip(np.hypot((xx - OW / 2) / (OW * 0.62), (yy - OH / 2) / (OH * 0.62)) - 0.35, 0, 1) ** 1.4)[..., None]
         self.wipe_noise = cv2.resize(tileable_noise(160, 90, 4, 21), (OW, OH), interpolation=cv2.INTER_CUBIC)
         self.haze_noise = cv2.resize(tileable_noise(96, 256, 7, 33), (OW * 2, OH), interpolation=cv2.INTER_CUBIC)
 
@@ -226,11 +225,20 @@ class Renderer:
             if tl < fd:
                 f = (1 - T.ease(tl / fd)) * fs
                 img = img * (1 - f) + FLASH * f
-        img = img * self.vignette
+        vg, grain = self.finish_look(sh)
+        img = img * (1 - vg * self.vig_shape)
         fo = self.sb.get("fade_out", 0.65)
         img = img * (1 - T.ease((t - (self.dur - fo)) / (fo - 0.03)))
-        g = np.random.default_rng(int(t * self.fps + 0.5)).normal(0, self.sb.get("grain", 0.008), (self.OH, self.OW, 1)).astype(np.float32)
+        g = np.random.default_rng(int(t * self.fps + 0.5)).normal(0, grain, (self.OH, self.OW, 1)).astype(np.float32)
         return np.clip(img + g, 0, 1)
+
+    def finish_look(self, sh):
+        """Vignette and grain for a shot: its own keys, else the LOCKED map defaults for map shots (so a painterly
+        storyboard setting never changes the approved map look), else the storyboard's."""
+        if sh["type"] == "map":
+            d = map_style.DEFAULTS
+            return sh.get("vignette", d["vignette"]), sh.get("grain", d["grain"])
+        return sh.get("vignette", self.sb.get("vignette", 0.24)), sh.get("grain", self.sb.get("grain", 0.008))
 
     def ink(self, a, b, p):
         dg = (self.XO / self.OW) * 0.55 + (1 - self.YO / self.OH) * 0.45

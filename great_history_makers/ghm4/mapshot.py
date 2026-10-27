@@ -487,7 +487,7 @@ class MapShot:
                 if sz < 9:
                     continue
                 x0, x1 = self.label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * self.band_alpha(sy) * self.legend_alpha(x0, x1, sy, sz, tl)
+                a = self.safe_alpha(x0, x1, sy) * fade * 0.9 * self.band_alpha(sy, sz) * self.legend_alpha(x0, x1, sy, sz, tl)
                 if a > 0.01:
                     cv.letters(name, sx, sy, 99, "map_note", "c", a, tuple(v / 255 for v in LABEL_COL[kind]), sz,
                                track=sz * 0.35, style="Italic", shadow=0.0)
@@ -499,8 +499,9 @@ class MapShot:
                 st, sz0, tr0, *_ = T.PRESETS[lb.get("preset", "map_label")]
                 sz = lb.get("size") or sz0
                 x0, x1 = self.label_extent(lb.get("text", lb["place"]), x, st, sz, tr0, lb.get("align", "c"))
-                x += max(0.0, L["slide"][0] - x0) - max(0.0, x1 - L["slide"][1])     # slide back inside the frame
-                a *= self.safe_alpha(None, None, y) * self.anchor_alpha(px / U)       # ... only while the place is on screen
+                sh = max(0.0, L["slide"][0] - x0) - max(0.0, x1 - L["slide"][1])     # slide back inside the frame
+                x += sh
+                a *= self.safe_alpha(None, None, y) * self.anchor_alpha(px / U) * self.slide_alpha(sh)  # ... only while the place is on screen
             if a > 0.01:
                 cv.letters(lb.get("text", lb["place"]), x, y, tl - lb["at"],
                            lb.get("preset", "map_label"), lb.get("align", "c"), a, lb.get("color"), lb.get("size"), shadow=0.85)
@@ -573,7 +574,7 @@ def _layout(self, tl):
         sx, sy = (s * (X - cxp) + OW / 2) / U, (s * (Y - cyp) + OH / 2) / U
         sz = size * self.q * s / U
         x0, x1 = _label_extent(name, sx, "Italic", sz, sz * 0.35, "c")
-        a = (self.safe_alpha(x0, x1, sy) * self.band_alpha(sy) * self.legend_alpha(x0, x1, sy, sz, tl) if safe else 1.0) * fade
+        a = (self.safe_alpha(x0, x1, sy) * self.band_alpha(sy, sz) * self.legend_alpha(x0, x1, sy, sz, tl) if safe else 1.0) * fade
         if sz >= 9 and -50 < sy < OH / U + 50:
             out.append((name, x0, x1, sy, sz, a, "region"))
     for lb in c.get("labels", []):
@@ -588,7 +589,7 @@ def _layout(self, tl):
         if safe:
             sh = max(0.0, self.L["slide"][0] - x0) - max(0.0, x1 - self.L["slide"][1])
             x0, x1 = x0 + sh, x1 + sh
-            a *= self.safe_alpha(None, None, y) * self.anchor_alpha(x - lb.get("dx", 0))
+            a *= self.safe_alpha(None, None, y) * self.anchor_alpha(x - lb.get("dx", 0)) * self.slide_alpha(sh)
         out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
     lb_box = self.legend_box(tl)
     if lb_box is not None:                                        # the legend block counts as a label for overlap checks
@@ -604,15 +605,22 @@ def _layout(self, tl):
     return out
 
 
-def _band_alpha(self, y):
-    """Decorative region labels step aside for the subtitles."""
+def _band_alpha(self, y, sz=0.0):
+    """Decorative region labels step aside for the subtitles (the label's text box against the subtitle band)."""
     b0, b1 = self.L["band"]
-    return 1.0 - min(1.0, max(0.0, min(y - b0, b1 - y) / 20.0))
+    d = min(b1 - (y - 0.8 * sz), y - b0)                         # > 0: the text box reaches into the band
+    return 1.0 if d <= 0 else max(0.0, 1.0 - d / 6.0)
 
 
 def _anchor_alpha(self, ax):
     """Point labels fade out when their place leaves the frame (they are never parked at the edge)."""
     return min(1.0, max(0.0, min(ax, self.L["dw"] - ax) / 30.0))
+
+
+def _slide_alpha(self, sh):
+    """A label that would have to slide far from its place to stay inside the frame fades instead of being parked
+    over other map content (its place is near the frame edge)."""
+    return max(0.0, 1.0 - max(0.0, abs(sh) - 12.0) / 36.0)
 
 
 def _legend_box(self, tl):
@@ -637,6 +645,7 @@ def _legend_alpha(self, x0, x1, y, sz, tl):
 MapShot.legend_box = _legend_box
 MapShot.legend_alpha = _legend_alpha
 MapShot.anchor_alpha = _anchor_alpha
+MapShot.slide_alpha = _slide_alpha
 MapShot.layout = _layout
 MapShot.label_extent = staticmethod(_label_extent)
 MapShot.safe_alpha = _safe_alpha

@@ -228,11 +228,17 @@ def test_map_lock():
     import glob
     from ghm4 import map_style
     from ghm4.mapshot import MapShot
+    preset = map_style.preset()
+    assert preset["status"].startswith("LOCKED")
+    assert map_style.code_fingerprint() == preset["code_fingerprint"], \
+        "map drawing code changed: the locked preset ghm_original_v1 needs the client's dated approval first"
     ok = []
     for f in sorted(glob.glob(os.path.join(GHM, "ghm4", "data", "maps", "*.json"))):
         cfg = json.load(open(f))
         assert not map_style.violations(cfg), (f, map_style.violations(cfg))
         assert not map_style.scale_issues(cfg), (f, map_style.scale_issues(cfg))
+        if "stroke" not in preset.get("legacy_exceptions", {}).get(os.path.basename(f), {}):
+            assert not map_style.stroke_issues(cfg), (f, map_style.stroke_issues(cfg))
         ok.append(os.path.basename(f))
     with tempfile.TemporaryDirectory() as d:
         cfg = json.load(open(os.path.join(GHM, "ghm4", "data", "maps", "campaign_1805_austerlitz.json")))
@@ -247,7 +253,7 @@ def test_map_lock():
         cfg["style_override_approved"] = "test fixture"
         json.dump(cfg, open(p, "w"))
         MapShot(p, 720, 1280)                                     # explicit approval lets it through
-    return dict(approved_maps=len(ok))
+    return dict(approved_maps=len(ok), fingerprint=preset["code_fingerprint"][:16])
 
 
 def test_qc():

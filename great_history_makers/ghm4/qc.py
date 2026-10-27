@@ -32,7 +32,7 @@ from . import text as T
 
 CAPTION_BAND = (860, 990)          # design units (720x1280): titles must stay above y 840 (ghm4.narrate check)
 FORMATS = {"portrait": dict(dw=720, dh=1280, band=CAPTION_BAND, cap_rows=(880 / 1280, 1000 / 1280)),
-           "landscape": dict(dw=1280, dh=720, band=(600, 700), cap_rows=(0.84, 0.97))}
+           "landscape": dict(dw=1280, dh=720, band=(596, 700), cap_rows=(0.84, 0.97))}
 
 
 def fmt(sb):
@@ -138,7 +138,8 @@ def map_checks(sb, sb_dir, OW, OH):
             for txt, x0, x1, y, sz, a, kind in boxes:
                 if (x0 < 4 or x1 > F["dw"] - 4) and y > 0 and y < F["dh"]:
                     clipped.setdefault(txt, round(sh["start"] + tl, 2))
-                if sb.get("captions") and F["band"][0] - 10 < y < F["band"][1] + 30 and x1 > F["dw"] / 6 and x0 < F["dw"] * 5 / 6:
+                if sb.get("captions") and min(F["band"][1] - (y - 0.8 * sz), y - F["band"][0]) > 0 \
+                        and x1 > F["dw"] / 6 and x0 < F["dw"] * 5 / 6:
                     under.setdefault(txt, round(sh["start"] + tl, 2))
             for i in range(len(boxes)):
                 for j in range(i + 1, len(boxes)):
