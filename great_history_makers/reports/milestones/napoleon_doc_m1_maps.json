@@ -1,0 +1,74 @@
+{
+ "project": "Napoleon: The Rise and Fall of an Emperor (Great History Makers long-form documentary, 16:9 1920x1080, 30 fps, English)",
+ "id": "napoleon_doc_m1_maps",
+ "title": "Script, shot list, storyboards and all chapter map sequences complete",
+ "date": "2026-10-27",
+ "repository_visibility": "PUBLIC (ashkani007/VideoEnhancerAndroid); the dedicated private Great History Makers repository is not yet reachable from this session",
+ "overall_status": "IN PRODUCTION. All 7 chapters' map sequences are finished (final 1080p footage). Paintings and narration are blocked on client decisions; no complete chapter video exists yet. Planned length 19:26 at 140 wpm, expected 17-19 min after recording.",
+ "videos": [
+  "docs_longform/napoleon_rise_fall/production/output/Napoleon_Doc_Ch*_MAPS_1080p.mp4",
+  "docs_longform/napoleon_rise_fall/poc/output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_v2_1080p.mp4"
+ ],
+ "stages": [
+  {"name": "1. Audit of pipeline and assets", "status": "done", "note": "renderer, locked map system, QC, narration/caption stage, procedural music/SFX, PC job queue reused"},
+  {"name": "2. Script, fact-checked", "status": "done (frozen draft 2)", "note": "production/NARRATION.txt, 7 chapters, 2,277 words, 13,167 characters; claim table with sources in SCRIPT.md"},
+  {"name": "3. Shot list and storyboards", "status": "done", "note": "production/SHOT_LIST.md; chapters/ch1-ch7/storyboard.json; 57 new paintings + 3 POC paintings, 17 map shots, 6 chapter cards, title, end card"},
+  {"name": "4. Animated maps (locked approved v2 style)", "status": "done, footage delivered", "note": "13 map files, 17 map shots, about 6 min (31 % of the film)"},
+  {"name": "5. Paintings and animation", "status": "BLOCKED: image generation route", "note": "8 jobs, 216 candidate images queued in jobs/queue/napoleon_doc_*; no GPU or image service in this cloud session"},
+  {"name": "6. Narration, subtitles, music, SFX", "status": "BLOCKED: narration needs credit approval", "note": "music and SFX defined per chapter; subtitles come only from forced alignment of the recorded voice"},
+  {"name": "7-9. Chapter renders, QC, assembly", "status": "waiting for 5 and 6", "note": "scripted: build.py (re-time), ghm4.render, ghm4.narrate finish, ghm4.qc, assemble.py"},
+  {"name": "10. Final MP4, SRT, timestamps", "status": "not started", "note": "CHAPTER_TIMESTAMPS.txt exists with PLANNED timing only"}
+ ],
+ "completed": [
+  "7-chapter narration frozen (draft 2) in the client's structure; one wording corrected before recording (Elba 'about thirty kilometres long').",
+  "Production builder (production/build.py) generates maps, chapter storyboards, map-only storyboards, SHOT_LIST.md, chapter timestamps and painting jobs from NARRATION.txt + shots.py + maps_src.py; map events are anchored to narration words so re-timing to the recorded voice is automatic.",
+  "13 maps in the client-approved, LOCKED v2 style (preset ghm4/data/map_presets/ghm_original_v1.json); graphics scale and arrow stroke inside the measured Ep01 ranges for every map; canvas-coverage and label checks pass.",
+  "Final 1080p map footage rendered, checked and delivered for chapters 1-7 (files listed below).",
+  "Painting jobs queued for the client's PC worker (57 new paintings x 4 candidates).",
+  "Final assembly script (production/assemble.py) written; only its missing-input check has been run (no chapter finals exist yet)."
+ ],
+ "tests_extra": [
+  "Per video: full decode with ffmpeg (no errors), black-frame and freeze scan (none), frame count equals the storyboard (all 7 reels), ghm4.qc stage (clipped/overlapping labels, labels under subtitles or legend, style lock, graphics scale, sharpness): 0 errors on all 7 reels, 1 warning (chapter 5, checked, see QC notes).",
+  "Map-style checks on all 13 documentary maps: map_style.violations, scale_issues, stroke_issues, canvas coverage: all pass. The map_lock regression test now includes the documentary maps (22 maps, drawing-code fingerprint 323e1e8ecf86883f unchanged).",
+  "Approved v2 sample re-checked with subtitles enabled after the label changes: 0 QC warnings."
+ ],
+ "qc_notes": [
+  "Chapter 5 shot c5_map_europe 'soft: 0.27x the episode median' is relative to the chapter's hatched 1811 territory maps. Measured paper-texture energy (mean absolute Laplacian on a flat parchment patch): this shot 7.35-7.49, approved v2 sample 7.66-11.37, hatched empire shot 12.13. Judged not soft (details: docs_longform/napoleon_rise_fall/production/output/QC_NOTES.md)."
+ ],
+ "problems": [
+  "Maps authored with canvases too small for 16:9 rendered wider than intended (graphics too small): fixed with an automatic canvas-coverage check and fit.",
+  "Label collisions (region vs place labels, labels under battle stars and the legend, persistent 1806-07 labels in the 1811 view): fixed in the map data (Europe map split in two); QC 0 warnings.",
+  "Parchment/sea base resampled at about 1x on several maps (softer than the approved maps): canvas oversampling raised to >=1.5x; one render worker was OOM-killed at a 36 MP canvas, so canvases are capped at about 33 MP per worker.",
+  "Preview mux dropped the last frame when the music track ended early: audio now padded.",
+  "A background encode once read a file while it was being re-muxed (corrupt encode, caught and redone); encodes now write to a temp file and move into place when complete.",
+  "Background render job hit the 2-hour session limit during chapter 7; chapter 7 was re-rendered on its own.",
+  "The two Belgian maps (chapters 1 and 7) are the only maps closer than continental scale and show no sea; graphics sizes stay in the approved ranges. Client decision pending."
+ ],
+ "costs": {
+  "spent_usd_this_project": 0.0,
+  "lines": [
+   "Spent on this documentary so far: $0 (no paid service used; cloud rendering only).",
+   "Project ledger (autopilot/LEDGER.json): 1,676 ElevenLabs credits on 2026-10-23 for an earlier Short (ep02), not this documentary.",
+   "Pending estimate, needs approval: narration, one take per chapter of NARRATION.txt with voice Max, about 13,200 ElevenLabs credits (about $2.65), based on the measured 944 credits per 946 characters.",
+   "Paintings: client's PC (electricity only, about 2-4 GPU hours for 216 images, after the client approves the hash-locked installer, about 21 GB of downloads) or a paid hosted service priced before any spend."
+  ]
+ },
+ "decisions_needed": [
+  "Approve narration: about 13,200 credits (about $2.65) for one take per chapter, voice Max (Gfpl8Yo74Is0W6cPUWWT).",
+  "Choose the painting route: local PC (approve the installer), paid hosted service (priced first), or client-supplied licensed images.",
+  "Keep the two close-scale Belgian maps (no sea visible) or pull back to continental scale with less battle detail.",
+  "Reporting: confirm or create the dedicated PRIVATE Great History Makers repository and give this session access (see the reviewer notes)."
+ ],
+ "next_steps": [
+  "After painting approval: generate, pick, upscale and annotate the 60 plates; QC each.",
+  "After narration approval: one take per chapter, prep_narration.py, forced alignment, build.py re-times every cut and map event, map reels re-rendered on the real timing.",
+  "Render each chapter (picture + narration mix + burned subtitles), QC and visual review, then assemble.py: final MP4, English SRT, final chapter timestamps.",
+  "Publish nothing; deliver for client approval."
+ ],
+ "review_notes": [
+  "Locked map style reference: docs_longform/napoleon_rise_fall/poc/output/Napoleon_Longform_MapSample_Ulm_Austerlitz_ORIGINAL_STYLE_v2_1080p.mp4 (client-approved 2026-10-27) and the preset ghm4/data/map_presets/ghm_original_v1.json.",
+  "Map footage timing is PLANNED (140 wpm); it moves onto the recorded narration automatically after alignment.",
+  "Full-quality render masters (CRF 15, about 95 MB per 16 s) stay in the ephemeral cloud container and are not in Git; the delivered files are 2-pass H.264 encodes capped under 90 MB. No approved large-file storage service is connected, so no external download links exist yet.",
+  "The repository holding these reports is currently PUBLIC. Everything in it is project material (code, script, maps, rendered map footage); no credentials or personal files."
+ ]
+}

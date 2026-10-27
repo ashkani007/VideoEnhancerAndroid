@@ -69,6 +69,14 @@ never against a verbal description. The painterly illustration style applies to 
 Do not assume a new style is better because it looks more cinematic.
 Deliver a 60–90 s POC for approval before producing the full film; no publishing.
 
+## Milestone reports (client rule 2026-10-27)
+After every completed milestone, write `reports/milestones/<id>.json` and run `python tools/production_report.py
+reports/milestones/<id>.json`. That produces `reports/latest.md`, `reports/status.json`, contact sheets and preview frames;
+then commit and push them. Report only measured facts and tests actually run. Never add videos over 95 MB to Git.
+Never store credentials, personal files or paid assets. Never publish. The reports are meant for an independent
+reviewer (for example ChatGPT) reading the repository; they belong in the dedicated PRIVATE Great History Makers
+repository once it exists and this session has access to it.
+
 ## v2 direction (client decision 2026-10-23, superseded by v4 for new work)
 New episodes use **illustration plates + limited 2D animation + motion graphics** (`ghm2/`, see
 `ghm2/MIGRATION_PLAN.md`). Do not build new 2.5D rigs or per-shot procedural scenes; the v1 engine stays in the
