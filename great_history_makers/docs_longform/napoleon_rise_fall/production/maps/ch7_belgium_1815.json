@@ -1,0 +1,374 @@
+{
+ "_about": "Waterloo campaign (Barbero S10, Hofschroer S11): the French crossed the Sambre at Charleroi on 15 Jun 1815; 16 Jun Ligny (Napoleon beat Blucher) and Quatre Bras (Ney held by Wellington); 17 Jun the Prussians fell back north to Wavre and Wellington to the ridge of Mont-Saint-Jean south of Waterloo. Simplified to army level; same scale and element sizes as the chapter 1 map.",
+ "bounds": [
+  0.77,
+  7.99,
+  48.95,
+  52.05
+ ],
+ "ref_lat": 50.7,
+ "ppu": 920,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 0.15,
+ "star_scale": 0.62,
+ "rivers": [
+  [
+   [
+    4.55,
+    50.55
+   ],
+   [
+    4.61,
+    50.72
+   ],
+   [
+    4.7,
+    50.88
+   ],
+   [
+    4.48,
+    51.03
+   ]
+  ],
+  [
+   [
+    3.9,
+    50.27
+   ],
+   [
+    4.25,
+    50.38
+   ],
+   [
+    4.44,
+    50.41
+   ],
+   [
+    4.86,
+    50.465
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "FRANCE",
+   3.3,
+   49.85,
+   62,
+   "land"
+  ],
+  [
+   "NORTH SEA",
+   2.4,
+   51.75,
+   60,
+   "sea"
+  ]
+ ],
+ "places": {
+  "CHARLEROI": [
+   4.44,
+   50.41
+  ],
+  "LIGNY": [
+   4.58,
+   50.51
+  ],
+  "QUATRE BRAS": [
+   4.46,
+   50.57
+  ],
+  "WAVRE": [
+   4.61,
+   50.717
+  ],
+  "WATERLOO": [
+   4.41,
+   50.68
+  ],
+  "BRUSSELS": [
+   4.35,
+   50.85
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     4.2,
+     50.18
+    ],
+    [
+     4.44,
+     50.41
+    ]
+   ],
+   "draw": [
+    0.25,
+    2.513
+   ],
+   "width": 34,
+   "head": 92
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     4.44,
+     50.41
+    ],
+    [
+     4.52,
+     50.47
+    ],
+    [
+     4.565,
+     50.5
+    ]
+   ],
+   "draw": [
+    6.883,
+    9.026
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     4.44,
+     50.41
+    ],
+    [
+     4.45,
+     50.49
+    ],
+    [
+     4.455,
+     50.555
+    ]
+   ],
+   "draw": [
+    11.717,
+    13.86
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     4.35,
+     50.85
+    ],
+    [
+     4.42,
+     50.7
+    ],
+    [
+     4.455,
+     50.585
+    ]
+   ],
+   "draw": [
+    11.917,
+    14.06
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     4.585,
+     50.53
+    ],
+    [
+     4.62,
+     50.62
+    ],
+    [
+     4.61,
+     50.705
+    ]
+   ],
+   "draw": [
+    20.451,
+    23.143
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     4.46,
+     50.6
+    ],
+    [
+     4.43,
+     50.65
+    ],
+    [
+     4.415,
+     50.67
+    ]
+   ],
+   "draw": [
+    24.12,
+    25.72
+   ],
+   "width": 30,
+   "head": 84
+  }
+ ],
+ "dots": [
+  [
+   "CHARLEROI",
+   2.513
+  ],
+  [
+   "BRUSSELS",
+   0.3
+  ],
+  [
+   "WAVRE",
+   23.143,
+   13
+  ],
+  [
+   "WATERLOO",
+   25.62,
+   13
+  ]
+ ],
+ "stars": [
+  [
+   "LIGNY",
+   9.026
+  ],
+  [
+   "QUATRE BRAS",
+   13.86
+  ]
+ ],
+ "labels": [
+  {
+   "place": "BRUSSELS",
+   "dy": -28,
+   "at": 0.4
+  },
+  {
+   "place": "CHARLEROI",
+   "text": "CHARLEROI · 15 JUNE",
+   "dx": 22,
+   "dy": 22,
+   "align": "l",
+   "at": 2.713,
+   "size": 22
+  },
+  {
+   "place": "LIGNY",
+   "text": "LIGNY · 16 JUNE",
+   "dx": 44,
+   "dy": 14,
+   "align": "l",
+   "at": 9.226,
+   "size": 24
+  },
+  {
+   "place": "QUATRE BRAS",
+   "text": "QUATRE BRAS",
+   "dx": -46,
+   "dy": 4,
+   "align": "r",
+   "at": 14.06,
+   "size": 24
+  },
+  {
+   "place": "WAVRE",
+   "text": "WAVRE · 17 JUNE",
+   "dx": 20,
+   "dy": -10,
+   "align": "l",
+   "at": 23.343,
+   "size": 22
+  },
+  {
+   "place": "WATERLOO",
+   "text": "WATERLOO",
+   "dx": -30,
+   "dy": -14,
+   "align": "r",
+   "at": 25.82,
+   "size": 26
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   4.38,
+   50.5,
+   1.9
+  ],
+  [
+   6.883,
+   4.5,
+   50.56,
+   1.35
+  ],
+  [
+   20.451,
+   4.5,
+   50.62,
+   1.3
+  ],
+  [
+   27.263,
+   4.49,
+   50.63,
+   1.25
+  ]
+ ],
+ "kicker": [
+  "THE WATERLOO CAMPAIGN",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "JUNE 1815"
+  ],
+  [
+   2.513,
+   "15 JUNE 1815"
+  ],
+  [
+   6.883,
+   "16 JUNE 1815"
+  ],
+  [
+   20.451,
+   "17 JUNE 1815"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH ARMY",
+   "blue",
+   0.8
+  ],
+  [
+   "ALLIED & PRUSSIAN ARMIES",
+   "red",
+   11.717
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

@@ -1,0 +1,38 @@
+{
+ "id": "napoleon_doc_ch2_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 36.92,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c2_map",
+   "type": "map",
+   "start": 0.0,
+   "end": 36.92,
+   "map": "../../maps/ch2_corsica_france.json"
+  }
+ ],
+ "transitions": [],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 32,
+   "root_hz": 110.0,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 36.620000000000005
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 36.620000000000005,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

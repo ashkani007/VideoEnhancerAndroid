@@ -1,0 +1,108 @@
+{
+ "job_id": "napoleon_doc_ch6_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 6 (Retreat, Exile and Return): 6 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c6_leaving_moscow",
+   "characters": [],
+   "framing": "wide shot of a long column of soldiers, carts and carriages loaded with loot leaving a burnt city on the right, toward the left",
+   "scene": "the Grande Armee leaving Moscow, 19 October 1812, blackened ruins and church domes behind, autumn mud, a gloomy sky",
+   "lighting": "cold autumn overcast, grey and brown palette",
+   "seeds": [
+    7601,
+    7602,
+    7603,
+    7604
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c6_berezina",
+   "characters": [],
+   "framing": "wide shot of two rough wooden bridges across an icy river, engineers standing chest-deep in the water hammering trestles in the foreground, crowds of soldiers and wagons crossing",
+   "scene": "the crossing of the Berezina near Studianka, 26-29 November 1812, General Eble's pontonniers, ice floes, snow-covered banks, Russian guns firing from the far woods",
+   "lighting": "freezing grey light, snow flurries, breath steam",
+   "seeds": [
+    7611,
+    7612,
+    7613,
+    7614
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c6_1814",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide shot of a muddy snow-covered road, the Emperor on a grey horse at the head of a column of weary veterans and very young conscripts, staff behind",
+   "scene": "the campaign of France, February 1814, Champagne countryside, bare trees, a village church spire, artillery wheels deep in mud",
+   "lighting": "dull winter afternoon, pale low sun",
+   "seeds": [
+    7621,
+    7622,
+    7623,
+    7624
+   ],
+   "variants": {
+    "napoleon": "campaign_1812"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c6_fontainebleau",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide shot of a palace courtyard with a horseshoe-shaped staircase, the Emperor embracing an eagle standard in the centre, ranks of Old Guard grenadiers, some weeping",
+   "scene": "the farewell to the Old Guard in the Cour du Cheval Blanc at Fontainebleau, April 1814, travelling carriages waiting",
+   "lighting": "soft spring light, overcast, melancholy",
+   "seeds": [
+    7631,
+    7632,
+    7633,
+    7634
+   ],
+   "variants": {
+    "napoleon": "campaign_1812"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c6_golfe_juan",
+   "characters": [],
+   "framing": "wide beach scene at dusk, small boats landing soldiers on a sandy shore, a brig at anchor offshore, umbrella pines and hills",
+   "scene": "Napoleon's landing at Golfe-Juan on the Riviera, 1 March 1815, about a thousand men of his Elba guard in bearskins and Polish lancers coming ashore",
+   "lighting": "violet Mediterranean dusk, last warm light on the hills",
+   "seeds": [
+    7641,
+    7642,
+    7643,
+    7644
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c6_laffrey",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide shot in an alpine meadow by a lake, a line of soldiers with muskets on the right, a lone figure in a grey greatcoat walking toward them from the left",
+   "scene": "the meeting at Laffrey near Grenoble, 7 March 1815, soldiers of the 5th Line Regiment lowering their muskets, mountains behind",
+   "lighting": "clear cold spring light, snow on the peaks",
+   "seeds": [
+    7651,
+    7652,
+    7653,
+    7654
+   ],
+   "variants": {
+    "napoleon": "waterloo_1815"
+   },
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}

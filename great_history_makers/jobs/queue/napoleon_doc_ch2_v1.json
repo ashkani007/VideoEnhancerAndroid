@@ -1,0 +1,106 @@
+{
+ "job_id": "napoleon_doc_ch2_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 2 (Corsica and the Revolution): 7 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c2_ajaccio",
+   "positive": "wide view of a small Mediterranean harbour town from the water, fishing boats in the foreground, a citadel on the point, tall shuttered houses, mountains behind, Ajaccio, Corsica, in the 1770s, Genoese citadel, lateen-sailed fishing boats, maquis-covered mountains, a few fishermen mending nets, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm late-afternoon Mediterranean sun, clear air, soft blue shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7201,
+    7202,
+    7203,
+    7204
+   ]
+  },
+  {
+   "id": "c2_brienne",
+   "positive": "medium-wide interior, a thin dark-haired boy of about twelve reading alone at a window seat on the left, a group of laughing cadets in blue uniforms on the right, the royal military school at Brienne, France, about 1781, a stone classroom with maps and globes, the Corsican boy Napoleone in a cadet's blue coat with a book of history, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, cool daylight from a tall window falling on the boy, the rest of the room in soft shadow, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, adult face on the boy, bicorne, adult uniform",
+   "seeds": [
+    7211,
+    7212,
+    7213,
+    7214
+   ]
+  },
+  {
+   "id": "c2_lieutenant",
+   "positive": "medium shot, a very young lean officer standing beside a bronze field gun on the left third, three-quarter view, gunners behind, Lieutenant Bonaparte of the La Fere artillery regiment, 1785, aged sixteen, blue artillery coat with red facings, artillery park at Valence, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 24, long hair falling to the collar, no hat, blue French artillery officer's coat with red facings and gold buttons, white breeches, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, clear morning light, crisp shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7221,
+    7222,
+    7223,
+    7224
+   ]
+  },
+  {
+   "id": "c2_revolution",
+   "positive": "wide street-level view of a crowded Paris square, tricolour flags and banners above a dense crowd, a stone palace facade behind, Paris during the Revolution, 1792, crowds of sans-culottes with pikes and red caps, National Guards in blue, tricolour cockades, the Tuileries palace, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, hazy summer afternoon light, smoke drifting over the square, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7231,
+    7232,
+    7233,
+    7234
+   ]
+  },
+  {
+   "id": "c2_toulon",
+   "positive": "wide night shot from behind an earthwork gun battery on a hill, gunners firing on the left, a young captain pointing toward the harbour, ships and forts below, the siege of Toulon, December 1793, Captain Bonaparte directing a French battery, British warships in the harbour, a burning fort across the water, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 24, long hair falling to the collar, no hat, blue French artillery officer's coat with red facings and gold buttons, white breeches, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, night, orange muzzle flashes and firelight, cold blue moonlight on the water, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7241,
+    7242,
+    7243,
+    7244
+   ]
+  },
+  {
+   "id": "c2_vendemiaire",
+   "positive": "wide street view looking along a narrow Paris street toward the steps of a baroque church, government cannon firing in the foreground, insurgents scattering on the steps, Paris, 5 October 1795 (13 Vendemiaire), republican artillery on the rue Saint-Honore firing on royalist insurgents before the church of Saint-Roch, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, grey autumn afternoon, gun smoke filling the street, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7251,
+    7252,
+    7253,
+    7254
+   ]
+  },
+  {
+   "id": "c2_josephine",
+   "positive": "medium shot in an elegant salon, a graceful woman of about thirty in a white high-waisted muslin gown seated on the left third, candles and mirrors, Josephine de Beauharnais in a Paris salon, 1796, dark curled hair, a cashmere shawl, Directoire furniture, guests in the background, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm candlelight with soft reflections in tall mirrors, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7261,
+    7262,
+    7263,
+    7264
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

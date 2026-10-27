@@ -1,0 +1,38 @@
+{
+ "id": "napoleon_doc_ch1_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 16.083,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c1_map",
+   "type": "map",
+   "start": 0.0,
+   "end": 16.083,
+   "map": "../../maps/ch1_waterloo_18jun.json"
+  }
+ ],
+ "transitions": [],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 31,
+   "root_hz": 98.0,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 15.782999999999998
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 15.782999999999998,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

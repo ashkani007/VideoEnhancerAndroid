@@ -1,7 +1,7 @@
 {
  "golden": {
   "passed": true,
-  "seconds": 43.2,
+  "seconds": 41.0,
   "detail": {
    "port@1.5": 90.7,
    "port@4.3": 97.0,
@@ -20,42 +20,42 @@
  },
  "plate_sizes": {
   "passed": true,
-  "seconds": 9.5,
+  "seconds": 7.5,
   "detail": {
    "sdxl_native_768x1344": {
     "work_size": [
      768,
      1344
     ],
-    "seconds_per_1080p_frame": 0.2
+    "seconds_per_1080p_frame": 0.21
    },
    "hires_1152x2016": {
     "work_size": [
      1152,
      2016
     ],
-    "seconds_per_1080p_frame": 0.33
+    "seconds_per_1080p_frame": 0.23
    },
    "upscaled_2304x4032": {
     "work_size": [
      1935,
      3387
     ],
-    "seconds_per_1080p_frame": 0.48
+    "seconds_per_1080p_frame": 0.44
    },
    "landscape_1920x1080": {
     "work_size": [
      1920,
      1080
     ],
-    "seconds_per_1080p_frame": 0.23
+    "seconds_per_1080p_frame": 0.24
    },
    "very_tall_600x1600": {
     "work_size": [
      600,
      1600
     ],
-    "seconds_per_1080p_frame": 0.19
+    "seconds_per_1080p_frame": 0.18
    }
   }
  },
@@ -71,7 +71,7 @@
  },
  "transitions": {
   "passed": true,
-  "seconds": 10.1,
+  "seconds": 9.0,
   "detail": {
    "whip": {
     "max_step": 0.334,
@@ -137,7 +137,7 @@
  },
  "landscape": {
   "passed": true,
-  "seconds": 13.3,
+  "seconds": 10.3,
   "detail": {
    "map_flags_2s": 0,
    "map_flags_full": 0
@@ -153,61 +153,13 @@
  },
  "qc": {
   "passed": true,
-  "seconds": 1.1,
+  "seconds": 1.6,
   "detail": {
    "flags": {
     "p": "source 100x180 enlarged 4.32x at zoom 1.2 (blurry) | text 'A TITLE FAR TOO WIDE FOR THE FRAME' spans x -738-1458 (frame 0-720): clipped | 15 black frames from 0.33s | frozen for 1.1s from 0.83s | 2 luma jumps (flicker) e.g. 0.33s | little motion (median frame change 0.0000)",
     "m": "map label 'RUSSIA' cut by the frame edge at 2.0s | map label 'ATLANTIC' cut by the frame edge at 2.0s | map label 'A VERY LONG LABEL THAT RUNS OFF THE FRAME' cut by the frame edge at 2.5s | map labels overlap or touch: ATLANTIC / A VERY LONG LABEL THAT RUNS OFF THE FRAME at 2.5s | washed-out frames: 10 in a row from 2.33s (transition too strong?) | 1 luma jumps (flicker) e.g. 2.67s"
    },
    "seam": 0.88
-  }
- },
- "masks": {
-  "passed": true,
-  "seconds": 88.4,
-  "detail": {
-   "seconds": 88.4,
-   "output": [
-    "hybrid   full         PASS mask      63.2s  min figure 0.976  max bg leak 0.000",
-    "hybrid   portrait     PASS mask      14.9s  min figure 0.991  max bg leak 0.000",
-    "hybrid   battlefield  PASS fallback   7.8s  min figure 0.000  max bg leak 0.000",
-    "hybrid (production method): PASS"
-   ]
-  }
- },
- "worker": {
-  "passed": true,
-  "seconds": 14.2,
-  "detail": {
-   "seconds": 14.2,
-   "output": [
-    "  rejected (unknown key): unknown shot keys: ['command']",
-    "  rejected (too many seeds): b1_portrait: seeds must be 1-8 integers",
-    "  rejected (lora path): b1_portrait: lora entries are {name: file.safetensors, strength}",
-    "  rejected (non-loopback server): refusing ComfyUI server http://203.0.113.5:8188: only 127.0.0.1 / localhost is allowed",
-    "  rejected (node allow-list): workflow uses node types outside the allow-list: ['ExecutePythonCode']",
-    "graph building: LoRA rewiring, node allow-list and all workflow templates ok",
-    "  -> done, 8 images",
-    "end-to-end: 8 graphs accepted, results pushed to the remote (cuda:0 NVIDIA GeForce RTX 4060 (mock), 8.0 GB)",
-    "idempotence: a finished job is not run again",
-    "dedicated-repository layout: results pushed to main without any path or branch settings",
-    "credential-bearing remote URL: refused, token not echoed",
-    "ALL WORKER TESTS PASSED"
-   ]
-  }
- },
- "episode": {
-  "passed": true,
-  "seconds": 93.7,
-  "detail": {
-   "seconds": 93.7,
-   "output": [
-    "queued jobs/queue/zz_pipeline_test_v1.json: 2 illustrations x seeds = 8 images (workflow sdxl_style_face). Commit + push, then run run_worker.bat on the PC.",
-    "b1_portrait: 1152x2016, matte yes, flags 0, sky 426, to annotate: eyes (blink), hand pivot (optional)",
-    "b2_battle: 1152x2016, matte no, flags 3, sky 308",
-    "storyboard.json: 3 shots, 18.2s, transitions ['whip', 'ink']",
-    "EPISODE PIPELINE TEST PASSED (stand-in images)"
-   ]
   }
  }
 }

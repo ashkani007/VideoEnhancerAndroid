@@ -1,0 +1,51 @@
+{
+ "job_id": "napoleon_doc_ch7b_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 7 (Waterloo, Saint Helena and Legacy): 2 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c7_veterans",
+   "positive": "wide courtyard view, elderly war veterans with crutches and empty sleeves in old uniforms sitting on benches along an arcaded courtyard, pensioned veterans of the Napoleonic wars in the courtyard of the Hotel des Invalides, Paris, about 1825, quiet and dignified, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, pale autumn light, long soft shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7801,
+    7802,
+    7803,
+    7804
+   ]
+  },
+  {
+   "id": "c7_tent",
+   "positive": "wide interior of an empty campaign tent at dawn, the flap open on a misty camp, a folding map table with campaign maps, a bicorne and a telescope, Napoleon's empty campaign tent, symbolic, a camp bed, candles burnt out, a green coat on a chair, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, first blue-gold light of dawn through the tent flap, mist outside, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7811,
+    7812,
+    7813,
+    7814
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

@@ -1,0 +1,495 @@
+{
+ "_about": "The Empire and its allied and dependent states with the approved 1811 territory set (ghm2/data/napoleonic_regions.json, simplified, as in the Ep01 Short); kingdoms of Napoleon's brothers (Holland, Naples, Westphalia, Spain), the Confederation of the Rhine and the Duchy of Warsaw (Broers S6, Esdaile S9); Hamburg and Rome as the Empire's northern and southern cities (annexations 1809-1811).",
+ "bounds": [
+  -20.21,
+  46.71,
+  34.0,
+  62.0
+ ],
+ "ref_lat": 50.0,
+ "ppu": 120,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 1.5,
+ "star_scale": 0.62,
+ "rivers": [
+  [
+   [
+    9.5,
+    47.6
+   ],
+   [
+    8.6,
+    47.6
+   ],
+   [
+    7.6,
+    47.56
+   ],
+   [
+    7.75,
+    48.58
+   ],
+   [
+    8.47,
+    49.49
+   ],
+   [
+    8.27,
+    50.0
+   ],
+   [
+    7.6,
+    50.36
+   ],
+   [
+    6.96,
+    50.94
+   ],
+   [
+    6.77,
+    51.23
+   ],
+   [
+    5.86,
+    51.84
+   ],
+   [
+    4.3,
+    51.9
+   ]
+  ],
+  [
+   [
+    8.5,
+    47.95
+   ],
+   [
+    9.99,
+    48.4
+   ],
+   [
+    11.42,
+    48.76
+   ],
+   [
+    12.1,
+    49.02
+   ],
+   [
+    13.46,
+    48.57
+   ],
+   [
+    14.29,
+    48.31
+   ],
+   [
+    16.37,
+    48.21
+   ],
+   [
+    17.1,
+    48.14
+   ],
+   [
+    17.6,
+    47.7
+   ],
+   [
+    19.04,
+    47.5
+   ],
+   [
+    18.9,
+    46.0
+   ]
+  ],
+  [
+   [
+    26.9,
+    53.6
+   ],
+   [
+    25.6,
+    54.15
+   ],
+   [
+    24.3,
+    54.85
+   ],
+   [
+    23.9,
+    54.9
+   ],
+   [
+    22.6,
+    55.05
+   ],
+   [
+    21.3,
+    55.3
+   ]
+  ]
+ ],
+ "relief": [
+  [
+   [
+    5.8,
+    44.6
+   ],
+   [
+    6.6,
+    45.5
+   ],
+   [
+    7.3,
+    45.95
+   ],
+   [
+    8.5,
+    46.35
+   ],
+   [
+    10.0,
+    46.55
+   ],
+   [
+    11.8,
+    46.9
+   ],
+   [
+    13.6,
+    47.15
+   ],
+   [
+    15.4,
+    47.45
+   ]
+  ],
+  [
+   [
+    17.6,
+    48.9
+   ],
+   [
+    19.2,
+    49.35
+   ],
+   [
+    20.9,
+    49.3
+   ],
+   [
+    22.4,
+    49.0
+   ],
+   [
+    23.8,
+    48.1
+   ],
+   [
+    24.9,
+    47.1
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "GREAT BRITAIN",
+   -2.0,
+   53.0,
+   60,
+   "land"
+  ],
+  [
+   "RUSSIAN EMPIRE",
+   31.0,
+   55.5,
+   62,
+   "land"
+  ],
+  [
+   "OTTOMAN EMPIRE",
+   25.0,
+   42.0,
+   56,
+   "land"
+  ],
+  [
+   "ATLANTIC",
+   -9.0,
+   47.0,
+   60,
+   "sea"
+  ],
+  [
+   "BALTIC SEA",
+   18.0,
+   56.4,
+   52,
+   "sea"
+  ],
+  [
+   "MEDITERRANEAN",
+   6.0,
+   38.5,
+   56,
+   "sea"
+  ]
+ ],
+ "places": {
+  "PARIS": [
+   2.35,
+   48.86
+  ],
+  "MAINZ": [
+   8.27,
+   50.0
+  ],
+  "JENA": [
+   11.59,
+   50.93
+  ],
+  "BERLIN": [
+   13.4,
+   52.52
+  ],
+  "WARSAW": [
+   21.01,
+   52.23
+  ],
+  "EYLAU": [
+   20.6,
+   54.39
+  ],
+  "FRIEDLAND": [
+   21.01,
+   54.44
+  ],
+  "TILSIT": [
+   21.88,
+   55.08
+  ],
+  "HAMBURG": [
+   9.99,
+   53.55
+  ],
+  "ROME": [
+   12.5,
+   41.9
+  ],
+  "MOSCOW": [
+   37.62,
+   55.76
+  ],
+  "RHINE_CONF": [
+   12.0,
+   50.3
+  ],
+  "WARSAW_D": [
+   19.8,
+   51.6
+  ],
+  "NAPLES": [
+   15.6,
+   40.9
+  ],
+  "WESTPHALIA": [
+   9.6,
+   52.0
+  ],
+  "SPAIN": [
+   -3.7,
+   40.3
+  ],
+  "HOLLAND": [
+   5.6,
+   52.5
+  ]
+ },
+ "routes": [],
+ "regions": [
+  {
+   "source": "ghm2/data/napoleonic_regions.json",
+   "key": "french_empire_1811",
+   "color": "blue",
+   "alpha": 0.45,
+   "origin": [
+    2.35,
+    48.86
+   ],
+   "reveal": [
+    0.25,
+    1.85
+   ]
+  },
+  {
+   "source": "ghm2/data/napoleonic_regions.json",
+   "key": "french_allies_1811",
+   "color": "blue",
+   "alpha": 0.55,
+   "hatch": true,
+   "origin": [
+    2.35,
+    48.86
+   ],
+   "reveal": [
+    3.272,
+    4.872
+   ]
+  }
+ ],
+ "dots": [
+  [
+   "HAMBURG",
+   68.082
+  ],
+  [
+   "ROME",
+   68.882
+  ],
+  [
+   "PARIS",
+   0.25
+  ]
+ ],
+ "stars": [],
+ "labels": [
+  {
+   "place": "PARIS",
+   "dy": -28,
+   "at": 0.45
+  },
+  {
+   "place": "RHINE_CONF",
+   "text": "RHINE CONFEDERATION",
+   "at": 6.392,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "WARSAW_D",
+   "text": "DUCHY OF WARSAW",
+   "at": 8.963,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "HOLLAND",
+   "text": "HOLLAND",
+   "dy": -24,
+   "at": 13.797,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "NAPLES",
+   "text": "NAPLES",
+   "at": 15.203,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "WESTPHALIA",
+   "text": "WESTPHALIA",
+   "dy": -6,
+   "at": 15.752,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "SPAIN",
+   "text": "SPAIN",
+   "at": 16.18,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "HAMBURG",
+   "dx": 20,
+   "dy": -16,
+   "align": "l",
+   "at": 68.282,
+   "size": 22
+  },
+  {
+   "place": "ROME",
+   "dx": -20,
+   "dy": 8,
+   "align": "r",
+   "at": 69.082,
+   "size": 22
+  },
+  {
+   "place": "MOSCOW",
+   "dx": -14,
+   "dy": -26,
+   "align": "r",
+   "at": 81.336
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   9.0,
+   48.5,
+   17.0
+  ],
+  [
+   18.18,
+   7.0,
+   47.5,
+   19.0
+  ],
+  [
+   67.582,
+   8.0,
+   47.8,
+   17.0
+  ],
+  [
+   80.736,
+   17.0,
+   51.3,
+   18.5
+  ],
+  [
+   87.856,
+   19.5,
+   51.8,
+   19.0
+  ]
+ ],
+ "kicker": [
+  "THE FRENCH EMPIRE",
+  0.2
+ ],
+ "dates": [
+  [
+   0.25,
+   "1806–1811"
+  ],
+  [
+   68.082,
+   "1811"
+  ],
+  [
+   80.736,
+   "1812"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH EMPIRE 1811",
+   "blue",
+   1.05
+  ],
+  [
+   "ALLIED & DEPENDENT STATES",
+   "blue",
+   4.072
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

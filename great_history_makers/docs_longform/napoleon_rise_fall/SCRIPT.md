@@ -1,4 +1,11 @@
-# Napoleon: The Rise and Fall of an Emperor (documentary script, draft 1)
+# Napoleon: The Rise and Fall of an Emperor (documentary script)
+
+> **Draft 2 (2026-10-27, full production): the narration is frozen in `production/NARRATION.txt`** in the client's
+> 7-chapter structure (1 Waterloo · 2 Corsica and the Revolution · 3 Italy, Egypt and power · 4 Coronation, Ulm and
+> Austerlitz · 5 Europe and Russia · 6 Retreat, exile and return · 7 Waterloo, Saint Helena and legacy):
+> 2,277 words, 13,167 characters, about 16.3 minutes of speech, film about 18-19 minutes with cards and map holds.
+> The cold open now stops as the Guard is ordered forward; chapter 7 completes Waterloo. Draft 1 below is kept for its
+> research notes; **the claim table at the end covers both drafts**, with the draft 2 additions in the last block.
 
 Great History Makers, long-form, English, 16:9 1920×1080.
 - **Length:** about 2,200 words of narration (about 15.7 minutes at 140 words per minute). With map holds, music beats and pauses (about 2 minutes), the film runs about 17–18 minutes.
@@ -194,6 +201,27 @@ More than two centuries later, he remains one of the most admired, and most argu
 | 8 | Civil Code's influence; prefects, lycées, Bank of France | Established | S6, S3 |
 | 8 | Deaths in the Napoleonic Wars "millions" (estimates about 3 to 6 million, military and civilian) | Established as an order of magnitude; totals disputed | S14, S9 |
 | 8 | Law of 20 May 1802 maintained or restored slavery in French colonies; slavery had been abolished in 1794 | Established | S15, S16 |
+
+**Draft 2 additions (checked 2026-10-27)**
+
+| Chapter | Claim | Status | Source |
+|---|---|---|---|
+| 1 | "Roughly seventy thousand men on each side" (Wellington about 68,000, Napoleon about 72,000 at the start; about 50,000 Prussians engaged later) | Established as an order of magnitude; exact figures vary by source | S10, S11 |
+| 1 | La Haye Sainte's defenders (King's German Legion) held until their ammunition ran out (fell about 18:30) | Established | S10 |
+| 1 | Prussian IV Corps attacking Plancenoit from late afternoon; the Imperial Guard sent forward in the evening | Established | S10, S11 |
+| 2 | Carlo Buonaparte, lawyer of the minor nobility, reconciled with French rule after 1769 | Established | S5, S2 |
+| 3 | Mantua besieged from July 1796, surrendered 2 Feb 1797 | Established | S1 |
+| 3 | Great Saint Bernard crossing (May 1800) before Marengo (14 Jun 1800); Bonaparte 30 at Marengo (born Aug 1769) | Established | S1, S2 |
+| 4 | "Outnumbered" at Austerlitz (about 73,000 French against about 85,000 allies) | Established (figures vary slightly) | S1, S12 |
+| 5 | Holy Roman Empire "thousand-year-old" (from 800/962 to 1806) | Established as a conventional description | S6 |
+| 5 | Borodino "about a hundred kilometres west of Moscow" (about 110-125 km) | Established | S7 |
+| 6 | Laffrey, 7 Mar 1815: the 5th Line Regiment went over to Napoleon | Established | S2, S11 |
+| 6 | Elba "an island realm about thirty kilometres long" (about 29 km long, up to about 19 km wide); draft 2 first said "a few kilometres wide", corrected before recording | Established | S2 |
+| 7 | Allies mobilised "more than half a million men" for 1815 | Established (coalition armies of the Seventh Coalition planned at about 700,000-800,000) | S9, S11 |
+| 7 | Ney at Quatre Bras, 16 Jun; Prussian retreat to Wavre, 17 Jun | Established | S10, S11 |
+| 7 | The British Foot Guards rose and fired at close range against the Guard's attack; "La Garde recule" cry | Established (the cry is widely reported; wording paraphrased, not quoted) | S10 |
+| 7 | Second abdication 22 Jun 1815 ("four days later"); surrender to HMS Bellerophon 15 Jul | Established | S2, S10 |
+| 7 | Died 5 May 1821 "most probably of stomach cancer" | Established as the consensus; arsenic theory disputed (not mentioned in draft 2) | S13 |
 
 **Sources**
 - **S1** D. G. Chandler, *The Campaigns of Napoleon* (Macmillan, 1966).

@@ -1,0 +1,185 @@
+{
+ "_about": "The approved Ep01 Saint Helena map, unchanged visually; event times anchored to the narration. HMS Northumberland sailed in August 1815 and reached Saint Helena on 15 October (Dwyer S13). BASE: August-October 1815: HMS Northumberland carries Napoleon from Plymouth to Saint Helena (arrived 15 Oct 1815). Track simplified via Madeira. Coast: Natural Earth 1:50m.",
+ "bounds": [
+  -55.04,
+  40.0,
+  -35.0,
+  62.0
+ ],
+ "ref_lat": 20,
+ "ppu": 42,
+ "element_scale": 3.4,
+ "coast": "ghm4/data/atlantic_ne50m.json",
+ "region_labels": [
+  [
+   "ATLANTIC OCEAN",
+   -23.0,
+   -3.0,
+   130,
+   "sea"
+  ],
+  [
+   "AFRICA",
+   6.0,
+   13.0,
+   140,
+   "land"
+  ],
+  [
+   "EUROPE",
+   14.0,
+   50.0,
+   120,
+   "land"
+  ]
+ ],
+ "places": {
+  "PLYMOUTH": [
+   -4.14,
+   50.37
+  ],
+  "MADEIRA": [
+   -16.9,
+   32.7
+  ],
+  "SAINT HELENA": [
+   -5.71,
+   -15.96
+  ],
+  "PARIS": [
+   2.35,
+   48.86
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     -4.6,
+     49.8
+    ],
+    [
+     -11.0,
+     42.0
+    ],
+    [
+     -16.2,
+     33.2
+    ],
+    [
+     -20.0,
+     18.0
+    ],
+    [
+     -15.0,
+     0.0
+    ],
+    [
+     -6.3,
+     -15.4
+    ]
+   ],
+   "draw": [
+    0.25,
+    5.334
+   ],
+   "width": 30,
+   "head": 84
+  }
+ ],
+ "dots": [
+  [
+   "PLYMOUTH",
+   0.194,
+   15
+  ],
+  [
+   "SAINT HELENA",
+   5.334,
+   16
+  ]
+ ],
+ "rings": [
+  [
+   "SAINT HELENA",
+   5.681,
+   9.926,
+   "red"
+  ]
+ ],
+ "labels": [
+  {
+   "place": "PLYMOUTH",
+   "text": "PLYMOUTH · AUG 1815",
+   "dx": 36,
+   "dy": 8,
+   "at": 0.222,
+   "align": "l"
+  },
+  {
+   "place": "SAINT HELENA",
+   "text": "SAINT HELENA",
+   "dx": 0,
+   "dy": -104,
+   "at": 6.027
+  },
+  {
+   "place": "SAINT HELENA",
+   "text": "≈ 1,900 KM FROM AFRICA",
+   "dx": 0,
+   "dy": -70,
+   "at": 8.454,
+   "preset": "map_label",
+   "size": 20
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   -2.0,
+   47.0,
+   26.0
+  ],
+  [
+   1.142,
+   -8.0,
+   30.0,
+   44.0
+  ],
+  [
+   3.818,
+   -9.0,
+   5.0,
+   48.0
+  ],
+  [
+   11.398,
+   -6.0,
+   -14.5,
+   26.0
+  ]
+ ],
+ "kicker": [
+  "THE FINAL EXILE",
+  0.014
+ ],
+ "dates": [
+  [
+   0.0,
+   "1815"
+  ],
+  [
+   5.334,
+   "OCTOBER 1815"
+  ]
+ ],
+ "fade_out": [
+  12.624,
+  13.311
+ ],
+ "safe_labels": true,
+ "stars": [],
+ "legend": [],
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

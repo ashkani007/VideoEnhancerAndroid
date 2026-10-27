@@ -1,0 +1,76 @@
+{
+ "id": "napoleon_doc_ch3_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 65.213,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c3_map_italy",
+   "type": "map",
+   "start": 0.0,
+   "end": 32.562,
+   "map": "../../maps/ch3_italy_1796.json"
+  },
+  {
+   "id": "c3_map_egypt",
+   "type": "map",
+   "start": 32.562,
+   "end": 50.416,
+   "map": "../../maps/ch3_egypt_1798.json"
+  },
+  {
+   "id": "c3_map_syria",
+   "type": "map",
+   "start": 50.416,
+   "end": 65.213,
+   "map": "../../maps/ch3_egypt_1798.json",
+   "map_offset": 30.257
+  }
+ ],
+ "transitions": [
+  {
+   "at": 32.562,
+   "type": "ink"
+  },
+  {
+   "at": 50.416,
+   "type": "ink"
+  }
+ ],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 33,
+   "root_hz": 103.8,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 64.913
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 32.262,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 32.861999999999995,
+    "end": 50.116,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 50.715999999999994,
+    "end": 64.913,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

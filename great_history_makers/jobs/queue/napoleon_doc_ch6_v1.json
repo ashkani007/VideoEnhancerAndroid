@@ -1,0 +1,95 @@
+{
+ "job_id": "napoleon_doc_ch6_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 6 (Retreat, Exile and Return): 6 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c6_leaving_moscow",
+   "positive": "wide shot of a long column of soldiers, carts and carriages loaded with loot leaving a burnt city on the right, toward the left, the Grande Armee leaving Moscow, 19 October 1812, blackened ruins and church domes behind, autumn mud, a gloomy sky, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, cold autumn overcast, grey and brown palette, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7601,
+    7602,
+    7603,
+    7604
+   ]
+  },
+  {
+   "id": "c6_berezina",
+   "positive": "wide shot of two rough wooden bridges across an icy river, engineers standing chest-deep in the water hammering trestles in the foreground, crowds of soldiers and wagons crossing, the crossing of the Berezina near Studianka, 26-29 November 1812, General Eble's pontonniers, ice floes, snow-covered banks, Russian guns firing from the far woods, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, freezing grey light, snow flurries, breath steam, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7611,
+    7612,
+    7613,
+    7614
+   ]
+  },
+  {
+   "id": "c6_1814",
+   "positive": "wide shot of a muddy snow-covered road, the Emperor on a grey horse at the head of a column of weary veterans and very young conscripts, staff behind, the campaign of France, February 1814, Champagne countryside, bare trees, a village church spire, artillery wheels deep in mud, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 43, fuller face, black bicorne worn side-on with a tricolour cockade, long grey redingote greatcoat over a green chasseur coat, white breeches, black riding boots, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, dull winter afternoon, pale low sun, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7621,
+    7622,
+    7623,
+    7624
+   ]
+  },
+  {
+   "id": "c6_fontainebleau",
+   "positive": "wide shot of a palace courtyard with a horseshoe-shaped staircase, the Emperor embracing an eagle standard in the centre, ranks of Old Guard grenadiers, some weeping, the farewell to the Old Guard in the Cour du Cheval Blanc at Fontainebleau, April 1814, travelling carriages waiting, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 43, fuller face, black bicorne worn side-on with a tricolour cockade, long grey redingote greatcoat over a green chasseur coat, white breeches, black riding boots, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft spring light, overcast, melancholy, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7631,
+    7632,
+    7633,
+    7634
+   ]
+  },
+  {
+   "id": "c6_golfe_juan",
+   "positive": "wide beach scene at dusk, small boats landing soldiers on a sandy shore, a brig at anchor offshore, umbrella pines and hills, Napoleon's landing at Golfe-Juan on the Riviera, 1 March 1815, about a thousand men of his Elba guard in bearskins and Polish lancers coming ashore, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, violet Mediterranean dusk, last warm light on the hills, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7641,
+    7642,
+    7643,
+    7644
+   ]
+  },
+  {
+   "id": "c6_laffrey",
+   "positive": "wide shot in an alpine meadow by a lake, a line of soldiers with muskets on the right, a lone figure in a grey greatcoat walking toward them from the left, the meeting at Laffrey near Grenoble, 7 March 1815, soldiers of the 5th Line Regiment lowering their muskets, mountains behind, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 45, heavier build, rounder face, thinning short hair, black bicorne side-on, grey redingote greatcoat over the green Guard chasseur coat, tired eyes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, clear cold spring light, snow on the peaks, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7651,
+    7652,
+    7653,
+    7654
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

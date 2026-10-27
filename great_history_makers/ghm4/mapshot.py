@@ -502,6 +502,7 @@ class MapShot:
                 sh = max(0.0, L["slide"][0] - x0) - max(0.0, x1 - L["slide"][1])     # slide back inside the frame
                 x += sh
                 a *= self.safe_alpha(None, None, y) * self.anchor_alpha(px / U) * self.slide_alpha(sh)  # ... only while the place is on screen
+                a *= self.band_alpha(y, sz)                                      # ... and never under the subtitles
             if a > 0.01:
                 cv.letters(lb.get("text", lb["place"]), x, y, tl - lb["at"],
                            lb.get("preset", "map_label"), lb.get("align", "c"), a, lb.get("color"), lb.get("size"), shadow=0.85)
@@ -589,7 +590,7 @@ def _layout(self, tl):
         if safe:
             sh = max(0.0, self.L["slide"][0] - x0) - max(0.0, x1 - self.L["slide"][1])
             x0, x1 = x0 + sh, x1 + sh
-            a *= self.safe_alpha(None, None, y) * self.anchor_alpha(x - lb.get("dx", 0)) * self.slide_alpha(sh)
+            a *= self.safe_alpha(None, None, y) * self.anchor_alpha(x - lb.get("dx", 0)) * self.slide_alpha(sh) * self.band_alpha(y, sz)
         out.append((lb.get("text", lb["place"]), x0, x1, y, sz, a, "label"))
     lb_box = self.legend_box(tl)
     if lb_box is not None:                                        # the legend block counts as a label for overlap checks
@@ -606,10 +607,11 @@ def _layout(self, tl):
 
 
 def _band_alpha(self, y, sz=0.0):
-    """Decorative region labels step aside for the subtitles (the label's text box against the subtitle band)."""
+    """Labels step aside for the subtitles (the label's text box against the subtitle band): the fade runs over the
+    last 6 px before the band, so no visible label text ever enters it."""
     b0, b1 = self.L["band"]
     d = min(b1 - (y - 0.8 * sz), y - b0)                         # > 0: the text box reaches into the band
-    return 1.0 if d <= 0 else max(0.0, 1.0 - d / 6.0)
+    return min(1.0, max(0.0, -d / 6.0))
 
 
 def _anchor_alpha(self, ax):

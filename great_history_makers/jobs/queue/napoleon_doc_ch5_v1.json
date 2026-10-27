@@ -1,0 +1,128 @@
+{
+ "job_id": "napoleon_doc_ch5_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 5 (Europe and Russia): 9 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c5_tilsit",
+   "positive": "wide river view, a large wooden raft with a classical pavilion in the middle of a broad river, two small boats approaching from either bank, troops lining both shores, the meeting of Napoleon and Tsar Alexander I on the raft on the Niemen at Tilsit, 25 June 1807, pavilion decorated with the letters N and A, French and Russian guards on the banks, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, bright summer morning, reflections on calm water, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7501,
+    7502,
+    7503,
+    7504
+   ]
+  },
+  {
+   "id": "c5_blockade",
+   "positive": "wide harbour quay, French customs officers and soldiers burning piles of confiscated bales and crates on the left, merchants watching, ships moored behind, the Continental System, about 1810, seized British goods (cotton, sugar, coffee) burned on a quay in a northern European port, gendarmes and townspeople, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, overcast daylight, orange fire glow and dark smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7511,
+    7512,
+    7513,
+    7514
+   ]
+  },
+  {
+   "id": "c5_spain",
+   "positive": "wide shot in a rocky mountain pass, Spanish guerrillas firing from boulders on both sides, a French supply convoy with wagons trapped on the road below, the Peninsular War, about 1809, guerrilleros in brown cloaks and wide hats, French dragoons in brass helmets, a whitewashed village on a far hill, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, harsh Spanish sun, dark shadows, dust and smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7521,
+    7522,
+    7523,
+    7524
+   ]
+  },
+  {
+   "id": "c5_wagram",
+   "positive": "epic wide plain, a grand battery of French guns firing in a long line from the left foreground, smoke rolling across the field, columns advancing beyond, the Battle of Wagram, July 1809, the Marchfeld plain near Vienna, French artillery of the Guard, Austrian lines and burning villages on the horizon, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, hot summer afternoon, sun glare through smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7531,
+    7532,
+    7533,
+    7534
+   ]
+  },
+  {
+   "id": "c5_marie_louise",
+   "positive": "medium-wide interior, the Emperor standing on the left beside a young fair-haired empress holding an infant in white lace, courtiers bowing, the Tuileries palace, 1811, Empress Marie-Louise with the newborn King of Rome, Napoleon in the uniform of a colonel of the Guard grenadiers, gilded salon, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 35, short hair, golden laurel wreath on his head, no hat, crimson velvet coronation mantle embroidered with golden bees, broad ermine collar and lining, white satin robes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft warm interior light, gilded reflections, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7541,
+    7542,
+    7543,
+    7544
+   ]
+  },
+  {
+   "id": "c5_niemen",
+   "positive": "wide elevated view of a broad river crossed by three pontoon bridges, endless columns of infantry, cavalry and wagons streaming across from left to right, the Grande Armee crossing the Niemen near Kovno, 24 June 1812, uniforms of many nations, lancers, artillery, the Emperor's tent on a hill, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, early summer morning, bright sun, dust over the far bank, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7551,
+    7552,
+    7553,
+    7554
+   ]
+  },
+  {
+   "id": "c5_summer_march",
+   "positive": "wide shot along a dusty road through flat Russian country, exhausted soldiers marching from the right toward the left, a dead horse and an abandoned cart at the roadside, the Grande Armee on the march in Russia, July-August 1812, stragglers, a burning village on the horizon, wheat fields and birch groves, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, oppressive summer heat haze, white sky, dust, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7561,
+    7562,
+    7563,
+    7564
+   ]
+  },
+  {
+   "id": "c5_borodino",
+   "positive": "wide shot of a fortified earthwork redoubt on a hill, French cuirassiers and infantry storming it from the left, Russian gunners in dark green defending, the Battle of Borodino, 7 September 1812, the Raevsky redoubt, broken gabions, smoke covering the field, Russian and French standards, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, smoky late-summer sun, red-brown haze, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7571,
+    7572,
+    7573,
+    7574
+   ]
+  },
+  {
+   "id": "c5_moscow",
+   "positive": "wide night view from the Kremlin walls, a small figure in a grey greatcoat and bicorne seen from behind on the right, watching a city in flames, Moscow burning, September 1812, onion domes and church towers silhouetted against fire, embers in the air, Guard grenadiers on the walls, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 43, fuller face, black bicorne worn side-on with a tricolour cockade, long grey redingote greatcoat over a green chasseur coat, white breeches, black riding boots, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, night lit by an enormous orange fire, embers, smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7581,
+    7582,
+    7583,
+    7584
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

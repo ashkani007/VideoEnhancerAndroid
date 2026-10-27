@@ -1,0 +1,145 @@
+{
+ "job_id": "napoleon_doc_ch5_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 5 (Europe and Russia): 9 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c5_tilsit",
+   "characters": [],
+   "framing": "wide river view, a large wooden raft with a classical pavilion in the middle of a broad river, two small boats approaching from either bank, troops lining both shores",
+   "scene": "the meeting of Napoleon and Tsar Alexander I on the raft on the Niemen at Tilsit, 25 June 1807, pavilion decorated with the letters N and A, French and Russian guards on the banks",
+   "lighting": "bright summer morning, reflections on calm water",
+   "seeds": [
+    7501,
+    7502,
+    7503,
+    7504
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c5_blockade",
+   "characters": [],
+   "framing": "wide harbour quay, French customs officers and soldiers burning piles of confiscated bales and crates on the left, merchants watching, ships moored behind",
+   "scene": "the Continental System, about 1810, seized British goods (cotton, sugar, coffee) burned on a quay in a northern European port, gendarmes and townspeople",
+   "lighting": "overcast daylight, orange fire glow and dark smoke",
+   "seeds": [
+    7511,
+    7512,
+    7513,
+    7514
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c5_spain",
+   "characters": [],
+   "framing": "wide shot in a rocky mountain pass, Spanish guerrillas firing from boulders on both sides, a French supply convoy with wagons trapped on the road below",
+   "scene": "the Peninsular War, about 1809, guerrilleros in brown cloaks and wide hats, French dragoons in brass helmets, a whitewashed village on a far hill",
+   "lighting": "harsh Spanish sun, dark shadows, dust and smoke",
+   "seeds": [
+    7521,
+    7522,
+    7523,
+    7524
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c5_wagram",
+   "characters": [],
+   "framing": "epic wide plain, a grand battery of French guns firing in a long line from the left foreground, smoke rolling across the field, columns advancing beyond",
+   "scene": "the Battle of Wagram, July 1809, the Marchfeld plain near Vienna, French artillery of the Guard, Austrian lines and burning villages on the horizon",
+   "lighting": "hot summer afternoon, sun glare through smoke",
+   "seeds": [
+    7531,
+    7532,
+    7533,
+    7534
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c5_marie_louise",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "medium-wide interior, the Emperor standing on the left beside a young fair-haired empress holding an infant in white lace, courtiers bowing",
+   "scene": "the Tuileries palace, 1811, Empress Marie-Louise with the newborn King of Rome, Napoleon in the uniform of a colonel of the Guard grenadiers, gilded salon",
+   "lighting": "soft warm interior light, gilded reflections",
+   "seeds": [
+    7541,
+    7542,
+    7543,
+    7544
+   ],
+   "variants": {
+    "napoleon": "coronation_1804"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c5_niemen",
+   "characters": [],
+   "framing": "wide elevated view of a broad river crossed by three pontoon bridges, endless columns of infantry, cavalry and wagons streaming across from left to right",
+   "scene": "the Grande Armee crossing the Niemen near Kovno, 24 June 1812, uniforms of many nations, lancers, artillery, the Emperor's tent on a hill",
+   "lighting": "early summer morning, bright sun, dust over the far bank",
+   "seeds": [
+    7551,
+    7552,
+    7553,
+    7554
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c5_summer_march",
+   "characters": [],
+   "framing": "wide shot along a dusty road through flat Russian country, exhausted soldiers marching from the right toward the left, a dead horse and an abandoned cart at the roadside",
+   "scene": "the Grande Armee on the march in Russia, July-August 1812, stragglers, a burning village on the horizon, wheat fields and birch groves",
+   "lighting": "oppressive summer heat haze, white sky, dust",
+   "seeds": [
+    7561,
+    7562,
+    7563,
+    7564
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c5_borodino",
+   "characters": [],
+   "framing": "wide shot of a fortified earthwork redoubt on a hill, French cuirassiers and infantry storming it from the left, Russian gunners in dark green defending",
+   "scene": "the Battle of Borodino, 7 September 1812, the Raevsky redoubt, broken gabions, smoke covering the field, Russian and French standards",
+   "lighting": "smoky late-summer sun, red-brown haze",
+   "seeds": [
+    7571,
+    7572,
+    7573,
+    7574
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c5_moscow",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide night view from the Kremlin walls, a small figure in a grey greatcoat and bicorne seen from behind on the right, watching a city in flames",
+   "scene": "Moscow burning, September 1812, onion domes and church towers silhouetted against fire, embers in the air, Guard grenadiers on the walls",
+   "lighting": "night lit by an enormous orange fire, embers, smoke",
+   "seeds": [
+    7581,
+    7582,
+    7583,
+    7584
+   ],
+   "variants": {
+    "napoleon": "campaign_1812"
+   },
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}

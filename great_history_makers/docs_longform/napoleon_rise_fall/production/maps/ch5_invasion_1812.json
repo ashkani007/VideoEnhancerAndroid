@@ -1,0 +1,374 @@
+{
+ "_about": "Invasion of Russia (Zamoyski S7, Lieven S8): Niemen crossing at Kovno 24 Jun 1812, Vilna 28 Jun, Vitebsk, Smolensk 16-18 Aug; Russian armies of Barclay and Bagration falling back east. The 1811 Empire as in the approved Ep01 map. Routes simplified.",
+ "bounds": [
+  -6.0,
+  47.24,
+  44.0,
+  64.0
+ ],
+ "ref_lat": 53.0,
+ "ppu": 120,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 1.6,
+ "rivers": [
+  [
+   [
+    26.9,
+    53.6
+   ],
+   [
+    25.6,
+    54.15
+   ],
+   [
+    24.3,
+    54.85
+   ],
+   [
+    23.9,
+    54.9
+   ],
+   [
+    22.6,
+    55.05
+   ],
+   [
+    21.3,
+    55.3
+   ]
+  ],
+  [
+   [
+    33.6,
+    55.0
+   ],
+   [
+    32.05,
+    54.78
+   ],
+   [
+    30.4,
+    54.5
+   ],
+   [
+    30.33,
+    53.9
+   ],
+   [
+    30.4,
+    52.6
+   ]
+  ],
+  [
+   [
+    28.9,
+    55.4
+   ],
+   [
+    28.5,
+    54.33
+   ],
+   [
+    28.65,
+    53.3
+   ],
+   [
+    29.2,
+    52.6
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "RUSSIAN EMPIRE",
+   33.0,
+   57.6,
+   64,
+   "land"
+  ],
+  [
+   "BALTIC SEA",
+   18.5,
+   57.2,
+   52,
+   "sea"
+  ],
+  [
+   "DUCHY OF WARSAW",
+   19.6,
+   51.9,
+   44,
+   "land"
+  ],
+  [
+   "Dnieper",
+   31.2,
+   53.6,
+   44,
+   "river"
+  ]
+ ],
+ "places": {
+  "KOVNO": [
+   23.9,
+   54.9
+  ],
+  "VILNA": [
+   25.28,
+   54.69
+  ],
+  "VITEBSK": [
+   30.2,
+   55.19
+  ],
+  "SMOLENSK": [
+   32.05,
+   54.78
+  ],
+  "MOSCOW": [
+   37.62,
+   55.76
+  ],
+  "WARSAW": [
+   21.01,
+   52.23
+  ]
+ },
+ "regions": [
+  {
+   "source": "ghm2/data/napoleonic_regions.json",
+   "key": "french_allies_1811",
+   "color": "blue",
+   "alpha": 0.42,
+   "hatch": true,
+   "origin": [
+    2.35,
+    48.86
+   ],
+   "reveal": [
+    0.0,
+    0.4
+   ]
+  }
+ ],
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     21.01,
+     52.23
+    ],
+    [
+     22.8,
+     54.0
+    ],
+    [
+     23.9,
+     54.9
+    ],
+    [
+     25.28,
+     54.69
+    ],
+    [
+     28.0,
+     55.1
+    ],
+    [
+     30.2,
+     55.19
+    ],
+    [
+     32.05,
+     54.78
+    ]
+   ],
+   "legs": [
+    [
+     0.25,
+     2.822,
+     2
+    ],
+    [
+     9.37,
+     14.477,
+     3
+    ],
+    [
+     14.477,
+     16.74,
+     6
+    ]
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     26.4,
+     55.7
+    ],
+    [
+     28.6,
+     56.05
+    ],
+    [
+     30.8,
+     55.95
+    ],
+    [
+     33.6,
+     55.5
+    ]
+   ],
+   "draw": [
+    15.883,
+    17.34
+   ],
+   "width": 24,
+   "head": 68
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     25.0,
+     53.0
+    ],
+    [
+     27.6,
+     53.4
+    ],
+    [
+     30.3,
+     53.9
+    ],
+    [
+     32.4,
+     54.5
+    ]
+   ],
+   "draw": [
+    16.183,
+    17.64
+   ],
+   "width": 24,
+   "head": 68
+  }
+ ],
+ "dots": [
+  [
+   "WARSAW",
+   0.3,
+   13
+  ],
+  [
+   "KOVNO",
+   2.822
+  ],
+  [
+   "VILNA",
+   14.477
+  ],
+  [
+   "VITEBSK",
+   16.883,
+   12
+  ],
+  [
+   "SMOLENSK",
+   16.74
+  ],
+  [
+   "MOSCOW",
+   0.5
+  ]
+ ],
+ "labels": [
+  {
+   "place": "KOVNO",
+   "text": "NIEMEN · 24 JUNE",
+   "dx": -24,
+   "dy": 40,
+   "align": "r",
+   "at": 3.022,
+   "size": 22
+  },
+  {
+   "place": "VILNA",
+   "dx": 6,
+   "dy": -26,
+   "at": 14.677,
+   "size": 22
+  },
+  {
+   "place": "SMOLENSK",
+   "text": "SMOLENSK · AUGUST",
+   "dy": 44,
+   "at": 16.94,
+   "size": 22
+  },
+  {
+   "place": "MOSCOW",
+   "dx": -14,
+   "dy": -26,
+   "align": "r",
+   "at": 0.6
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   26.0,
+   54.2,
+   11.5
+  ],
+  [
+   14.477,
+   28.5,
+   54.6,
+   11.0
+  ],
+  [
+   19.512,
+   30.0,
+   55.0,
+   11.0
+  ]
+ ],
+ "kicker": [
+  "THE INVASION OF RUSSIA",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "JUNE 1812"
+  ],
+  [
+   14.477,
+   "JULY 1812"
+  ],
+  [
+   16.74,
+   "AUGUST 1812"
+  ]
+ ],
+ "legend": [
+  [
+   "GRANDE ARMÉE",
+   "blue",
+   0.8
+  ],
+  [
+   "RUSSIAN ARMIES",
+   "red",
+   15.883
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

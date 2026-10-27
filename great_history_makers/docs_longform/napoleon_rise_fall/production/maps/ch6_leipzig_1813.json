@@ -1,0 +1,480 @@
+{
+ "_about": "1813 (Chandler S1): French victories at Lutzen (2 May) and Bautzen (20-21 May); Austria joined the coalition in August; the allied armies (Russia, Prussia, Austria, Sweden) converged on Leipzig, 16-19 Oct 1813. Coalition arrows follow the approved Ep01 coalition map.",
+ "bounds": [
+  -2.0,
+  30.0,
+  42.0,
+  60.0
+ ],
+ "ref_lat": 51.0,
+ "ppu": 200,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 1.0,
+ "star_scale": 0.62,
+ "rivers": [
+  [
+   [
+    9.5,
+    47.6
+   ],
+   [
+    8.6,
+    47.6
+   ],
+   [
+    7.6,
+    47.56
+   ],
+   [
+    7.75,
+    48.58
+   ],
+   [
+    8.47,
+    49.49
+   ],
+   [
+    8.27,
+    50.0
+   ],
+   [
+    7.6,
+    50.36
+   ],
+   [
+    6.96,
+    50.94
+   ],
+   [
+    6.77,
+    51.23
+   ],
+   [
+    5.86,
+    51.84
+   ],
+   [
+    4.3,
+    51.9
+   ]
+  ],
+  [
+   [
+    8.5,
+    47.95
+   ],
+   [
+    9.99,
+    48.4
+   ],
+   [
+    11.42,
+    48.76
+   ],
+   [
+    12.1,
+    49.02
+   ],
+   [
+    13.46,
+    48.57
+   ],
+   [
+    14.29,
+    48.31
+   ],
+   [
+    16.37,
+    48.21
+   ],
+   [
+    17.1,
+    48.14
+   ],
+   [
+    17.6,
+    47.7
+   ],
+   [
+    19.04,
+    47.5
+   ],
+   [
+    18.9,
+    46.0
+   ]
+  ]
+ ],
+ "relief": [
+  [
+   [
+    5.8,
+    44.6
+   ],
+   [
+    6.6,
+    45.5
+   ],
+   [
+    7.3,
+    45.95
+   ],
+   [
+    8.5,
+    46.35
+   ],
+   [
+    10.0,
+    46.55
+   ],
+   [
+    11.8,
+    46.9
+   ],
+   [
+    13.6,
+    47.15
+   ],
+   [
+    15.4,
+    47.45
+   ]
+  ],
+  [
+   [
+    17.6,
+    48.9
+   ],
+   [
+    19.2,
+    49.35
+   ],
+   [
+    20.9,
+    49.3
+   ],
+   [
+    22.4,
+    49.0
+   ],
+   [
+    23.8,
+    48.1
+   ],
+   [
+    24.9,
+    47.1
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "AUSTRIAN EMPIRE",
+   16.6,
+   48.9,
+   56,
+   "land"
+  ],
+  [
+   "BALTIC SEA",
+   16.5,
+   55.4,
+   52,
+   "sea"
+  ],
+  [
+   "FRANCE",
+   3.5,
+   48.0,
+   56,
+   "land"
+  ]
+ ],
+ "places": {
+  "PARIS": [
+   2.35,
+   48.86
+  ],
+  "LUTZEN": [
+   12.14,
+   51.24
+  ],
+  "BAUTZEN": [
+   14.42,
+   51.18
+  ],
+  "LEIPZIG": [
+   12.37,
+   51.34
+  ],
+  "BERLIN": [
+   13.4,
+   52.52
+  ],
+  "PRAGUE": [
+   14.42,
+   50.08
+  ],
+  "STRALSUND": [
+   13.08,
+   54.31
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     8.27,
+     50.0
+    ],
+    [
+     10.5,
+     50.9
+    ],
+    [
+     12.14,
+     51.24
+    ],
+    [
+     13.3,
+     51.15
+    ],
+    [
+     14.42,
+     51.18
+    ]
+   ],
+   "legs": [
+    [
+     0.25,
+     2.084,
+     2
+    ],
+    [
+     2.084,
+     3.798,
+     4
+    ]
+   ],
+   "width": 28,
+   "head": 78
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     22.5,
+     52.6
+    ],
+    [
+     18.5,
+     52.0
+    ],
+    [
+     15.5,
+     51.7
+    ],
+    [
+     13.0,
+     51.45
+    ]
+   ],
+   "draw": [
+    6.391,
+    8.774
+   ],
+   "width": 28,
+   "head": 78
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     13.3,
+     54.9
+    ],
+    [
+     13.2,
+     53.3
+    ],
+    [
+     12.6,
+     51.75
+    ]
+   ],
+   "draw": [
+    8.774,
+    10.18
+   ],
+   "width": 24,
+   "head": 68
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     16.5,
+     48.6
+    ],
+    [
+     14.6,
+     49.9
+    ],
+    [
+     12.85,
+     51.0
+    ]
+   ],
+   "draw": [
+    7.368,
+    9.574
+   ],
+   "width": 24,
+   "head": 68
+  }
+ ],
+ "dots": [],
+ "stars": [
+  [
+   "LUTZEN",
+   2.684
+  ],
+  [
+   "BAUTZEN",
+   3.798
+  ]
+ ],
+ "rings": [
+  [
+   "LEIPZIG",
+   12.344,
+   21.276,
+   "red"
+  ]
+ ],
+ "labels": [
+  {
+   "place": "LUTZEN",
+   "text": "LÜTZEN",
+   "dx": -30,
+   "dy": 14,
+   "align": "r",
+   "at": 2.884,
+   "size": 22
+  },
+  {
+   "place": "BAUTZEN",
+   "text": "BAUTZEN",
+   "dx": 22,
+   "dy": 30,
+   "align": "l",
+   "at": 3.998,
+   "size": 22
+  },
+  {
+   "place": "LEIPZIG",
+   "text": "LEIPZIG · 16–19 OCT",
+   "dy": -58,
+   "at": 12.644,
+   "size": 26
+  },
+  {
+   "place": "LEIPZIG",
+   "text": "BATTLE OF THE NATIONS",
+   "dy": -32,
+   "at": 18.584,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "BERLIN",
+   "text": "PRUSSIA & RUSSIA",
+   "dx": 70,
+   "dy": -20,
+   "at": 6.991,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "PRAGUE",
+   "text": "AUSTRIA",
+   "dx": 60,
+   "dy": 50,
+   "at": 7.768,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "STRALSUND",
+   "text": "SWEDEN",
+   "dx": 0,
+   "dy": -30,
+   "at": 10.18,
+   "preset": "map_label",
+   "size": 20
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   11.6,
+   51.0,
+   7.6
+  ],
+  [
+   6.391,
+   13.6,
+   51.5,
+   8.2
+  ],
+  [
+   12.344,
+   13.2,
+   51.4,
+   6.4
+  ],
+  [
+   24.418,
+   13.1,
+   51.4,
+   6.2
+  ]
+ ],
+ "kicker": [
+  "THE SIXTH COALITION",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "1813"
+  ],
+  [
+   3.798,
+   "MAY 1813"
+  ],
+  [
+   6.391,
+   "AUGUST 1813"
+  ],
+  [
+   12.344,
+   "OCTOBER 1813"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH ARMY",
+   "blue",
+   0.8
+  ],
+  [
+   "COALITION ARMIES",
+   "red",
+   6.391
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

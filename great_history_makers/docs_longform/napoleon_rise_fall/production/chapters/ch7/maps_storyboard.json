@@ -1,0 +1,57 @@
+{
+ "id": "napoleon_doc_ch7_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 40.574,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c7_map_belgium",
+   "type": "map",
+   "start": 0.0,
+   "end": 27.263,
+   "map": "../../maps/ch7_belgium_1815.json"
+  },
+  {
+   "id": "c7_map_helena",
+   "type": "map",
+   "start": 27.263,
+   "end": 40.574,
+   "map": "../../maps/ch7_saint_helena.json"
+  }
+ ],
+ "transitions": [
+  {
+   "at": 27.263,
+   "type": "ink"
+  }
+ ],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 37,
+   "root_hz": 98.0,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 40.274
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 26.963,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 27.563000000000002,
+    "end": 40.274,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

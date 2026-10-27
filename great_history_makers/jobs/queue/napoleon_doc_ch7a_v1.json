@@ -1,0 +1,139 @@
+{
+ "job_id": "napoleon_doc_ch7a_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 7 (Waterloo, Saint Helena and Legacy): 10 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c7_vienna",
+   "positive": "wide interior of a grand palace hall, diplomats in court dress around a long table covered with maps and papers, the Congress of Vienna, March 1815, statesmen of Austria, Britain, Prussia and Russia receiving the news of Napoleon's return, chandeliers and tall windows, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, cold daylight from tall windows mixed with chandelier light, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7701,
+    7702,
+    7703,
+    7704
+   ]
+  },
+  {
+   "id": "c7_guard_slope",
+   "positive": "wide shot from the crest looking down the slope, bearskinned columns of the Imperial Guard emerging from smoke and climbing toward the camera, the attack of the Imperial Guard at Waterloo, evening of 18 June 1815, trampled rye, dead horses, drifting smoke, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, low golden evening sun behind the Guard, smoke glowing, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7711,
+    7712,
+    7713,
+    7714
+   ]
+  },
+  {
+   "id": "c7_guards_rise",
+   "positive": "wide shot along a line of British Foot Guards in red coats rising from the rye and firing a volley to the left, officers with swords, the British Foot Guards at Waterloo rising to fire at close range, 18 June 1815, Dutch-Belgian troops further along, smoke and flame from the muskets, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, evening sun from the left, muzzle flashes, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7721,
+    7722,
+    7723,
+    7724
+   ]
+  },
+  {
+   "id": "c7_rout",
+   "positive": "very wide shot of a valley at sunset, French troops streaming back in disorder, the Old Guard holding in squares, Prussian cavalry arriving from the right, the end of the Battle of Waterloo, evening 18 June 1815, abandoned guns, the inn of La Belle Alliance, burning farms, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, red sunset through smoke, deep shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7731,
+    7732,
+    7733,
+    7734
+   ]
+  },
+  {
+   "id": "c7_aftermath",
+   "positive": "wide quiet landscape at dusk, the battlefield after the fighting, a broken gun carriage and a riderless horse in the foreground, distant figures with lanterns, the field of Waterloo on the night of 18 June 1815, trampled fields, smoke lying low, restraint, no visible wounds, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, blue dusk, lantern glows, low mist, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7741,
+    7742,
+    7743,
+    7744
+   ]
+  },
+  {
+   "id": "c7_bellerophon",
+   "positive": "wide seascape, a British 74-gun ship of the line at anchor in a broad roadstead, a small boat rowing out toward it from the left, HMS Bellerophon off Rochefort, July 1815, Napoleon's boat approaching to surrender to Captain Maitland, the Ile d'Aix coast, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, calm grey summer morning, silver sea, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7751,
+    7752,
+    7753,
+    7754
+   ]
+  },
+  {
+   "id": "c7_longwood",
+   "positive": "medium interior shot, the heavier ageing Napoleon in a white dressing gown seated in an armchair on the left, a secretary writing at a small table on the right, Longwood House, Saint Helena, about 1816, Napoleon dictating his memoirs to Las Cases, books, a billiard table, damp walls, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 51, heavier build, pale tired face, receding dark hair, green civilian-cut coat, white waistcoat and breeches, black bicorne in his hand, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm candlelight, rain on the window, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7761,
+    7762,
+    7763,
+    7764
+   ]
+  },
+  {
+   "id": "c7_saint_helena",
+   "positive": "wide landscape, dark volcanic cliffs dropping into the Atlantic on the right, a small house on a green plateau under low clouds on the left, Saint Helena, South Atlantic, Longwood plateau and the cliffs, sea birds, Atlantic swell, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, moody dusk, shafts of light through low clouds, violet and ocean blue, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7771,
+    7772,
+    7773,
+    7774
+   ]
+  },
+  {
+   "id": "c7_invalides",
+   "positive": "wide interior view looking down into a circular crypt with a great red porphyry sarcophagus, under a golden dome, the tomb of Napoleon under the dome of Les Invalides, Paris, marble columns and statues, gilded light from the dome above, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, golden light falling from the dome, cool marble shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7781,
+    7782,
+    7783,
+    7784
+   ]
+  },
+  {
+   "id": "c7_code",
+   "positive": "still-life close-up on a desk, an open leather-bound volume of the Code civil des Francais, a quill and inkwell, a folded map of Europe and a sealed letter, the Civil Code of 1804 on a lawyer's desk in the nineteenth century, candle, books in the background, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm candlelight, soft depth of field, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, readable text, letters, words, modern objects",
+   "seeds": [
+    7791,
+    7792,
+    7793,
+    7794
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

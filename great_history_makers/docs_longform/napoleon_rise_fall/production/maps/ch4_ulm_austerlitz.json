@@ -1,0 +1,534 @@
+{
+ "_about": "The client-approved map (v2, 2026-10-27), unchanged in every visual element; only its event times are anchored to the narration. Two shots: the march to Vienna, then (after the Trafalgar painting) Austerlitz. BASE: 16:9 port of the APPROVED 1805 campaign map (campaign_1805_austerlitz.json, Napoleon_20s_POC / Ep01 map style, LOCKED): same data, colours, routes, labels, rings, star, legend and camera path; camera widths keep their meaning as the frame's short side, so map graphics have the approved size; timing stretched x2.9 for documentary narration. Dates: Chandler, Campaigns of Napoleon. Coastline: Natural Earth 1:50m. Changes to the approved data, matched to the Ep01 Short: BAVARIA label moved 0.7 deg NE (touched ULM); arrow widths 27/24 (Ep01 stroke 11.5-15.4 per mille of the short side); final zoom held at 6.2 (Ep01 never zooms closer than graphics scale 0.17); gold/italic notes replaced by Ep01-style single ivory labels ('VIENNA · 13 NOV', 'AUSTRIAN ARMY SURRENDERS', 'AUSTERLITZ · 2 DEC').",
+ "bounds": [
+  -6.6,
+  26.55,
+  40.0,
+  58.0
+ ],
+ "ref_lat": 48,
+ "ppu": 220,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "rivers": [
+  [
+   [
+    9.5,
+    47.6
+   ],
+   [
+    8.6,
+    47.6
+   ],
+   [
+    7.6,
+    47.56
+   ],
+   [
+    7.75,
+    48.58
+   ],
+   [
+    8.47,
+    49.49
+   ],
+   [
+    8.27,
+    50.0
+   ],
+   [
+    7.6,
+    50.36
+   ],
+   [
+    6.96,
+    50.94
+   ],
+   [
+    6.77,
+    51.23
+   ],
+   [
+    5.86,
+    51.84
+   ],
+   [
+    4.3,
+    51.9
+   ]
+  ],
+  [
+   [
+    8.5,
+    47.95
+   ],
+   [
+    9.99,
+    48.4
+   ],
+   [
+    11.42,
+    48.76
+   ],
+   [
+    12.1,
+    49.02
+   ],
+   [
+    13.46,
+    48.57
+   ],
+   [
+    14.29,
+    48.31
+   ],
+   [
+    16.37,
+    48.21
+   ],
+   [
+    17.1,
+    48.14
+   ],
+   [
+    17.6,
+    47.7
+   ],
+   [
+    19.04,
+    47.5
+   ],
+   [
+    18.9,
+    46.0
+   ]
+  ]
+ ],
+ "relief": [
+  [
+   [
+    5.8,
+    44.6
+   ],
+   [
+    6.6,
+    45.5
+   ],
+   [
+    7.3,
+    45.95
+   ],
+   [
+    8.5,
+    46.35
+   ],
+   [
+    10.0,
+    46.55
+   ],
+   [
+    11.8,
+    46.9
+   ],
+   [
+    13.6,
+    47.15
+   ],
+   [
+    15.4,
+    47.45
+   ]
+  ],
+  [
+   [
+    17.6,
+    48.9
+   ],
+   [
+    19.2,
+    49.35
+   ],
+   [
+    20.9,
+    49.3
+   ],
+   [
+    22.4,
+    49.0
+   ],
+   [
+    23.8,
+    48.1
+   ],
+   [
+    24.9,
+    47.1
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "FRENCH EMPIRE",
+   2.4,
+   46.9,
+   82,
+   "land"
+  ],
+  [
+   "BAVARIA",
+   12.6,
+   50.05,
+   64,
+   "land"
+  ],
+  [
+   "AUSTRIAN EMPIRE",
+   15.6,
+   46.6,
+   78,
+   "land"
+  ],
+  [
+   "GREAT BRITAIN",
+   -1.6,
+   52.4,
+   66,
+   "land"
+  ],
+  [
+   "NORTH SEA",
+   4.0,
+   55.6,
+   72,
+   "sea"
+  ],
+  [
+   "BALTIC SEA",
+   17.5,
+   55.9,
+   66,
+   "sea"
+  ],
+  [
+   "ADRIATIC",
+   15.0,
+   43.2,
+   60,
+   "sea"
+  ],
+  [
+   "Rhine",
+   7.0,
+   50.2,
+   54,
+   "river"
+  ],
+  [
+   "Danube",
+   12.7,
+   48.15,
+   54,
+   "river"
+  ]
+ ],
+ "places": {
+  "BOULOGNE": [
+   1.61,
+   50.73
+  ],
+  "STRASBOURG": [
+   7.75,
+   48.58
+  ],
+  "ULM": [
+   9.99,
+   48.4
+  ],
+  "VIENNA": [
+   16.37,
+   48.21
+  ],
+  "AUSTERLITZ": [
+   16.76,
+   49.13
+  ],
+  "OLMÜTZ": [
+   17.25,
+   49.59
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     1.61,
+     50.73
+    ],
+    [
+     3.4,
+     50.1
+    ],
+    [
+     5.7,
+     49.1
+    ],
+    [
+     7.75,
+     48.58
+    ],
+    [
+     8.9,
+     48.3
+    ],
+    [
+     9.99,
+     48.4
+    ],
+    [
+     11.5,
+     48.75
+    ],
+    [
+     13.1,
+     48.62
+    ],
+    [
+     14.4,
+     48.36
+    ],
+    [
+     16.37,
+     48.21
+    ],
+    [
+     16.62,
+     48.68
+    ],
+    [
+     16.76,
+     49.13
+    ]
+   ],
+   "legs": [
+    [
+     5.513,
+     8.534,
+     3
+    ],
+    [
+     8.534,
+     15.82,
+     5
+    ],
+    [
+     22.411,
+     24.811,
+     9
+    ],
+    [
+     42.029,
+     44.72,
+     11
+    ]
+   ],
+   "width": 27,
+   "head": 74
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     23.6,
+     50.7
+    ],
+    [
+     21.4,
+     50.15
+    ],
+    [
+     19.0,
+     49.8
+    ],
+    [
+     17.25,
+     49.59
+    ],
+    [
+     16.98,
+     49.3
+    ]
+   ],
+   "draw": [
+    23.668,
+    44.534
+   ],
+   "width": 24,
+   "head": 66
+  }
+ ],
+ "dots": [
+  [
+   "BOULOGNE",
+   2.347
+  ],
+  [
+   "STRASBOURG",
+   8.372
+  ],
+  [
+   "ULM",
+   15.318
+  ],
+  [
+   "VIENNA",
+   24.68
+  ],
+  [
+   "OLMÜTZ",
+   43.951,
+   14
+  ]
+ ],
+ "rings": [
+  [
+   "ULM",
+   15.82,
+   22.411,
+   "red"
+  ]
+ ],
+ "stars": [
+  [
+   "AUSTERLITZ",
+   44.534
+  ]
+ ],
+ "labels": [
+  {
+   "place": "BOULOGNE",
+   "dy": -26,
+   "at": 3.166
+  },
+  {
+   "place": "STRASBOURG",
+   "dx": -20,
+   "dy": 44,
+   "at": 8.534,
+   "align": "r"
+  },
+  {
+   "place": "ULM",
+   "text": "ULM · 20 OCT",
+   "dy": -84,
+   "at": 15.82,
+   "size": 29
+  },
+  {
+   "place": "ULM",
+   "text": "AUSTRIAN ARMY SURRENDERS",
+   "dy": -56,
+   "at": 19.748,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "VIENNA",
+   "dy": 46,
+   "at": 24.811,
+   "text": "VIENNA · 13 NOV"
+  },
+  {
+   "place": "OLMÜTZ",
+   "dx": 16,
+   "dy": -22,
+   "at": 44.137,
+   "align": "l",
+   "size": 23
+  },
+  {
+   "place": "AUSTERLITZ",
+   "dx": 54,
+   "dy": 40,
+   "at": 45.02,
+   "align": "l",
+   "size": 29,
+   "text": "AUSTERLITZ · 2 DEC"
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   6.255,
+   49.0,
+   9.0
+  ],
+  [
+   15.318,
+   8.347,
+   48.9,
+   9.0
+  ],
+  [
+   24.558,
+   12.83,
+   48.8,
+   9.2
+  ],
+  [
+   45.02,
+   15.819,
+   49.0,
+   7.4
+  ],
+  [
+   54.531,
+   16.76,
+   49.13,
+   6.2
+  ]
+ ],
+ "kicker": [
+  "THE MARCH TO AUSTERLITZ",
+  1.583
+ ],
+ "dates": [
+  [
+   0.0,
+   "AUGUST 1805"
+  ],
+  [
+   7.701,
+   "SEPTEMBER 1805"
+  ],
+  [
+   15.82,
+   "20 OCTOBER 1805"
+  ],
+  [
+   24.305,
+   "13 NOVEMBER 1805"
+  ],
+  [
+   44.72,
+   "2 DECEMBER 1805"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH GRANDE ARMÉE",
+   "blue",
+   6.022
+  ],
+  [
+   "RUSSIAN & AUSTRIAN ARMIES",
+   "red",
+   23.668
+  ]
+ ],
+ "fade_out": [
+  53.331,
+  54.561
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

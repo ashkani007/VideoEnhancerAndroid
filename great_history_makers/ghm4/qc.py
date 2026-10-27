@@ -134,7 +134,7 @@ def map_checks(sb, sb_dir, OW, OH):
         m = mapshot.MapShot(os.path.join(sb_dir, sh["map"]), OW, OH)
         clipped, overl, under = {}, {}, {}
         for tl in np.arange(0.0, sh["end"] - sh["start"], 0.25):
-            boxes = [b for b in m.layout(float(tl)) if b[5] > 0.35]
+            boxes = [b for b in m.layout(float(tl) + sh.get("map_offset", 0.0)) if b[5] > 0.35]
             for txt, x0, x1, y, sz, a, kind in boxes:
                 if (x0 < 4 or x1 > F["dw"] - 4) and y > 0 and y < F["dh"]:
                     clipped.setdefault(txt, round(sh["start"] + tl, 2))

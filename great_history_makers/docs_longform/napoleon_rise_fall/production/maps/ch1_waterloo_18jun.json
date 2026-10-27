@@ -1,0 +1,306 @@
+{
+ "_about": "Waterloo, 18 June 1815: the French army south of the ridge, Wellington's army on it (having fallen back from Quatre Bras toward Brussels), and Blucher's Prussians, beaten at Ligny on 16 June, marching from Wavre to the French right flank. Positions simplified to army level (Barbero S10, Hofschroer S11). Camera 1.9 -> 1.2 (graphics scale held in the approved range with element_scale 0.15).",
+ "bounds": [
+  0.81,
+  8.03,
+  49.09,
+  52.19
+ ],
+ "ref_lat": 50.7,
+ "ppu": 920,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 0.15,
+ "star_scale": 0.62,
+ "rivers": [
+  [
+   [
+    4.55,
+    50.55
+   ],
+   [
+    4.61,
+    50.72
+   ],
+   [
+    4.7,
+    50.88
+   ],
+   [
+    4.48,
+    51.03
+   ]
+  ],
+  [
+   [
+    3.9,
+    50.27
+   ],
+   [
+    4.25,
+    50.38
+   ],
+   [
+    4.44,
+    50.41
+   ],
+   [
+    4.86,
+    50.465
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "FRANCE",
+   3.3,
+   49.85,
+   62,
+   "land"
+  ],
+  [
+   "NORTH SEA",
+   2.4,
+   51.75,
+   60,
+   "sea"
+  ],
+  [
+   "Dyle",
+   4.73,
+   50.86,
+   48,
+   "river"
+  ]
+ ],
+ "places": {
+  "BRUSSELS": [
+   4.35,
+   50.85
+  ],
+  "WATERLOO": [
+   4.41,
+   50.68
+  ],
+  "WAVRE": [
+   4.61,
+   50.717
+  ],
+  "LIGNY": [
+   4.58,
+   50.51
+  ],
+  "CHARLEROI": [
+   4.44,
+   50.41
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     4.44,
+     50.41
+    ],
+    [
+     4.43,
+     50.52
+    ],
+    [
+     4.42,
+     50.63
+    ]
+   ],
+   "draw": [
+    0.25,
+    2.45
+   ],
+   "width": 34,
+   "head": 92
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     4.35,
+     50.85
+    ],
+    [
+     4.38,
+     50.77
+    ],
+    [
+     4.4,
+     50.71
+    ]
+   ],
+   "draw": [
+    0.85,
+    2.85
+   ],
+   "width": 34,
+   "head": 92
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     4.58,
+     50.51
+    ],
+    [
+     4.6,
+     50.62
+    ],
+    [
+     4.61,
+     50.717
+    ],
+    [
+     4.53,
+     50.69
+    ],
+    [
+     4.46,
+     50.665
+    ]
+   ],
+   "legs": [
+    [
+     2.942,
+     5.342,
+     2
+    ],
+    [
+     6.062,
+     8.205,
+     4
+    ]
+   ],
+   "width": 30,
+   "head": 84
+  }
+ ],
+ "dots": [
+  [
+   "BRUSSELS",
+   0.2
+  ],
+  [
+   "CHARLEROI",
+   0.35
+  ],
+  [
+   "WAVRE",
+   5.142,
+   13
+  ]
+ ],
+ "stars": [
+  [
+   "LIGNY",
+   2.942
+  ],
+  [
+   "WATERLOO",
+   9.94
+  ]
+ ],
+ "labels": [
+  {
+   "place": "BRUSSELS",
+   "dy": -28,
+   "at": 0.3
+  },
+  {
+   "place": "CHARLEROI",
+   "dy": 40,
+   "at": 0.45
+  },
+  {
+   "place": "LIGNY",
+   "text": "LIGNY · 16 JUNE",
+   "dx": 44,
+   "dy": 8,
+   "align": "l",
+   "at": 3.142,
+   "size": 24
+  },
+  {
+   "place": "WAVRE",
+   "dx": 20,
+   "dy": -18,
+   "align": "l",
+   "at": 5.342
+  },
+  {
+   "place": "WAVRE",
+   "text": "PRUSSIANS",
+   "dx": 20,
+   "dy": 10,
+   "align": "l",
+   "at": 6.062,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "WATERLOO",
+   "text": "WATERLOO",
+   "dx": -46,
+   "dy": 10,
+   "align": "r",
+   "at": 10.14,
+   "size": 29
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   4.42,
+   50.64,
+   1.9
+  ],
+  [
+   2.942,
+   4.48,
+   50.63,
+   1.5
+  ],
+  [
+   9.94,
+   4.49,
+   50.65,
+   1.25
+  ],
+  [
+   16.083,
+   4.49,
+   50.65,
+   1.2
+  ]
+ ],
+ "kicker": [
+  "THE BATTLE OF WATERLOO",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "18 JUNE 1815"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH ARMY",
+   "blue",
+   0.8
+  ],
+  [
+   "ALLIED & PRUSSIAN ARMIES",
+   "red",
+   1.4
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

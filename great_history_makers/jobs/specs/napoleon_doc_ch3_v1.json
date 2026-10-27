@@ -1,0 +1,122 @@
+{
+ "job_id": "napoleon_doc_ch3_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 3 (Italy, Egypt and Power): 7 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c3_army_italy",
+   "characters": [],
+   "framing": "wide shot along a stony mountain road, a long column of ragged soldiers marching from the right toward the left into Alpine foothills",
+   "scene": "the French Army of Italy, spring 1796, threadbare mismatched uniforms, some soldiers without shoes, mules with supplies, Ligurian mountains and the sea far below",
+   "lighting": "hard bright spring sun, deep blue sky, dust in the air",
+   "seeds": [
+    7301,
+    7302,
+    7303,
+    7304
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c3_arcole",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "dynamic medium-wide shot, the young general on a narrow causeway on the left third carrying a tricolour flag forward, soldiers around him, a wooden bridge ahead in smoke",
+   "scene": "the Battle of Arcole, November 1796, the causeway through the marshes by the Alpone, long hair, general's blue coat with gold embroidery and a tricolour sash, Austrian musket fire from across the bridge",
+   "lighting": "pale November light, smoke backlit by muzzle flashes",
+   "seeds": [
+    7311,
+    7312,
+    7313,
+    7314
+   ],
+   "variants": {
+    "napoleon": "italy_1796"
+   },
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c3_leoben",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "medium-wide interior, the young French general standing at a table on the left third, pointing at a map, two Austrian envoys in white uniforms seated opposite",
+   "scene": "peace negotiations with Austria, 1797, a villa room with painted ceilings, documents and quills on the table, French officers behind",
+   "lighting": "warm daylight from tall windows, dust in the light",
+   "seeds": [
+    7321,
+    7322,
+    7323,
+    7324
+   ],
+   "variants": {
+    "napoleon": "italy_1796"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c3_pyramids",
+   "characters": [],
+   "framing": "epic wide desert panorama, a French infantry square firing on the left, a charge of Mamluk horsemen in bright silks sweeping from the right, pyramids on the far horizon",
+   "scene": "the Battle of the Pyramids, 21 July 1798, French infantry in blue coats and bicornes, Mamluk cavalry with curved swords, the Nile and palms in the midground",
+   "lighting": "harsh golden afternoon desert sun, heat haze, dust and smoke",
+   "seeds": [
+    7331,
+    7332,
+    7333,
+    7334
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c3_orient",
+   "characters": [],
+   "framing": "wide night seascape, a huge three-decker warship exploding in the centre, other ships of the line in silhouette around it, burning debris on the water",
+   "scene": "the Battle of the Nile at Aboukir Bay, 1 August 1798, the French flagship L'Orient blowing up, British ships closing in",
+   "lighting": "night, blinding orange explosion lighting the smoke and the sea, deep blue darkness around",
+   "seeds": [
+    7341,
+    7342,
+    7343,
+    7344
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c3_brumaire",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide interior of a crowded hall, grenadiers with fixed bayonets entering from the left, deputies in red togas and caps rising in confusion on the right, a young general in the centre",
+   "scene": "the coup of 18-19 Brumaire, 10 November 1799, the Council of Five Hundred in the Orangery of the chateau of Saint-Cloud",
+   "lighting": "grey November daylight through tall windows, tense shadows",
+   "seeds": [
+    7351,
+    7352,
+    7353,
+    7354
+   ],
+   "variants": {
+    "napoleon": "italy_1796"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c3_alps",
+   "characters": [],
+   "framing": "wide mountain view, a long column of soldiers hauling cannon barrels in hollowed tree trunks up a snowy pass from the right foreground toward the left, rock walls and peaks",
+   "scene": "the French Army of Reserve crossing the Great Saint Bernard Pass, May 1800, the hospice in the distance, mules and sledges, men pulling ropes",
+   "lighting": "bright cold alpine light, blue shadows on the snow",
+   "seeds": [
+    7361,
+    7362,
+    7363,
+    7364
+   ],
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}

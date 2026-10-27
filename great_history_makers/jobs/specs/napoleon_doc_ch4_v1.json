@@ -1,0 +1,94 @@
+{
+ "job_id": "napoleon_doc_ch4_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 4 (Coronation, Ulm and Austerlitz): 5 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c4_consul_desk",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "medium shot, the First Consul writing at a large desk on the left third, piles of papers and bound volumes, a secretary at a side table",
+   "scene": "Napoleon as First Consul at work in the Tuileries at night, about 1803, red consular coat, drafts of the Civil Code, maps on the wall",
+   "lighting": "warm candlelight and a single oil lamp, deep shadows",
+   "seeds": [
+    7401,
+    7402,
+    7403,
+    7404
+   ],
+   "variants": {
+    "napoleon": "coronation_1804"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c4_coronation",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "wide interior of a Gothic cathedral nave, the Emperor in the centre raising a golden laurel crown, the Pope seated to the right, rows of dignitaries",
+   "scene": "the coronation in Notre-Dame de Paris, 2 December 1804, crimson velvet and ermine robes, Pope Pius VII seated, Josephine kneeling, banners and candles",
+   "lighting": "golden light through stained glass, candle glow, incense haze",
+   "seeds": [
+    7411,
+    7412,
+    7413,
+    7414
+   ],
+   "variants": {
+    "napoleon": "coronation_1804"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c4_boulogne",
+   "characters": [],
+   "framing": "wide coastal panorama from the cliffs, endless rows of tents and huts on the left, troops drilling on the beach, the grey Channel on the right",
+   "scene": "the camp of Boulogne, 1804-1805, the Army of England, flat-bottomed invasion boats in the harbour, the white cliffs of England faint on the horizon",
+   "lighting": "breezy grey-blue northern light, scudding clouds",
+   "seeds": [
+    7421,
+    7422,
+    7423,
+    7424
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c4_trafalgar",
+   "characters": [],
+   "framing": "wide seascape at the waterline, two lines of ships of the line in close action, broadsides firing, sails torn",
+   "scene": "the Battle of Trafalgar, 21 October 1805, British, French and Spanish three-deckers, HMS Victory breaking the line, smoke over a heavy swell",
+   "lighting": "hazy midday sun through gun smoke, silver light on the sea",
+   "seeds": [
+    7431,
+    7432,
+    7433,
+    7434
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c4_austerlitz_evening",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "very wide shot of a battlefield at sunset, the Emperor and his staff riding along a line of cheering soldiers raising shakos on bayonets",
+   "scene": "the evening of Austerlitz, 2 December 1805, frozen ponds and villages in the valley, captured standards, smoke thinning over the Pratzen Heights",
+   "lighting": "low red winter sunset, long blue shadows, frost",
+   "seeds": [
+    7441,
+    7442,
+    7443,
+    7444
+   ],
+   "variants": {
+    "napoleon": "austerlitz_1805"
+   },
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}

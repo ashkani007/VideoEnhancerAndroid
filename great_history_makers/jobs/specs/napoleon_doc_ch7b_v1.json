@@ -1,0 +1,37 @@
+{
+ "job_id": "napoleon_doc_ch7b_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 7 (Waterloo, Saint Helena and Legacy): 2 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c7_veterans",
+   "characters": [],
+   "framing": "wide courtyard view, elderly war veterans with crutches and empty sleeves in old uniforms sitting on benches along an arcaded courtyard",
+   "scene": "pensioned veterans of the Napoleonic wars in the courtyard of the Hotel des Invalides, Paris, about 1825, quiet and dignified",
+   "lighting": "pale autumn light, long soft shadows",
+   "seeds": [
+    7801,
+    7802,
+    7803,
+    7804
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c7_tent",
+   "characters": [],
+   "framing": "wide interior of an empty campaign tent at dawn, the flap open on a misty camp, a folding map table with campaign maps, a bicorne and a telescope",
+   "scene": "Napoleon's empty campaign tent, symbolic, a camp bed, candles burnt out, a green coat on a chair",
+   "lighting": "first blue-gold light of dawn through the tent flap, mist outside",
+   "seeds": [
+    7811,
+    7812,
+    7813,
+    7814
+   ],
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}

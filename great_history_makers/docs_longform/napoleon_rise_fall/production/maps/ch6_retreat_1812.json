@@ -1,0 +1,375 @@
+{
+ "_about": "Retreat from Moscow (Zamoyski S7, Lieven S8): Moscow left 19 Oct 1812; after Maloyaroslavets (24 Oct) the army was forced back to the devastated Smolensk road via Mozhaisk; Smolensk 9 Nov; Krasnoi 15-18 Nov; Berezina crossing at Studianka 26-29 Nov, with Kutuzov following and Chichagov and Wittgenstein closing from south and north. Routes simplified.",
+ "bounds": [
+  14.08,
+  49.99,
+  47.0,
+  62.0
+ ],
+ "ref_lat": 55.0,
+ "ppu": 150,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 1.3,
+ "rivers": [
+  [
+   [
+    33.6,
+    55.0
+   ],
+   [
+    32.05,
+    54.78
+   ],
+   [
+    30.4,
+    54.5
+   ],
+   [
+    30.33,
+    53.9
+   ],
+   [
+    30.4,
+    52.6
+   ]
+  ],
+  [
+   [
+    28.9,
+    55.4
+   ],
+   [
+    28.5,
+    54.33
+   ],
+   [
+    28.65,
+    53.3
+   ],
+   [
+    29.2,
+    52.6
+   ]
+  ],
+  [
+   [
+    26.9,
+    53.6
+   ],
+   [
+    25.6,
+    54.15
+   ],
+   [
+    24.3,
+    54.85
+   ],
+   [
+    23.9,
+    54.9
+   ],
+   [
+    22.6,
+    55.05
+   ],
+   [
+    21.3,
+    55.3
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "RUSSIAN EMPIRE",
+   34.5,
+   57.6,
+   62,
+   "land"
+  ],
+  [
+   "Berezina",
+   27.9,
+   53.2,
+   44,
+   "river"
+  ]
+ ],
+ "places": {
+  "MOSCOW": [
+   37.62,
+   55.76
+  ],
+  "MALOYAROSLAVETS": [
+   36.46,
+   55.01
+  ],
+  "SMOLENSK": [
+   32.05,
+   54.78
+  ],
+  "KRASNOI": [
+   31.4,
+   54.56
+  ],
+  "BEREZINA": [
+   28.5,
+   54.33
+  ],
+  "VILNA": [
+   25.28,
+   54.69
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     37.62,
+     55.76
+    ],
+    [
+     36.9,
+     55.3
+    ],
+    [
+     36.46,
+     55.01
+    ],
+    [
+     35.9,
+     55.45
+    ],
+    [
+     34.0,
+     55.25
+    ],
+    [
+     32.05,
+     54.78
+    ],
+    [
+     31.4,
+     54.56
+    ],
+    [
+     30.4,
+     54.5
+    ],
+    [
+     28.6,
+     54.33
+    ]
+   ],
+   "legs": [
+    [
+     0.25,
+     1.965,
+     2
+    ],
+    [
+     1.965,
+     6.7,
+     5
+    ],
+    [
+     12.105,
+     17.059,
+     8
+    ]
+   ],
+   "width": 30,
+   "head": 84
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     36.3,
+     54.75
+    ],
+    [
+     34.5,
+     54.6
+    ],
+    [
+     32.4,
+     54.35
+    ],
+    [
+     31.0,
+     54.2
+    ]
+   ],
+   "draw": [
+    6.7,
+    9.512
+   ],
+   "width": 24,
+   "head": 68
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     28.0,
+     52.4
+    ],
+    [
+     28.3,
+     53.3
+    ],
+    [
+     28.45,
+     54.1
+    ]
+   ],
+   "draw": [
+    17.059,
+    19.63
+   ],
+   "width": 24,
+   "head": 68
+  },
+  {
+   "color": "red",
+   "points": [
+    [
+     28.8,
+     56.0
+    ],
+    [
+     28.7,
+     55.2
+    ],
+    [
+     28.55,
+     54.6
+    ]
+   ],
+   "draw": [
+    17.459,
+    20.03
+   ],
+   "width": 24,
+   "head": 68
+  }
+ ],
+ "dots": [
+  [
+   "MOSCOW",
+   0.3
+  ],
+  [
+   "MALOYAROSLAVETS",
+   1.365,
+   12
+  ],
+  [
+   "SMOLENSK",
+   6.3
+  ],
+  [
+   "BEREZINA",
+   17.059
+  ]
+ ],
+ "stars": [],
+ "rings": [
+  [
+   "BEREZINA",
+   19.63,
+   23.202,
+   "red"
+  ]
+ ],
+ "labels": [
+  {
+   "place": "MOSCOW",
+   "text": "MOSCOW · 19 OCT",
+   "dx": -16,
+   "dy": -28,
+   "align": "r",
+   "at": 0.4
+  },
+  {
+   "place": "MALOYAROSLAVETS",
+   "dx": 18,
+   "dy": 30,
+   "align": "l",
+   "at": 1.565,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "SMOLENSK",
+   "text": "SMOLENSK · 9 NOV",
+   "dy": -30,
+   "at": 6.5,
+   "size": 22
+  },
+  {
+   "place": "BEREZINA",
+   "text": "BEREZINA · LATE NOV",
+   "dx": -26,
+   "dy": -18,
+   "align": "r",
+   "at": 17.259,
+   "size": 24
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   35.0,
+   55.4,
+   9.0
+  ],
+  [
+   6.7,
+   33.0,
+   55.0,
+   9.4
+  ],
+  [
+   12.105,
+   31.0,
+   54.7,
+   9.6
+  ],
+  [
+   23.202,
+   30.0,
+   54.6,
+   9.6
+  ]
+ ],
+ "kicker": [
+  "THE RETREAT FROM MOSCOW",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "OCTOBER 1812"
+  ],
+  [
+   12.105,
+   "NOVEMBER 1812"
+  ]
+ ],
+ "legend": [
+  [
+   "GRANDE ARMÉE",
+   "blue",
+   0.8
+  ],
+  [
+   "RUSSIAN ARMIES",
+   "red",
+   6.7
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

@@ -1,0 +1,84 @@
+{
+ "job_id": "napoleon_doc_ch4_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 4 (Coronation, Ulm and Austerlitz): 5 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c4_consul_desk",
+   "positive": "medium shot, the First Consul writing at a large desk on the left third, piles of papers and bound volumes, a secretary at a side table, Napoleon as First Consul at work in the Tuileries at night, about 1803, red consular coat, drafts of the Civil Code, maps on the wall, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 35, short hair, golden laurel wreath on his head, no hat, crimson velvet coronation mantle embroidered with golden bees, broad ermine collar and lining, white satin robes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm candlelight and a single oil lamp, deep shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7401,
+    7402,
+    7403,
+    7404
+   ]
+  },
+  {
+   "id": "c4_coronation",
+   "positive": "wide interior of a Gothic cathedral nave, the Emperor in the centre raising a golden laurel crown, the Pope seated to the right, rows of dignitaries, the coronation in Notre-Dame de Paris, 2 December 1804, crimson velvet and ermine robes, Pope Pius VII seated, Josephine kneeling, banners and candles, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, dark slightly wavy hair, aged 35, short hair, golden laurel wreath on his head, no hat, crimson velvet coronation mantle embroidered with golden bees, broad ermine collar and lining, white satin robes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, golden light through stained glass, candle glow, incense haze, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7411,
+    7412,
+    7413,
+    7414
+   ]
+  },
+  {
+   "id": "c4_boulogne",
+   "positive": "wide coastal panorama from the cliffs, endless rows of tents and huts on the left, troops drilling on the beach, the grey Channel on the right, the camp of Boulogne, 1804-1805, the Army of England, flat-bottomed invasion boats in the harbour, the white cliffs of England faint on the horizon, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, breezy grey-blue northern light, scudding clouds, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7421,
+    7422,
+    7423,
+    7424
+   ]
+  },
+  {
+   "id": "c4_trafalgar",
+   "positive": "wide seascape at the waterline, two lines of ships of the line in close action, broadsides firing, sails torn, the Battle of Trafalgar, 21 October 1805, British, French and Spanish three-deckers, HMS Victory breaking the line, smoke over a heavy swell, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, hazy midday sun through gun smoke, silver light on the sea, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7431,
+    7432,
+    7433,
+    7434
+   ]
+  },
+  {
+   "id": "c4_austerlitz_evening",
+   "positive": "very wide shot of a battlefield at sunset, the Emperor and his staff riding along a line of cheering soldiers raising shakos on bayonets, the evening of Austerlitz, 2 December 1805, frozen ponds and villages in the valley, captured standards, smoke thinning over the Pratzen Heights, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 36, short cropped hair, slightly fuller face, black bicorne worn side-on with a small tricolour cockade, green colonel's coat of the Chasseurs a Cheval of the Imperial Guard with red facings, white waistcoat and breeches, grey redingote greatcoat open over it, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, low red winter sunset, long blue shadows, frost, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7441,
+    7442,
+    7443,
+    7444
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

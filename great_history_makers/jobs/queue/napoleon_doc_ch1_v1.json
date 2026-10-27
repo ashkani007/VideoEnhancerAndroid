@@ -1,0 +1,117 @@
+{
+ "job_id": "napoleon_doc_ch1_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 1 (Waterloo): 8 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c1_dawn_fields",
+   "positive": "wide landscape at eye level, rolling rye fields and a muddy country road in the foreground, a low ridge with a few elms across the middle distance, dawn after a night of heavy rain near Waterloo, Belgium, 1815, puddles and trampled wet rye, wisps of mist in the hollows, distant bivouac smoke from thousands of campfires, tiny ranks of soldiers on the far ridge, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, grey wet dawn, low sun struggling through rain clouds, cold palette with a faint gold band on the horizon, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7101,
+    7102,
+    7103,
+    7104
+   ]
+  },
+  {
+   "id": "c1_two_armies",
+   "positive": "epic panorama from a slight height, a shallow valley across the whole frame, dense blue French columns in the foreground right, red-coated lines and guns along the opposite ridge, the battlefield of Waterloo on the morning of 18 June 1815, French infantry and cuirassiers forming up near La Belle Alliance inn, Wellington's army on the ridge of Mont-Saint-Jean, the farm of La Haye Sainte in the valley, regimental eagles and colours, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, overcast morning clearing slowly, diffuse light, damp air with atmospheric perspective, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7111,
+    7112,
+    7113,
+    7114
+   ]
+  },
+  {
+   "id": "c1_napoleon_rise",
+   "positive": "medium shot, the Emperor standing on a low rise on the left third, three-quarter view looking right through a field telescope, staff officers and a Guard chasseur holding horses behind him, Napoleon at Waterloo, 18 June 1815, near the farm of Rossomme, waiting for the ground to dry, maps on a camp table, wet grass and mud, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 45, heavier build, rounder face, thinning short hair, black bicorne side-on, grey redingote greatcoat over the green Guard chasseur coat, tired eyes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, soft overcast late-morning light, a break in the clouds lighting the valley behind him, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7121,
+    7122,
+    7123,
+    7124
+   ]
+  },
+  {
+   "id": "c1_hougoumont",
+   "positive": "wide shot of a walled farm courtyard and its great north gate, defenders firing from loopholes and the walls, attackers in the orchard smoke, the farm of Hougoumont at Waterloo, 1815, British Foot Guards in red coats and stovepipe shakos holding the gate, the chateau barn on fire, French light infantry in blue among the trees, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, afternoon light filtered through thick smoke, orange firelight from the burning barn, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7131,
+    7132,
+    7133,
+    7134
+   ]
+  },
+  {
+   "id": "c1_cavalry_squares",
+   "positive": "dynamic wide shot at the height of a horseman, French cuirassiers in steel breastplates and crested helmets galloping from the left toward a British infantry square bristling with bayonets on the right, the French cavalry charges at Waterloo, 18 June 1815, Marshal Ney's heavy cavalry swirling around red-coated squares on the ridge, abandoned guns, trampled rye, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, hazy afternoon sun through powder smoke, steel highlights on breastplates, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7141,
+    7142,
+    7143,
+    7144
+   ]
+  },
+  {
+   "id": "c1_plancenoit",
+   "positive": "wide shot of a village street climbing to a stone church, Prussian infantry in dark blue coats advancing from the right, French Young Guard defending the churchyard wall, the village of Plancenoit at Waterloo, early evening 18 June 1815, houses on fire, smoke over the church tower, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, low evening sun from the left, fire glow, heavy smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7151,
+    7152,
+    7153,
+    7154
+   ]
+  },
+  {
+   "id": "c1_guard_forward",
+   "positive": "low-angle wide shot looking up a long slope, columns of tall grenadiers in bearskins with red plumes and blue coats advancing toward the camera in step, drummers and an eagle standard, the Imperial Guard advancing at Waterloo, evening of 18 June 1815, veterans with grey moustaches, muskets shouldered, smoke drifting across the slope, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, golden evening light from behind the columns, long shadows, rim light on bearskins, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7161,
+    7162,
+    7163,
+    7164
+   ]
+  },
+  {
+   "id": "c1_dusk_field",
+   "positive": "very wide shot, a lone rider in a grey greatcoat and bicorne seen from behind on the right third, watching a smoke-covered valley that fills the frame, the field of Waterloo at sunset, 18 June 1815, the outcome still undecided, smoke banks and the silhouette of the ridge, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 45, heavier build, rounder face, thinning short hair, black bicorne side-on, grey redingote greatcoat over the green Guard chasseur coat, tired eyes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, blood-red sunset through smoke, deep shadows, dramatic sky, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7171,
+    7172,
+    7173,
+    7174
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

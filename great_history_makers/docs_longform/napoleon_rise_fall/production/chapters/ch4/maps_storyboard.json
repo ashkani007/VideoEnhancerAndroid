@@ -1,0 +1,58 @@
+{
+ "id": "napoleon_doc_ch4_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 38.855,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c4_map_ulm",
+   "type": "map",
+   "start": 0.0,
+   "end": 26.103,
+   "map": "../../maps/ch4_ulm_austerlitz.json"
+  },
+  {
+   "id": "c4_map_austerlitz",
+   "type": "map",
+   "start": 26.103,
+   "end": 38.855,
+   "map": "../../maps/ch4_ulm_austerlitz.json",
+   "map_offset": 41.779
+  }
+ ],
+ "transitions": [
+  {
+   "at": 26.103,
+   "type": "ink"
+  }
+ ],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 34,
+   "root_hz": 98.0,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 38.55500000000001
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 25.803,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 26.403000000000002,
+    "end": 38.55500000000001,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

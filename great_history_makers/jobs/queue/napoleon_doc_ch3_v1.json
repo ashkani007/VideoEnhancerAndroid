@@ -1,0 +1,106 @@
+{
+ "job_id": "napoleon_doc_ch3_v1",
+ "kind": "illustrate",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 3 (Italy, Egypt and Power): 7 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "workflow": "sdxl_hires",
+ "defaults": {
+  "width": 1344,
+  "height": 768,
+  "steps": 34,
+  "cfg": 5.5,
+  "sampler_name": "dpmpp_2m",
+  "scheduler": "karras",
+  "hires_scale": 1.5,
+  "hires_steps": 22,
+  "hires_denoise": 0.38,
+  "ipadapter_weight": 0.55,
+  "ipadapter_weight_type": "style transfer",
+  "ipadapter_end_at": 1.0
+ },
+ "references": {},
+ "shots": [
+  {
+   "id": "c3_army_italy",
+   "positive": "wide shot along a stony mountain road, a long column of ragged soldiers marching from the right toward the left into Alpine foothills, the French Army of Italy, spring 1796, threadbare mismatched uniforms, some soldiers without shoes, mules with supplies, Ligurian mountains and the sea far below, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, hard bright spring sun, deep blue sky, dust in the air, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7301,
+    7302,
+    7303,
+    7304
+   ]
+  },
+  {
+   "id": "c3_arcole",
+   "positive": "dynamic medium-wide shot, the young general on a narrow causeway on the left third carrying a tricolour flag forward, soldiers around him, a wooden bridge ahead in smoke, the Battle of Arcole, November 1796, the causeway through the marshes by the Alpone, long hair, general's blue coat with gold embroidery and a tricolour sash, Austrian musket fire from across the bridge, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 27, very thin face, long straight hair falling to the shoulders, French general's dark blue coat with gold oak-leaf embroidery on collar and cuffs, tricolour sash, bicorne with tricolour plumes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, pale November light, smoke backlit by muzzle flashes, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7311,
+    7312,
+    7313,
+    7314
+   ]
+  },
+  {
+   "id": "c3_leoben",
+   "positive": "medium-wide interior, the young French general standing at a table on the left third, pointing at a map, two Austrian envoys in white uniforms seated opposite, peace negotiations with Austria, 1797, a villa room with painted ceilings, documents and quills on the table, French officers behind, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 27, very thin face, long straight hair falling to the shoulders, French general's dark blue coat with gold oak-leaf embroidery on collar and cuffs, tricolour sash, bicorne with tricolour plumes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, warm daylight from tall windows, dust in the light, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7321,
+    7322,
+    7323,
+    7324
+   ]
+  },
+  {
+   "id": "c3_pyramids",
+   "positive": "epic wide desert panorama, a French infantry square firing on the left, a charge of Mamluk horsemen in bright silks sweeping from the right, pyramids on the far horizon, the Battle of the Pyramids, 21 July 1798, French infantry in blue coats and bicornes, Mamluk cavalry with curved swords, the Nile and palms in the midground, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, harsh golden afternoon desert sun, heat haze, dust and smoke, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark, close-up wounds, blood, gore",
+   "seeds": [
+    7331,
+    7332,
+    7333,
+    7334
+   ]
+  },
+  {
+   "id": "c3_orient",
+   "positive": "wide night seascape, a huge three-decker warship exploding in the centre, other ships of the line in silhouette around it, burning debris on the water, the Battle of the Nile at Aboukir Bay, 1 August 1798, the French flagship L'Orient blowing up, British ships closing in, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, night, blinding orange explosion lighting the smoke and the sea, deep blue darkness around, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7341,
+    7342,
+    7343,
+    7344
+   ]
+  },
+  {
+   "id": "c3_brumaire",
+   "positive": "wide interior of a crowded hall, grenadiers with fixed bayonets entering from the left, deputies in red togas and caps rising in confusion on the right, a young general in the centre, the coup of 18-19 Brumaire, 10 November 1799, the Council of Five Hundred in the Orangery of the chateau of Saint-Cloud, Napoleon Bonaparte, clean-shaven, lean face, strong jaw, straight nose, heavy dark brows, small grey-blue eyes, pale olive complexion, dark chestnut hair, aged 27, very thin face, long straight hair falling to the shoulders, French general's dark blue coat with gold oak-leaf embroidery on collar and cuffs, tricolour sash, bicorne with tricolour plumes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, grey November daylight through tall windows, tense shadows, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, beard, moustache, old man, elderly, overweight, bald, modern clothing, crown, wrong uniform colours, text, letters, watermark",
+   "seeds": [
+    7351,
+    7352,
+    7353,
+    7354
+   ]
+  },
+  {
+   "id": "c3_alps",
+   "positive": "wide mountain view, a long column of soldiers hauling cannon barrels in hollowed tree trunks up a snowy pass from the right foreground toward the left, rock walls and peaks, the French Army of Reserve crossing the Great Saint Bernard Pass, May 1800, the hospice in the distance, mules and sledges, men pulling ropes, cinematic historical oil painting, digital matte painting in the tradition of nineteenth-century academic battle painters such as Meissonier, Horace Vernet and Edouard Detaille, realistic anatomy and proportions, rich environmental detail, visible painterly brushwork, atmospheric perspective, volumetric light, drifting smoke and haze, historically accurate Napoleonic uniforms, horses and equipment, muted earthy palette with controlled colour accents, highly detailed, sharp focus, bright cold alpine light, blue shadows on the snow, widescreen 16:9 cinematic frame, clear foreground, midground and background depth layers, rule-of-thirds focal point, calm lower fifth for subtitles",
+   "negative": "anime, manga, cel shading, flat colours, vector art, cartoon, minimalist, simplified shapes, low detail, empty background, 3d render, cgi, plastic skin, photograph, modern clothing, modern buildings, oversaturated, neon, extra fingers, deformed hands, distorted face, asymmetrical eyes, extra limbs, duplicate figure, malformed horse legs, blurry, lowres, jpeg artifacts, text, letters, caption, signature, watermark, logo, frame, border, text, letters, watermark",
+   "seeds": [
+    7361,
+    7362,
+    7363,
+    7364
+   ]
+  }
+ ],
+ "output": {
+  "format": "jpg",
+  "quality": 92,
+  "contact_sheet": true
+ }
+}

@@ -176,7 +176,7 @@ class Renderer:
 
     def shot_map(self, sh, tl, t, mods):
         m = mapshot.get(os.path.join(self.dir, sh["map"]), self.OW, self.OH)
-        return m.frame(tl)
+        return m.frame(tl + sh.get("map_offset", 0.0))        # map_offset: continue a map timeline in a later shot
 
     def render_shot(self, sh, t, mods=None):
         tl = t - sh["start"]

@@ -1,0 +1,391 @@
+{
+ "_about": "Egyptian expedition (Chandler S1, Roberts S2): Toulon (19 May 1798) - Malta (taken 11-12 Jun) - Alexandria (1-2 Jul) - Cairo / Battle of the Pyramids (21 Jul); Syrian campaign: Jaffa (Mar 1799), siege of Acre (Mar-May 1799, failed); Bonaparte sailed from near Alexandria on 23 Aug 1799 and landed at Saint-Raphael near Frejus on 9 Oct. Sea routes schematic.",
+ "bounds": [
+  -4.0,
+  42.1,
+  26.3,
+  48.55
+ ],
+ "ref_lat": 37.0,
+ "ppu": 140,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 1.2,
+ "star_scale": 0.62,
+ "rivers": [
+  [
+   [
+    31.0,
+    27.2
+   ],
+   [
+    31.2,
+    29.0
+   ],
+   [
+    31.24,
+    30.04
+   ],
+   [
+    30.9,
+    30.7
+   ],
+   [
+    30.42,
+    31.42
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "MEDITERRANEAN",
+   19.0,
+   33.0,
+   70,
+   "sea"
+  ],
+  [
+   "EGYPT",
+   29.0,
+   28.0,
+   60,
+   "land"
+  ],
+  [
+   "OTTOMAN EMPIRE",
+   33.5,
+   38.6,
+   60,
+   "land"
+  ],
+  [
+   "FRANCE",
+   3.0,
+   45.6,
+   60,
+   "land"
+  ],
+  [
+   "Nile",
+   31.55,
+   28.5,
+   46,
+   "river"
+  ]
+ ],
+ "places": {
+  "TOULON": [
+   5.93,
+   43.12
+  ],
+  "MALTA": [
+   14.51,
+   35.9
+  ],
+  "ALEXANDRIA": [
+   29.92,
+   31.2
+  ],
+  "CAIRO": [
+   31.2,
+   30.06
+  ],
+  "ACRE": [
+   35.07,
+   32.92
+  ],
+  "JAFFA": [
+   34.75,
+   32.05
+  ],
+  "FRÉJUS": [
+   6.74,
+   43.43
+  ]
+ },
+ "routes": [
+  {
+   "color": "blue",
+   "points": [
+    [
+     5.93,
+     43.12
+    ],
+    [
+     9.5,
+     39.8
+    ],
+    [
+     14.4,
+     36.1
+    ],
+    [
+     22.0,
+     33.6
+    ],
+    [
+     29.92,
+     31.2
+    ],
+    [
+     30.7,
+     30.7
+    ],
+    [
+     31.2,
+     30.1
+    ]
+   ],
+   "legs": [
+    [
+     0.25,
+     4.656,
+     2
+    ],
+    [
+     4.656,
+     7.677,
+     4
+    ],
+    [
+     18.104,
+     20.367,
+     6
+    ]
+   ],
+   "width": 28,
+   "head": 78
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     31.2,
+     30.1
+    ],
+    [
+     32.4,
+     30.8
+    ],
+    [
+     34.0,
+     31.4
+    ],
+    [
+     34.75,
+     32.05
+    ],
+    [
+     35.0,
+     32.8
+    ]
+   ],
+   "draw": [
+    30.507,
+    32.222
+   ],
+   "width": 26,
+   "head": 74
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     29.92,
+     31.25
+    ],
+    [
+     24.0,
+     33.4
+    ],
+    [
+     16.0,
+     37.6
+    ],
+    [
+     10.0,
+     40.2
+    ],
+    [
+     6.8,
+     43.35
+    ]
+   ],
+   "draw": [
+    40.569,
+    43.912
+   ],
+   "width": 28,
+   "head": 78
+  }
+ ],
+ "dots": [
+  [
+   "TOULON",
+   0.3
+  ],
+  [
+   "MALTA",
+   4.656
+  ],
+  [
+   "ALEXANDRIA",
+   7.677
+  ],
+  [
+   "JAFFA",
+   31.622,
+   12
+  ],
+  [
+   "FRÉJUS",
+   43.812
+  ]
+ ],
+ "stars": [
+  [
+   "CAIRO",
+   20.367
+  ]
+ ],
+ "rings": [
+  [
+   "ACRE",
+   32.222,
+   34.913,
+   "red"
+  ]
+ ],
+ "labels": [
+  {
+   "place": "TOULON",
+   "text": "TOULON · MAY 1798",
+   "dy": -28,
+   "at": 0.4
+  },
+  {
+   "place": "MALTA",
+   "dy": 36,
+   "at": 4.856
+  },
+  {
+   "place": "ALEXANDRIA",
+   "text": "ALEXANDRIA",
+   "dx": -22,
+   "dy": -16,
+   "align": "r",
+   "at": 7.877
+  },
+  {
+   "place": "CAIRO",
+   "text": "PYRAMIDS · 21 JULY",
+   "dx": 26,
+   "dy": 34,
+   "align": "l",
+   "at": 20.567,
+   "size": 24
+  },
+  {
+   "place": "ACRE",
+   "text": "ACRE",
+   "dx": 26,
+   "dy": -8,
+   "align": "l",
+   "at": 32.422,
+   "size": 26
+  },
+  {
+   "place": "FRÉJUS",
+   "text": "FRÉJUS · OCT 1799",
+   "dx": 22,
+   "dy": 32,
+   "align": "l",
+   "at": 44.012,
+   "size": 22
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   12.0,
+   39.5,
+   13.0
+  ],
+  [
+   4.656,
+   17.0,
+   36.5,
+   13.0
+  ],
+  [
+   7.677,
+   26.0,
+   32.5,
+   9.5
+  ],
+  [
+   20.367,
+   29.5,
+   31.2,
+   8.6
+  ],
+  [
+   30.507,
+   31.6,
+   31.4,
+   8.2
+  ],
+  [
+   34.913,
+   32.0,
+   31.6,
+   8.4
+  ],
+  [
+   40.569,
+   19.0,
+   38.0,
+   14.5
+  ],
+  [
+   45.054,
+   14.0,
+   40.2,
+   15.5
+  ]
+ ],
+ "kicker": [
+  "THE EGYPTIAN EXPEDITION",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "MAY 1798"
+  ],
+  [
+   4.656,
+   "JUNE 1798"
+  ],
+  [
+   7.677,
+   "JULY 1798"
+  ],
+  [
+   30.507,
+   "1799"
+  ],
+  [
+   38.734,
+   "AUGUST 1799"
+  ]
+ ],
+ "legend": [
+  [
+   "FRENCH EXPEDITION",
+   "blue",
+   0.8
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

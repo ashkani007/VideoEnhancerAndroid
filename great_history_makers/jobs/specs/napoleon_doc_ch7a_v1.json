@@ -1,0 +1,154 @@
+{
+ "job_id": "napoleon_doc_ch7a_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 7 (Waterloo, Saint Helena and Legacy): 10 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c7_vienna",
+   "characters": [],
+   "framing": "wide interior of a grand palace hall, diplomats in court dress around a long table covered with maps and papers",
+   "scene": "the Congress of Vienna, March 1815, statesmen of Austria, Britain, Prussia and Russia receiving the news of Napoleon's return, chandeliers and tall windows",
+   "lighting": "cold daylight from tall windows mixed with chandelier light",
+   "seeds": [
+    7701,
+    7702,
+    7703,
+    7704
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_guard_slope",
+   "characters": [],
+   "framing": "wide shot from the crest looking down the slope, bearskinned columns of the Imperial Guard emerging from smoke and climbing toward the camera",
+   "scene": "the attack of the Imperial Guard at Waterloo, evening of 18 June 1815, trampled rye, dead horses, drifting smoke",
+   "lighting": "low golden evening sun behind the Guard, smoke glowing",
+   "seeds": [
+    7711,
+    7712,
+    7713,
+    7714
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c7_guards_rise",
+   "characters": [],
+   "framing": "wide shot along a line of British Foot Guards in red coats rising from the rye and firing a volley to the left, officers with swords",
+   "scene": "the British Foot Guards at Waterloo rising to fire at close range, 18 June 1815, Dutch-Belgian troops further along, smoke and flame from the muskets",
+   "lighting": "evening sun from the left, muzzle flashes",
+   "seeds": [
+    7721,
+    7722,
+    7723,
+    7724
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c7_rout",
+   "characters": [],
+   "framing": "very wide shot of a valley at sunset, French troops streaming back in disorder, the Old Guard holding in squares, Prussian cavalry arriving from the right",
+   "scene": "the end of the Battle of Waterloo, evening 18 June 1815, abandoned guns, the inn of La Belle Alliance, burning farms",
+   "lighting": "red sunset through smoke, deep shadows",
+   "seeds": [
+    7731,
+    7732,
+    7733,
+    7734
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_aftermath",
+   "characters": [],
+   "framing": "wide quiet landscape at dusk, the battlefield after the fighting, a broken gun carriage and a riderless horse in the foreground, distant figures with lanterns",
+   "scene": "the field of Waterloo on the night of 18 June 1815, trampled fields, smoke lying low, restraint, no visible wounds",
+   "lighting": "blue dusk, lantern glows, low mist",
+   "seeds": [
+    7741,
+    7742,
+    7743,
+    7744
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c7_bellerophon",
+   "characters": [],
+   "framing": "wide seascape, a British 74-gun ship of the line at anchor in a broad roadstead, a small boat rowing out toward it from the left",
+   "scene": "HMS Bellerophon off Rochefort, July 1815, Napoleon's boat approaching to surrender to Captain Maitland, the Ile d'Aix coast",
+   "lighting": "calm grey summer morning, silver sea",
+   "seeds": [
+    7751,
+    7752,
+    7753,
+    7754
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_longwood",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "medium interior shot, the heavier ageing Napoleon in a white dressing gown seated in an armchair on the left, a secretary writing at a small table on the right",
+   "scene": "Longwood House, Saint Helena, about 1816, Napoleon dictating his memoirs to Las Cases, books, a billiard table, damp walls",
+   "lighting": "warm candlelight, rain on the window",
+   "seeds": [
+    7761,
+    7762,
+    7763,
+    7764
+   ],
+   "variants": {
+    "napoleon": "exile_1820"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_saint_helena",
+   "characters": [],
+   "framing": "wide landscape, dark volcanic cliffs dropping into the Atlantic on the right, a small house on a green plateau under low clouds on the left",
+   "scene": "Saint Helena, South Atlantic, Longwood plateau and the cliffs, sea birds, Atlantic swell",
+   "lighting": "moody dusk, shafts of light through low clouds, violet and ocean blue",
+   "seeds": [
+    7771,
+    7772,
+    7773,
+    7774
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_invalides",
+   "characters": [],
+   "framing": "wide interior view looking down into a circular crypt with a great red porphyry sarcophagus, under a golden dome",
+   "scene": "the tomb of Napoleon under the dome of Les Invalides, Paris, marble columns and statues, gilded light from the dome above",
+   "lighting": "golden light falling from the dome, cool marble shadows",
+   "seeds": [
+    7781,
+    7782,
+    7783,
+    7784
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c7_code",
+   "characters": [],
+   "framing": "still-life close-up on a desk, an open leather-bound volume of the Code civil des Francais, a quill and inkwell, a folded map of Europe and a sealed letter",
+   "scene": "the Civil Code of 1804 on a lawyer's desk in the nineteenth century, candle, books in the background",
+   "lighting": "warm candlelight, soft depth of field",
+   "seeds": [
+    7791,
+    7792,
+    7793,
+    7794
+   ],
+   "negative_extra": "text, letters, watermark, readable text, letters, words, modern objects"
+  }
+ ]
+}

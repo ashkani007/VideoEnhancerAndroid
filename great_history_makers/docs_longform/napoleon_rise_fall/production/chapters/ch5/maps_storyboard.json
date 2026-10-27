@@ -1,0 +1,94 @@
+{
+ "id": "napoleon_doc_ch5_maps",
+ "format": "landscape",
+ "fps": 30,
+ "duration": 76.645,
+ "fade_out": 0.6,
+ "_status": "Finished map shots of the chapter (LOCKED style), planned narration timing, music bed only.",
+ "shots": [
+  {
+   "id": "c5_map_europe",
+   "type": "map",
+   "start": 0.0,
+   "end": 14.644,
+   "map": "../../maps/ch5_campaign_1806_1807.json"
+  },
+  {
+   "id": "c5_map_redraw",
+   "type": "map",
+   "start": 14.644,
+   "end": 32.681,
+   "map": "../../maps/ch5_empire_1811.json"
+  },
+  {
+   "id": "c5_map_empire",
+   "type": "map",
+   "start": 32.681,
+   "end": 57.133,
+   "map": "../../maps/ch5_empire_1811.json",
+   "map_offset": 63.404
+  },
+  {
+   "id": "c5_map_invasion",
+   "type": "map",
+   "start": 57.133,
+   "end": 76.645,
+   "map": "../../maps/ch5_invasion_1812.json"
+  }
+ ],
+ "transitions": [
+  {
+   "at": 14.644,
+   "type": "ink"
+  },
+  {
+   "at": 32.681,
+   "type": "ink"
+  },
+  {
+   "at": 57.133,
+   "type": "ink"
+  }
+ ],
+ "audio": {
+  "music_level": 1.0,
+  "sfx_level": 0.8,
+  "music": {
+   "seed": 35,
+   "root_hz": 92.5,
+   "mode": "minor",
+   "drum_from": 0.3,
+   "drum_to": 76.345
+  },
+  "sfx": [
+   {
+    "type": "drum",
+    "start": 0.3,
+    "end": 14.344,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 14.944,
+    "end": 32.381,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 32.980999999999995,
+    "end": 56.833,
+    "period": 0.5,
+    "gain": 0.18
+   },
+   {
+    "type": "drum",
+    "start": 57.43299999999999,
+    "end": 76.345,
+    "period": 0.5,
+    "gain": 0.18
+   }
+  ]
+ }
+}

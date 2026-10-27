@@ -233,7 +233,8 @@ def test_map_lock():
     assert map_style.code_fingerprint() == preset["code_fingerprint"], \
         "map drawing code changed: the locked preset ghm_original_v1 needs the client's dated approval first"
     ok = []
-    for f in sorted(glob.glob(os.path.join(GHM, "ghm4", "data", "maps", "*.json"))):
+    doc_maps = glob.glob(os.path.join(GHM, "docs_longform", "*", "production", "maps", "*.json"))   # documentary maps too
+    for f in sorted(glob.glob(os.path.join(GHM, "ghm4", "data", "maps", "*.json"))) + sorted(doc_maps):
         cfg = json.load(open(f))
         assert not map_style.violations(cfg), (f, map_style.violations(cfg))
         assert not map_style.scale_issues(cfg), (f, map_style.scale_issues(cfg))

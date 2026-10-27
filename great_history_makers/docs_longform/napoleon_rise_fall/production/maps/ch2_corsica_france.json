@@ -1,0 +1,383 @@
+{
+ "_about": "Corsica ceded by Genoa to France (Treaty of Versailles, May 1768) and conquered in 1769 (Ponte Novu); Napoleone's schooling: Brienne 1779-84, Ecole Militaire, Paris 1784-85 (Dwyer S5, Roberts S2). The route to Brienne is schematic (the 1778-79 journey went by sea to the mainland and on via Autun).",
+ "bounds": [
+  -9.3,
+  19.3,
+  39.0,
+  52.5
+ ],
+ "ref_lat": 45.5,
+ "ppu": 170,
+ "coast": "ghm4/data/europe_ne50m.json",
+ "element_scale": 0.9,
+ "rivers": [
+  [
+   [
+    9.5,
+    47.6
+   ],
+   [
+    8.6,
+    47.6
+   ],
+   [
+    7.6,
+    47.56
+   ],
+   [
+    7.75,
+    48.58
+   ],
+   [
+    8.47,
+    49.49
+   ],
+   [
+    8.27,
+    50.0
+   ],
+   [
+    7.6,
+    50.36
+   ],
+   [
+    6.96,
+    50.94
+   ],
+   [
+    6.77,
+    51.23
+   ],
+   [
+    5.86,
+    51.84
+   ],
+   [
+    4.3,
+    51.9
+   ]
+  ]
+ ],
+ "relief": [
+  [
+   [
+    5.8,
+    44.6
+   ],
+   [
+    6.6,
+    45.5
+   ],
+   [
+    7.3,
+    45.95
+   ],
+   [
+    8.5,
+    46.35
+   ],
+   [
+    10.0,
+    46.55
+   ],
+   [
+    11.8,
+    46.9
+   ],
+   [
+    13.6,
+    47.15
+   ],
+   [
+    15.4,
+    47.45
+   ]
+  ],
+  [
+   [
+    8.4,
+    44.25
+   ],
+   [
+    9.4,
+    44.45
+   ],
+   [
+    10.3,
+    44.2
+   ],
+   [
+    11.3,
+    43.85
+   ],
+   [
+    12.3,
+    43.45
+   ]
+  ]
+ ],
+ "region_labels": [
+  [
+   "KINGDOM OF FRANCE",
+   2.2,
+   46.6,
+   70,
+   "land"
+  ],
+  [
+   "MEDITERRANEAN",
+   4.6,
+   41.0,
+   62,
+   "sea"
+  ]
+ ],
+ "places": {
+  "AJACCIO": [
+   8.74,
+   41.92
+  ],
+  "GENOA": [
+   8.93,
+   44.41
+  ],
+  "TOULON": [
+   5.93,
+   43.12
+  ],
+  "BRIENNE": [
+   4.53,
+   48.39
+  ],
+  "PARIS": [
+   2.35,
+   48.86
+  ],
+  "CORSICA": [
+   9.05,
+   42.15
+  ]
+ },
+ "routes": [
+  {
+   "color": "red",
+   "points": [
+    [
+     8.93,
+     44.41
+    ],
+    [
+     9.2,
+     43.6
+    ],
+    [
+     9.15,
+     42.75
+    ]
+   ],
+   "draw": [
+    2.085,
+    4.227
+   ],
+   "width": 26,
+   "head": 76
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     5.93,
+     43.12
+    ],
+    [
+     7.3,
+     42.7
+    ],
+    [
+     8.6,
+     42.45
+    ]
+   ],
+   "draw": [
+    6.49,
+    8.633
+   ],
+   "width": 26,
+   "head": 76
+  },
+  {
+   "color": "blue",
+   "points": [
+    [
+     8.74,
+     41.92
+    ],
+    [
+     7.4,
+     42.6
+    ],
+    [
+     5.6,
+     43.25
+    ],
+    [
+     4.85,
+     45.75
+    ],
+    [
+     4.4,
+     47.2
+    ],
+    [
+     4.53,
+     48.39
+    ],
+    [
+     2.35,
+     48.86
+    ]
+   ],
+   "legs": [
+    [
+     24.836,
+     29.8,
+     5
+    ],
+    [
+     32.92,
+     34.92,
+     6
+    ]
+   ],
+   "width": 28,
+   "head": 80
+  }
+ ],
+ "dots": [
+  [
+   "AJACCIO",
+   0.3
+  ],
+  [
+   "GENOA",
+   0.5
+  ],
+  [
+   "TOULON",
+   6.49
+  ],
+  [
+   "BRIENNE",
+   29.8
+  ],
+  [
+   "PARIS",
+   34.72
+  ]
+ ],
+ "rings": [],
+ "labels": [
+  {
+   "place": "AJACCIO",
+   "text": "AJACCIO · 1769",
+   "dx": -22,
+   "dy": 8,
+   "align": "r",
+   "at": 0.4
+  },
+  {
+   "place": "GENOA",
+   "dy": -28,
+   "at": 0.6
+  },
+  {
+   "place": "CORSICA",
+   "text": "CORSICA: FRENCH FROM 1768",
+   "dx": 34,
+   "dy": -64,
+   "align": "l",
+   "at": 4.227,
+   "preset": "map_label",
+   "size": 20
+  },
+  {
+   "place": "TOULON",
+   "dx": -16,
+   "dy": 30,
+   "align": "r",
+   "at": 6.69
+  },
+  {
+   "place": "BRIENNE",
+   "text": "BRIENNE · 1779",
+   "dx": 22,
+   "dy": 30,
+   "align": "l",
+   "at": 30.0
+  },
+  {
+   "place": "PARIS",
+   "text": "PARIS · 1784",
+   "dx": -22,
+   "dy": 30,
+   "align": "r",
+   "at": 34.92
+  }
+ ],
+ "camera": [
+  [
+   0.0,
+   8.6,
+   43.0,
+   5.4
+  ],
+  [
+   12.455,
+   8.0,
+   43.4,
+   6.2
+  ],
+  [
+   24.836,
+   6.4,
+   45.2,
+   9.0
+  ],
+  [
+   32.92,
+   5.2,
+   46.4,
+   10.4
+  ],
+  [
+   36.92,
+   5.0,
+   46.6,
+   10.6
+  ]
+ ],
+ "kicker": [
+  "CORSICA AND FRANCE",
+  0.2
+ ],
+ "dates": [
+  [
+   0.0,
+   "1768"
+  ],
+  [
+   8.633,
+   "1769"
+  ],
+  [
+   24.836,
+   "1779"
+  ],
+  [
+   32.92,
+   "1784"
+  ]
+ ],
+ "safe_labels": true,
+ "_generated": "by production/build.py from maps_src.py; do not edit by hand"
+}

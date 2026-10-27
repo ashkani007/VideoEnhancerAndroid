@@ -1,0 +1,131 @@
+{
+ "job_id": "napoleon_doc_ch1_v1",
+ "created": "2026-10-27",
+ "notes": "Napoleon documentary, chapter 1 (Waterloo): 8 paintings x 4 seeds, 16:9, style ghm_painterly_v2. Client picks; nothing is final before approval.",
+ "style": "ghm_painterly_v2",
+ "workflow": "sdxl_hires",
+ "shots": [
+  {
+   "id": "c1_dawn_fields",
+   "characters": [],
+   "framing": "wide landscape at eye level, rolling rye fields and a muddy country road in the foreground, a low ridge with a few elms across the middle distance",
+   "scene": "dawn after a night of heavy rain near Waterloo, Belgium, 1815, puddles and trampled wet rye, wisps of mist in the hollows, distant bivouac smoke from thousands of campfires, tiny ranks of soldiers on the far ridge",
+   "lighting": "grey wet dawn, low sun struggling through rain clouds, cold palette with a faint gold band on the horizon",
+   "seeds": [
+    7101,
+    7102,
+    7103,
+    7104
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c1_two_armies",
+   "characters": [],
+   "framing": "epic panorama from a slight height, a shallow valley across the whole frame, dense blue French columns in the foreground right, red-coated lines and guns along the opposite ridge",
+   "scene": "the battlefield of Waterloo on the morning of 18 June 1815, French infantry and cuirassiers forming up near La Belle Alliance inn, Wellington's army on the ridge of Mont-Saint-Jean, the farm of La Haye Sainte in the valley, regimental eagles and colours",
+   "lighting": "overcast morning clearing slowly, diffuse light, damp air with atmospheric perspective",
+   "seeds": [
+    7111,
+    7112,
+    7113,
+    7114
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c1_napoleon_rise",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "medium shot, the Emperor standing on a low rise on the left third, three-quarter view looking right through a field telescope, staff officers and a Guard chasseur holding horses behind him",
+   "scene": "Napoleon at Waterloo, 18 June 1815, near the farm of Rossomme, waiting for the ground to dry, maps on a camp table, wet grass and mud",
+   "lighting": "soft overcast late-morning light, a break in the clouds lighting the valley behind him",
+   "seeds": [
+    7121,
+    7122,
+    7123,
+    7124
+   ],
+   "variants": {
+    "napoleon": "waterloo_1815"
+   },
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c1_hougoumont",
+   "characters": [],
+   "framing": "wide shot of a walled farm courtyard and its great north gate, defenders firing from loopholes and the walls, attackers in the orchard smoke",
+   "scene": "the farm of Hougoumont at Waterloo, 1815, British Foot Guards in red coats and stovepipe shakos holding the gate, the chateau barn on fire, French light infantry in blue among the trees",
+   "lighting": "afternoon light filtered through thick smoke, orange firelight from the burning barn",
+   "seeds": [
+    7131,
+    7132,
+    7133,
+    7134
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c1_cavalry_squares",
+   "characters": [],
+   "framing": "dynamic wide shot at the height of a horseman, French cuirassiers in steel breastplates and crested helmets galloping from the left toward a British infantry square bristling with bayonets on the right",
+   "scene": "the French cavalry charges at Waterloo, 18 June 1815, Marshal Ney's heavy cavalry swirling around red-coated squares on the ridge, abandoned guns, trampled rye",
+   "lighting": "hazy afternoon sun through powder smoke, steel highlights on breastplates",
+   "seeds": [
+    7141,
+    7142,
+    7143,
+    7144
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c1_plancenoit",
+   "characters": [],
+   "framing": "wide shot of a village street climbing to a stone church, Prussian infantry in dark blue coats advancing from the right, French Young Guard defending the churchyard wall",
+   "scene": "the village of Plancenoit at Waterloo, early evening 18 June 1815, houses on fire, smoke over the church tower",
+   "lighting": "low evening sun from the left, fire glow, heavy smoke",
+   "seeds": [
+    7151,
+    7152,
+    7153,
+    7154
+   ],
+   "negative_extra": "text, letters, watermark, close-up wounds, blood, gore"
+  },
+  {
+   "id": "c1_guard_forward",
+   "characters": [],
+   "framing": "low-angle wide shot looking up a long slope, columns of tall grenadiers in bearskins with red plumes and blue coats advancing toward the camera in step, drummers and an eagle standard",
+   "scene": "the Imperial Guard advancing at Waterloo, evening of 18 June 1815, veterans with grey moustaches, muskets shouldered, smoke drifting across the slope",
+   "lighting": "golden evening light from behind the columns, long shadows, rim light on bearskins",
+   "seeds": [
+    7161,
+    7162,
+    7163,
+    7164
+   ],
+   "negative_extra": "text, letters, watermark"
+  },
+  {
+   "id": "c1_dusk_field",
+   "characters": [
+    "napoleon"
+   ],
+   "framing": "very wide shot, a lone rider in a grey greatcoat and bicorne seen from behind on the right third, watching a smoke-covered valley that fills the frame",
+   "scene": "the field of Waterloo at sunset, 18 June 1815, the outcome still undecided, smoke banks and the silhouette of the ridge",
+   "lighting": "blood-red sunset through smoke, deep shadows, dramatic sky",
+   "seeds": [
+    7171,
+    7172,
+    7173,
+    7174
+   ],
+   "variants": {
+    "napoleon": "waterloo_1815"
+   },
+   "negative_extra": "text, letters, watermark"
+  }
+ ]
+}
