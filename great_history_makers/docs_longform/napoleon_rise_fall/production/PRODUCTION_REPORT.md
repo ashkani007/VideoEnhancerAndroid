@@ -36,7 +36,7 @@ automatically to the recorded voice.
    - `py -m ghm4.narrate … finish picture.mp4`
    - `py -m ghm4.qc …`
    - visual review
-5. **Assemble:** concatenate chapters 1–7 → final MP4, SRT from the aligned words, chapter timestamps, delivery check. **No publishing.**
+5. **Assemble:** `py production/assemble.py`: concatenates chapters 1–7 → final MP4 (2-pass 12 Mbps delivery encode), English SRT from the same aligned caption cues, final chapter timestamps. **No publishing.**
 
 ## Quality controls applied so far
 - **Map style lock:**

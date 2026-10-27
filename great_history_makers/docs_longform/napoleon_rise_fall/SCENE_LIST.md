@@ -1,5 +1,8 @@
 # Scene list: *Napoleon: The Rise and Fall of an Emperor* (draft 1, about 17.5 min)
 
+> **Superseded (2026-10-27):** the production shot list is `production/SHOT_LIST.md`, generated from `production/shots.py`
+> in the client's 7-chapter structure. This draft is kept for reference.
+
 **Shot types:**
 - **P** painted plate: generated in ComfyUI on the PC, then picked, upscaled and given metadata.
 - **M** animated map: `ghm4.mapshot`, landscape.
