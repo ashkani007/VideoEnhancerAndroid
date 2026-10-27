@@ -7,7 +7,7 @@
   52.5
  ],
  "ref_lat": 45.5,
- "ppu": 170,
+ "ppu": 320,
  "coast": "ghm4/data/europe_ne50m.json",
  "element_scale": 0.9,
  "rivers": [

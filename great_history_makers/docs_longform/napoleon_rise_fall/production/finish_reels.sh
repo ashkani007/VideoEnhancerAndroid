@@ -3,7 +3,7 @@
 cd "$(dirname "$0")/../../.."
 P=docs_longform/napoleon_rise_fall/production
 LOG=$1
-for spec in "ch2:Corsica_and_the_Revolution" "ch3:Italy_Egypt_and_Power" "ch4:Coronation_Ulm_and_Austerlitz" "ch5:Europe_and_Russia" "ch6:Retreat_Exile_and_Return" "ch7:Waterloo_Saint_Helena_and_Legacy"; do
+for spec in "ch1:Waterloo" "ch2:Corsica_and_the_Revolution" "ch3:Italy_Egypt_and_Power" "ch4:Coronation_Ulm_and_Austerlitz" "ch5:Europe_and_Russia" "ch6:Retreat_Exile_and_Return" "ch7:Waterloo_Saint_Helena_and_Legacy"; do
   ch=${spec%%:*}; name=${spec#*:}
   until grep -q "$ch EXIT" "$LOG"; do sleep 20; done
   V=$P/output/map_reels/$ch/napoleon_doc_${ch}_maps_1920x1080_preview.mp4

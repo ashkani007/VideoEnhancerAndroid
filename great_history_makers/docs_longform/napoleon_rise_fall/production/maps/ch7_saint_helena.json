@@ -7,7 +7,7 @@
   62.0
  ],
  "ref_lat": 20,
- "ppu": 42,
+ "ppu": 67,
  "element_scale": 3.4,
  "coast": "ghm4/data/atlantic_ne50m.json",
  "region_labels": [

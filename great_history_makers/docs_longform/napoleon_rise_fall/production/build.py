@@ -170,6 +170,22 @@ def fit_bounds(cfg, margin=0.6):
     return mp
 
 
+OVERSAMPLE = 1.6      # canvas pixels per output pixel at the closest zoom (approved maps: v2 1.26-1.8, Ep01 about 2)
+
+
+def set_resolution(cfg, short=1080, cap_mp=60.0):
+    """Raise the canvas resolution (ppu) so the parchment, sea and coast base is oversampled like the approved maps;
+    resolution only, the look is unchanged."""
+    import math
+    kx = math.cos(math.radians(cfg.get("ref_lat", 48)))
+    lon0, lon1, lat0, lat1 = cfg["bounds"]
+    area = (lon1 - lon0) * kx * (lat1 - lat0)
+    want = OVERSAMPLE * short / min(k[3] for k in cfg["camera"])
+    ppu = max(cfg.get("ppu", 220), min(want, math.sqrt(cap_mp * 1e6 / area)))
+    cfg["ppu"] = int(math.ceil(ppu))
+    return area * cfg["ppu"] ** 2 / 1e6
+
+
 def build_map(mid, words, base, end):
     src = MAPS[mid]
     if "_base" in src:
@@ -181,7 +197,8 @@ def build_map(mid, words, base, end):
     else:
         cfg = resolve({k: v for k, v in src.items()}, words, base, end)
     cfg["_generated"] = "by production/build.py from maps_src.py; do not edit by hand"
-    mp = fit_bounds(cfg)
+    fit_bounds(cfg)
+    mp = set_resolution(cfg)
     if mp > 45:
         print(f"  note: {mid} canvas {mp:.0f} MP")
     issues = coverage_issues(cfg) + map_style.violations(cfg) + [f"scale {x}" for x in map_style.scale_issues(cfg)] + \
